@@ -33,8 +33,9 @@
         'dom/dom',
         'utils/urlArgs',
         'utils/requestAnimationFrame',
+        '../third-party/physics/src/Vector',
         'underscore'
-      ], function(dom, urlArgs, requestAnimationFrame) {
+      ], function(dom, urlArgs, requestAnimationFrame, Vector) {
 
         var filename = urlArgs['sketches'].replace(/\/$/, '');
 
@@ -48,7 +49,8 @@
         _root.stage = {
           ctx: canvas.getContext('2d'),
           domElement: canvas,
-          mouse: { x: 0, y: 0 },
+          mouse: new Vector(),
+          center: new Vector(),
           draw: function(func) {
             if (_.isFunction(func)) {
               loops.push(func);
@@ -77,8 +79,7 @@
 
         function updateMouse(e) {
 
-          stage.mouse.x = e.pageX;
-          stage.mouse.y = e.pageY;
+          stage.mouse.set(e.pageX, e.pageY);
 
         }
 
@@ -91,6 +92,8 @@
 
           canvas.width = width;
           canvas.height = height;
+
+          stage.center.set(width / 2, height / 2);
 
           _.extend(canvas.style, {
             width: width + 'px',
