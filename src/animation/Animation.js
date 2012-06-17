@@ -1,19 +1,19 @@
 define([
+  'animation/Tween',
   'utils/Events',
-  'underscore',
-  'TWEEN'
-], function(Events) {
+  'underscore'
+], function(Tween, Events) {
 
   var Animation = function(params) {
 
     var params = _.defaults(params || {}, {
       duration: 350,
-      curve: TWEEN.Linear.None,
+      curve: TWEEN.Easing.Linear.None,
       direction: true,
       loop: false
     });
 
-    this.__tween = new TWEEN.Tween();
+    this.__tween = new Tween();
 
     /**
      * {Float} How long will the animation play for. Metric TBD.
