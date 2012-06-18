@@ -70,11 +70,12 @@
           // TODO: Make more efficient.
           stage.ctx.clearRect(0, 0, stage.width, stage.height);
 
-          requestAnimationFrame(loop);
           _.each(loops, function(loop) {
             loop.call(this);
           }, stage);
           Tween.tick();
+
+          requestAnimationFrame(loop);
 
         }
 
