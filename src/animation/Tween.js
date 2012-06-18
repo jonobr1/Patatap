@@ -6,7 +6,7 @@ define([
   var tweens = [];
 
   /**
-   * A requirified and modified version of TWEEN.js
+   * A requirified and modified version of TWEEN.js under the same license
    * http://github.com/sole/tween.js/
    */
   var Tween = function(object) {
@@ -341,17 +341,17 @@ define([
 
     remove: function(tween) {
       var index = _.indexOf(tweens, tween);
-      if (i < 0) {
+      if (index < 0) {
         return;
       }
-      return tweens.splice(i, 1);
+      return tweens.splice(index, 1);
     },
 
-    update: function(time) {
+    tick: function(time) {
 
       var time = _.isUndefined(time) ? Date.now() : time;
 
-      _.each(tweens, function(tween) {
+      _.each(tweens, function(tween, i) {
         if (!tween.update(time)) {
           tweens.splice(i, 1);
         }
@@ -362,6 +362,16 @@ define([
   });
 
   _.extend(Tween.prototype, Events, {
+
+    setEasing: function(curve) {
+      this.easing = curve;
+      return this;
+    },
+
+    setInterpolation: function(curve) {
+      this.interpolation = curve;
+      return this;
+    },
 
     to: function(properties, duration) {
 
@@ -422,7 +432,7 @@ define([
         return true;
       }
 
-      var elapsed = Tween.clamp((time - this.starTime) / this.duration, 0, 1);
+      var elapsed = Tween.clamp((time - this.startTime) / this.duration, 0, 1);
       var value = this.easing(elapsed);
 
       _.each(this.startValues, function(start, property) {

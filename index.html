@@ -20,7 +20,6 @@
         jQuery: false,
         paths: {
           'underscore': '../third-party/underscore',
-          'TWEEN': '../third-party/tween',
           'physics': '../third-party/physics'
         }
       });
@@ -34,8 +33,9 @@
         'utils/urlArgs',
         'utils/requestAnimationFrame',
         '../third-party/physics/src/Vector',
+        'animation/Tween',
         'underscore'
-      ], function(dom, urlArgs, requestAnimationFrame, Vector) {
+      ], function(dom, urlArgs, requestAnimationFrame, Vector, Tween) {
 
         var filename = urlArgs['sketches'].replace(/\/$/, '');
 
@@ -70,10 +70,13 @@
 
         function loop() {
 
+          stage.ctx.clearRect(0, 0, stage.width, stage.height);
+
           requestAnimationFrame(loop);
-          _.each(loops, function(loop) {
-            loop.call(this);
-          }, stage);
+          Tween.tick();
+          // _.each(loops, function(loop) {
+          //   loop.call(this);
+          // }, stage);
 
         }
 
