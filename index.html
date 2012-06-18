@@ -19,8 +19,8 @@
         baseUrl: './src',
         jQuery: false,
         paths: {
-          'underscore': '../third-party/underscore',
-          'physics': '../third-party/physics'
+          'underscore': '../../third-party/underscore',
+          'Vector': '../../third-party/physics/src/Vector'
         }
       });
 
@@ -37,11 +37,8 @@
         'underscore'
       ], function(dom, urlArgs, requestAnimationFrame, Vector, Tween) {
 
-        var filename = urlArgs['sketches'].replace(/\/$/, '');
-
-        if (!filename) {
-          return;
-        }
+        var default_file = 'Sunrise';
+        var filename = (urlArgs['sketches'] || default_file).replace(/\/$/, '');
 
         var canvas = document.querySelector('#stage');
         var loops = [];
@@ -74,10 +71,10 @@
           stage.ctx.clearRect(0, 0, stage.width, stage.height);
 
           requestAnimationFrame(loop);
-          Tween.tick();
           _.each(loops, function(loop) {
             loop.call(this);
           }, stage);
+          Tween.tick();
 
         }
 

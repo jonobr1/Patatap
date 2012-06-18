@@ -373,6 +373,11 @@ define([
       return this;
     },
 
+    setDelay: function(n) {
+      this.delay = n;
+      return this;
+    },
+
     to: function(properties, duration) {
 
       if (!_.isUndefined(duration)) {
