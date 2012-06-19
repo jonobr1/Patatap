@@ -9,87 +9,7 @@ define([
 
   var Corona = function(params) {
 
-    var _this = this;
-
-    var params = _.defaults(params || {}, {
-      amount: 8,
-      startAngle: 0,
-      endAngle: TWO_PI,
-      radius: stage.center.y,
-      distance: stage.center.y / 8,
-      lineWidth: 10,
-      delay: 0,
-      curve: Tween.Easing.Circular.InOut,
-      duration: 250,
-      origin: stage.center.clone()
-    });
-
-    this.amount = params.amount;
-    this.radius = params.radius;
-    this.distance = params.distance;
-    this.lineWidth = params.lineWidth;
-    this.delay = params.delay;
-    this.duration = params.duration;
-    this.origin = params.origin;
-
-    this.starts = [];
-    this.ends = [];
-
-    _.each(_.range(params.amount), function(i) {
-
-      var theta = utils.map((i / params.amount), 0, 1, params.startAngle, params.endAngle);
-      var object = { t: 0, u: 0 };
-
-      var crad = Math.cos(theta);
-      var srad = Math.sin(theta);
-      var x = crad * this.radius + this.origin.x;
-      var y = srad * this.radius + this.origin.y;
-
-      var v1 = new Vector(x, y);
-      var v2 = new Vector(x, y);
-
-      var start = new Tween(object)
-        .to({ t: 1.0 }, this.duration)
-        .setEasing(params.curve)
-        .setDelay(this.delay * i)
-        .bind('update', function() {
-
-          var distance = _this.distance * object.t;
-          var x = crad * (_this.radius + distance) + _this.origin.x;
-          var y = srad * (_this.radius + distance) + _this.origin.y;
-
-          v2.set(x, y);
-          render.call(_this, v1, v2);
-
-        })
-        .bind('end', function() {
-          end.start();
-        });
-
-      var end = new Tween(object)
-        .to({ u: 1.0 }, this.duration)
-        .setEasing(params.curve)
-        .bind('update', function() {
-
-          var distance = _this.distance * object.u;
-          var x = crad * (_this.radius + distance) + _this.origin.x;
-          var y = srad * (_this.radius + distance) + _this.origin.y;
-
-          v1.set(x, y);
-          render.call(_this, v1, v2);
-
-        })
-        .bind('end', function() {
-          object.t = 0;
-          object.u = 0;
-          v1.set(x, y);
-          v2.copy(v1);
-        });
-
-        this.starts.push(start);
-        this.ends.push(end);
-
-    }, this);
+    this.initialize(params);
 
   };
 
@@ -102,6 +22,11 @@ define([
       }
 
       var last = this.ends[this.ends.length - 1];
+
+      if (!last) {
+        return this;
+      }
+
       last.unbind('end', this.__repeatCallback);
 
       delete this.__repeatCallback;
@@ -115,6 +40,9 @@ define([
       var _this = this;
       var last = this.ends[this.ends.length - 1];
 
+      if (!last) {
+        return this;
+      }
 
       this.__repeatCallback = function() {
         _.each(_this.starts, function(tween) {
@@ -157,13 +85,104 @@ define([
 
       return this.unrepeat();
 
+    },
+
+    initialize: function(params) {
+
+      var _this = this;
+
+      var params = _.defaults(params || {}, {
+        amount: 8,
+        startAngle: 0,
+        endAngle: TWO_PI,
+        radius: stage.center.y,
+        distance: stage.center.y / 8,
+        lineWidth: 10,
+        delay: 0,
+        curve: Tween.Easing.Circular.InOut,
+        duration: 250,
+        origin: stage.center.clone(),
+        palette: ['#fff']
+      });
+
+      this.amount = params.amount;
+      this.radius = params.radius;
+      this.distance = params.distance;
+      this.lineWidth = params.lineWidth;
+      this.delay = params.delay;
+      this.duration = params.duration;
+      this.origin = params.origin;
+      this.palette = params.palette;
+
+      this.starts = [];
+      this.ends = [];
+
+      _.each(_.range(params.amount), function(i) {
+
+        var theta = utils.map((i / params.amount), 0, 1, params.startAngle, params.endAngle);
+        var object = { t: 0, u: 0 };
+
+        var crad = Math.cos(theta);
+        var srad = Math.sin(theta);
+        var x = crad * this.radius + this.origin.x;
+        var y = srad * this.radius + this.origin.y;
+
+        var v1 = new Vector(x, y);
+        var v2 = new Vector(x, y);
+        var color = this.palette[Math.floor(this.palette.length * Math.random())];
+
+        var start = new Tween(object)
+          .to({ t: 1.0 }, this.duration)
+          .setEasing(params.curve)
+          .setDelay(this.delay * i)
+          .bind('update', function() {
+
+            var distance = _this.distance * object.t;
+            var x = crad * (_this.radius + distance) + _this.origin.x;
+            var y = srad * (_this.radius + distance) + _this.origin.y;
+
+            v2.set(x, y);
+            render.call(_this, v1, v2, color);
+
+          })
+          .bind('end', function() {
+            end.start();
+          });
+
+        var end = new Tween(object)
+          .to({ u: 1.0 }, this.duration)
+          .setEasing(params.curve)
+          .bind('update', function() {
+
+            var distance = _this.distance * object.u;
+            var x = crad * (_this.radius + distance) + _this.origin.x;
+            var y = srad * (_this.radius + distance) + _this.origin.y;
+
+            v1.set(x, y);
+            render.call(_this, v1, v2, color);
+
+          })
+          .bind('end', function() {
+            object.t = 0;
+            object.u = 0;
+            v1.set(x, y);
+            v2.copy(v1);
+          });
+
+          this.starts.push(start);
+          this.ends.push(end);
+
+      }, this);
+
+      return this;
+
     }
 
   });
 
-  function render(v1, v2) {
+  function render(v1, v2, color) {
 
-    stage.ctx.strokeStyle = 'white';
+    stage.ctx.strokeStyle = color;
     stage.ctx.lineCap = 'round';
     stage.ctx.lineWidth = this.lineWidth;
     stage.ctx.beginPath();
