@@ -42,6 +42,7 @@
 
         var canvas = document.querySelector('#stage');
         var loops = [];
+        var tweens_in_motion = 0;
 
         _root.stage = {
           ctx: canvas.getContext('2d'),
@@ -60,20 +61,22 @@
           .bind(window, 'resize', stageResize)
           .loadScript('script', {
             type: 'text/javascript',
-            src: './sketches/' + filename + '.js'
+            src: './sketches/' + filename + '.js?fresh=' + Math.random()
           });
         stageResize();
         loop();
 
         function loop() {
 
-          // TODO: Make more efficient.
-          stage.ctx.clearRect(0, 0, stage.width, stage.height);
+          if (tweens_in_motion > 0) {
+            stage.ctx.clearRect(0, 0, stage.width, stage.height);
+          }
 
           _.each(loops, function(loop) {
             loop.call(this);
           }, stage);
-          Tween.tick();
+
+          tweens_in_motion = Tween.tick();
 
           requestAnimationFrame(loop);
 

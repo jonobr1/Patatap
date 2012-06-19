@@ -53,13 +53,28 @@ define([
 
   _.extend(Sunrise.prototype, {
 
+    unrepeat: function() {
+
+      if (!_.isFunction(this.__repeatCallback)) {
+        return this;
+      }
+
+      this.exit.unbind('end', this.__repeatCallback);
+      delete this.__repeatCallback;
+
+      return this;
+
+    },
+
     repeat: function() {
 
       var _this = this;
 
-      this.exit.bind('end', function() {
+      this.__repeatCallback = function() {
         _this.entrance.start();
-      });
+      };
+
+      this.exit.bind('end', this.__repeatCallback);
 
       return this;
 
@@ -70,6 +85,15 @@ define([
       this.entrance.start();
 
       return this;
+
+    },
+
+    stop: function() {
+
+      this.entrance.stop();
+      this.exit.stop();
+
+      return this.unrepeat();
 
     }
 

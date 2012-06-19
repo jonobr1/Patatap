@@ -357,6 +357,8 @@ define([
         }
       }, this);
 
+      return tweens.length;
+
     }
 
   });

@@ -13,6 +13,8 @@ define([
 
     var params = _.defaults(params || {}, {
       amount: 8,
+      startAngle: 0,
+      endAngle: TWO_PI,
       radius: stage.center.y,
       distance: stage.center.y / 8,
       lineWidth: 10,
@@ -35,7 +37,7 @@ define([
 
     _.each(_.range(params.amount), function(i) {
 
-      var theta = (i / params.amount) * TWO_PI;
+      var theta = utils.map((i / params.amount), 0, 1, params.startAngle, params.endAngle);
       var object = { t: 0, u: 0 };
 
       var crad = Math.cos(theta);
@@ -93,16 +95,34 @@ define([
 
   _.extend(Corona.prototype, {
 
+    unrepeat: function() {
+
+      if (!_.isFunction(this.__repeatCallback)) {
+        return this;
+      }
+
+      var last = this.ends[this.ends.length - 1];
+      last.unbind('end', this.__repeatCallback);
+
+      delete this.__repeatCallback;
+
+      return this;
+
+    },
+
     repeat: function() {
 
       var _this = this;
       var last = this.ends[this.ends.length - 1];
 
-      last.bind('end', function() {
+
+      this.__repeatCallback = function() {
         _.each(_this.starts, function(tween) {
           tween.start();
         });
-      });
+      };
+
+      last.bind('end', this.__repeatCallback);
 
       return this;
 
@@ -115,6 +135,27 @@ define([
       });
 
       return this;
+
+    },
+
+    reset: function() {
+
+      _.each(this.ends, function(end) {
+        end.trigger('end');
+      });
+
+      return this;
+
+    },
+
+    stop: function() {
+
+      _.each(this.starts, function(start, i) {
+        this.ends[i].stop().trigger('end');
+        start.stop();
+      }, this);
+
+      return this.unrepeat();
 
     }
 
