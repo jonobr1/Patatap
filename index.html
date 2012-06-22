@@ -19,8 +19,8 @@
         baseUrl: './src',
         jQuery: false,
         paths: {
-          'underscore': '../../third-party/underscore',
-          'Vector': '../../third-party/physics/src/Vector'
+          'underscore': '../third-party/underscore',
+          'Vector': '../third-party/physics/src/Vector'
         }
       });
 
@@ -32,7 +32,7 @@
         'dom/dom',
         'utils/urlArgs',
         'utils/requestAnimationFrame',
-        '../third-party/physics/src/Vector',
+        'Vector',
         'animation/Tween',
         'underscore'
       ], function(dom, urlArgs, requestAnimationFrame, Vector, Tween) {
