@@ -1,9 +1,15 @@
+// TODO:
+// Means of firing functions based on overage limits...
+
 class Router {
 
   public Minim minim;
   public AudioInput in;
   public boolean debug = false;
 
+  private PApplet app;
+  private BeatDetect beat;
+  private FFT fft;
   private float damp = 0.125;
   private int depth = 128;
   private float[] raw_frequencies;
@@ -13,11 +19,18 @@ class Router {
    * Constructor
    */
 
-  Router (PApplet app, int _depth, boolean _debug) {
+  Router (PApplet _app) {
+    app = _app;
     minim = new Minim(app);
     initialize();
+  }
+
+  Router (PApplet _app, int _depth, boolean _debug) {
+    app = _app;
+    minim = new Minim(app);
     depth = _depth;
     debug = _debug;
+    initialize();
   }
 
   /**
@@ -57,12 +70,50 @@ class Router {
   }
 
   /**
+   * Beat detection methods
+   */
+
+  public boolean isHat() {
+    return beat.isHat();
+  }
+
+  public boolean isKick() {
+    return beat.isKick();
+  }
+
+  public boolean isOnset() {
+    return beat.isOnset();
+  }
+
+  public boolean isOnset(int i) {
+    return beat.isOnset(i);
+  }
+
+  public boolean isRange(int low, int high, int threshold) {
+    return beat.isRange(low, high, threshold);
+  }
+
+  public boolean isSnare() {
+    return beat.isSnare();
+  }
+
+  public void setSensitivity(int s) {
+    beat.setSensitivity(s);
+  }
+
+  /**
    * on loop methods
    */
 
   public void update() {
+
+    AudioBuffer buffer = in.mix;
+    beat.detect(buffer);
+    fft.forward(buffer);
+
     for (int i = 0; i < depth; i ++) {
-      raw_frequencies[i] = (in.left.get(i) + in.right.get(i)) / 2;
+      float f = fft.getBand(i);
+      raw_frequencies[i] = sqrt(f);
       smooth_frequencies[i] = ease(smooth_frequencies[i], raw_frequencies[i], damp);
     }
     if (debug) {
@@ -76,29 +127,36 @@ class Router {
     int h = 50;
     int x = width - (w + 5);
     int y = height - (h + 5);
-    float bottom = y + (h + 5) / 2;
+    float bottom = y + h;
 
     // Draw the container
     stroke(0);
     fill(255);
     rect(x, y, w, h);
     
+    float maximum = 0;
+    
     // Draw the EQ
     for (int i = 0; i < depth; i++) {
       // Raw Frequencies
-      stroke(200);
+      stroke(150);
       float xpos = x + map(i, 0, depth - 1, 0, w);
-      float ypos = bottom - map(raw_frequencies[i], 0, 1, 0, h);
+      float ypos = bottom - map(raw_frequencies[i], 0, 10, 0, h);
       line(xpos, bottom, xpos, ypos);
       // Smooth Frequencies
       stroke(100);
-      ypos = bottom - map(smooth_frequencies[i], 0, 1, 0, h);
+      ypos = bottom - map(smooth_frequencies[i], 0, 10, 0, h);
       line(xpos, bottom, xpos, ypos);
       // Peaks
       stroke(255, 0, 0);
-      ypos = bottom - map(raw_frequencies[i], 0, 1, 0, h);
+      ypos = bottom - map(raw_frequencies[i], 0, 10, 0, h);
       point(xpos, ypos);
+      if (raw_frequencies[i] > maximum) {
+        maximum = raw_frequencies[i];
+      }
     }  
+
+    println("maximum amplitude this frame is: " + maximum);
 
     stroke(0);
     noFill();
@@ -117,6 +175,8 @@ class Router {
 
   private void initialize() {
     in = minim.getLineIn(Minim.STEREO, depth);
+    beat = new BeatDetect(depth, in.sampleRate());
+    fft = new FFT(depth, in.sampleRate());
     raw_frequencies = new float[depth];
     smooth_frequencies = new float[depth];
 
