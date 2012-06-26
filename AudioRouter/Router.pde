@@ -14,6 +14,7 @@ class Router {
   private int depth = 128;
   private float[] raw_frequencies;
   private float[] smooth_frequencies;
+  private float max_amplitude = 0.0;
 
   /**
    * Constructor
@@ -115,6 +116,9 @@ class Router {
       float f = fft.getBand(i);
       raw_frequencies[i] = sqrt(f);
       smooth_frequencies[i] = ease(smooth_frequencies[i], raw_frequencies[i], damp);
+      if (raw_frequencies[i] > max_amplitude) {
+        max_amplitude = raw_frequencies[i];
+      }
     }
     if (debug) {
       render();
@@ -123,45 +127,63 @@ class Router {
 
   // Draw an equalizer
   public void render() {
+
     int w = depth;
     int h = 50;
     int x = width - (w + 5);
     int y = height - (h + 5);
     float bottom = y + h;
 
+    // draw some beats
+
+    float kick = 0;
+    float snare = 0;
+    float hat = 0;
+
+    if (router.isKick()) {
+      kick = 1.0;
+    }
+    if (router.isSnare()) {
+      snare = 1.0;
+    }
+    if (router.isHat()) {
+      hat = 1.0;
+    }
+
+    fill(255, 0, 0, 255 * constrain(kick * 0.95, 0, 1));
+    ellipse(width * .75, height / 2, 50, 50);
+
+    fill(0, 255, 0, 255 * constrain(snare * 0.95, 0, 1));
+    ellipse(width * .5, height / 2, 50, 50);
+
+    fill(0, 0, 255, 255 * constrain(hat * 0.95, 0, 1));
+    ellipse(width * .25, height / 2, 50, 50);
+
     // Draw the container
     stroke(0);
     fill(255);
     rect(x, y, w, h);
-    
-    float maximum = 0;
-    
+
     // Draw the EQ
     for (int i = 0; i < depth; i++) {
       // Raw Frequencies
       stroke(150);
       float xpos = x + map(i, 0, depth - 1, 0, w);
-      float ypos = bottom - map(raw_frequencies[i], 0, 10, 0, h);
+      float ypos = bottom - map(raw_frequencies[i], 0, max_amplitude, 0, h);
       line(xpos, bottom, xpos, ypos);
       // Smooth Frequencies
       stroke(100);
-      ypos = bottom - map(smooth_frequencies[i], 0, 10, 0, h);
+      ypos = bottom - map(smooth_frequencies[i], 0, max_amplitude, 0, h);
       line(xpos, bottom, xpos, ypos);
       // Peaks
       stroke(255, 0, 0);
-      ypos = bottom - map(raw_frequencies[i], 0, 10, 0, h);
+      ypos = bottom - map(raw_frequencies[i], 0, max_amplitude, 0, h);
       point(xpos, ypos);
-      if (raw_frequencies[i] > maximum) {
-        maximum = raw_frequencies[i];
-      }
-    }  
-
-    println("maximum amplitude this frame is: " + maximum);
+    }
 
     stroke(0);
     noFill();
     rect(x, y, w, h);
-    
   }
 
   public void stop() {
