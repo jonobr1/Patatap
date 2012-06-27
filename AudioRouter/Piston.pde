@@ -9,6 +9,7 @@ class Piston {
   public float h;
   public float x;
   public float y;
+  public color c = color(255);
 
   private Easing easing = Ani.CIRC_OUT;
   private Ani in;
@@ -71,11 +72,16 @@ class Piston {
     delay = d;
   }
 
+  public void setColor(color _c) {
+    c = _c;
+  }
+
   public void render() {
     if (!playing) {
       return;
     }
-    fill(255);
+    noStroke();
+    fill(c);
     rect(x, y, w, h);
   }
 

@@ -33,6 +33,7 @@ void draw() {
 void keyReleased() {
   if (key == 'e' || key == 'E') {
     float amp = router.getBand(router.depth / 4, false);
+    engine.setColor(color(255 * amp));
     engine.setAmount((int) map(amp, 0, 1, 2, 12));
     engine.play();
   }

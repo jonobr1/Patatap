@@ -62,6 +62,17 @@ class Engine {
       pistons[i].setDelay(delay * i);
     }
   }
+  
+  public void setColor(int g) {
+    for (int i = 0; i < amount; i++) {
+      pistons[i].setColor(color(g));
+    }
+  }
+  public void setColor(int r, int g, int b) {
+    for (int i = 0; i < amount; i++) {
+      pistons[i].setColor(color(r, g, b));
+    }
+  }
 
   public void initialize() {
     
