@@ -21,7 +21,10 @@ void setup() {
 
 void draw() {
 
-  background(0);
+  background(
+    255 - 255 * router.getBand(router.depth / 10, true),
+    255 - 255 * router.getBand(router.depth / 12, true),
+    255 - 255 * router.getBand(router.depth / 14, true));
 
   router.update();
   engine.render();

@@ -8,7 +8,7 @@ class Router {
   private PApplet app;
   private BeatDetect beat;
   private FFT fft;
-  private float damp = 0.125;
+  private float damp = 0.0125;
   private float[] raw_frequencies;
   private float[] smooth_frequencies;
   private float max_amplitude = 0.0;
