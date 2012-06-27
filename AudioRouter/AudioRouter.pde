@@ -11,12 +11,13 @@ Engine engine;
 PApplet app;
 
 void setup() {
-  size(800, 600, OPENGL);
+  size(1440, 960, OPENGL);
   app = this;
   router = new Router(this, 128, false);
   router.setSensitivity(300);
   Ani.init(this);
   engine = new Engine(router, width / 2, height / 2, width / 2, height / 2);
+  noCursor();
 }
 
 void draw() {
