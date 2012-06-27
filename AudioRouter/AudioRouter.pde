@@ -11,7 +11,7 @@ Engine engine;
 PApplet app;
 
 void setup() {
-  size(1440, 960, OPENGL);
+  size(800, 600, OPENGL);
   app = this;
   router = new Router(this, 128, false);
   router.setSensitivity(300);
@@ -23,9 +23,9 @@ void setup() {
 void draw() {
 
   background(
-    255 - 255 * router.getBand(router.depth / 10, true),
-    255 - 255 * router.getBand(router.depth / 12, true),
-    255 - 255 * router.getBand(router.depth / 14, true));
+    max(200 - 255 * router.getBand(router.depth / 10, true), 0),
+    max(200 - 255 * router.getBand(router.depth / 12, true), 0),
+    max(200 - 255 * router.getBand(router.depth / 14, true), 0));
 
   router.update();
   engine.render();
