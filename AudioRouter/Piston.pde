@@ -11,7 +11,7 @@ class Piston {
   public float y;
   public color c = color(255);
 
-  private Easing easing = Ani.CIRC_OUT;
+  private Easing easing = Ani.LINEAR;
   private Ani in;
   private Ani out;
   private float duration = .15;
@@ -102,8 +102,8 @@ class Piston {
     AniSequence s = new AniSequence(app);
     s.beginSequence();
     s.beginStep();
-    s.add(Ani.to(this, duration, "w", 0, easing));
-    s.add(Ani.to(this, duration, "x", _w, easing, "onEnd:animate_end"));
+    s.add(Ani.to(this, duration, "x", _w, easing));
+    s.add(Ani.to(this, duration, "w", 0, easing, "onEnd:animate_end"));
     s.endStep();
     s.endSequence();
     s.start();

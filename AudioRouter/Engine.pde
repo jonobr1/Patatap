@@ -76,7 +76,11 @@ class Engine {
 
   public void initialize() {
     
-    gutter = h / (float) (amount * 4);
+    if (amount <= 1) {
+      gutter = 0;
+    } else {
+      gutter = h / (float) (amount * 4);
+    }
     pistons = new Piston[amount];
     float offsetH = (h / (float) amount) - gutter;
     

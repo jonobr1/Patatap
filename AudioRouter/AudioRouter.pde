@@ -14,10 +14,11 @@ void setup() {
   size(800, 600, OPENGL);
   app = this;
   router = new Router(this, 128, false);
-  router.setSensitivity(300);
+//  router.setSensitivity(300);
   Ani.init(this);
-  engine = new Engine(router, width / 2, height / 2, width / 2, height / 2);
+  engine = new Engine(router, width / 2, height / 2, width * .75, height / 2);
   noCursor();
+  smooth();
 }
 
 void draw() {
@@ -35,7 +36,7 @@ void keyReleased() {
   if (key == 'e' || key == 'E') {
     float amp = router.getBand(router.depth / 4, false);
     engine.setColor(color(255 * amp));
-    engine.setAmount((int) map(amp, 0, 1, 2, 12));
+    engine.setAmount((int) map(amp, 0, 1, 1, 12));
     engine.play();
   }
 }
