@@ -3,12 +3,12 @@ class Router {
   public Minim minim;
   public AudioInput in;
   public boolean debug = false;
+  public int depth = 128;
 
   private PApplet app;
   private BeatDetect beat;
   private FFT fft;
   private float damp = 0.125;
-  private int depth = 128;
   private float[] raw_frequencies;
   private float[] smooth_frequencies;
   private float max_amplitude = 0.0;

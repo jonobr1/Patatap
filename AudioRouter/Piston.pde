@@ -14,12 +14,16 @@ class Piston {
   private Ani in;
   private Ani out;
   private float duration = .15;
-  private Router router;
   private boolean playing = false;
+  private float delay = 0;
 
-  Piston(Router r, int d) {
+  Piston(int d) {
     duration = d / (float) 1000;
-    router = r;
+    initialize();
+  }
+  
+  Piston(float d) {
+    duration = d;
     initialize();
   }
 
@@ -37,16 +41,18 @@ class Piston {
     
   }
 
-  public void initialize(float x, float y, float w, float h) {
-    _w = w;
-    _h = h;
-    _x = x;
-    _y = y;
+  public void initialize(float __x, float __y, float __w, float __h) {
+    
+    _w = __w;
+    _h = __h;
+    _x = __x;
+    _y = __y;
     
     w = 0;
     h = _h;
     x = _x;
     y = _y;
+
   }
 
   /**
@@ -57,10 +63,15 @@ class Piston {
     easing = e;
   }
 
+  public void setDelay(int d) {
+    delay = d / (float) 1000;
+  }
+  
+  public void setDelay(float d) {
+    delay = d;
+  }
+
   public void render() {
-    if (router.isKick() && !playing) {
-      play();
-    }
     if (!playing) {
       return;
     }
@@ -78,12 +89,18 @@ class Piston {
   private void animate_in() {
     playing = true;
     reset();
-    Ani.to(this, duration, "w", _w, Ani.EXPO_IN_OUT, "onEnd:animate_out");
+    Ani.to(this, duration, delay, "w", _w, easing, "onEnd:animate_out");
   }
 
   private void animate_out() {
-    Ani.to(this, duration, "w", 0, Ani.EXPO_IN_OUT, "onEnd:animate_end");
-    Ani.to(this, duration, "x", _w, Ani.EXPO_IN_OUT);
+    AniSequence s = new AniSequence(app);
+    s.beginSequence();
+    s.beginStep();
+    s.add(Ani.to(this, duration, "w", 0, easing));
+    s.add(Ani.to(this, duration, "x", _w, easing, "onEnd:animate_end"));
+    s.endStep();
+    s.endSequence();
+    s.start();
   }
 
   private void animate_end() {

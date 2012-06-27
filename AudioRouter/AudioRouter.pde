@@ -7,14 +7,16 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 Router router;
-Piston piston;
+Engine engine;
+PApplet app;
 
 void setup() {
-  size(512, 200, OPENGL);
+  size(800, 600, OPENGL);
+  app = this;
   router = new Router(this, 128, false);
   router.setSensitivity(300);
   Ani.init(this);
-  piston = new Piston(router, 250);
+  engine = new Engine(router, width / 2, height / 2, width / 2, height / 2);
 }
 
 void draw() {
@@ -22,8 +24,15 @@ void draw() {
   background(0);
 
   router.update();
-  piston.render();
+  engine.render();
+}
 
+void keyReleased() {
+  if (key == 'e' || key == 'E') {
+    float amp = router.getBand(router.depth / 4, false);
+    engine.setAmount((int) map(amp, 0, 1, 2, 12));
+    engine.play();
+  }
 }
 
 void stop() {
