@@ -1,6 +1,3 @@
-// TODO:
-// Means of firing functions based on overage limits...
-
 class Router {
 
   public Minim minim;
@@ -150,6 +147,8 @@ class Router {
       hat = 1.0;
     }
 
+    noStroke();
+
     fill(255, 0, 0, 255 * constrain(kick * 0.95, 0, 1));
     ellipse(width * .75, height / 2, 50, 50);
 
@@ -160,7 +159,7 @@ class Router {
     ellipse(width * .25, height / 2, 50, 50);
 
     // Draw the container
-    stroke(0);
+    noStroke();
     fill(255);
     rect(x, y, w, h);
 
