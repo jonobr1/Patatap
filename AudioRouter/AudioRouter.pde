@@ -16,17 +16,17 @@ void setup() {
   router = new Router(this, 128, false);
 //  router.setSensitivity(300);
   Ani.init(this);
-  engine = new Engine(router, width / 2, height / 2, width * .75, height / 2);
+  engine = new Engine(router, width / 2, height / 2, width, height);
   noCursor();
   smooth();
 }
 
 void draw() {
 
-  background(
-    max(200 - 255 * router.getBand(router.depth / 10, true), 0),
-    max(200 - 255 * router.getBand(router.depth / 12, true), 0),
-    max(200 - 255 * router.getBand(router.depth / 14, true), 0));
+  background(0);
+//    max(200 - 255 * router.getBand(router.depth / 10, true), 0),
+//    max(200 - 255 * router.getBand(router.depth / 12, true), 0),
+//    max(200 - 255 * router.getBand(router.depth / 14, true), 0));
 
   router.update();
   engine.render();

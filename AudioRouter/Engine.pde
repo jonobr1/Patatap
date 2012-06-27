@@ -57,7 +57,6 @@ class Engine {
 
   public void setDelay(int d) {
     delay = d;
-//    initialize();
     for (int i = 0; i < amount; i++) {
       pistons[i].setDelay(delay * i);
     }
@@ -81,11 +80,12 @@ class Engine {
     } else {
       gutter = h / (float) (amount * 4);
     }
+    
     pistons = new Piston[amount];
     float offsetH = (h / (float) amount) - gutter;
     
     for (int i = 0; i < amount; i++) {
-      float offsetY = (i / (float ) amount) * h + y;
+      float offsetY = (i / (float ) amount) * h + y + gutter / 2;
       pistons[i] = new Piston(duration);
       pistons[i].initialize(x, offsetY, w, offsetH);
       pistons[i].setDelay(delay * i);
