@@ -11,7 +11,7 @@ Piston piston;
 
 void setup() {
   size(512, 200, OPENGL);
-  router = new Router(this, 128, true);
+  router = new Router(this, 128, false);
   router.setSensitivity(300);
   Ani.init(this);
   piston = new Piston(router, 250);
