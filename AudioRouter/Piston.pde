@@ -1,4 +1,4 @@
-class Piston {
+class Piston extends Neuron {
 
   private float _w;
   private float _h;
@@ -9,14 +9,10 @@ class Piston {
   public float h;
   public float x;
   public float y;
-  public color c = color(255);
 
-  private Easing easing = Ani.CIRC_IN_OUT;
   private Ani in;
   private Ani out;
-  private float duration = .15;
   private boolean playing = false;
-  private float delay = 0;
 
   Piston(int d) {
     duration = d / (float) 1000;
@@ -56,32 +52,12 @@ class Piston {
 
   }
 
-  /**
-   * Setters
-   */
-
-  public void setEasing(Easing e) {
-    easing = e;
-  }
-
-  public void setDelay(int d) {
-    delay = d / (float) 1000;
-  }
-  
-  public void setDelay(float d) {
-    delay = d;
-  }
-
-  public void setColor(color _c) {
-    c = _c;
-  }
-
   public void render() {
     if (!playing) {
       return;
     }
     noStroke();
-    fill(c);
+    fill(pigment);
     rect(x, y, w, h);
   }
 
@@ -93,6 +69,7 @@ class Piston {
   }
 
   private void animate_in() {
+    println("duration: " + duration);
     playing = true;
     reset();
     Ani.to(this, duration, delay, "w", _w, easing, "onEnd:animate_out");
