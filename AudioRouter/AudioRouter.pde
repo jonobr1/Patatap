@@ -24,7 +24,7 @@ void setup() {
 
 void draw() {
 
-  background(0);
+  background(181);
 //    max(200 - 255 * router.getBand(router.depth / 10, true), 0),
 //    max(200 - 255 * router.getBand(router.depth / 12, true), 0),
 //    max(200 - 255 * router.getBand(router.depth / 14, true), 0));

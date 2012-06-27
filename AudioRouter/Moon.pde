@@ -9,7 +9,7 @@ class Moon extends Neuron {
   private PVector[] points;   // Animated
 
   Moon(int d) {
-    pigment = color(255, 0, 0);
+    pigment = color(227, 79, 12);
     x = width / 2;
     y = height / 2;
     r = height / 3;
