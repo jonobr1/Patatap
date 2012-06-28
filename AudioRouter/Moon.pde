@@ -4,9 +4,10 @@ class Moon extends Neuron {
   public float y;
   public float r;
 
-  private int amount = 16;
+  private int amount = 32;
   private PVector[] _points;  // Reference
   private PVector[] points;   // Animated
+  private float slave = 0;
 
   Moon(int d) {
     pigment = color(227, 79, 12);
@@ -46,14 +47,10 @@ class Moon extends Neuron {
       PVector pos = points[i];
       PVector ref = _points[i];
       s.add(Ani.to(pos, duration, delay, "x", ref.x, easing));
-      if (i < l - 1) {
-        s.add(Ani.to(pos, duration, delay, "y", ref.y, easing));
-      } 
-      else {
-        s.add(Ani.to(pos, duration, delay, "y", ref.y, easing));
-      }
+      s.add(Ani.to(pos, duration, delay, "y", ref.y, easing));
     }
     
+    s.add(Ani.to(this, duration, "slave", 0, easing, "onEnd:animate_out"));
     s.endStep();
     s.endSequence();
     s.start();
@@ -66,23 +63,30 @@ class Moon extends Neuron {
     s.beginSequence();
     s.beginStep();
     
-    int l = amount;
+    int last = amount - 1;
+    int l = ceil(amount / 2);
     for (int i = 0; i < l; i++) {
-      PVector pos = points[i];
-      PVector ref = _points[i];
-      s.add(Ani.to(pos, duration, duration, "x", ref.x, easing));
-      if (i < l - 1) {
-        s.add(Ani.to(pos, duration, duration, "y", ref.y, easing));
-      } 
-      else {
-        s.add(Ani.to(pos, duration, duration, "y", ref.y, easing));
+      int index = amount - i;
+      if (i == 0) {
+        index = 0;
       }
+      PVector pos = points[i];
+      PVector ref = _points[index];
+      s.add(Ani.to(pos, duration, "x", ref.x, easing));
+      s.add(Ani.to(pos, duration, "y", ref.y, easing));
     }
     
+    s.add(Ani.to(this, duration, "slave", 0, easing, "onEnd:animate_end"));
     s.endStep();
     s.endSequence();
     s.start();
     
+    
+    
+  }
+
+  public void animate_end() {
+    reset();
   }
 
   public void reset() {
@@ -111,7 +115,7 @@ class Moon extends Neuron {
     beginShape();
     for (int i = 0; i < amount; i++) {
       PVector pos = points[i];
-      curveVertex(pos.x, pos.y);
+      vertex(pos.x, pos.y);
     }
     endShape(CLOSE);
   }

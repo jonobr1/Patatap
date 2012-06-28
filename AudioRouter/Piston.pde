@@ -69,7 +69,6 @@ class Piston extends Neuron {
   }
 
   private void animate_in() {
-    println("duration: " + duration);
     playing = true;
     reset();
     Ani.to(this, duration, delay, "w", _w, easing, "onEnd:animate_out");

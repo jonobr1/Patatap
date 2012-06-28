@@ -12,14 +12,19 @@ Moon moon;
 PApplet app;
 
 void setup() {
+
   size(800, 600, OPENGL);
+
   app = this;
   router = new Router(this, 128, false);
   Ani.init(this);
+
   engine = new Engine(router, width / 2, height / 2, width * .75, height / 2);
-  moon = new Moon(150);
+  moon = new Moon(250);
+
   noCursor();
   smooth();
+
 }
 
 void draw() {
