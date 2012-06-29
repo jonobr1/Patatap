@@ -4,6 +4,7 @@ class Neuron {
   public float duration = .15;
   public float delay = 0;
   public Easing easing = Ani.CIRC_OUT;
+  public boolean playing = false;
   
   Neuron() {
   }

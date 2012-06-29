@@ -9,11 +9,12 @@ import ddf.minim.effects.*;
 Router router;
 Engine engine;
 Moon moon;
+Prism prism;
 PApplet app;
 
 void setup() {
 
-  size(800, 600, OPENGL);
+  size(800, 600);
 
   app = this;
   router = new Router(this, 128, false);
@@ -21,6 +22,7 @@ void setup() {
 
   engine = new Engine(router, width / 2, height / 2, width * .75, height / 2);
   moon = new Moon(250);
+  prism = new Prism(500);
 
   noCursor();
   smooth();
@@ -35,8 +37,11 @@ void draw() {
 //    max(200 - 255 * router.getBand(router.depth / 14, true), 0));
 
   router.update();
+
+  prism.render();
   moon.render();
   engine.render();
+
 }
 
 void keyReleased() {
@@ -47,6 +52,8 @@ void keyReleased() {
     engine.play();
   } else if (key == 's' || key == 'S') {
     moon.play();
+  } else if (key == 'p' || key == 'P') {
+    prism.play();
   }
   
 }
