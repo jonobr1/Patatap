@@ -3,14 +3,15 @@ class Prism extends Neuron {
   public float x;
   public float y;
   public float distance;
-  public float magnitude = 25.0;
   public Easing easing = Ani.CIRC_IN;
-  public float _magnitude = 0.0;
 
   private int amount = 3;
   private float offset = - PI / 2;
   private PVector[] points;
   private PVector[] _points;
+
+  private float magnitude = 0.0;
+  private float m = 50.0;
 
   Prism(int d) {
     duration = d / (float) 1000;
@@ -30,7 +31,7 @@ class Prism extends Neuron {
   }
 
   public void setMagnitude(float m) {
-    magnitude = m;
+    this.m = m;
   }
 
   /**
@@ -63,7 +64,7 @@ class Prism extends Neuron {
       s.add(Ani.to(pos, duration, delay, "y", ref.y, easing)); 
     }
     
-    s.add(Ani.to(this, duration, delay, "_magnitude", magnitude, easing, "onEnd:animate_end"));
+    s.add(Ani.to(this, duration, delay, "magnitude", m, easing, "onEnd:animate_end"));
     s.endStep();
     s.endSequence();
     s.start();
@@ -83,7 +84,7 @@ class Prism extends Neuron {
 
   public void reset() {
 
-    _magnitude = 0.0;
+    magnitude = 0.0;
 
     for (int i = 0; i < amount; i++) {
       float pct = (i + 1) / (float) amount;
@@ -115,7 +116,7 @@ class Prism extends Neuron {
     fill(0);
     for (int i = 0; i < amount; i++) {
       PVector pos = points[i];
-      ellipse(pos.x, pos.y, _magnitude, _magnitude);
+      ellipse(pos.x, pos.y, magnitude, magnitude);
     }
     
   }

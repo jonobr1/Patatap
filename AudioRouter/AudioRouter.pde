@@ -53,6 +53,9 @@ void keyReleased() {
   } else if (key == 's' || key == 'S') {
     moon.play();
   } else if (key == 'p' || key == 'P') {
+    float amp = router.getBand(router.depth - router.depth / 4, false);
+    
+    prism.setAmount(floor(map(amp, 0, 1, 3, 12)));
     prism.play();
   }
   
