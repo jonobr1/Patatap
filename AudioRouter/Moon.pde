@@ -33,10 +33,15 @@ class Moon extends Neuron {
   }
 
   public void play() {
+    if (playing) {
+      return;
+    }
     animate_in();
   }
 
   public void animate_in() {
+    
+    playing = true;
     
     AniSequence s = new AniSequence(app);
     s.beginSequence();
@@ -86,6 +91,7 @@ class Moon extends Neuron {
   }
 
   public void animate_end() {
+    playing = false;
     reset();
   }
 
@@ -110,6 +116,10 @@ class Moon extends Neuron {
 
   public void render() {
 
+    if (!playing) {
+      return;
+    }
+    
     noStroke();
     fill(pigment);
     beginShape();

@@ -12,7 +12,6 @@ class Piston extends Neuron {
 
   private Ani in;
   private Ani out;
-  private boolean playing = false;
 
   Piston(int d) {
     duration = d / (float) 1000;

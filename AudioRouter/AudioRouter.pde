@@ -10,6 +10,7 @@ Router router;
 Engine engine;
 Moon moon;
 Prism prism;
+Suspension suspension;
 PApplet app;
 
 void setup() {
@@ -20,6 +21,7 @@ void setup() {
   router = new Router(this, 128, false);
   Ani.init(this);
 
+  suspension = new Suspension(500);
   engine = new Engine(router, width / 2, height / 2, width * .75, height / 2);
   moon = new Moon(250);
   prism = new Prism(500);
@@ -41,6 +43,7 @@ void draw() {
   prism.render();
   moon.render();
   engine.render();
+  suspension.render();
 
 }
 
@@ -50,13 +53,17 @@ void keyReleased() {
     engine.setColor(color(255 * amp));
     engine.setAmount((int) map(amp, 0, 1, 1, 12));
     engine.play();
-  } else if (key == 's' || key == 'S') {
+  } else if (key == 'm' || key == 'M') {
     moon.play();
   } else if (key == 'p' || key == 'P') {
     float amp = router.getBand(router.depth - router.depth / 4, false);
     
     prism.setAmount(floor(map(amp, 0, 1, 3, 12)));
     prism.play();
+  } else if (key == 's' || key == 'S') {
+    suspension.setTheta(random(TWO_PI));
+    suspension.initialize();
+    suspension.play();
   }
   
 }
