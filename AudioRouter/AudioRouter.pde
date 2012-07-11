@@ -12,6 +12,7 @@ Moon moon;
 Prism prism;
 Suspension suspension;
 Clay clay;
+Pinwheel pinwheel;
 
 PApplet app;
 
@@ -28,6 +29,7 @@ void setup() {
   moon = new Moon(250);
   prism = new Prism(500);
   clay = new Clay(500);
+  pinwheel = new Pinwheel(1000);
 
   noCursor();
   smooth();
@@ -45,6 +47,7 @@ void draw() {
   clay.render();
   prism.render();
   moon.render();
+  pinwheel.render();
   engine.render();
   suspension.render();
 }
@@ -108,6 +111,19 @@ void keyReleased() {
     clay.setImpact(random(width), random(height));
     clay.initialize();
     clay.play();
+  } else if (key == 'o' || key == 'O') {
+    float amp = router.getBand(router.depth / 2, false);
+    pinwheel.setAmount((int) map(amp, 0, 1, 4, 10));
+    if (random(1.0) > 0.75) {
+      float startAngle = random(TWO_PI);
+      float endAngle = random(startAngle, TWO_PI);
+      pinwheel.setAngles(startAngle, endAngle);
+    } else {
+      pinwheel.setAngles(0, TWO_PI);
+    }
+    pinwheel.setDrift(random(TWO_PI));
+    pinwheel.initialize();
+    pinwheel.play();
   }
 }
 
