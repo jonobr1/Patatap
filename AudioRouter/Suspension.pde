@@ -2,7 +2,7 @@ class Suspension extends Neuron {
   
   private PVector origin;
   private float distance;
-  private Vertex[] verts;
+  private Suspension.Vertex[] verts;
 
   private float theta;
   private float deviation;
@@ -90,10 +90,10 @@ class Suspension extends Neuron {
   
   public void initialize() {
     
-    verts = new Vertex[amount];
+    verts = new Suspension.Vertex[amount];
     for (int i = 0; i < amount; i++) {
       
-      verts[i] = new Vertex(origin.x, origin.y);
+      verts[i] = new Suspension.Vertex(origin.x, origin.y);
       
       float t = theta + random(-deviation, deviation);
       float a = random(distance);
@@ -120,7 +120,7 @@ class Suspension extends Neuron {
     s.beginSequence();
     s.beginStep();
     for (int i = 0; i < amount; i++) {
-      Vertex v = verts[i];
+      Suspension.Vertex v = verts[i];
       s.add(Ani.to(v, duration, delay, "x", v.destination.x, easing));
       s.add(Ani.to(v, duration, delay, "y", v.destination.y, easing));
     }
@@ -145,21 +145,21 @@ class Suspension extends Neuron {
     noStroke();
     fill(pigment);
     for (int i = 0; i < amount; i++) {
-      Vertex v = verts[i];
+      Suspension.Vertex v = verts[i];
       ellipse(v.x, v.y, v.radius, v.radius);
     }
   }
-  
-}
 
-class Vertex extends PVector {
-
-  public PVector destination = new PVector();
-  public float radius;
+  class Vertex extends PVector {
   
-  Vertex(float x, float y) {
-    this.x = x;
-    this.y = y;
+    public PVector destination = new PVector();
+    public float radius;
+    
+    Vertex(float x, float y) {
+      this.x = x;
+      this.y = y;
+    }
+    
   }
   
 }

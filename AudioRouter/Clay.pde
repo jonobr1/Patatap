@@ -117,8 +117,11 @@ class Clay extends Neuron {
     
     noStroke();
     fill(pigment);
-    PVector first = new PVector();
     beginShape();
+    if (smoothness) {
+      int last = verts.length - 1;
+      curveVertex(verts[last].x, verts[last].y);
+    }
     for (int i = 0; i < amount; i++) {
       PVector v = verts[i];
       if (smoothness) {
@@ -126,13 +129,9 @@ class Clay extends Neuron {
       } else {
         vertex(v.x, v.y);
       }
-      if (i == 0) {
-        first.x = v.x;
-        first.y = v.y;
-      }
     }
     if (smoothness) {
-      curveVertex(first.x, first.y);
+      curveVertex(verts[0].x, verts[0].y);
       endShape();  // TODO: JANKY
     } else {
       endShape(CLOSE);
