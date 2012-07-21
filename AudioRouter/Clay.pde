@@ -10,7 +10,6 @@ class Clay extends Neuron {
   public float rotation;
   public float distance;
   public boolean smoothness = true;
-  public color pigment = color(141, 164, 170);
   
   Clay(int d) {
     duration = d / (float) 1000;
@@ -31,27 +30,42 @@ class Clay extends Neuron {
    */
   
   public void setAmount(int i) {
+    if (playing) {
+      return;
+    }
     amount = i;
     // requires reinit
   }
   
   public void setOrigin(float x, float y) {
+    if (playing) {
+      return;
+    }
     origin.x = x;
     origin.y = y;
     // requires reinit
   }
   
   public void setSmoothing(boolean b) {
+    if (playing) {
+      return;
+    }
     smoothness = b;
   }
   
   public void setImpact(float x, float y) {
+    if (playing) {
+      return;
+    }
     impact.x = x;
     impact.y = y;
     // requires reinit
   }
   
   public void initialize() {
+    if (playing) {
+      return;
+    }
     verts = new PVector[amount];
     dests = new PVector[amount];
     reset();
@@ -59,6 +73,9 @@ class Clay extends Neuron {
   }
   
   public void setupDestinations() {
+    if (playing) {
+      return;
+    }
     for (int i = 0; i < amount; i++) {
       PVector v = verts[i];
       float ptheta = (i / (float) amount) * TWO_PI + rotation;
@@ -72,6 +89,9 @@ class Clay extends Neuron {
   }
   
   public void reset() {
+    if (playing) {
+      return;
+    }
     for (int i = 0; i < amount; i++) {
       float pct = i / (float) amount;
       float theta = pct * TWO_PI + rotation;
@@ -116,7 +136,8 @@ class Clay extends Neuron {
     }
     
     noStroke();
-    fill(pigment);
+    fill(pigment.r, pigment.g, pigment.b);
+
     beginShape();
     if (smoothness) {
       int last = verts.length - 1;

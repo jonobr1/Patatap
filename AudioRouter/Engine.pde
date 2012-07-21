@@ -3,6 +3,7 @@ class Engine {
   private Piston[] pistons;
   private int amount = 8;
   private Router router;
+  private Palette.Color pigment;
 
   public float x;
   public float y;
@@ -50,27 +51,16 @@ class Engine {
    * Setters
    */
 
+  public void setColor(Palette.Color c) {
+    pigment = c;
+  }
+
   public void setAmount(int amt) {
     amount = amt;
-    initialize();
   }
 
   public void setDelay(int d) {
     delay = d;
-    for (int i = 0; i < amount; i++) {
-      pistons[i].setDelay(delay * i);
-    }
-  }
-  
-  public void setColor(int g) {
-    for (int i = 0; i < amount; i++) {
-      pistons[i].setColor(color(g));
-    }
-  }
-  public void setColor(int r, int g, int b) {
-    for (int i = 0; i < amount; i++) {
-      pistons[i].setColor(color(r, g, b));
-    }
   }
 
   public void initialize() {
@@ -89,6 +79,7 @@ class Engine {
       pistons[i] = new Piston(duration);
       pistons[i].initialize(x, offsetY, w, offsetH);
       pistons[i].setDelay(delay * i);
+      pistons[i].setColor(pigment);
     }
   }
 

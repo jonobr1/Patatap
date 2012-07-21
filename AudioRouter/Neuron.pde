@@ -1,6 +1,6 @@
 class Neuron {
 
-  public color pigment = color(255);
+  public Palette.Color pigment;
   public float duration = .15;
   public float delay = 0;
   public Easing easing = Ani.CIRC_OUT;
@@ -13,7 +13,7 @@ class Neuron {
    * Setters
    */
   
-  public void setColor(color c) {
+  public void setColor(Palette.Color c) {
     pigment = c;
   }
   
@@ -41,7 +41,7 @@ class Neuron {
    * Getters
    */
   
-  public color getColor() {
+  public Palette.Color getColor() {
     return pigment;
   }
   

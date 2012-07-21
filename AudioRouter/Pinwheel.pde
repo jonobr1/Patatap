@@ -8,7 +8,6 @@ class Pinwheel extends Neuron {
   private int amount; 
   private PVector[] points;
   private float slave = 0;
-  public color pigment = color(255, 197, 215);
   private float dur;
 //  public Easing easing = Ani.LINEAR;
 
@@ -33,10 +32,16 @@ class Pinwheel extends Neuron {
    */
 
   public void setAmount(int a) {
+    if (playing) {
+      return;
+    }
     amount = a;
   }
 
   public void setDrift(float d) {
+    if (playing) {
+      return;
+    }
     drift = d;
   }
 
@@ -46,6 +51,9 @@ class Pinwheel extends Neuron {
   }
 
   public void initialize() {
+    if (playing) {
+      return;
+    }
     points = new PVector[amount];
     for (int i = 0; i < amount; i++) {
       points[i] = new PVector();
@@ -54,6 +62,9 @@ class Pinwheel extends Neuron {
   }
 
   public void reset() {
+    if (playing) {
+      return;
+    }
     for (int i = 0; i < amount; i++) {
       float pct = i / (float) amount;
       float theta = startAngle;
@@ -147,7 +158,7 @@ class Pinwheel extends Neuron {
     }
 
     noStroke();
-    fill(pigment);
+    fill(pigment.r, pigment.g, pigment.b);
     beginShape();
     for (int i = 0; i < amount; i++) {
       PVector p = points[i];

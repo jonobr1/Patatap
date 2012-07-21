@@ -4,7 +4,6 @@ class Prism extends Neuron {
   public float y;
   public float distance;
   public Easing easing = Ani.CIRC_IN;
-  public color pigment = color(0);
 
   private int amount = 3;
   private float offset = - PI / 2;
@@ -27,11 +26,17 @@ class Prism extends Neuron {
    */
 
   public void setAmount(int a) {
+    if (playing) {
+      return;
+    }
     amount = a;
     initialize();
   }
 
   public void setMagnitude(float m) {
+    if (playing) {
+      return;
+    }
     this.m = m;
   }
 
@@ -103,7 +108,7 @@ class Prism extends Neuron {
       return;
     }
     
-    stroke(pigment);
+    stroke(pigment.r, pigment.g, pigment.b);
     strokeWeight(1);
     noFill();
     beginShape();
@@ -114,7 +119,7 @@ class Prism extends Neuron {
     endShape(CLOSE);
     
     noStroke();
-    fill(pigment);
+    fill(pigment.r, pigment.g, pigment.b);
     for (int i = 0; i < amount; i++) {
       PVector pos = points[i];
       ellipse(pos.x, pos.y, magnitude, magnitude);

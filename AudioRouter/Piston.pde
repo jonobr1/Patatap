@@ -25,6 +25,10 @@ class Piston extends Neuron {
 
   public void initialize() {
     
+    if (playing) {
+      return;
+    }
+    
     _w = width / 2;
     _h = height / 6;
     _x = (width - _w) / 2;
@@ -38,6 +42,10 @@ class Piston extends Neuron {
   }
 
   public void initialize(float __x, float __y, float __w, float __h) {
+    
+    if (playing) {
+      return;
+    }
     
     _w = __w;
     _h = __h;
@@ -56,7 +64,7 @@ class Piston extends Neuron {
       return;
     }
     noStroke();
-    fill(pigment);
+    fill(pigment.r, pigment.g, pigment.b);
     rect(x, y, w, h);
   }
 

@@ -58,37 +58,53 @@ class Suspension extends Neuron {
    */
   
   public void setDistance(float d) {
+    if (playing) {
+      return;
+    }
     distance = d;
-    // Should reinitialize
   }
   
   public void setTheta(float t) {
+    if (playing) {
+      return;
+    }
     theta = t;
-    // Should reinitialize
   }
   
   public void setDeviation(float d) {
+    if (playing) {
+      return;
+    }
     deviation = d / (float) 2;
-    // Should reinitialize
   }
 
   public void setOrigin(float x, float y) {
+    if (playing) {
+      return;
+    }
     origin.x = x;
     origin.y = y;
-    // Should reinitialize
   }
   
   public void setAmount(int a) {
+    if (playing) {
+      return;
+    }
     amount = a;
-    // Should reinitialize
   }
   
   public void setRadius(int r) {
+    if (playing) {
+      return;
+    }
     radius = r;
-    // Should reinitialize
   }
   
   public void initialize() {
+    
+    if (playing) {
+      return;
+    }
     
     verts = new Suspension.Vertex[amount];
     for (int i = 0; i < amount; i++) {
@@ -143,7 +159,7 @@ class Suspension extends Neuron {
       return;
     }
     noStroke();
-    fill(pigment);
+    fill(pigment.r, pigment.g, pigment.b);
     for (int i = 0; i < amount; i++) {
       Suspension.Vertex v = verts[i];
       ellipse(v.x, v.y, v.radius, v.radius);

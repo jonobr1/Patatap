@@ -10,7 +10,6 @@ class Moon extends Neuron {
   private float slave = 0;
 
   Moon(int d) {
-    pigment = color(227, 79, 12);
     x = width / 2;
     y = height / 2;
     r = height / 3;
@@ -27,6 +26,10 @@ class Moon extends Neuron {
 
   public void initialize() {
 
+    if (playing) {
+      return;
+    }
+    
     _points = new PVector[amount];
     points = new PVector[amount];
     reset();
@@ -121,7 +124,7 @@ class Moon extends Neuron {
     }
     
     noStroke();
-    fill(pigment);
+    fill(pigment.r, pigment.g, pigment.b);
     beginShape();
     for (int i = 0; i < amount; i++) {
       PVector pos = points[i];
