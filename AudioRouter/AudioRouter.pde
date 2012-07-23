@@ -1,4 +1,4 @@
-import de.looksgood.ani.*;
+ import de.looksgood.ani.*;
 import de.looksgood.ani.easing.*;
 
 import ddf.minim.*;
@@ -20,9 +20,11 @@ Palette.Color bg;
 
 PApplet app;
 
+boolean randomize = false;
+
 void setup() {
 
-  size(800, 600);
+  size(1024, 768);
 
   app = this;
   router = new Router(this, 128, false);
@@ -75,15 +77,19 @@ void draw() {
   engine.render();
   squiggle.render();
   suspension.render();
+  
 }
 
 void keyReleased() {
   if (key == 'e' || key == 'E') {
     float amp = router.getBand(router.depth / 4, false);
     engine.setAmount((int) map(amp, 0, 1, 1, 12));
+    if (randomize) {
+      engine.setDimensions(random(width / 4, width), map(amp, 0, 1, height / 8, height));
+    }
     engine.initialize();
     engine.play();
-  } 
+  }
   else if (key == 'm' || key == 'M') {
     moon.play();
   } 
@@ -93,6 +99,10 @@ void keyReleased() {
     prism.play();
   } 
   else if (key == 's' || key == 'S') {
+    float amp = router.getBand(router.depth - router.depth / 10, false);
+    if (randomize) {
+      suspension.setAmount((int) map(amp, 0, 1, 8, 32));
+    }
     suspension.setTheta(random(TWO_PI));
     suspension.initialize();
     suspension.play();
@@ -147,7 +157,7 @@ void keyReleased() {
   else if (key == 'o' || key == 'O') {
     float amp = router.getBand(router.depth / 2, false);
     pinwheel.setAmount((int) map(amp, 0, 1, 4, 10));
-    if (random(1.0) > 0.75) {
+    if (randomize) {
       float startAngle = random(TWO_PI);
       float endAngle = random(startAngle, TWO_PI);
       pinwheel.setAngles(startAngle, endAngle);
@@ -160,6 +170,9 @@ void keyReleased() {
     pinwheel.play();
   } 
   else if (key == 'w' || key == 'W') {
+    if (randomize) {
+      squiggle.setAngle(random(TWO_PI));
+    }
     squiggle.setRevolutions((int) random(0.25, 6));
     squiggle.setAmplitude(random(height / 8, height / 3));
     squiggle.setDistance(random(width / 8, width / 2));
@@ -170,7 +183,11 @@ void keyReleased() {
     key == '1' || key == '2' || key == '3' || key == '4'
     || key == '5' || key == '6' || key == '7' || key == '8'
     || key == '9' || key == '0') {
-      palette.next();
+//      palette.choose((int) key);
+    palette.next();
+  }
+  else if (key == 'r' || key == 'R') {
+    randomize = !randomize;
   }
 }
 

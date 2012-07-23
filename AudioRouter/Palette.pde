@@ -18,7 +18,7 @@ class Palette {
   private Palette.Color absolute_white = new Palette.Color(255);
   private Palette.Color absolute_black = new Palette.Color(0);
   
-  private float easing = 0.0125;
+  private float easing = 0.125;
   private float state = 0.0;
   private float dest = 1.0;
   private int index = 0;
@@ -42,10 +42,43 @@ class Palette {
       new Palette.Color(36, 221, 165),
       new Palette.Color(215, 236, 255),
       absolute_black
+    },
+    {
+      new Palette.Color(217, 82, 31),
+      new Palette.Color(143, 74, 45),
+      new Palette.Color(255, 108, 87),
+      new Palette.Color(255, 126, 138),
+      new Palette.Color(227, 190, 141),
+      absolute_white,
+      absolute_black
+    },
+    {
+      new Palette.Color(255, 244, 211),
+      new Palette.Color(207, 145, 79),
+      new Palette.Color(38, 83, 122),
+      new Palette.Color(178, 87, 53),
+      new Palette.Color(235, 192, 92),
+      absolute_white,
+      absolute_black
+    },
+    {
+      new Palette.Color(191, 178, 138),
+      new Palette.Color(115, 44, 3),
+      new Palette.Color(89, 81, 57),
+      new Palette.Color(217, 210, 176),
+      new Palette.Color(242, 239, 220),
+      absolute_black,
+      absolute_white
+    },
+    {
+      new Palette.Color(80, 255, 242),
+      new Palette.Color(115, 178, 177),
+      new Palette.Color(84, 64, 68),
+      new Palette.Color(110, 219, 202),
+      new Palette.Color(115, 113, 127),
+      absolute_black,
+      absolute_white
     }
-//    {},
-//    {},
-//    {}
   };
   private color[][] inverse = {
   };

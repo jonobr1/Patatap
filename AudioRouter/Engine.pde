@@ -5,6 +5,9 @@ class Engine {
   private Router router;
   private Palette.Color pigment;
 
+  private float ox;
+  private float oy;
+
   public float x;
   public float y;
   public float w;
@@ -33,6 +36,8 @@ class Engine {
     router = r;
     w = _w;
     h = _h;
+    oy = _y;
+    ox = _x;
     x = _x - (w / 2);
     y = _y - (h / 2);
     initialize();
@@ -61,6 +66,13 @@ class Engine {
 
   public void setDelay(int d) {
     delay = d;
+  }
+
+  public void setDimensions(float _w, float _h) {
+    w = _w;
+    h = _h;
+    x = (float) ox - (w / 2);
+    y = (float) oy - (h / 2);
   }
 
   public void initialize() {
