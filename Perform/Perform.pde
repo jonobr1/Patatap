@@ -1,4 +1,23 @@
- import de.looksgood.ani.*;
+/**
+ * Neuronal Synchrony
+ * 
+ * A collection of two dimensional animations
+ * that are triggered by sound.
+ * 
+ * It is dependent on minim and Ani Processing
+ * libraries, which can be found on the
+ * Processing website.
+ *
+ * This application is meant to be used for live
+ * performances and subtly takes in the microphone
+ * or current line-in's frequencies. Currently,
+ * the main interaction is through keyboard input,
+ * although I'd like to change this to Monome.
+ *
+ * @jonobr1
+ */
+
+import de.looksgood.ani.*;
 import de.looksgood.ani.easing.*;
 
 import ddf.minim.*;
