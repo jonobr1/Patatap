@@ -31,6 +31,7 @@ Engine engine;
 Engine engineReverse;
 Moon moon;
 Prism prism;
+Prism prism1;
 Suspension suspension;
 Clay clay;
 Pinwheel pinwheel;
@@ -45,7 +46,7 @@ boolean randomize = false;
 
 void setup() {
 
-  size(1024, 768);
+  size(1440, 900);
 
   app = this;
   record = new Record();
@@ -73,6 +74,9 @@ void setup() {
   prism = new Prism(500);
   prism.setColor(palette.getColor(palette.BLACK));
 
+  prism1 = new Prism(500);
+  prism1.setColor(palette.getColor(palette.BLACK));
+
   clay = new Clay(500);
   clay.setColor(palette.getColor(palette.MIDDLE));
 
@@ -98,6 +102,7 @@ void draw() {
 
   clay.render();  
   prism.render();
+  prism1.render();
 
   engineReverse.render();
   moon.render();
@@ -143,7 +148,12 @@ void keyReleased() {
     float amp = router.getBand(router.depth - router.depth / 4, false);
     prism.setAmount(floor(map(amp, 0, 1, 3, 12)));
     prism.play();
-  } 
+  }
+  else if (key == 'l' || key == 'L') {
+    float amp = router.getBand(router.depth - router.depth / 4, false);
+    prism1.setAmount(floor(map(amp, 0, 1, 3, 12)));
+    prism1.play();
+  }
   else if (key == 's' || key == 'S') {
     float amp = router.getBand(router.depth - router.depth / 10, false);
     if (randomize) {
