@@ -25,6 +25,7 @@ import ddf.minim.signals.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
+Record record;
 Router router;
 Engine engine;
 Moon moon;
@@ -46,6 +47,7 @@ void setup() {
   size(1024, 768);
 
   app = this;
+  record = new Record();
   router = new Router(this, 128, false);
   Ani.init(this);
 
@@ -208,6 +210,14 @@ void keyReleased() {
   else if (key == 'r' || key == 'R') {
     randomize = !randomize;
   }
+
+  record.add(key);
+
+}
+
+void exit() {
+  record.finalize();
+  super.exit();
 }
 
 void stop() {
