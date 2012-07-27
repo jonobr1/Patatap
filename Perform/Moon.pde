@@ -4,15 +4,17 @@ class Moon extends Neuron {
   public float y;
   public float r;
 
-  private int amount = 32;
+  private int amount = 40;
   private PVector[] _points;  // Reference
   private PVector[] points;   // Animated
   private float slave = 0;
+  private float startAngle;
 
   Moon(int d) {
     x = width / 2;
     y = height / 2;
     r = height / 3;
+    startAngle = 0.0;
     setDuration(d);
     initialize();
   }
@@ -21,7 +23,16 @@ class Moon extends Neuron {
     x = _x;
     y = _y;
     r = _r;
+    startAngle = 0.0;
     initialize();
+  }
+
+  /**
+   * Setters
+   */
+
+  public void setAngle(float a) {
+    startAngle = a;
   }
 
   public void initialize() {
@@ -101,7 +112,7 @@ class Moon extends Neuron {
   public void reset() {
 
     for (int i = 0; i < amount; i++) {
-      float theta = (i / (float) amount) * TWO_PI;
+      float theta = (i / (float) amount) * TWO_PI + startAngle;
       float xpos = r * cos(theta) + x;
       float ypos = r * sin(theta) + y;
       _points[i] = new PVector(xpos, ypos);

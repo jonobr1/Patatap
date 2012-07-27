@@ -53,6 +53,22 @@ class Engine {
   }
 
   /**
+   * Getters
+   */
+
+  public boolean isPlaying() {
+    boolean result = false;
+    for (int i = 0; i < amount; i++) {
+      Piston p = pistons[i];
+      if (p.playing) {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
+  /**
    * Setters
    */
 

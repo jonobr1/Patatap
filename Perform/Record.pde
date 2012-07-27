@@ -25,6 +25,7 @@ class Record {
     for (int i = 0; i < output.length; i++) {
       output[i] = (String) lines.get(i);
     }
+    println("Saved actions out to: " + filename);
     saveStrings(filename, output);
   }
 

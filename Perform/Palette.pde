@@ -58,7 +58,7 @@ class Palette {
       new Palette.Color(38, 83, 122),
       new Palette.Color(178, 87, 53),
       new Palette.Color(235, 192, 92),
-      absolute_white,
+      new Palette.Color(226, 82, 87),
       absolute_black
     },
     {
@@ -67,21 +67,30 @@ class Palette {
       new Palette.Color(89, 81, 57),
       new Palette.Color(217, 210, 176),
       new Palette.Color(242, 239, 220),
-      absolute_black,
+      new Palette.Color(22, 33, 44),
       absolute_white
     },
     {
-      new Palette.Color(80, 255, 242),
-      new Palette.Color(115, 178, 177),
-      new Palette.Color(84, 64, 68),
-      new Palette.Color(110, 219, 202),
-      new Palette.Color(115, 113, 127),
+      absolute_white,
+      new Palette.Color(151, 41, 164),
+      new Palette.Color(1, 120, 186),
+      new Palette.Color(255, 255, 0),
+      new Palette.Color(255, 51, 148),
       absolute_black,
+      absolute_black
+    },
+    {
+      new Palette.Color(39, 6, 54),
+      new Palette.Color(69, 26, 87),
+      new Palette.Color(252, 25, 246),
+      new Palette.Color(52, 255, 253),
+      new Palette.Color(133, 102, 193),
+      new Palette.Color(253, 228, 252),
       absolute_white
     }
   };
   private color[][] inverse = {
-  };
+  }; 
 
   public Palette.Color[] source;
   public Palette.Color[] current;

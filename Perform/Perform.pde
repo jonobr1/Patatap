@@ -28,6 +28,7 @@ import ddf.minim.effects.*;
 Record record;
 Router router;
 Engine engine;
+Engine engineReverse;
 Moon moon;
 Prism prism;
 Suspension suspension;
@@ -62,6 +63,10 @@ void setup() {
   engine.setColor(palette.getColor(palette.WHITE));
   engine.initialize();
 
+  engineReverse = new Engine(router, width / 2, height / 2, -width * .75, height / 2);
+  engineReverse.setColor(palette.getColor(palette.WHITE));
+  engineReverse.initialize();
+
   moon = new Moon(250);
   moon.setColor(palette.getColor(palette.FOREGROUND));
 
@@ -91,10 +96,13 @@ void draw() {
   router.update();
   palette.update();
 
-  clay.render();
+  clay.render();  
   prism.render();
+
+  engineReverse.render();
   moon.render();
   pinwheel.render();
+
   engine.render();
   squiggle.render();
   suspension.render();
@@ -102,7 +110,8 @@ void draw() {
 }
 
 void keyReleased() {
-  if (key == 'e' || key == 'E') {
+  
+  if (!engineReverse.isPlaying() && key == 'e' || key == 'E') {
     float amp = router.getBand(router.depth / 4, false);
     engine.setAmount((int) map(amp, 0, 1, 1, 12));
     if (randomize) {
@@ -111,7 +120,23 @@ void keyReleased() {
     engine.initialize();
     engine.play();
   }
+  else if (!engine.isPlaying() && key == 'r' || key == 'R') {
+    float amp = router.getBand(router.depth / 4, false);
+    engineReverse.setAmount((int) map(amp, 0, 1, 1, 12));
+    if (randomize) {
+      engineReverse.setDimensions(-random(width / 4, width), map(amp, 0, 1, height / 8, height));
+    }
+    engineReverse.initialize();
+    engineReverse.play();
+  }
   else if (key == 'm' || key == 'M') {
+    if (randomize) {
+      moon.setAngle(random(TWO_PI));
+      moon.initialize();
+    } else {
+      moon.setAngle(0);
+      moon.initialize();
+    }
     moon.play();
   } 
   else if (key == 'p' || key == 'P') {
@@ -207,7 +232,7 @@ void keyReleased() {
 //      palette.choose((int) key);
     palette.next();
   }
-  else if (key == 'r' || key == 'R') {
+  else if (key == 'y' || key == 'Y') {
     randomize = !randomize;
   }
 
