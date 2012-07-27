@@ -27,12 +27,19 @@ import ddf.minim.effects.*;
 
 Record record;
 Router router;
+
 Engine engine;
 Engine engineReverse;
+
 Moon moon;
+
 Prism prism;
 Prism prism1;
+
 Suspension suspension;
+Suspension suspension1;
+Suspension suspension2;
+
 Clay clay;
 Pinwheel pinwheel;
 Squiggle squiggle;
@@ -59,6 +66,12 @@ void setup() {
 
   suspension = new Suspension(500);
   suspension.setColor(palette.getColor(palette.WHITE));
+
+  suspension1 = new Suspension(1000);
+  suspension1.setColor(palette.getColor(palette.WHITE));
+
+  suspension2 = new Suspension(750);
+  suspension2.setColor(palette.getColor(palette.WHITE));
 
   engine = new Engine(router, width / 2, height / 2, width * .75, height / 2);
   engine.setColor(palette.getColor(palette.WHITE));
@@ -111,6 +124,8 @@ void draw() {
   engine.render();
   squiggle.render();
   suspension.render();
+  suspension1.render();
+  suspension2.render();
   
 }
 
@@ -163,6 +178,24 @@ void keyReleased() {
     suspension.initialize();
     suspension.play();
   } 
+  else if (key == 'd' || key == 'D') {
+    float amp = router.getBand(router.depth - router.depth / 10, false);
+    if (randomize) {
+      suspension1.setAmount((int) map(amp, 0, 1, 8, 32));
+    }
+    suspension1.setTheta(random(TWO_PI));
+    suspension1.initialize();
+    suspension1.play();
+  }
+  else if (key == 'a' || key == 'A') {
+    float amp = router.getBand(router.depth - router.depth / 10, false);
+    if (randomize) {
+      suspension2.setAmount((int) map(amp, 0, 1, 8, 32));
+    }
+    suspension2.setTheta(random(TWO_PI));
+    suspension2.initialize();
+    suspension2.play();
+  }
   else if (key =='c' || key == 'C') {
     clay.setAmount((int) random(8, 16));
     float x, y, pos = random(8);
