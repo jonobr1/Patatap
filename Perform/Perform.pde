@@ -20,10 +20,10 @@
 import de.looksgood.ani.*;
 import de.looksgood.ani.easing.*;
 
-import ddf.minim.*;
-import ddf.minim.signals.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
+//import ddf.minim.*;
+//import ddf.minim.signals.*;
+//import ddf.minim.analysis.*;
+//import ddf.minim.effects.*;
 
 Record record;
 Router router;

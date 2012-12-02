@@ -116,7 +116,7 @@ class Squiggle extends Neuron {
     }
 
 
-    strokeWeight(10);
+    strokeWeight(height / 60);
     strokeCap(ROUND);
     strokeJoin(ROUND);
     stroke(pigment.r, pigment.g, pigment.b);
