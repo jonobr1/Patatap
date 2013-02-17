@@ -25,13 +25,16 @@
 
 p.comment {
   margin: 0 0 15px 0;
-  padding: 0; }
+  padding: 0;
+  overflow: hidden; }
   p.comment a:link, p.comment a:visited {
     color: white;
     border-bottom: 2px solid white;
-    text-decoration: none; }
+    text-decoration: none;
+    box-shadow: 0 1px #777777; }
   p.comment a:hover, p.comment a:active {
-    border-bottom: 2px solid transparent; }
+    border-bottom: 2px solid transparent;
+    box-shadow: 0 1px transparent; }
 
 .comment {
   font-family: "Lekton", monospace;

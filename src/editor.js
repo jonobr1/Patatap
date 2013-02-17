@@ -52,7 +52,8 @@
     _.extend(this.container.style, {
       position: 'fixed',
       bottom: 20 + 'px',
-      right: 20 + 'px'
+      right: 20 + 'px',
+      zIndex: 9999
     });
 
     _.extend(this.field.style, {
@@ -74,6 +75,9 @@
     this.ctx.strokeStyle = 'none';
 
     this.triggers = triggers || [];
+    this.peaks = _.map(_.range(Editor.Resolution), function(i) {
+      return 0;
+    });
 
   };
 
@@ -108,12 +112,20 @@
 
     },
 
+    getPosition: function(o) {
+      var o = {
+        x: (o.bandwidth / Editor.Resolution) * this.domElement.width,
+        y: (1 - o.threshold) * this.domElement.height
+      };
+      return o;
+    },
+
     dump: function() {
 
       var data = _.map(this.triggers, function(trigger) {
         return {
-          x: x,
-          y: y
+          threshold: trigger.threshold,
+          bandwidth: trigger.bandwidth
         };
       });
 
@@ -162,6 +174,7 @@
 
       var elem = document.createElement('div');
       elem.className = 'trigger';
+      elem.setAttribute('title', this.triggers.length);
       trigger.elem = elem;
       _.extend(elem.style, {
         top: y + 'px',
@@ -172,10 +185,11 @@
         var rect = this.field.getBoundingClientRect();
         var _x = Math.max(Math.min(e.clientX - rect.left, rect.width), 0);
         var _y = Math.max(Math.min(e.clientY - rect.top, rect.height), 0);
+        trigger.bandwidth =  Math.round((_x / rect.width) * Editor.Resolution);
+        trigger.threshold = 1 - (_y / rect.height);
+        _x = (trigger.bandwidth / Editor.Resolution) * rect.width;
         trigger.x = _x;
         trigger.y = _y;
-        trigger.bandwidth =  Math.round((x / rect.width) * Editor.Resolution);
-        trigger.threshold = 1 - (_y / rect.height);
         _.extend(elem.style, {
           left: _x + 'px',
           top: _y + 'px'
@@ -186,10 +200,11 @@
         var rect = this.field.getBoundingClientRect();
         var _x = Math.max(Math.min(e.clientX - rect.left, rect.width), 0);
         var _y = Math.max(Math.min(e.clientY - rect.top, rect.height), 0);
+        trigger.bandwidth =  Math.round((_x / rect.width) * Editor.Resolution);
+        trigger.threshold = 1 - (_y / rect.height);
+        _x = (trigger.bandwidth / Editor.Resolution) * rect.width;
         trigger.x = _x;
         trigger.y = _y;
-        trigger.bandwidth =  Math.round((x / rect.width) * Editor.Resolution);
-        trigger.threshold = 1 - (_y / rect.height);
         _.extend(elem.style, {
           left: _x + 'px',
           top: _y + 'px'
@@ -251,14 +266,20 @@
       var w = width / Editor.Resolution;
 
       this.ctx.clearRect(0, 0, width, height);
-
+      this.ctx.strokeStyle = '#ccc';
       this.ctx.fillStyle = 'black';
+      this.ctx.lineWidth = 2;
 
       _.each(eq, function(v, i) {
         var pct = i / Editor.Resolution;
         var a = SOUND.eqData[i];
         var x = pct * width;
         this.ctx.fillRect(x, height - height * a, 1, height * a);
+        if (a > this.peaks[i]) {
+          this.peaks[i] = a;
+        }
+        var peak = this.peaks[i];
+        this.ctx.fillRect(x, height - height * peak, 1, 1);
       }, this);
 
       return this;

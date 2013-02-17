@@ -79,7 +79,7 @@ window.animations = (function() {
       black: { r: 255, g: 255, b: 255 }
     }
   ];
-  var current = 0
+  var current = 2;
   var _colors = {};
   var colors = {};
 
@@ -424,8 +424,8 @@ window.animations = (function() {
     var options = { ending: 0 };
 
     var _in = new TWEEN.Tween(options)
-      .to({ ending: 1 }, duration)
-      .easing(Easing.Circular.In)
+      .to({ ending: 1 }, duration * 0.75)
+      .easing(Easing.Exponential.In)
       .onUpdate(function() {
         var t = options.ending;
         _.each(circles, function(c, i) {

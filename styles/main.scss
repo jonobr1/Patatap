@@ -27,13 +27,16 @@
 p.comment {
   margin: 0 0 15px 0;
   padding: 0;
+  overflow: hidden;
   a:link, a:visited {
     color: white;
     border-bottom: 2px solid white;
     text-decoration: none;
+    box-shadow: 0 1px #777;
   }
   a:hover, a:active {
     border-bottom: 2px solid transparent;
+    box-shadow: 0 1px transparent;
   }
 }
 

@@ -27,13 +27,18 @@
         });
 
         var TRACK = $.url().param('track') || '48079700';
-        var SOUND, DEBUG = true;
+        var SOUND, DEBUG = true, SHOW_COMMENTS = false;
 
         var stats;
 
-        var editor = new Editor(300, 100).appendTo(document.body);
+        var editor = new Editor(800, 100).appendTo(document.body);
 
-        editor.addClicks(animations.initializers, true);
+        // editor.addClicks(animations.initializers, true);
+        var defaults = [{"threshold":0.08999999999999997,"bandwidth":12},{"threshold":0.17000000000000004,"bandwidth":69},{"threshold":0.37,"bandwidth":168},{"threshold":0.42000000000000004,"bandwidth":131},{"threshold":0.43999999999999995,"bandwidth":35},{"threshold":0.16000000000000003,"bandwidth":84},{"threshold":0.20999999999999996,"bandwidth":233},{"threshold":0.72,"bandwidth":44}];
+        _.each(animations.initializers, function(callback, i) {
+          var p = editor.getPosition(defaults[i]);
+          editor.add(p.x, p.y, callback);
+        });
 
         if (DEBUG) {
           stats = new Stats();
@@ -73,6 +78,9 @@
         document.body.appendChild(comments);
 
         function addComment(resp) {
+          if (!SHOW_COMMENTS) {
+            return;
+          }
           _.each(resp, function(comment) {
             var text = replaceURLWithHTMLLinks(comment.body);
             var $el = $('<p class="comment" />')
@@ -80,8 +88,12 @@
               .appendTo(comments);
             var timeout = getTimeout(comment.body.length);
             _.delay(function() {
-              $el.fadeOut(350, function() {
-                $el.remove();
+              $el.animate({ opacity: 0 }, 350, 'linear', function() {
+                $el.animate({
+                  height: 0
+                }, 150, 'linear', function() {
+                  $el.remove();
+                });
               });
             }, timeout);
           });
