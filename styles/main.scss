@@ -48,3 +48,13 @@ p.comment {
   color: white;
   text-shadow: 1px 1px #333;
 }
+
+#loader {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.gif) center center no-repeat;
+  border-radius: 50%;
+}

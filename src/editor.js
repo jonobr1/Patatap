@@ -51,8 +51,8 @@
 
     _.extend(this.container.style, {
       position: 'fixed',
-      bottom: 20 + 'px',
-      right: 20 + 'px',
+      bottom: 10 + 'px',
+      right: 10 + 'px',
       zIndex: 9999
     });
 
