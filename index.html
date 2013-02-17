@@ -2,10 +2,11 @@
 <html>
   <head>
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lekton' rel='stylesheet' type='text/css'>
   </head>
   <body>
     <div class="scripts" style="display: none;">
-      <canvas width="300" height="100"></canvas>
       <script src="http://connect.soundcloud.com/sdk.js"></script>
       <script src="./third-party/jquery.js"></script>
       <script src="./third-party/jquery.purl.js"></script>
@@ -50,17 +51,59 @@
 
         SC.stream('/tracks/48079700', {
           useEQData: true,
-          whileplaying: analyzeWaveform
+          whileplaying: analyzeWaveform,
+          ontimedcomments: addComment
         }, function(soundObject) {
           console.log('loaded');
           SOUND = soundObject;
           SOUND.play();
         });
 
+        var padding = 15;
+        var comments = document.createElement('div');
+        _.extend(comments.style, {
+          position: 'absolute',
+          top: padding + '%',
+          left: padding + '%',
+          right: padding + '%',
+          bottom: padding + '%',
+          textAlign: 'center',
+          overflow: 'hidden'
+        });
+        document.body.appendChild(comments);
+
+        function addComment(resp) {
+          _.each(resp, function(comment) {
+            var text = replaceURLWithHTMLLinks(comment.body);
+            var $el = $('<p class="comment" />')
+              .html(text)
+              .appendTo(comments);
+            var timeout = getTimeout(comment.body.length);
+            _.delay(function() {
+              $el.fadeOut(350, function() {
+                $el.remove();
+              });
+            }, timeout);
+          });
+        }
+
         function analyzeWaveform() {
 
           editor.update(SOUND.eqData);
 
+        }
+
+        function getTimeout(v) {
+          return Math.round(Math.sqrt(Math.max(Math.min(v, 140), 0) / 140) * 2500);
+        }
+
+        /**
+         * http://stackoverflow.com/questions/37684/how-to-replace-plain-urls-with-links
+         */
+
+        function replaceURLWithHTMLLinks(text) {
+          var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+          return text.replace(exp,"<a href='$1'>$1</a>");
         }
 
         // Animation Loop

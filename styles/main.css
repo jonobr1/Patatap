@@ -1,0 +1,42 @@
+.trigger {
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: -3px;
+  margin-left: -3px;
+  cursor: move;
+  background: #00A79D;
+  border-radius: 50%; }
+  .trigger.animating {
+    background: #EF4136; }
+
+.no-select {
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
+  /* No support for these yet, use at own risk */
+  -o-user-select: none;
+  user-select: none; }
+
+p.comment {
+  margin: 0 0 15px 0;
+  padding: 0; }
+  p.comment a:link, p.comment a:visited {
+    color: white;
+    border-bottom: 2px solid white;
+    text-decoration: none; }
+  p.comment a:hover, p.comment a:active {
+    border-bottom: 2px solid transparent; }
+
+.comment {
+  font-family: "Lekton", monospace;
+  font-size: 25px;
+  line-height: 30px;
+  font-weight: normal;
+  color: white;
+  text-shadow: 1px 1px #333333; }
