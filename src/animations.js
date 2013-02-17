@@ -442,7 +442,7 @@ window.animations = (function() {
     function reset() {
 
       theta = Math.random() * Math.PI * 2;
-      deviation = map(Math.random(), 0, 1, Math.PI * 0.25, Math.PI);
+      deviation = map(Math.random(), 0, 1, Math.PI * 0.25, Math.PI * 2.0);
       var hd = deviation / 2;
       amplitude = height * 0.66;
       var ha = amplitude / 2;
