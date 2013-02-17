@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head></head>
+  <body>
+    <div class="scripts">
+      <script src="third-party/underscore.js"></script>
+      <script src="http://connect.soundcloud.com/sdk.js"></script>
+      <script>
+
+        SC.initialize({
+          client_id: 'f362eb7eaa0b6c159e1148e127a78b88'
+        });
+
+        var o;
+
+        SC.stream('/tracks/48079700', {
+          useWaveformData: true
+        }, function(sound) {
+          o = sound;
+          o.play();
+        });
+
+        var log = _.throttle(function() {
+          if (_.isObject(o)) {
+            console.log(o);
+          }
+        }, 1000);
+
+        (function() {
+
+          if (o) {
+            log();
+          }
+
+          requestAnimationFrame(arguments.callee);
+
+        })();
+
+      </script>
+    </div>
+  </body>
+</html>

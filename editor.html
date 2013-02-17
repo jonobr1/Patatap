@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <div class="scripts" style="display: none;">
+      <canvas width="300" height="100"></canvas>
+      <script src="http://connect.soundcloud.com/sdk.js"></script>
+      <script src="./third-party/jquery.js"></script>
+      <script src="./third-party/underscore.js"></script>
+      <script src="./third-party/tween.js"></script>
+      <script src="./third-party/two.js/third-party/stats.js"></script>
+      <script src="./third-party/two.js/build/two.js"></script>
+      <script src="./src/editor.js"></script>
+      <script>
+
+        var TRACK = '48079700';
+        var SOUND, DEBUG = true;
+
+        var stats;
+
+        var editor = new Editor(300, 100).appendTo(document.body);
+
+        editor.addClicks([
+          function() {
+            console.log('a');
+            var caller = arguments.callee;
+            setTimeout(function() {
+              caller.onComplete();
+            }, 1000);
+          },
+          function() {
+            console.log('b');
+            var caller = arguments.callee;
+            setTimeout(function() {
+              caller.onComplete();
+            }, 1000);
+          },
+          function() {
+            console.log('c');
+            var caller = arguments.callee;
+            setTimeout(function() {
+              caller.onComplete();
+            }, 1000);
+          }
+        ], true);
+
+        if (DEBUG) {
+          stats = new Stats();
+          _.extend(stats.domElement.style, {
+            position: 'fixed',
+            top: 0,
+            left: 0
+          });
+          document.body.appendChild(stats.domElement);
+        }
+
+        var two = new Two({
+          fullscreen: true
+        }).appendTo(document.body);
+
+        SC.initialize({
+          client_id: 'f362eb7eaa0b6c159e1148e127a78b88'
+        });
+
+        SC.stream('/tracks/48079700', {
+          useEQData: true,
+          whileplaying: analyzeWaveform
+        }, function(soundObject) {
+          console.log('loaded');
+          SOUND = soundObject;
+          SOUND.play();
+        });
+
+        function analyzeWaveform() {
+
+          editor.update(SOUND.eqData);
+
+        }
+
+        // Animation Loop
+
+        (function() {
+
+          if (DEBUG) {
+            stats.update();
+          }
+
+          TWEEN.update();
+          requestAnimationFrame(arguments.callee);
+
+        })();
+
+      </script>
+    </div>
+  </body>
+</html>
