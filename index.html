@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
   </head>
   <body>
     <div class="scripts" style="display: none;">
@@ -16,6 +17,14 @@
       <script src="./src/editor.js"></script>
       <script src="./src/animations.js"></script>
       <script>
+
+        // Remove address bar on mobile safari.
+
+        $(function() {
+          _.defer(function() {
+            window.scrollTo(0, 1);
+          })
+        });
 
         var TRACK = $.url().param('track') || '48079700';
         var SOUND, DEBUG = true;
