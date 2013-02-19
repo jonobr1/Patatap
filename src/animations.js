@@ -197,7 +197,7 @@ window.animations = (function() {
 
     var _in = new TWEEN.Tween(options)
       .to({ ending: 1 }, duration * 1.5)
-      .easing(Easing.Cubic.In)
+      .easing(Easing.Cubic.InOut)
       .onUpdate(function() {
         var t = options.ending;
         _.each(points, function(v, i) {
