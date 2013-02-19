@@ -534,7 +534,7 @@ window.animations = (function() {
 
     var _out = new TWEEN.Tween(options)
       .to({ beginning: 1 }, duration)
-      .easing(Easing.Circular.In)
+      .easing(Easing.Cubic.In)
       .onUpdate(function() {
         timer.beginning = options.beginning;
       })
