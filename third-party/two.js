@@ -1277,12 +1277,15 @@ var Backbone = Backbone || {};
    * Constants
    */
 
-  var PI = Math.PI,
-    TWO_PI = PI * 2,
-    HALF_PI = PI * 0.5,
-    abs = Math.abs,
+  var sin = Math.sin,
     cos = Math.cos,
-    sin = Math.sin;
+    atan2 = Math.atan2,
+    sqrt = Math.sqrt,
+    round = Math.round,
+    abs = Math.abs,
+    PI = Math.PI,
+    TWO_PI = PI * 2,
+    HALF_PI = PI / 2;
 
   /**
    * Cross browser dom events.
@@ -1323,7 +1326,7 @@ var Backbone = Backbone || {};
       width: 640,
       height: 480,
       type: Two.Types.svg,
-      autostart: true
+      autostart: false
     });
 
     this.type = params.type;
@@ -1397,9 +1400,145 @@ var Backbone = Backbone || {};
     noConflict: function() {
       root.Two = previousTwo;
       return this;
+    },
+
+    Utils: {
+
+      /**
+       * Creates a set of points that have u, v values for anchor positions
+       */
+      getCurveFromPoints: function(points, closed) {
+
+        var curve = [], l = points.length, last = l - 1;
+
+        for (var i = 0; i < l; i++) {
+
+          var p = points[i];
+          var point = { x: p.x, y: p.y };
+          curve.push(point);
+
+          var prev = closed ? mod(i - 1, l) : Math.max(i - 1, 0);
+          var next = closed ? mod(i + 1, l) : Math.min(i + 1, last);
+
+          var a = points[prev];
+          var b = point;
+          var c = points[next];
+          getControlPoints(a, b, c);
+
+          if (!b.u.x && !b.u.y) {
+            b.u.x = b.x;
+            b.u.y = b.y;
+          }
+
+          if (!b.v.x && !b.v.y) {
+            b.v.x = b.x;
+            b.v.y = b.y;
+          }
+
+        }
+
+        return curve;
+
+      },
+
+      /**
+       * Given three coordinates return the control points for the middle, b,
+       * vertex.
+       */
+      getControlPoints: function(a, b, c) {
+
+        var a1 = angleBetween(a, b);
+        var a2 = angleBetween(c, b);
+
+        var d1 = distanceBetween(a, b);
+        var d2 = distanceBetween(c, b);
+
+        var mid = (a1 + a2) / 2;
+
+        // So we know which angle corresponds to which side.
+
+        var u, v;
+
+        if (d1 < 0.0001 || d2 < 0.0001) {
+          b.u = { x: b.x, y: b.y };
+          b.v = { x: b.x, y: b.y };
+          return b;
+        }
+
+        d1 *= 0.33; // Why 0.33?
+        d2 *= 0.33;
+
+        if (a2 < a1) {
+          mid += HALF_PI;
+        } else {
+          mid -= HALF_PI;
+        }
+
+        u = {
+          x: b.x + cos(mid) * d1,
+          y: b.y + sin(mid) * d1
+        };
+
+        mid -= PI;
+
+        v = {
+          x: b.x + cos(mid) * d2,
+          y: b.y + sin(mid) * d2
+        };
+
+        b.u = u;
+        b.v = v;
+
+        return b;
+
+      },
+
+      angleBetween: function(A, B) {
+
+        var dx = A.x - B.x;
+        var dy = A.y - B.y;
+
+        return atan2(dy, dx);
+
+      },
+
+      distanceBetweenSquared: function(p1, p2) {
+
+        var dx = p1.x - p2.x;
+        var dy = p1.y - p2.y;
+
+        return dx * dx + dy * dy;
+
+      },
+
+      distanceBetween: function(p1, p2) {
+
+        return sqrt(distanceBetweenSquared(p1, p2));
+
+      },
+
+      mod: function(v, l) {
+
+        while (v < 0) {
+          v += l;
+        }
+
+        return v % l;
+
+      }
+
     }
 
   });
+
+  // Localize utils
+
+  var distanceBetween = Two.Utils.distanceBetween,
+    distanceBetweenSquared = Two.Utils.distanceBetweenSquared,
+    angleBetween = Two.Utils.angleBetween,
+    getControlPoints = Two.Utils.getControlPoints,
+    getCurveFromPoints = Two.Utils.getCurveFromPoints,
+    mod = Two.Utils.mod;
 
   _.extend(Two.prototype, Backbone.Events, {
 
@@ -1677,16 +1816,9 @@ var Backbone = Backbone || {};
    */
   var OBJECT_COUNT = 0;
 
-  /**
-   * Constants
-   */
-  var sin = Math.sin,
-    cos = Math.cos,
-    atan2 = Math.atan2,
-    sqrt = Math.sqrt,
-    round = Math.round,
-    PI = Math.PI,
-    HALF_PI = PI / 2;
+  // Localize variables
+  var getCurveFromPoints = Two.Utils.getCurveFromPoints,
+    mod = Two.Utils.mod;
 
   var svg = {
 
@@ -1822,6 +1954,12 @@ var Backbone = Backbone || {};
     this.elements = [];
     this.commands = [];
 
+    this.domElement.style.visibility = 'hidden';
+
+    this.unveil = _.once(_.bind(function() {
+      this.domElement.style.visibility = 'visible';
+    }, this));
+
   };
 
   _.extend(Renderer, {
@@ -1915,6 +2053,8 @@ var Backbone = Backbone || {};
 
     render: function() {
 
+      this.unveil();
+
       var elements = this.elements,
         selector = Renderer.Identifier;
 
@@ -1967,8 +2107,8 @@ var Backbone = Backbone || {};
       closed = o.closed,
       vertices = o.vertices;
 
-    if (o.id) {
-      styles.id = Renderer.Identifier + o.id;
+    if (id) {
+      styles.id = Renderer.Identifier + id;
     }
     if (translation && _.isNumber(scale) && _.isNumber(rotation)) {
       styles.transform = 'translate(' + translation.x + ',' + translation.y
@@ -1983,9 +2123,9 @@ var Backbone = Backbone || {};
     if (opacity) {
       styles['stroke-opacity'] = styles['fill-opacity'] = opacity;
     }
-    if (visible) {
-      styles.visibility = visible ? 'visible' : 'hidden';
-    }
+    // if (visible) {
+    styles.visibility = visible ? 'visible' : 'hidden';
+    // }
     if (cap) {
       styles['stroke-linecap'] = cap;
     }
@@ -2012,7 +2152,7 @@ var Backbone = Backbone || {};
 
       case 'matrix':
         property = 'transform';
-        value = 'matrix(' + value + ')';
+        value = 'matrix(' + value.toString() + ')';
         break;
       case 'visible':
         property = 'visibility';
@@ -2053,127 +2193,448 @@ var Backbone = Backbone || {};
     return count;
   }
 
-  /**
-   * Creates a set of points that have u, v values for anchor positions
-   */
-  function getCurveFromPoints(points, closed) {
-
-    var curve = [], l = points.length, last = l - 1;
-
-    for (var i = 0; i < l; i++) {
-
-      var p = points[i];
-      var point = { x: p.x, y: p.y };
-      curve.push(point);
-
-      var prev = closed ? mod(i - 1, l) : Math.max(i - 1, 0);
-      var next = closed ? mod(i + 1, l) : Math.min(i + 1, last);
-
-      var a = points[prev];
-      var b = point;
-      var c = points[next];
-      getControlPoints(a, b, c);
-
-      if (!b.u.x && !b.u.y) {
-        b.u.x = b.x;
-        b.u.y = b.y;
-      }
-
-      if (!b.v.x && !b.v.y) {
-        b.v.x = b.x;
-        b.v.y = b.y;
-      }
-
-    }
-
-    return curve;
-
-  }
+})();
+(function() {
 
   /**
-   * Given three coordinates return the control points for the middle, b,
-   * vertex.
+   * Constants
    */
-  function getControlPoints(a, b, c) {
+  var OBJECT_COUNT = 0;
 
-    var a1 = angleBetween(a, b);
-    var a2 = angleBetween(c, b);
+  // Localize variables
+  var getCurveFromPoints = Two.Utils.getCurveFromPoints,
+    mod = Two.Utils.mod;
 
-    var d1 = distanceBetween(a, b);
-    var d2 = distanceBetween(c, b);
+  /**
+   * A canvas specific representation of Two.Group
+   */
+  var Group = function(styles) {
 
-    var mid = (a1 + a2) / 2;
+    _.each(styles, function(v, k) {
+      this[k] = v;
+    }, this);
 
-    // So we know which angle corresponds to which side.
+    this.children = {};
 
-    var u, v;
+  };
 
-    if (d1 < 0.0001 || d2 < 0.0001) {
-      b.u = { x: b.x, y: b.y };
-      b.v = { x: b.x, y: b.y };
-      return b;
+  _.extend(Group.prototype, {
+
+    appendChild: function(elem) {
+
+      var parent = elem.parent;
+      var id = elem.id;
+
+      if (!_.isUndefined(parent)) {
+        delete parent.children[id];
+      }
+
+      this.children[id] = elem;
+      elem.parent = this;
+
+      return this;
+
+    },
+
+    render: function(ctx) {
+
+      var matrix = this.matrix;
+
+      ctx.save();
+      ctx.transform(
+        matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]);
+
+      _.each(this.children, function(child) {
+        child.render(ctx);
+      });
+
+      ctx.restore();
+
+      return this;
+
     }
 
-    d1 *= 0.33; // Why 0.33?
-    d2 *= 0.33;
+  });
 
-    if (a2 < a1) {
-      mid += HALF_PI;
-    } else {
-      mid -= HALF_PI;
+  /**
+   * A canvas specific representation of a drawable element.
+   */
+  var Element = function(styles) {
+
+    _.each(styles, function(v, k) {
+      this[k] = v;
+    }, this);
+
+  };
+
+  _.extend(Element.prototype, {
+
+    render: function(ctx) {
+
+      var matrix = this.matrix,
+        stroke = this.stroke,
+        linewidth = this.linewidth,
+        fill = this.fill,
+        opacity = this.opacity,
+        visible = this.visible,
+        cap = this.cap,
+        join = this.join,
+        miter = this.miter,
+        curved = this.curved,
+        closed = this.closed,
+        commands = this.commands,
+        length = commands.length,
+        last = length - 1;
+
+      if (!visible) {
+        return this;
+      }
+
+      // Transform
+
+      ctx.save();
+
+      if (matrix) {
+        ctx.transform(
+          matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]);
+      }
+
+      // Styles
+
+      if (fill) {
+        ctx.fillStyle = fill;
+      }
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+      }
+      if (linewidth) {
+        ctx.lineWidth = linewidth;
+      }
+      if (miter) {
+        ctx.miterLimit = miter;
+      }
+      if (join) {
+        ctx.lineJoin = join;
+      }
+      if (cap) {
+        ctx.lineCap = cap;
+      }
+      if (_.isNumber(opacity)) {
+        ctx.globalAlpha = opacity;
+      }
+
+      ctx.beginPath();
+      _.each(commands, function(b, i) {
+
+        var x = b.x.toFixed(3), y = b.y.toFixed(3);
+
+        if (curved) {
+
+          var prev = closed ? mod(i - 1, length) : Math.max(i - 1, 0);
+          var next = closed ? mod(i + 1, length) : Math.min(i + 1, last);
+
+          var a = commands[prev];
+          var c = commands[next];
+
+          var vx = a.v.x.toFixed(3);
+          var vy = a.v.y.toFixed(3);
+
+          var ux = b.u.x.toFixed(3);
+          var uy = b.u.y.toFixed(3);
+
+          if (i <= 0) {
+
+            ctx.moveTo(x, y);
+
+          } else {
+
+            ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
+
+            // Add a final point and close it off
+
+            if (i >= last && closed) {
+
+              vx = b.v.x.toFixed(3);
+              vy = b.v.y.toFixed(3);
+
+              ux = c.u.x.toFixed(3);
+              uy = c.u.y.toFixed(3);
+
+              x = c.x.toFixed(3);
+              y = c.y.toFixed(3);
+
+              ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
+
+            }
+
+          }
+
+        } else {
+
+          if (i <= 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+
+        }
+      });
+
+      // Loose ends
+
+      if (closed && !curved) {
+        ctx.closePath();
+      }
+
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.restore();
+
     }
 
-    u = {
-      x: b.x + cos(mid) * d1,
-      y: b.y + sin(mid) * d1
-    };
+  });
 
-    mid -= PI;
+  var canvas = {
 
-    v = {
-      x: b.x + cos(mid) * d2,
-      y: b.y + sin(mid) * d2
-    };
+    /**
+     * Turn a set of vertices into a string for drawing in a canvas.
+     */
+    toArray: function(points, curved, closed) {
 
-    b.u = u;
-    b.v = v;
+      var l = points.length,
+        last = l - 1;
 
-    return b;
+      if (!curved) {
+        return _.map(points, function(v, i) {
+          return { x: v.x, y: v.y };
+        });
+      }
 
-  }
+      return getCurveFromPoints(points, closed);
 
-  function angleBetween(A, B) {
-
-    var dx = A.x - B.x;
-    var dy = A.y - B.y;
-
-    return atan2(dy, dx);
-
-  }
-
-  function distanceBetweenSquared(p1, p2) {
-
-    var dx = p1.x - p2.x;
-    var dy = p1.y - p2.y;
-
-    return dx * dx + dy * dy;
-
-  }
-
-  function distanceBetween(p1, p2) {
-
-    return sqrt(distanceBetweenSquared(p1, p2));
-
-  }
-
-  function mod(v, l) {
-
-    while (v < 0) {
-      v += l;
     }
 
-    return v % l;
+  };
 
+  var Renderer = Two[Two.Types.canvas] = function() {
+
+    this.domElement = document.createElement('canvas');
+    this.ctx = this.domElement.getContext('2d');
+
+    this.elements = [];
+
+    // Everything drawn on the canvas needs to come from the stage.
+    this.stage = null;
+
+  };
+
+  _.extend(Renderer, {
+
+    
+
+  });
+
+  _.extend(Renderer.prototype, Backbone.Events, {
+
+    setSize: function(width, height) {
+
+      this.width = this.domElement.width = width;
+      this.height = this.domElement.height = height;
+
+      _.extend(this.domElement.style, {
+        width: this.width + 'px',
+        height: this.height + 'px'
+      });
+
+      return this;
+
+    },
+
+    add: function(o) {
+
+      var l = arguments.length,
+        objects = o,
+        elements = this.elements,
+        domElement = this.domElement;
+
+      if (!_.isArray(o)) {
+        objects = _.map(arguments, function(a) {
+          return a;
+        });
+      }
+
+      _.each(objects, function(object) {
+
+        var elem, tag, styles, isGroup = object instanceof Two.Group,
+          isStage = _.isNull(this.stage);
+
+        if (_.isUndefined(object.id)) {
+          object.id = generateId();
+        }
+
+        // Generate an element, a JavaScript object, that holds all the
+        // necessary information to draw to the canvas successfully.
+
+        if (isGroup) {
+          // Kind of represents a matrix, save and restore set.
+          styles = getStyles(object);
+          delete styles.stroke;
+          delete styles.fill;
+          delete styles.opacity;
+          delete styles.cap;
+          delete styles.join;
+          delete styles.miter;
+          delete styles.linewidth;
+          elem = new Group(styles);
+          if (isStage) { // Set the stage
+
+            this.stage = elem;
+            this.stage.object = object; // Reference for BoundingBox calc.
+
+            object.parent = this;
+            object.unbind(Two.Events.change)
+              .bind(Two.Events.change, _.bind(this.update, this));
+
+          }
+        } else {
+          // Has styles and draw commands.
+          elem = new Element(getStyles(object));
+        }
+
+        elements.push(elem);
+        if (!isStage) {
+          this.stage.appendChild(elem);
+        }
+
+      }, this);
+
+      return this;
+
+    },
+
+    update: function(id, property, value) {
+
+      var elements = this.elements;
+      var elem = elements[id];
+
+      switch (property) {
+        case Two.Properties.hierarchy:
+          _.each(value, function(j) {
+            elem.appendChild(elements[j]);
+          });
+          break;
+        default:
+          css(elem, property, value);
+      }
+
+      return this;
+
+    },
+
+    render: function() {
+
+      if (_.isNull(this.stage)) {
+        return this;
+      }
+
+      // TODO: Test performance between these two
+
+      // var rect = this.stage.object.getBoundingClientRect();
+      // this.ctx.clearRect(rect.left, rect.top, rect.width, rect.height);
+
+      this.ctx.clearRect(0, 0, this.width, this.height);
+
+      this.stage.render(this.ctx);
+
+      return this;
+
+    }
+
+  });
+
+  function resetTransform(ctx) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
+
+  function getStyles(o) {
+
+    var styles = {},
+      id = o.id,
+      matrix = o._matrix,
+      stroke = o.stroke,
+      linewidth = o.linewidth,
+      fill = o.fill,
+      opacity = o.opacity,
+      visible = o.visible,
+      cap = o.cap,
+      join = o.join,
+      miter = o.miter,
+      curved = o.curved,
+      closed = o.closed,
+      vertices = o.vertices;
+
+    if (id) {
+      styles.id = id;
+    }
+    if (_.isObject(matrix)) {
+      styles.matrix = matrix.toArray();
+    }
+    if (stroke) {
+      styles.stroke = stroke;
+    }
+    if (fill) {
+      styles.fill = fill;
+    }
+    if (_.isNumber(opacity)) {
+      styles.opacity = opacity;
+    }
+    if (cap) {
+      styles.cap = cap;
+    }
+    if (join) {
+      styles.join = join;
+    }
+    if (miter) {
+      styles.miter = miter;
+    }
+    if (linewidth) {
+      styles.linewidth = linewidth;
+    }
+    if (vertices) {
+      styles.commands = canvas.toArray(vertices, curved, closed);
+    }
+    styles.visible = !!visible;
+    styles.curved = !!curved;
+    styles.closed = !!closed;
+
+    return styles;
+
+  }
+
+  function css(elem, property, value) {
+
+    switch (property) {
+
+      case 'matrix':
+        property = 'matrix';
+        value = value.toArray();
+        break;
+      case 'vertices':
+        property = 'commands';
+        value = canvas.toArray(value, elem.curved, elem.closed);
+        break;
+
+    }
+
+    elem[property] = value;
+
+  }
+
+  function generateId() {
+    var count = OBJECT_COUNT;
+    OBJECT_COUNT++;
+    return count;
   }
 
 })();
@@ -2539,6 +3000,15 @@ var Backbone = Backbone || {};
      */
     toString: function() {
 
+      return this.toArray().join(' ');
+
+    },
+
+    /**
+     * Create a transform array to be used with rendering apis.
+     */
+    toArray: function() {
+
       var elements = this.elements;
       var a = elements[0].toFixed(3);
       var b = elements[1].toFixed(3);
@@ -2549,7 +3019,7 @@ var Backbone = Backbone || {};
 
       return [
         a, d, b, e, c, f  // Specific format see LN:19
-      ].join(' ');
+      ];
 
     },
 
@@ -2579,8 +3049,7 @@ var Backbone = Backbone || {};
         .identity()
         .translate(this.translation.x, this.translation.y)
         .scale(this.scale)
-        .rotate(this.rotation)
-        .toString();
+        .rotate(this.rotation);
       this.trigger(Two.Events.change, this.id, 'matrix', transform);
     }, this), 0);
 
@@ -2888,6 +3357,7 @@ var Backbone = Backbone || {};
     var beginning = 0.0;
     var ending = 1.0;
     var strokeChanged = false;
+    var renderedVertices = vertices.slice(0);
 
     var updateVertices = _.debounce(_.bind(function(property) { // Call only once a frame.
 
@@ -2901,11 +3371,11 @@ var Backbone = Backbone || {};
         ia = round((beginning) * last);
         ib = round((ending) * last);
 
-        vertices.length = 0;
+        renderedVertices.length = 0;
 
         for (var i = ia; i < ib + 1; i++) {
           var v = this.vertices[i];
-          vertices.push({ x: v.x, y: v.y });
+          renderedVertices.push({ x: v.x, y: v.y });
         }
 
         strokeChanged = false;
@@ -2913,7 +3383,7 @@ var Backbone = Backbone || {};
       }
 
       this.trigger(Two.Events.change,
-        this.id, 'vertices', vertices, this.closed, this.curved);
+        this.id, 'vertices', renderedVertices, this.closed, this.curved);
 
     }, this), 0);
 
@@ -2968,6 +3438,8 @@ var Backbone = Backbone || {};
       v.bind(Two.Events.change, updateVertices);
 
     }, this);
+
+    updateVertices();
 
   };
 

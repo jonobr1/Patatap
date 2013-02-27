@@ -1,21 +1,3 @@
-<!--
-
-/**
- * @author jonobr1 / http://jonobr1.com/
- * TODOs:
- *
- * Email Ghostly
- * Email Julia @ Creators Project
- * Talk to Kendall about Gallery stuff
- * Make embeddable version with credentials, player, and playlist
- * Pull assets for society6 competition
- *
- */
-
--->
-
-
-
 <!doctype html>
 <html>
   <head>
@@ -48,6 +30,18 @@
         var URL = $.url().param('url');
         var TRACK = $.url().param('id') || '48079700';
         var SOUND, DEBUG = !!$.url().param('debug') || false, SHOW_COMMENTS = !!$.url().param('comments') || false;
+        var stopped = false;
+
+        // For pausing
+
+        $(window).bind('keyup', function(e) {
+          if (e.which === 83) { // "s"
+            stopped = !stopped;
+            if (!stopped) {
+              loop();
+            }
+          }
+        });
 
         SC.initialize({
           client_id: 'f362eb7eaa0b6c159e1148e127a78b88'
@@ -97,6 +91,7 @@
             console.log('loaded');
             SOUND = soundObject;
             SOUND.play();
+            two.play();
             $('#loader').fadeOut();
           });
 
@@ -158,7 +153,11 @@
 
         // Animation Loop
 
-        (function() {
+        var loop = (function() {
+
+          if (stopped) {
+            return;
+          }
 
           if (DEBUG) {
             stats.update();
@@ -168,6 +167,8 @@
 
           TWEEN.update();
           requestAnimationFrame(arguments.callee);
+
+          return arguments.callee;
 
         })();
 
