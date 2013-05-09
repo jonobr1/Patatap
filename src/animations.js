@@ -640,11 +640,12 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = Math.random() * 16 + 16, r1 = 3, r2 = 10, theta, deviation, amplitude = width / 2, distance = width / 2;
+    var amount = 16, r1 = 12, r2 = 25, theta, deviation, distance = width / 2;
 
     var destinations = [];
     var circles = _.map(_.range(amount), function(i) {
-      var circle = two.makeCircle(0, 0, Math.round(map(Math.random(), 0, 1, r1, r2)));
+      var r = Math.round(map(Math.random(), 0, 1, r1, r2));
+      var circle = two.makeCircle(0, 0, r);
       circle.fill = colors.white;
       circle.noStroke();
       destinations.push(new Two.Vector());
@@ -676,8 +677,8 @@ window.animations = (function() {
     var options = { ending: 0 };
 
     var _in = new TWEEN.Tween(options)
-      .to({ ending: 1 }, duration * 0.75)
-      .easing(Easing.Sinusoidal.In)
+      .to({ ending: 1 }, duration * 0.5)
+      .easing(Easing.Sinusoidal.Out)
       .onStart(function() {
         playing = true;
       })
@@ -698,7 +699,7 @@ window.animations = (function() {
     function reset() {
 
       theta = Math.random() * TWO_PI;
-      deviation = map(Math.random(), 0, 1, Math.PI * 0.25, TWO_PI);
+      deviation = map(Math.random(), 0, 1, 0, Math.PI / 2);
 
       options.ending = 0;
 
@@ -706,13 +707,10 @@ window.animations = (function() {
 
         var t = theta + Math.random() * deviation * 2 - deviation;
         var a = Math.random() * distance;
-        var d = Math.random() * duration;
-        var s = map(Math.random(), 0, 1, 0.9, 1.0);
         var x = a * Math.cos(t);
         var y = a * Math.sin(t);
         destinations[i].set(x, y);
 
-        c.scale = s;
         c.visible = false;
         c.translation.set(0, 0);
 
@@ -962,6 +960,102 @@ window.animations = (function() {
 
   })();
 
+  var strike = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+
+    var amount = 32;
+    var distance = height * 0.5;
+
+    var points = _.map(_.range(amount), function(i) {
+      return new Two.Vector();
+    });
+    var line = two.makePolygon(points, true);
+    line.noFill().stroke = colors.black;
+    line.translation.set(width / 2, height / 2);
+
+    var start = function(onComplete) {
+      line.visible = true;
+      playing = true;
+      animate_in.start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var resize = function() {
+      // distance = height * 0.5;
+      line.translation.set(width / 2, height / 2);
+    };
+    var update = function() {
+      line.stroke = colors.black;
+    };
+
+    var animate_in = new TWEEN.Tween(line)
+      .to({
+        ending: 1.0
+      }, duration * 0.25)
+      .easing(Easing.Circular.In)
+      .onComplete(function() {
+        animate_out.start();
+      });
+
+    var animate_out = new TWEEN.Tween(line)
+      .to({
+        beginning: 1.0
+      }, duration * 0.25)
+      .easing(Easing.Circular.Out)
+      .onComplete(function() {
+        start.onComplete();
+        callback();
+      });
+
+    var exports = {
+      start: start,
+      resize: resize,
+      update: update,
+      playing: function() { return playing; },
+      hash: '1,2'
+    };
+
+    var a = {
+      x: 0, y: 0
+    };
+    var b = {
+      x: 0, y: 0
+    };
+
+    function reset() {
+      playing = false;
+      var rando = Math.random();
+      line.linewidth = Math.round(rando * 7) + 3;
+      distance = Math.round(map(rando, 0, 1, height * 0.5, width))
+      var theta = Math.random() * TWO_PI;
+      a.x = distance * Math.cos(theta);
+      a.y = distance * Math.sin(theta);
+      theta = theta + Math.PI;
+      b.x = distance * Math.cos(theta);
+      b.y = distance * Math.sin(theta);
+      line.beginning = line.ending = 0;
+      line.visible = false;
+      _.each(points, function(p, i) {
+        var pct = i / (amount - 1);
+        p.x = lerp(a.x, b.x, pct);
+        p.y = lerp(a.y, b.y, pct);
+      });
+    }
+
+    reset();
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var squiggle = (function() {
 
     var playing = false;
@@ -1070,7 +1164,7 @@ window.animations = (function() {
 
     var amount = 8;
     var dur = duration / (amount + 2);
-    var distance = height / 6;
+    var distance = height / 5;
     var startAngle = 0;
     var endAngle = TWO_PI;
     var drift = Math.random() * TWO_PI;
@@ -1203,6 +1297,7 @@ window.animations = (function() {
     squiggle.resize();
     timer.resize();
     pinwheel.resize();
+    strike.resize();
   });
 
   var changedColors = false;
@@ -1266,6 +1361,7 @@ window.animations = (function() {
       prism.update();
       pyramid.update();
       pinwheel.update();
+      strike.update();
       document.body.style.background = colors.background;
     },
 
