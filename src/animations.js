@@ -851,6 +851,87 @@ window.animations = (function() {
 
   })();
 
+  var ufo = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+
+    var radius = height * 0.25;
+    var circle = two.makeCircle(0, 0, radius);
+    moon.noStroke.fill = colors.foreground;
+
+    var options = { i: 0, o: 0 };
+    var start = function(onComplete) {
+      circle.visible = false;
+      playing = true;
+      _in.start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      circle.fill = colors.foreground;
+    };
+    var resize = function() {
+      radius = height * 0.25;
+    };
+
+    var _in = new TWEEN.Tween(options)
+      .to({ ending: 1.0 }, duration / 2)
+      .easing(Easing.Sinusoidal.Out)
+      .onUpdate(function(t) {
+        circle.translation.y = lerp(circle.origin, circle.destination, t);
+      })
+      .onComplete(function() {
+        _out.start();
+      });
+
+    var _out = new TWEEN.Tween(circle)
+      .to({ scale: 0 }, duration / 2)
+      .easing(Easing.Sinusoidal.Out)
+      .onComplete(function() {
+        playing = false;
+        start.onComplete();
+        callback();
+      });
+
+    function reset() {
+      circle.visible = false;
+      var right = Math.random() > 0.5;
+      var top = Math.random() > 0.5;
+      var x, y;
+      if (right) {
+        circle.translation.x = width * 0.75;
+      } else {
+        circle.translation.x = width * 0.25;
+      }
+      if (top) {
+        circle.origin = - height / 2;
+      } else {
+        circle.origin = height * 1.5;
+      }
+      circle.destination = height / 2;
+    }
+
+    reset();
+
+    var exports = {
+      resize: resize,
+      update: update,
+      start: start,
+      playing: function() { return playing; },
+      hash: '1,5'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  });
+
   var moon = (function() {
 
     var playing = false;
@@ -1351,17 +1432,9 @@ window.animations = (function() {
         }
         return;
       }
-      squiggle.update();
-      moon.update();
-      timer.update();
-      suspension.update();
-      pistons.update();
-      clay.update();
-      wipe.update();
-      prism.update();
-      pyramid.update();
-      pinwheel.update();
-      strike.update();
+      _.each(this.map, function(o) {
+        o.update();
+      });
       document.body.style.background = colors.background;
     },
 
