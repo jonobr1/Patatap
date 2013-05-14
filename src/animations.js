@@ -360,7 +360,7 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '1,0'
+      hash: '1,1'
     };
 
     monome[exports.hash] = exports;
@@ -415,7 +415,7 @@ window.animations = (function() {
     var options = { ending: 0 };
 
     var _in = new TWEEN.Tween(options)
-      .to({ ending: 1 }, duration)
+      .to({ ending: 1 }, duration * 0.75)
       .easing(Easing.Circular.In)
       .onStart(function() {
         playing = true;
@@ -435,6 +435,7 @@ window.animations = (function() {
       });
 
     function reset() {
+
       clay.visible = false;
       impact = new Two.Vector(Math.random() * width, Math.random() * height);
       var x, y, pos = Math.random() * 8;
@@ -477,13 +478,12 @@ window.animations = (function() {
       distance = height;
 
       _.each(points, function(v, i) {
-        var v = points[i];
         var pct = i / amount;
-        var ptheta = pct * TWO_PI + rotation;
-        var theta = angleBetween(v, impact) - ptheta;
+        var ptheta = pct * TWO_PI;
         v.set(distance * Math.cos(ptheta), distance * Math.sin(ptheta));
+        var theta = angleBetween(v, impact) - ptheta;
         var d = v.distanceTo(impact);
-        var a = 5 * distance / Math.sqrt(d);
+        var a = 10 * distance / Math.sqrt(d);
         var x = a * Math.cos(theta) + v.x;
         var y = a * Math.sin(theta) + v.y;
         destinations[i].set(x, y);
@@ -498,7 +498,7 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,0'
+      hash: '0,6'
     };
 
     monome[exports.hash] = exports;
@@ -628,6 +628,59 @@ window.animations = (function() {
       start: start,
       playing: function() { return playing; },
       hash: '0,4'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var flash = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+
+    var shape = two.makeRectangle(width / 2, height / 2, width, height);
+    shape.noStroke().fill = colors.white;
+    shape.visible = false;
+
+    var start = function(onComplete) {
+      playing = true;
+      _.delay(function() {
+        playing = false;
+        callback();
+        shape.visible = false;
+      }, duration * 0.25);
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    var update = function() {
+      shape.fill = colors.white;
+    };
+
+    var resize = function() {
+      vertices[0].set(- width / 2, - height / 2);
+      vertices[1].set(width / 2, - height / 2);
+      vertices[2].set(width / 2, height / 2);
+      vertices[3].set(- width / 2, height / 2);
+    };
+
+    two.bind('update', function() {
+      if (!playing) {
+        return;
+      }
+      shape.visible = Math.random() > 0.5;
+    });
+
+    var exports = {
+      update: update,
+      resize: resize,
+      start: start,
+      playing: function() { return playing; },
+      hash: '1,4'
     };
 
     monome[exports.hash] = exports;
@@ -858,7 +911,7 @@ window.animations = (function() {
 
     var radius = height * 0.25;
     var circle = two.makeCircle(0, 0, radius);
-    circle.noStroke().fill = colors.foreground;
+    circle.noStroke().fill = colors.accent;
 
     var options = { i: 0, o: 0 };
     var start = function(onComplete) {
@@ -873,7 +926,7 @@ window.animations = (function() {
     start.onComplete = reset;
 
     var update = function() {
-      circle.fill = colors.foreground;
+      circle.fill = colors.accent;
     };
     var resize = function() {
       radius = height * 0.25;
@@ -1230,7 +1283,147 @@ window.animations = (function() {
       resize: resize,
       update: update,
       playing: function() { return playing; },
-      hash: '0,6'
+      hash: '0,0'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var bubbles = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+    var amount = 24, radius = height * .33;
+    var last = amount - 1;
+    var dur = duration * 0.2;
+    var bubbleRadius = 10;
+    var direction = true;
+
+    var circles = _.map(_.range(amount), function(i) {
+
+      var pct = i / last;
+      var theta = pct * TWO_PI;
+      var x = radius * Math.cos(theta);
+      var y = radius * Math.sin(theta);
+
+      var circle = two.makeCircle(radius, 0, bubbleRadius);
+      circle.theta = 0;
+      circle.destination = theta;
+      return circle;
+
+    });
+
+    var shape = two.makeGroup(circles);
+    shape.noStroke().fill = colors.black;
+    shape.translation.set(width / 2, height / 2);
+
+    var start = function(onComplete) {
+      playing = true;
+      ins[0].start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      shape.fill = colors.black;
+    };
+    var resize = function() {
+      shape.translation.set(width / 2, height / 2);
+      radius = height / 3;
+    };
+
+    var options = { ending: 0, beginning: 0 };
+    var diretion = true;
+
+    var ins = _.map(circles, function(c, i) {
+
+      return new TWEEN.Tween(c)
+        .to({ theta: c.destination }, dur / (i + 1))
+        .onStart(function() {
+          c.visible = true;
+        })
+        .onUpdate(function(t) {
+          var theta = direction ? c.theta : - c.theta;
+          var x = radius * Math.cos(theta);
+          var y = radius * Math.sin(theta);
+          c.translation.set(x, y);
+        })
+        .onComplete(function() {
+
+          if (i >= last) {
+            outs[0].start();
+            return;
+          }
+
+          var next = circles[i + 1];
+          var tween = ins[i + 1];
+          next.theta = c.theta;
+          next.translation.copy(c.translation);
+          tween.start();
+
+        });
+
+    });
+
+    var outs = _.map(circles, function(c, i) {
+
+      var next = circles[i + 1];
+      if (!next) {
+        next = TWO_PI;
+      } else {
+        next = next.destination;
+      }
+
+      return new TWEEN.Tween(c)
+        .to({ theta: next }, dur / (amount - (i + 1)))
+        // .easing(Easing.Circular.Out)
+        .onUpdate(function(t) {
+          var theta = direction ? c.theta : - c.theta;
+          var x = radius * Math.cos(theta);
+          var y = radius * Math.sin(theta);
+          c.translation.set(x, y);
+        })
+        .onComplete(function() {
+
+          c.visible = false;
+
+          if (i >= last - 1) {
+            callback();
+            start.onComplete();
+            return;
+          }
+
+          var tween = outs[i + 1].start();
+
+        });
+
+    });
+
+    function reset() {
+      direction = Math.random() > 0.5;
+      shape.visible = false;
+      shape.rotation = TWO_PI * Math.random();
+      playing = false;
+      _.each(circles, function(c) {
+        c.theta = 0;
+        c.translation.set(radius, 0);
+      })
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      playing: function() { return playing; },
+      hash: '1,3'
     };
 
     monome[exports.hash] = exports;
@@ -1356,7 +1549,7 @@ window.animations = (function() {
       resize: resize,
       update: update,
       playing: function() { return playing; },
-      hash: '1,1'
+      hash: '1,0'
     };
 
     monome[exports.hash] = exports;
@@ -1371,15 +1564,11 @@ window.animations = (function() {
     height = two.height;
     center.x = width / 2;
     center.y = height / 2;
-    pistons.resize();
-    moon.resize();
-    suspension.resize();
-    prism.resize();
-    pyramid.resize();
-    squiggle.resize();
-    timer.resize();
-    pinwheel.resize();
-    strike.resize();
+    _.each(animations.map, function(o) {
+      if (o.resize) {
+        o.resize();
+      }
+    });
   });
 
   var changedColors = false;
