@@ -858,13 +858,13 @@ window.animations = (function() {
 
     var radius = height * 0.25;
     var circle = two.makeCircle(0, 0, radius);
-    moon.noStroke.fill = colors.foreground;
+    circle.noStroke().fill = colors.foreground;
 
     var options = { i: 0, o: 0 };
     var start = function(onComplete) {
-      circle.visible = false;
       playing = true;
       _in.start();
+      circle.visible = true;
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -881,7 +881,7 @@ window.animations = (function() {
 
     var _in = new TWEEN.Tween(options)
       .to({ ending: 1.0 }, duration / 2)
-      .easing(Easing.Sinusoidal.Out)
+      .easing(Easing.Circular.Out)
       .onUpdate(function(t) {
         circle.translation.y = lerp(circle.origin, circle.destination, t);
       })
@@ -891,7 +891,7 @@ window.animations = (function() {
 
     var _out = new TWEEN.Tween(circle)
       .to({ scale: 0 }, duration / 2)
-      .easing(Easing.Sinusoidal.Out)
+      .easing(Easing.Circular.Out)
       .onComplete(function() {
         playing = false;
         start.onComplete();
@@ -909,11 +909,12 @@ window.animations = (function() {
         circle.translation.x = width * 0.25;
       }
       if (top) {
-        circle.origin = - height / 2;
+        circle.origin = circle.translation.y =  - height / 2;
       } else {
-        circle.origin = height * 1.5;
+        circle.origin = circle.translation.y = height * 1.5;
       }
       circle.destination = height / 2;
+      circle.scale = 1;
     }
 
     reset();
@@ -930,7 +931,7 @@ window.animations = (function() {
 
     return exports;
 
-  });
+  })();
 
   var moon = (function() {
 
@@ -1433,7 +1434,9 @@ window.animations = (function() {
         return;
       }
       _.each(this.map, function(o) {
-        o.update();
+        if (_.isFunction(o.update)) {
+          o.update();
+        }
       });
       document.body.style.background = colors.background;
     },
