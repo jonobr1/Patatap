@@ -1232,6 +1232,116 @@ window.animations = (function() {
 
   })();
 
+  var splits = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+
+    var amount = 25, last = amount - 1;
+    var radius = height * 0.33;
+    var distance = radius;
+
+    var points = _.map(_.range(amount), function(i) {
+      var pct = i / last;
+      var theta = pct * Math.PI;
+      var x = radius * Math.cos(theta);
+      var y = radius * Math.sin(theta);
+      return new Two.Vector(x, y);
+    });
+
+    var a = two.makePolygon(points);
+    a.origin = new Two.Vector().copy(a.translation);
+
+    points = _.map(_.range(amount), function(i) {
+      var pct = i / last;
+      var theta = pct * Math.PI + Math.PI;
+      var x = radius * Math.cos(theta);
+      var y = radius * Math.sin(theta);
+      return new Two.Vector(x, y);
+    });
+
+    var b = two.makePolygon(points);
+    b.origin = new Two.Vector().copy(b.translation);
+
+    var shape = two.makeGroup(a, b);
+    shape.fill = shape.stroke = colors.foreground;
+    shape.translation.set(width / 2, height / 2);
+
+    var options = { ending: 0, beginning: 0 };
+
+    var start = function(onComplete) {
+      playing = true;
+      _in.start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      shape.fill = shape.stroke = colors.foreground;
+    };
+
+    var resize = function() {
+      radius = height * 0.33;
+      distance = height / 2;
+      shape.translation.set(width / 2, height / 2);
+    };
+
+    var _in = new TWEEN.Tween(options)
+      .to({ ending: 1.0 }, duration * 0.5)
+      .easing(Easing.Circular.In)
+      .onUpdate(function(t) {
+        shape.visible = Math.random() < t;
+      })
+      .onComplete(function() {
+        shape.visible = true;
+        _out.start();
+      });
+
+    var _out = new TWEEN.Tween(options)
+      .to({ beginning: 1.0 }, duration * 0.5)
+      .easing(Easing.Circular.Out)
+      .delay(duration * 0.5)
+      .onUpdate(function(t) {
+        a.translation.y = ease(a.translation.y, a.origin.y + distance, 0.3);
+        b.translation.y = ease(b.translation.y, b.origin.y - distance, 0.3);
+        shape.opacity = 1 - t;
+      })
+      .onComplete(function() {
+        start.onComplete();
+        callback();
+      });
+
+    function reset() {
+
+      playing = false;
+      options.ending = options.beginning = 0;
+      shape.visible = false;
+      shape.rotation = Math.random() * TWO_PI;
+      a.translation.copy(a.origin);
+      b.translation.copy(b.origin);
+      shape.opacity = 1;
+
+    }
+
+    reset();
+
+    var exports = {
+      resize: resize,
+      update: update,
+      start: start,
+      playing: function() { return playing; },
+      hash: '2,5'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var moon = (function() {
 
     var playing = false;
@@ -1920,4 +2030,9 @@ function lerp(a, b, t) {
 
 function map(v, i1, i2, o1, o2) {
   return o1 + (o2 - o1) * ((v - i1) / (i2 - i1));
+}
+
+function sigmoid(a, b, t, k) {
+  var k = k || 0.2;
+  return lerp(a, b, (k * t) / ((1 + k) * t));
 }
