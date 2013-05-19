@@ -207,7 +207,7 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '1,6'
+      hash: '2,6'
     };
 
     monome[exports.hash] = exports;
@@ -311,7 +311,7 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '2,6'
+      hash: '1,6'
     };
 
     monome[exports.hash] = exports;
@@ -385,7 +385,7 @@ window.animations = (function() {
 
     function reset() {
       group.visible = false;
-      group.rotation = Math.random() * TWO_PI;
+      // group.rotation = Math.random() * TWO_PI;
       options.ending = group.scale = 0;
       playing = false;
     }
@@ -469,9 +469,11 @@ window.animations = (function() {
         callback();
       });
 
+    group.rotation = - Math.PI / 2;
+
     function reset() {
       group.visible = false;
-      group.rotation = Math.random() * TWO_PI;
+      // group.rotation = Math.random() * TWO_PI;
       options.ending = group.scale = 0;
       playing = false;
     }
@@ -1239,7 +1241,7 @@ window.animations = (function() {
 
     var amount = 25, last = amount - 1;
     var radius = height * 0.33;
-    var distance = radius;
+    var distance = height / 6;
 
     var points = _.map(_.range(amount), function(i) {
       var pct = i / last;
@@ -1285,7 +1287,7 @@ window.animations = (function() {
 
     var resize = function() {
       radius = height * 0.33;
-      distance = height / 2;
+      distance = height / 6;
       shape.translation.set(width / 2, height / 2);
     };
 
@@ -1547,12 +1549,122 @@ window.animations = (function() {
 
   })();
 
+  var zigzag = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+
+    var amount = 200, w = width / 16, phi = 6, h = height * 0.66;
+    var offset = Math.PI * 0.5;
+
+    var points = _.map(_.range(amount), function(i) {
+      var pct = i / amount;
+      var theta = TWO_PI * phi * pct + offset;
+      var x = w * Math.sin(theta);
+      var y = map(pct, 0, 1, - h / 2, h / 2);
+      return new Two.Vector(x, y);
+    });
+
+    var zigzag = two.makePolygon(points, true);
+    // zigzag.translation.set();
+    zigzag.stroke = colors.black;
+    zigzag.linewidth = 33;
+    zigzag.noFill();
+    zigzag.join = 'miter';
+    zigzag.miter = 4;
+    zigzag.cap = 'butt';
+
+    var start = function(onComplete) {
+      zigzag.visible = true;
+      _in.start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      zigzag.stroke = colors.black;
+    };
+    var resize = function() {
+      w = width / 16;
+      h = height * 0.66;
+    };
+
+    var _in = new TWEEN.Tween(zigzag)
+      .to({ ending: 1.0 }, duration * 0.25)
+      .easing(Easing.Sinusoidal.Out)
+      .onStart(function() {
+        playing = true;
+      })
+      .onComplete(function() {
+        _out.start();
+      });
+
+    var _out = new TWEEN.Tween(zigzag)
+      .to({ beginning: 1.0 }, duration * 0.25)
+      .easing(Easing.Sinusoidal.Out)
+      .onComplete(function() {
+        start.onComplete();
+        callback();
+      });
+
+    function reset() {
+
+      if (Math.random() > 0.5) {
+        zigzag.translation.set(width * 0.85, height / 2);
+      } else {
+        zigzag.translation.set(width * 0.15, height / 2);
+      }
+
+      zigzag.visible = false;
+      var index = Math.random() * 4;
+      if (index > 3) {
+        phi = 5;
+      } else if (index > 2) {
+        phi = 4;
+      } else if (index > 1) {
+        phi = 2
+      } else {
+        phi = 1;
+      }
+      offset = Math.PI / 2;
+      zigzag.rotation = Math.random() > 0.5 ? Math.PI : 0;
+      var x = 0;
+      zigzag.beginning = zigzag.ending = 0;
+      _.each(points, function(v, i) {
+        var pct = i / amount;
+        var theta = Math.abs((((2 * (pct * TWO_PI * phi + offset) / Math.PI) - 1) % 4) - 2) - 1;
+        var x = theta * w / 2;
+        var y = map(pct, 0, 1, - h / 2, h / 2);
+        v.set(x, y);
+      });
+      playing = false;
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      resize: resize,
+      update: update,
+      playing: function() { return playing; },
+      hash: '2,0'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var squiggle = (function() {
 
     var playing = false;
     var callback = _.identity;
     var amount = 200, w = width / 2, phi = 6, h = height * 0.33;
-    var offset = Math.PI * 0.55;
+    var offset = Math.PI * 0.5;
 
     var points = _.map(_.range(amount), function(i) {
       var pct = i / amount;
@@ -1568,7 +1680,7 @@ window.animations = (function() {
     squiggle.linewidth = 12;
     squiggle.noFill();
 
-    points = squiggle.vertices;
+    // points = squiggle.vertices;
 
     var start = function(onComplete) {
       squiggle.visible = true;
@@ -1589,14 +1701,14 @@ window.animations = (function() {
       squiggle.translation.set(width / 2, height / 2);
     };
 
-    var options = { ending: 0, beginning: 0 };
+    // var options = { ending: 0, beginning: 0 };
 
-    var _in = new TWEEN.Tween(options)
+    var _in = new TWEEN.Tween(squiggle)
       .to({ ending: 1.0 }, duration / 2)
       .easing(Easing.Sinusoidal.Out)
-      .onUpdate(function() {
-        squiggle.ending = options.ending;
-      })
+      // .onUpdate(function() {
+      //   squiggle.ending = options.ending;
+      // })
       .onStart(function() {
         playing = true;
       })
@@ -1604,12 +1716,12 @@ window.animations = (function() {
         _out.start();
       });
 
-    var _out = new TWEEN.Tween(options)
+    var _out = new TWEEN.Tween(squiggle)
       .to({ beginning: 1.0 }, duration / 2)
       .easing(Easing.Sinusoidal.In)
-      .onUpdate(function() {
-        squiggle.beginning = options.beginning;
-      })
+      // .onUpdate(function() {
+      //   squiggle.beginning = options.beginning;
+      // })
       .onComplete(function() {
         start.onComplete();
         callback();
@@ -1620,7 +1732,7 @@ window.animations = (function() {
       phi = Math.round(Math.random() * 6) + 1;
       offset = Math.PI / 2;
       squiggle.rotation = Math.random() > 0.5 ? Math.PI : 0;
-      options.beginning = options.ending = 0;
+      // options.beginning = options.ending = 0;
       squiggle.beginning = squiggle.ending = 0;
       _.each(points, function(v, i) {
         var pct = i / amount;
