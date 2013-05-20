@@ -10,7 +10,11 @@ var two = new Two({
 /**
  * Possible Songs:
  * Canoe Canoa by Populous
- * Make You Move by Classixx
+ * Move in the Right Direction by Classixx
+ * Sleeping Forest by Fumitake Ushida
+ * Roll Rocks by Copy Club
+ * Safety Scissors
+ * Bring You Back by Beacon
  */
 
 /**
@@ -34,6 +38,8 @@ window.animations = (function() {
   var duration = 1000;
   var drag = 0.125;
   var monome = {};
+  var pistonAmount = 3;
+  var prismAmount = 3;
 
   var Easing = TWEEN.Easing;
   var PALETTE = [
@@ -119,10 +125,10 @@ window.animations = (function() {
 
     var direction = true;
     var points = [
-      new Two.Vector(- width / 2, -height / 2),
-      new Two.Vector(width / 2, - height / 2),
-      new Two.Vector(width / 2, height / 2),
-      new Two.Vector(- width / 2, height / 2)
+      new Two.Vector(- center.x, -center.y),
+      new Two.Vector(center.x, - center.y),
+      new Two.Vector(center.x, center.y),
+      new Two.Vector(- center.x, center.y)
     ];
     var shape = two.makePolygon(points);
     shape.fill = colors.middleground;
@@ -223,10 +229,10 @@ window.animations = (function() {
 
     var direction = true;
     var points = [
-      new Two.Vector(- width / 2, - height / 2),
-      new Two.Vector(width / 2, - height / 2),
-      new Two.Vector(width / 2, height / 2),
-      new Two.Vector(- width / 2, height / 2)
+      new Two.Vector(- center.x, - center.y),
+      new Two.Vector(center.x, - center.y),
+      new Two.Vector(center.x, center.y),
+      new Two.Vector(- center.x, center.y)
     ];
     var shape = two.makePolygon(points);
     shape.fill = colors.highlight;
@@ -320,179 +326,95 @@ window.animations = (function() {
 
   })();
 
-  var prism = (function() {
+  _.each(_.range(prismAmount), function(i) {
 
-    var amount = 6, r1 = 100, r2 = 2, scalar = 10;
-    var callback = _.identity;
-    var playing = false;
+    var prism = (function() {
 
-    var circles = [];
-    var points = _.map(_.range(amount), function(i) {
-      var pct = i / amount;
-      var theta = TWO_PI * pct;
-      var x = r1 * Math.cos(theta);
-      var y = r1 * Math.sin(theta);
-      var circle = two.makeCircle(x, y, r2);
-      circle.fill = colors.black;
-      circle.noStroke();
-      circles.push(circle);
-      return new Two.Vector(x, y);
-    });
+      var amount = Math.floor(i * 1.5) + 3, r1 = 100, r2 = 2, scalar = 10;
+      var callback = _.identity;
+      var playing = false;
 
-    var prism = two.makePolygon(points);
-    prism.stroke = colors.black;
-    prism.noFill();
-    prism.linewidth = 0.5;
+      var circles = [];
+      var points = _.map(_.range(amount), function(i) {
+        var pct = i / amount;
+        var theta = TWO_PI * pct;
+        var x = r1 * Math.cos(theta);
+        var y = r1 * Math.sin(theta);
+        var circle = two.makeCircle(x, y, r2);
+        circle.fill = colors.black;
+        circle.noStroke();
+        circles.push(circle);
+        return new Two.Vector(x, y);
+      });
 
-    var group = two.makeGroup(prism).add(circles);
-    group.translation.set(width / 2, height / 2);
-
-    var options = { ending: 0 };
-
-    var start = function(onComplete) {
-      group.visible = true;
-      _in.start();
-      if (_.isFunction(onComplete)) {
-        callback = onComplete;
-      }
-    };
-
-    start.onComplete = reset;
-
-    var update = function() {
+      var prism = two.makePolygon(points);
       prism.stroke = colors.black;
-      _.each(circles, function(c) {
-        c.fill = colors.black;
-      });
-    };
-    var resize = function() {
-      group.translation.set(width / 2, height / 2);
-    };
+      prism.noFill();
+      prism.linewidth = 0.5;
 
-    var _in = new TWEEN.Tween(options)
-      .to({ ending: 1 }, duration * 0.75)
-      .easing(Easing.Circular.In)
-      .onStart(function() {
-        playing = true;
-      })
-      .onUpdate(function() {
-        group.scale = options.ending * scalar;
-      })
-      .onComplete(function() {
-        start.onComplete();
-        callback();
-      });
+      var group = two.makeGroup(prism).add(circles);
+      group.translation.set(center.x, center.y);
 
-    function reset() {
-      group.visible = false;
-      // group.rotation = Math.random() * TWO_PI;
-      options.ending = group.scale = 0;
-      playing = false;
-    }
+      var options = { ending: 0 };
 
-    reset();
+      var start = function(onComplete) {
+        group.visible = true;
+        _in.start();
+        if (_.isFunction(onComplete)) {
+          callback = onComplete;
+        }
+      };
 
-    var exports = {
-      start: start,
-      update: update,
-      resize: resize,
-      playing: function() { return playing; },
-      hash: '0,1'
-    };
+      start.onComplete = reset;
 
-    monome[exports.hash] = exports;
+      var update = function() {
+        prism.stroke = colors.black;
+        _.each(circles, function(c) {
+          c.fill = colors.black;
+        });
+      };
+      var resize = function() {
+        group.translation.set(center.x, center.y);
+      };
 
-    return exports;
+      var _in = new TWEEN.Tween(options)
+        .to({ ending: 1 }, duration * 0.75)
+        .easing(Easing.Circular.In)
+        .onStart(function() {
+          playing = true;
+        })
+        .onUpdate(function() {
+          group.scale = options.ending * scalar;
+        })
+        .onComplete(function() {
+          start.onComplete();
+          callback();
+        });
 
-  })();
-
-  var pyramid = (function() {
-
-    var amount = 3, r1 = 100, r2 = 2, scalar = 10;
-    var callback = _.identity;
-    var playing = false;
-
-    var circles = [];
-    var points = _.map(_.range(amount), function(i) {
-      var pct = i / amount;
-      var theta = TWO_PI * pct;
-      var x = r1 * Math.cos(theta);
-      var y = r1 * Math.sin(theta);
-      var circle = two.makeCircle(x, y, r2);
-      circle.fill = colors.black;
-      circle.noStroke();
-      circles.push(circle);
-      return new Two.Vector(x, y);
-    });
-
-    var prism = two.makePolygon(points);
-    prism.stroke = colors.black;
-    prism.noFill();
-    prism.linewidth = 0.5;
-
-    var group = two.makeGroup(prism).add(circles);
-    group.translation.set(width / 2, height / 2);
-
-    var options = { ending: 0 };
-
-    var start = function(onComplete) {
-      group.visible = true;
-      _in.start();
-      if (_.isFunction(onComplete)) {
-        callback = onComplete;
+      function reset() {
+        group.visible = false;
+        // group.rotation = Math.random() * TWO_PI;
+        options.ending = group.scale = 0;
+        playing = false;
       }
-    };
 
-    start.onComplete = reset;
+      reset();
 
-    var update = function() {
-      prism.stroke = colors.black;
-      _.each(circles, function(c) {
-        c.fill = colors.black;
-      });
-    };
-    var resize = function() {
-      group.translation.set(width / 2, height / 2);
-    };
+      var exports = {
+        start: start,
+        update: update,
+        resize: resize,
+        playing: function() { return playing; },
+        hash: i + ',1'
+      };
 
-    var _in = new TWEEN.Tween(options)
-      .to({ ending: 1 }, duration * 0.75)
-      .easing(Easing.Circular.In)
-      .onStart(function() {
-        playing = true;
-      })
-      .onUpdate(function() {
-        group.scale = options.ending * scalar;
-      })
-      .onComplete(function() {
-        start.onComplete();
-        callback();
-      });
+      monome[exports.hash] = exports;
 
-    group.rotation = - Math.PI / 2;
+      return exports;
 
-    function reset() {
-      group.visible = false;
-      // group.rotation = Math.random() * TWO_PI;
-      options.ending = group.scale = 0;
-      playing = false;
-    }
+    })();
 
-    reset();
-
-    var exports = {
-      start: start,
-      update: update,
-      resize: resize,
-      playing: function() { return playing; },
-      hash: '1,1'
-    };
-
-    monome[exports.hash] = exports;
-
-    return exports;
-
-  })();
+  });
 
   /**
    * BACKGROUND
@@ -567,7 +489,7 @@ window.animations = (function() {
 
       if (pos > 7) {
         // north
-        x = width / 2;
+        x = center.x;
         y = 0;
       } else if (pos > 6) {
         // north-west
@@ -576,14 +498,14 @@ window.animations = (function() {
       } else if (pos > 5) {
         // west
         x = 0;
-        y = height / 2;
+        y = center.y;
       } else if (pos > 4) {
         // south-west
         x = 0;
         y = height;
       } else if (pos > 3) {
         // south
-        x = width / 2;
+        x = center.x;
         y = height;
       }  else if (pos > 2) {
         // south-east
@@ -592,7 +514,7 @@ window.animations = (function() {
       } else if (pos > 1) {
         // east
         x = width;
-        y = height / 2;
+        y = center.y;
       } else {
         x = width;
         y = 0;
@@ -632,141 +554,135 @@ window.animations = (function() {
 
   })();
 
-  var pistons = (function() {
+  _.each(_.range(pistonAmount), function(i) {
 
-    var playing = false;
-    var callback = _.identity;
+    var pistons = (function() {
 
-    var amount = 6, w = width * 0.75, h = height / 2;
-    var begin, end;
+      var playing = false;
+      var callback = _.identity;
 
-    var shapes = _.map(_.range(amount), function(i) {
+      var amount = i * 4 + 1, w = width * 0.75, h = center.y;
+      var begin, end;
 
-      var pct = i / amount;
-      var d = h / amount - h / 40;
-      var x = center.x;
-      var y = (center.y - h / 2) + i * h / amount;
+      var group = two.makeGroup();
+      group.translation.copy(center);
 
-      var shape = two.makeRectangle(x, y, w, d);
+      var shapes = _.map(_.range(amount), function(i) {
 
-      shape.fill = colors.white;
-      shape.noStroke();
+        var d = h / amount - h / (amount * 3);
+        var x = 0;
+        var y = - h / 2 + (i + 1) * (h / (amount + 1));
 
-      return shape;
+        var shape = two.makeRectangle(x, y, w, d);
 
-    });
+        shape.fill = colors.white;
+        shape.noStroke();
 
-    var options = { ending: 0, beginning: 0 };
+        group.add(shape);
 
-    var start = function(onComplete) {
-      _.each(shapes, function(shape) {
-        shape.visible = true;
-      });
-      _in.start();
-      if (_.isFunction(onComplete)) {
-        callback = onComplete;
-      }
-    };
-
-    start.onComplete = reset;
-
-    var update = function() {
-      _.each(shapes, function(s) {
-        s.fill = colors.white;
-      });
-    }; // Mainly for color in the future
-    var resize = function() {
-
-      w = width * 0.75, h = height / 2;
-
-      _.each(shapes, function(shape, i) {
-
-        var pct = i / amount;
-        var d = h / amount - h / 40;
-        var x = center.x;
-        var y = (center.y - h / 2) + i * h / amount;
-
-        shape.translation.set(x, y);
-
-        var points = shape.vertices;
-
-        points[2].y = points[3].y = - d / 2;
-        points[0].y = points[1].y =   d / 2;
+        return shape;
 
       });
 
-    };
+      var options = { ending: 0, beginning: 0 };
 
-    var _in = new TWEEN.Tween(options)
-      .to({ ending: 1.0 }, duration * 0.125)
-      .easing(Easing.Sinusoidal.Out)
-      .onStart(function() {
-        playing = true;
-      })
-      .onUpdate(function() {
-        _.each(shapes, function(s) {
-          var points = s.vertices;
-          points[3].x = points[0].x = end * options.ending;
+      var start = function(onComplete) {
+        _.each(shapes, function(shape) {
+          shape.visible = true;
         });
-      })
-      .onComplete(function() {
-        _out.start();
-      });
+        _in.start();
+        if (_.isFunction(onComplete)) {
+          callback = onComplete;
+        }
+      };
 
-    var _out = new TWEEN.Tween(options)
-      .to({ beginning: 1.0 }, duration * 0.125)
-      .easing(Easing.Sinusoidal.Out)
-      .onUpdate(function() {
+      start.onComplete = reset;
+
+      var update = function() {
         _.each(shapes, function(s) {
-          var points = s.vertices;
-          points[1].x = points[2].x = end * options.beginning;
+          s.fill = colors.white;
         });
-      })
-      .onComplete(function() {
-        start.onComplete();
-        callback();
-      });
+      }; // Mainly for color in the future
+      var resize = function() {
 
-    function reset() {
-      options.beginning = options.ending = 0;
-      var rotated = Math.random() > 0.5 ? true : false;
-      if (rotated) {
-        begin = - w / 2;
-        end = w / 2;
-      } else {
-        begin = w / 2;
-        end = - w / 2;
+        w = width * 0.75, h = center.y;
+
+        group.translation.copy(center);
+
+      };
+
+      var _in = new TWEEN.Tween(options)
+        .to({ ending: 1.0 }, duration * 0.125)
+        .easing(Easing.Sinusoidal.Out)
+        .onStart(function() {
+          playing = true;
+        })
+        .onUpdate(function() {
+          _.each(shapes, function(s) {
+            var points = s.vertices;
+            points[3].x = points[0].x = end * options.ending;
+          });
+        })
+        .onComplete(function() {
+          _out.start();
+        });
+
+      var _out = new TWEEN.Tween(options)
+        .to({ beginning: 1.0 }, duration * 0.125)
+        .easing(Easing.Sinusoidal.Out)
+        .onUpdate(function() {
+          _.each(shapes, function(s) {
+            var points = s.vertices;
+            points[1].x = points[2].x = end * options.beginning;
+          });
+        })
+        .onComplete(function() {
+          start.onComplete();
+          callback();
+        });
+
+      function reset() {
+        options.beginning = options.ending = 0;
+        var rotated = Math.random() > 0.5 ? true : false;
+        if (rotated) {
+          begin = - w / 2;
+          end = w / 2;
+        } else {
+          begin = w / 2;
+          end = - w / 2;
+        }
+        _.each(shapes, function(s) {
+          shapes.visible = false;
+          var points = s.vertices;
+          points[0].x = points[1].x = points[2].x = points[3].x = begin;
+        });
+        playing = false;
       }
-      _.each(shapes, function(s) {
-        shapes.visible = false;
-        var points = s.vertices;
-        points[0].x = points[1].x = points[2].x = points[3].x = begin;
-      });
-      playing = false;
-    }
 
-    reset();
+      reset();
 
-    var exports = {
-      update: update,
-      resize: resize,
-      start: start,
-      playing: function() { return playing; },
-      hash: '0,4'
-    };
+      var exports = {
+        update: update,
+        resize: resize,
+        start: start,
+        playing: function() { return playing; },
+        hash: i + ',4'
+      };
 
-    monome[exports.hash] = exports;
+      monome[exports.hash] = exports;
 
-    return exports;
+      return exports;
 
-  })();
+    })();
+
+  });
 
   var flash = (function() {
 
     var playing = false;
     var callback = _.identity;
 
-    var shape = two.makeRectangle(width / 2, height / 2, width, height);
+    var shape = two.makeRectangle(center.x, center.y, width, height);
     shape.noStroke().fill = colors.white;
     shape.visible = false;
 
@@ -788,10 +704,10 @@ window.animations = (function() {
 
     var resize = function() {
       var vertices = shape.vertices;
-      vertices[0].set(- width / 2, - height / 2);
-      vertices[1].set(width / 2, - height / 2);
-      vertices[2].set(width / 2, height / 2);
-      vertices[3].set(- width / 2, height / 2);
+      vertices[0].set(- center.x, - center.y);
+      vertices[1].set(center.x, - center.y);
+      vertices[2].set(center.x, center.y);
+      vertices[3].set(- center.x, center.y);
     };
 
     two.bind('update', function() {
@@ -806,7 +722,7 @@ window.animations = (function() {
       resize: resize,
       start: start,
       playing: function() { return playing; },
-      hash: '1,4'
+      hash: pistonAmount + ',4'
     };
 
     monome[exports.hash] = exports;
@@ -832,7 +748,7 @@ window.animations = (function() {
     });
 
     var group = two.makeGroup(circles);
-    group.translation.set(width / 2, height / 2);
+    group.translation.set(center.x, center.y);
 
     var start = function(onComplete) {
       _.each(circles, function(c) {
@@ -850,7 +766,7 @@ window.animations = (function() {
       group.fill = colors.white;
     };
     var resize = function() {
-      group.translation.set(width / 2, height / 2);
+      group.translation.set(center.x, center.y);
     };
 
     var options = { ending: 0 };
@@ -932,7 +848,7 @@ window.animations = (function() {
     });
 
     var group = two.makeGroup(circles);
-    // group.translation.set(width / 2, height / 2);
+    // group.translation.set(center.x, center.y);
 
     var start = function(onComplete) {
       _.each(circles, function(c) {
@@ -950,7 +866,7 @@ window.animations = (function() {
       group.fill = colors.white;
     };
     var resize = function() {
-      group.translation.set(width / 2, height / 2);
+      group.translation.set(center.x, center.y);
     };
 
     var options = { ending: 0 };
@@ -982,24 +898,24 @@ window.animations = (function() {
       if (pos > 3) {
         // west
         ox = - width / 8;
-        oy = height / 2;
+        oy = center.y;
       } else if (pos > 2) {
         // east
         ox = width * 1.125;
-        oy = height / 2;
+        oy = center.y;
       } else if (pos > 1) {
         // north
-        ox = width / 2;
+        ox = center.x;
         oy = - height / 8;
       } else {
         // west
-        ox = width / 2;
+        ox = center.x;
         oy = height * 1.125;
       }
 
       group.translation.set(ox, oy);
 
-      theta = Math.atan2(height / 2 - oy, width / 2 - ox);
+      theta = Math.atan2(center.y - oy, center.x - ox);
       deviation = Math.PI / 2;
 
       options.ending = 0;
@@ -1062,7 +978,7 @@ window.animations = (function() {
     timer.linewidth = height / 10;
     timer.noFill();
 
-    timer.translation.set(width / 2, height / 2);
+    timer.translation.set(center.x, center.y);
 
     points = timer.vertices;
 
@@ -1080,7 +996,7 @@ window.animations = (function() {
       timer.stroke = colors.highlight;
     };
     var resize = function() {
-      timer.translation.set(width / 2, height / 2);
+      timer.translation.set(center.x, center.y);
       radius = height / 3;
       timer.linewidth = height / 10;
       _.each(points, function(v, i) {
@@ -1210,11 +1126,11 @@ window.animations = (function() {
         circle.translation.x = width * 0.25;
       }
       if (top) {
-        circle.origin = circle.translation.y =  - height / 2;
+        circle.origin = circle.translation.y =  - center.y;
       } else {
         circle.origin = circle.translation.y = height * 1.5;
       }
-      circle.destination = height / 2;
+      circle.destination = center.y;
       circle.scale = 1;
     }
 
@@ -1267,7 +1183,7 @@ window.animations = (function() {
 
     var shape = two.makeGroup(a, b);
     shape.fill = shape.stroke = colors.foreground;
-    shape.translation.set(width / 2, height / 2);
+    shape.translation.set(center.x, center.y);
 
     var options = { ending: 0, beginning: 0 };
 
@@ -1288,7 +1204,7 @@ window.animations = (function() {
     var resize = function() {
       radius = height * 0.33;
       distance = height / 6;
-      shape.translation.set(width / 2, height / 2);
+      shape.translation.set(center.x, center.y);
     };
 
     var _in = new TWEEN.Tween(options)
@@ -1362,7 +1278,7 @@ window.animations = (function() {
     });
 
     var moon = two.makePolygon(points);
-    moon.translation.set(width / 2, height / 2);
+    moon.translation.set(center.x, center.y);
     moon.fill = colors.foreground;
     moon.noStroke();
 
@@ -1383,7 +1299,7 @@ window.animations = (function() {
     };
     var resize = function() {
       radius = height * 0.33;
-      moon.translation.set(width / 2, height / 2);
+      moon.translation.set(center.x, center.y);
     };
 
     var _in = new TWEEN.Tween(options)
@@ -1466,7 +1382,7 @@ window.animations = (function() {
     });
     var line = two.makePolygon(points, true);
     line.noFill().stroke = colors.black;
-    line.translation.set(width / 2, height / 2);
+    line.translation.set(center.x, center.y);
 
     var start = function(onComplete) {
       line.visible = true;
@@ -1481,7 +1397,7 @@ window.animations = (function() {
 
     var resize = function() {
       // distance = height * 0.5;
-      line.translation.set(width / 2, height / 2);
+      line.translation.set(center.x, center.y);
     };
     var update = function() {
       line.stroke = colors.black;
@@ -1568,7 +1484,7 @@ window.animations = (function() {
     var zigzag = two.makePolygon(points, true);
     // zigzag.translation.set();
     zigzag.stroke = colors.black;
-    zigzag.linewidth = 33;
+    zigzag.linewidth = 15;
     zigzag.noFill();
     zigzag.join = 'miter';
     zigzag.miter = 4;
@@ -1613,9 +1529,9 @@ window.animations = (function() {
     function reset() {
 
       if (Math.random() > 0.5) {
-        zigzag.translation.set(width * 0.85, height / 2);
+        zigzag.translation.set(width * 0.85, center.y);
       } else {
-        zigzag.translation.set(width * 0.15, height / 2);
+        zigzag.translation.set(width * 0.15, center.y);
       }
 
       zigzag.visible = false;
@@ -1663,7 +1579,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 200, w = width / 2, phi = 6, h = height * 0.33;
+    var amount = 200, w = center.x, phi = 6, h = height * 0.33;
     var offset = Math.PI * 0.5;
 
     var points = _.map(_.range(amount), function(i) {
@@ -1675,7 +1591,7 @@ window.animations = (function() {
     });
 
     var squiggle = two.makeCurve(points, true);
-    squiggle.translation.set(width / 2, height / 2);
+    squiggle.translation.set(center.x, center.y);
     squiggle.stroke = colors.accent;
     squiggle.linewidth = 12;
     squiggle.noFill();
@@ -1696,9 +1612,9 @@ window.animations = (function() {
       squiggle.stroke = colors.accent;
     };
     var resize = function() {
-      w = width / 2;
+      w = center.x;
       h = height * 0.33;
-      squiggle.translation.set(width / 2, height / 2);
+      squiggle.translation.set(center.x, center.y);
     };
 
     // var options = { ending: 0, beginning: 0 };
@@ -1786,7 +1702,7 @@ window.animations = (function() {
 
     var shape = two.makeGroup(circles);
     shape.noStroke().fill = colors.black;
-    shape.translation.set(width / 2, height / 2);
+    shape.translation.set(center.x, center.y);
 
     var start = function(onComplete) {
       playing = true;
@@ -1802,7 +1718,7 @@ window.animations = (function() {
       shape.fill = colors.black;
     };
     var resize = function() {
-      shape.translation.set(width / 2, height / 2);
+      shape.translation.set(center.x, center.y);
       radius = height / 3;
     };
 
@@ -1919,7 +1835,7 @@ window.animations = (function() {
     var shape = two.makePolygon(points);
     shape.fill = colors.highlight;
     shape.noStroke();
-    shape.translation.set(width / 2, height / 2);
+    shape.translation.set(center.x, center.y);
 
     var start = function(onComplete) {
       playing = true;
@@ -1939,7 +1855,7 @@ window.animations = (function() {
     };
     var resize = function() {
       distance = height / 6;
-      shape.translation.set(width / 2, height / 2);
+      shape.translation.set(center.x, center.y);
     };
 
     var sequence = [];
