@@ -15,6 +15,7 @@ var two = new Two({
  * Roll Rocks by Copy Club
  * Safety Scissors
  * Bring You Back by Beacon
+ * Panoramic or Waiting Room by Lusine
  */
 
 /**
@@ -30,9 +31,10 @@ var two = new Two({
  * + Power Strip
  */
 
+var TWO_PI = Math.PI * 2;
+
 window.animations = (function() {
 
-  var TWO_PI = Math.PI * 2;
   var width = two.width, height = two.height;
   var center = { x: width / 2, y: height / 2 };
   var duration = 1000;
@@ -1816,6 +1818,149 @@ window.animations = (function() {
 
   })();
 
+  var corona = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var amount = 32, radius = height * .45;
+    var last = amount - 1;
+    var dur = duration * 0.1;
+    var bubbleRadius = 12;
+    var direction = true;
+
+    var circles = _.map(_.range(amount), function(i) {
+
+      var pct = i / last;
+      var theta = pct * TWO_PI;
+      var x = radius * Math.cos(theta);
+      var y = radius * Math.sin(theta);
+
+      var circle = makeTriangle(radius, 0, bubbleRadius);
+      circle.theta = 0;
+      circle.destination = theta;
+      return circle;
+
+    });
+
+    var shape = two.makeGroup(circles);
+    shape.noStroke().fill = colors.white;
+    shape.translation.set(center.x, center.y);
+
+    var start = function(onComplete) {
+      playing = true;
+      ins[0].start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      shape.fill = colors.white;
+    };
+    var resize = function() {
+      shape.translation.set(center.x, center.y);
+      radius = height * .45;
+    };
+
+    var options = { ending: 0, beginning: 0 };
+    var diretion = true;
+
+    var ins = _.map(circles, function(c, i) {
+
+      return new TWEEN.Tween(c)
+        .to({ theta: c.destination }, dur / (i + 1))
+        .onStart(function() {
+          c.visible = true;
+        })
+        .onUpdate(function(t) {
+          var theta = direction ? c.theta : - c.theta;
+          var x = radius * Math.cos(theta);
+          var y = radius * Math.sin(theta);
+          c.translation.set(x, y);
+          c.rotation = theta;
+        })
+        .onComplete(function() {
+
+          if (i >= last) {
+            outs[0].start();
+            return;
+          }
+
+          var next = circles[i + 1];
+          var tween = ins[i + 1];
+          next.theta = c.theta;
+          next.translation.copy(c.translation);
+          tween.start();
+
+        });
+
+    });
+
+    var outs = _.map(circles, function(c, i) {
+
+      var next = circles[i + 1];
+      if (!next) {
+        next = TWO_PI;
+      } else {
+        next = next.destination;
+      }
+
+      return new TWEEN.Tween(c)
+        .to({ theta: next }, dur / (amount - (i + 1)))
+        // .easing(Easing.Circular.Out)
+        .onUpdate(function(t) {
+          var theta = direction ? c.theta : - c.theta;
+          var x = radius * Math.cos(theta);
+          var y = radius * Math.sin(theta);
+          c.translation.set(x, y);
+          c.rotation = theta;
+        })
+        .onComplete(function() {
+
+          c.visible = false;
+
+          if (i >= last - 1) {
+            callback();
+            start.onComplete();
+            return;
+          }
+
+          var tween = outs[i + 1].start();
+
+        });
+
+    });
+
+    function reset() {
+      direction = Math.random() > 0.5;
+      shape.visible = false;
+      shape.rotation = TWO_PI * Math.random();
+      playing = false;
+      _.each(circles, function(c) {
+        c.theta = 0;
+        c.translation.set(radius, 0);
+      })
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      playing: function() { return playing; },
+      hash: '2,3'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var pinwheel = (function() {
 
     var playing = false;
@@ -2021,6 +2166,19 @@ window.animations = (function() {
   return exports;
 
 })();
+
+function makeTriangle(x, y, radius) {
+  var t1 = TWO_PI * .33;
+  var t2 = TWO_PI * .66;
+  var t3 = TWO_PI;
+  var points = [
+    new Two.Vector(radius * Math.cos(t1) + x, radius * Math.sin(t1) + y),
+    new Two.Vector(radius * Math.cos(t2) + x, radius * Math.sin(t2) + y),
+    new Two.Vector(radius * Math.cos(t3) + x, radius * Math.sin(t3) + y)
+  ];
+  var shape = two.makePolygon(points);
+  return shape;
+}
 
 function colorsEqual(c1, c2, t) {
   var threshold = t || 0.25;
