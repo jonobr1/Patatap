@@ -15,7 +15,8 @@ var two = new Two({
  * Roll Rocks by Copy Club
  * Safety Scissors
  * Bring You Back by Beacon
- * Panoramic or Waiting Room by Lusine
+ * Panoramic or Another Tomorrow by Lusine
+ * Tentacle VIP by Culprate
  */
 
 /**
@@ -737,7 +738,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 16, r1 = 12, r2 = 20, theta, deviation, distance = height;
+    var amount = 16, r1 = height * 12 / 900, r2 = height * 20 / 900, theta, deviation, distance = height;
 
     var destinations = [];
     var circles = _.map(_.range(amount), function(i) {
@@ -837,7 +838,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 32, r1 = 12, r2 = 20, theta, deviation, distance = width;
+    var amount = 32, r1 = height * 12 / 900, r2 = height * 20 / 900, theta, deviation, distance = width;
 
     var destinations = [];
     var circles = _.map(_.range(amount), function(i) {
@@ -1685,7 +1686,7 @@ window.animations = (function() {
     var amount = 24, radius = height * .33;
     var last = amount - 1;
     var dur = duration * 0.2;
-    var bubbleRadius = 10;
+    var bubbleRadius = height * 10 / 900;
     var direction = true;
 
     var circles = _.map(_.range(amount), function(i) {
@@ -1826,7 +1827,7 @@ window.animations = (function() {
     var amount = 32, radius = height * .45;
     var last = amount - 1;
     var dur = duration * 0.1;
-    var bubbleRadius = 12;
+    var bubbleRadius = height * 12 / 900;
     var direction = true;
 
     var circles = _.map(_.range(amount), function(i) {
