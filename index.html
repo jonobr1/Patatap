@@ -29,16 +29,7 @@
             if (on) {
               var o = animations.map[data.x + ',' + data.y];
               if (o && !o.playing()) {
-                if (isColor) {
-                  _.each(_.range(16), function(i) {
-                    socket.emit('start', {
-                      x: i,
-                      y: 7
-                    });
-                  });
-                } else {
-                  socket.emit('start', data);
-                }
+                socket.emit('start', data);
                 o.start(function() {
                   if (isColor) {
                     _.each(_.range(16), function(i) {

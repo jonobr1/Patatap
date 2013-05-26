@@ -8,15 +8,7 @@ var two = new Two({
  */
 
 /**
- * Possible Songs:
- * Canoe Canoa by Populous
- * Move in the Right Direction by Classixx
- * Sleeping Forest by Fumitake Ushida
- * Roll Rocks by Copy Club
- * Safety Scissors
- * Bring You Back by Beacon
- * Panoramic or Another Tomorrow by Lusine
- * Tentacle VIP by Culprate
+ * Panoramic by Lusine
  */
 
 /**
@@ -43,8 +35,10 @@ window.animations = (function() {
   var monome = {};
   var pistonAmount = 3;
   var prismAmount = 3;
+  var flashAmount = 3;
 
   var Easing = TWEEN.Easing;
+  var PROPERTIES = ['background', 'middleground', 'foreground', 'highlight', 'accent', 'white', 'black'];
   var PALETTE = [
     {
       background: { r: 181, g: 181, b: 181 },
@@ -680,59 +674,63 @@ window.animations = (function() {
 
   });
 
-  var flash = (function() {
+  _.each(_.range(flashAmount), function(i) {
 
-    var playing = false;
-    var callback = _.identity;
+    var flash = (function() {
 
-    var shape = two.makeRectangle(center.x, center.y, width, height);
-    shape.noStroke().fill = colors.white;
-    shape.visible = false;
+      var playing = false;
+      var callback = _.identity;
 
-    var start = function(onComplete) {
-      playing = true;
-      _.delay(function() {
-        playing = false;
-        callback();
-        shape.visible = false;
-      }, duration * 0.25);
-      if (_.isFunction(onComplete)) {
-        callback = onComplete;
-      }
-    };
+      var shape = two.makeRectangle(center.x, center.y, width, height);
+      shape.noStroke().fill = colors[PROPERTIES[PROPERTIES.length - 1 - (i % PROPERTIES.length)]];
+      shape.visible = false;
 
-    var update = function() {
-      shape.fill = colors.white;
-    };
+      var start = function(onComplete) {
+        playing = true;
+        _.delay(function() {
+          playing = false;
+          callback();
+          shape.visible = false;
+        }, duration * 0.25);
+        if (_.isFunction(onComplete)) {
+          callback = onComplete;
+        }
+      };
 
-    var resize = function() {
-      var vertices = shape.vertices;
-      vertices[0].set(- center.x, - center.y);
-      vertices[1].set(center.x, - center.y);
-      vertices[2].set(center.x, center.y);
-      vertices[3].set(- center.x, center.y);
-    };
+      var update = function() {
+        shape.fill = colors[PROPERTIES[PROPERTIES.length - 1 - (i % PROPERTIES.length)]];
+      };
 
-    two.bind('update', function() {
-      if (!playing) {
-        return;
-      }
-      shape.visible = Math.random() > 0.5;
-    });
+      var resize = function() {
+        var vertices = shape.vertices;
+        vertices[0].set(- center.x, - center.y);
+        vertices[1].set(center.x, - center.y);
+        vertices[2].set(center.x, center.y);
+        vertices[3].set(- center.x, center.y);
+      };
 
-    var exports = {
-      update: update,
-      resize: resize,
-      start: start,
-      playing: function() { return playing; },
-      hash: pistonAmount + ',4'
-    };
+      two.bind('update', function() {
+        if (!playing) {
+          return;
+        }
+        shape.visible = Math.random() > 0.5;
+      });
 
-    monome[exports.hash] = exports;
+      var exports = {
+        update: update,
+        resize: resize,
+        start: start,
+        playing: function() { return playing; },
+        hash: i + ',7'
+      };
 
-    return exports;
+      monome[exports.hash] = exports;
 
-  })();
+      return exports;
+
+    })();
+
+  });
 
   var suspension = (function() {
 
@@ -2111,7 +2109,7 @@ window.animations = (function() {
     }
   };
 
-  changeColors.hash = ',7';
+  changeColors.hash = '3,';
 
   changeColors.callback = _.identity;
 
@@ -2123,8 +2121,8 @@ window.animations = (function() {
     changeColors.callback();
   };
 
-  _.each(_.range(16), function(i) {
-    monome[i + changeColors.hash] = changeColors;
+  _.each(_.range(8), function(i) {
+    monome[changeColors.hash + i] = changeColors;
   });
 
   var exports = {
