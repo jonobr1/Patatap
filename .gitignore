@@ -1,2 +1,5 @@
 .DS_Store
 .sass-cache
+./node_modules/
+./node_modules/*
+node_modules
