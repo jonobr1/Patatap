@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="./third-party/jquery.js"></script>
+    <script src="./third-party/two.js"></script>
+    <script src="./third-party/tween.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas, svg {
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+
+      var two = new Two({
+        type: Two.Types.canvas,
+        width: 1000,
+        height: 1000
+      }).appendTo(document.body);
+
+      $.get('./images/ns-logo.svg', function(resp) {
+        var svg = $(resp).find('svg')[0];
+        script = two.interpret(svg).center();
+        _.each(script.children, function(el) {
+          el.cap = 'round';
+          el.join = 'round';
+          el.miter = 10;
+          el.curved = true;
+        });
+
+        script.children[2].curved = false;
+
+        var t = 0, startOver;
+        var clearT = function() {
+          setEnding(script, 0);
+          t = 0;
+          startOver = _.after(60, clearT);
+        };
+
+        var rect = script.getBoundingClientRect();
+        script.translation.set((two.width) / 2, (two.height) / 2);
+        script.scale = 4;
+        script.distances = calculateDistances(script);
+        script.total = 0;
+
+        _.each(script.distances, function(d) {
+          script.total += d;
+        });
+
+        clearT();
+
+        two
+          .bind('update', function() {
+
+            if (t > 0.999) {
+              startOver();
+            } else {
+              t += 0.0125;
+            }
+
+            setEnding(script, TWEEN.Easing.Sinusoidal.InOut(t));
+
+          })
+          .play();
+
+      });
+
+      function setEnding(group, t) {
+
+        var i = 0;
+        var traversed = t * group.total;
+        var current = 0;
+
+        _.each(group.children, function(child) {
+          var distance = group.distances[i];
+          var min = current;
+          var max = current + distance;
+          var pct = cmap(traversed, min, max, 0, 1);
+          child.ending = pct;
+          current = max;
+          i++;
+        });
+
+      }
+
+      function calculateDistances(group) {
+        return _.map(group.children, function(child) {
+          var d = 0, a;
+          _.each(child.vertices, function(b, i) {
+            if (i > 0) {
+              d += a.distanceTo(b);
+            }
+            a = b;
+          });
+          return d;
+        });
+      }
+
+      function clamp(v, min, max) {
+        return Math.max(Math.min(v, max), min);
+      }
+
+      function map(v, i1, i2, o1, o2) {
+        return o1 + (o2 - o1) * ((v - i1) / (i2 - i1));
+      }
+
+      function cmap(v, i1, i2, o1, o2) {
+        return clamp(map(v, i1, i2, o1, o2), o1, o2);
+      }
+
+    </script>
+  </body>
+</html>
