@@ -12,40 +12,129 @@
       <script src="./third-party/tween.js"></script>
       <script src="./third-party/two.js"></script>
       <script src="./src/animations.js"></script>
-      <script src="/socket.io/socket.io.js"></script>
+      <!-- // <script src="/socket.io/socket.io.js"></script> -->
       <script>
 
-        var socket = io.connect('http://localhost');
-        socket
-          .on('connected', function(name) {
-            console.log('connected to', name);
-          })
-          .on('press', function (data) {
+        $(window).bind('keyup', function(e) {
 
-            var index = data.x;
-            var on = !!data.s;
-            var isColor = data.y == 7;
+          e.preventDefault();
+          var code = e.which;
+          var index;
 
-            if (on) {
-              var o = animations.map[data.x + ',' + data.y];
-              if (o && !o.playing()) {
-                socket.emit('start', data);
-                o.start(function() {
-                  if (isColor) {
-                    _.each(_.range(16), function(i) {
-                      socket.emit('end', {
-                        x: i,
-                        y: 7
-                      });
-                    });
-                  } else {
-                    socket.emit('end', data);
-                  }
-                });
-              }
-            }
+          switch (code) {
 
-          });
+            // 1 - 8
+            case 49:
+              index = '0,7';
+              break;
+            case 50:
+              index = '0,6';
+              break;
+            case 51:
+              index = '0,5';
+              break;
+            case 52:
+              index = '0,4';
+              break;
+            case 53:
+              index = '0,3';
+              break;
+            case 54:
+              index = '0,2';
+              break;
+            case 55:
+              index = '0,1';
+              break;
+            case 56:
+              index = '0,0';
+              break;
+
+            // Q - I
+            case 81:
+              index = '1,7';
+              break;
+            case 87:
+              index = '1,6';
+              break;
+            case 69:
+              index = '1,5';
+              break;
+            case 82:
+              index = '1,4';
+              break;
+            case 84:
+              index = '1,3';
+              break;
+            case 89:
+              index = '1,2';
+              break;
+            case 85:
+              index = '1,1';
+              break;
+            case 73:
+              index = '1,0';
+              break;
+
+            // A - K
+            case 65:
+              index = '2,7';
+              break;
+            case 83:
+              index = '2,6';
+              break;
+            case 68:
+              index = '2,5';
+              break;
+            case 70:
+              index = '2,4';
+              break;
+            case 71:
+              index = '2,3';
+              break;
+            case 72:
+              index = '2,2';
+              break;
+            case 74:
+              index = '2,1';
+              break;
+            case 75:
+              index = '2,0';
+              break;
+
+            // Z - ,
+            case 90:
+              index = '3,7';
+              break;
+            case 88:
+              index = '3,6';
+              break;
+            case 67:
+              index = '3,5';
+              break;
+            case 86:
+              index = '3,4';
+              break;
+            case 66:
+              index = '3,3';
+              break;
+            case 78:
+              index = '3,2';
+              break;
+            case 77:
+              index = '3,1';
+              break;
+            case 188:
+              index = '3,0';
+              break;
+
+          }
+
+          var animation = animations.map[index];
+          if (animation) {
+            animation.start();
+          }
+
+        });
 
         two
           .bind('update', function() {
