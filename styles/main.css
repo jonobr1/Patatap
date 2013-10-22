@@ -1,3 +1,6 @@
+body {
+  cursor: none; }
+
 .trigger {
   width: 6px;
   height: 6px;
