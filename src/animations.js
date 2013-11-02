@@ -113,6 +113,11 @@ window.animations = (function() {
     colors[k] = toString(v);
   });
 
+  colors.getRandom = function() {
+    var array = _.toArray(colors);
+    return array[Math.floor(Math.random() * array.length)];
+  };
+
   document.body.style.background = colors.background;
 
   var wipe = (function() {
@@ -2084,6 +2089,105 @@ window.animations = (function() {
 
     return exports;
 
+
+  })();
+
+  var glimmer = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+    var amount = 8, r1 = height * 20 / 900, r2 = height * 40 / 900;
+
+    var longest = 0, index;
+
+    var circles = _.map(_.range(amount), function(i) {
+      var r = Math.round(map(Math.random(), 0, 1, r1, r2));
+      var delay = Math.random() * duration * 0.5;
+      var circle = two.makeCircle(0, 0, r);
+      circle.stroke = colors.white;
+      circle.noFill();
+      circle.__linewidth = Math.random() * 12 + 32;
+      circle.tween = new TWEEN.Tween(circle)
+        .to({ scale: 1, linewidth: 0 }, duration * 0.35)
+        .easing(Easing.Sinusoidal.Out)
+        .delay(delay)
+        .onComplete(function() {
+          circle.visible = false;
+        });
+
+      if (longest < delay) {
+        longest = delay;
+        index = i;
+      }
+
+      return circle;
+
+    });
+
+    circles[index].tween
+      .onComplete(function() {
+        circles[index].visible = false;
+        start.onComplete();
+        callback();
+      });
+
+
+    var group = two.makeGroup(circles);
+    group.translation.set(center.x, center.y);
+
+    var start = function(onComplete) {
+      playing = true;
+      _.each(circles, function(c) {
+        c.visible = true;
+        c.tween.start();
+      });
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    }
+
+    start.onComplete = reset;
+
+    var update = function() {
+      group.stroke = colors.white;
+    };
+    var resize = function() {
+      group.translation.set(center.x, center.y);
+    };
+
+    function reset() {
+
+      _.each(circles, function(c, i) {
+
+        var theta = Math.PI * 2 * Math.random();
+
+        var x = Math.random() * center.y * Math.cos(theta);
+        var y = Math.random() * center.y * Math.sin(theta);
+
+        c.translation.set(x, y);
+        c.visible = false;
+        c.scale = 0;
+        c.linewidth = c.__linewidth;
+
+      });
+
+      playing = false;
+
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      playing: function() { return playing; },
+      hash: '0,8'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
 
   })();
 
