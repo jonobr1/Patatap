@@ -2095,7 +2095,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 16, r1 = height * 20 / 900, r2 = height * 40 / 900;
+    var amount = 12, r1 = height * 20 / 900, r2 = height * 40 / 900;
 
     var longest = 0, index;
 
