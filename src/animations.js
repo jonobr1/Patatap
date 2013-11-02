@@ -736,6 +736,107 @@ window.animations = (function() {
 
   });
 
+  var dotted_spiral = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+    var amount = 120, linewidth = 10, resolution = 4;
+    var magnitude = 300;
+
+    var lines = _.map(_.range(amount), function(i) {
+
+      var pct = i / amount;
+      var r = magnitude * pct;
+      var theta = pct * Math.PI * resolution;
+
+      var x1 = r * Math.cos(theta);
+      var y1 = r * Math.sin(theta);
+
+      pct = (i + 0.25) / amount;
+      r = magnitude * pct;
+      theta = pct * Math.PI * resolution;
+
+      var x2 = r * Math.cos(theta);
+      var y2 = r * Math.sin(theta);
+
+      var line = two.makeLine(x1, y1, x2, y2);
+      line.stroke = colors.black;
+      line.linewidth = (1 - Math.sqrt(1 - pct)) * linewidth;
+
+      return line;
+
+    });
+
+    lines.reverse();
+
+    var group = two.makeGroup(lines);
+    group.translation.set(center.x, center.y);
+
+    var start = function(onComplete) {
+      _in.start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      group.stroke = colors.black;
+    };
+    var resize = function() {
+      group.translation.set(center.x, center.y);
+    };
+
+    var _in = new TWEEN.Tween(group)
+      .onStart(function() {
+        playing = true;
+      })
+      .easing(Easing.Circular.In)
+      .to({ rotation: Math.PI / 8, scale: 8 }, duration * 2)
+      .onUpdate(function(u) {
+        var t = Math.min(map(u, 0, 0.25, 0, 1), 1);
+        var index = Math.floor(t * (amount));
+        _.each(_.range(0, index), function(i) {
+          lines[i].visible = true;
+        });
+      })
+      .onComplete(function() {
+        start.onComplete();
+        callback();
+      });
+
+    function reset() {
+
+      _.each(lines, function(l) {
+        l.visible = false;
+      });
+
+      group.rotation = Math.random() * Math.PI * 2;
+      group.scale = 1;
+
+      _in.to({ rotation: group.rotation + Math.PI / 8, scale: Math.random() * 2 + 10 }, duration * 2);
+
+      playing = false;
+
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      playing: function() { return playing; },
+      hash: '0,9'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var suspension = (function() {
 
     var playing = false;
