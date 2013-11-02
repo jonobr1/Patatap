@@ -113,9 +113,8 @@ window.animations = (function() {
     colors[k] = toString(v);
   });
 
-  colors.getRandom = function() {
-    var array = _.toArray(colors);
-    return array[Math.floor(Math.random() * array.length)];
+  colors.getRandomKey = function() {
+    return PROPERTIES[Math.floor(Math.random() * PROPERTIES.length)];
   };
 
   document.body.style.background = colors.background;
@@ -2096,7 +2095,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 8, r1 = height * 20 / 900, r2 = height * 40 / 900;
+    var amount = 16, r1 = height * 20 / 900, r2 = height * 40 / 900;
 
     var longest = 0, index;
 
@@ -2104,11 +2103,12 @@ window.animations = (function() {
       var r = Math.round(map(Math.random(), 0, 1, r1, r2));
       var delay = Math.random() * duration * 0.5;
       var circle = two.makeCircle(0, 0, r);
-      circle.stroke = colors.white;
+      circle.key = colors.getRandomKey();
+      circle.stroke = colors[circle.key];
       circle.noFill();
-      circle.__linewidth = Math.random() * 12 + 32;
+      circle.__linewidth = Math.random() * 20 + 40;
       circle.tween = new TWEEN.Tween(circle)
-        .to({ scale: 1, linewidth: 0 }, duration * 0.35)
+        .to({ scale: 1, linewidth: 0 }, duration * 0.2)
         .easing(Easing.Sinusoidal.Out)
         .delay(delay)
         .onComplete(function() {
@@ -2149,7 +2149,10 @@ window.animations = (function() {
     start.onComplete = reset;
 
     var update = function() {
-      group.stroke = colors.white;
+      // group.stroke = colors.white;
+      _.each(circles, function(c) {
+        c.stroke = colors[c.key];
+      });
     };
     var resize = function() {
       group.translation.set(center.x, center.y);
