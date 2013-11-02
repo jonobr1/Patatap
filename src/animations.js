@@ -1,5 +1,5 @@
 var two = new Two({
-  // type: Two.Types.canvas,
+  type: Two.Types.canvas,
   fullscreen: true
 }).appendTo(document.body);
 
