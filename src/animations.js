@@ -812,7 +812,7 @@ window.animations = (function() {
         l.visible = false;
       });
 
-      group.rotation = Math.random() * Math.PI * 2;
+      group.rotation = Math.random() * TWO_PI;
       group.scale = 1;
 
       _in.to({ rotation: group.rotation + Math.PI / 8, scale: Math.random() * 2 + 10 }, duration * 2);
@@ -1467,6 +1467,87 @@ window.animations = (function() {
       start: start,
       playing: function() { return playing; },
       hash: '0,5'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var triangle = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+    var radius = height / 12;
+
+    var a = two.makePolygon(
+      0, - radius,
+      radius  * 0.75, 0,
+      - radius * 0.75, 0
+    );
+    a.noStroke().fill = colors.accent;
+
+    _.defer(function() {
+      a.center();
+    });
+
+    var group = two.makeGroup(a);
+
+    group.translation.set(center.x, center.y);
+
+    var start = function(onComplete) {
+      group.visible = true;
+      _in.start();
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      group.fill = colors.accent;
+    };
+    var resize = function() {
+      group.translation.set(center.x, center.y);
+    };
+
+    var _in = new TWEEN.Tween(a.translation)
+      .to({
+        y: - center.y
+      }, 500)
+      .onStart(function() {
+        playing = true;
+      })
+      .onUpdate(function(t) {
+        a.scale = t;
+      })
+      .easing(Easing.Elastic.Out)
+      .onComplete(function() {
+        start.onComplete();
+        callback();
+      });
+
+    function reset() {
+
+      playing = false;
+
+      group.visible = false;
+      a.translation.clear();
+
+      group.rotation = Math.random() * TWO_PI;
+
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      playing: function() { return playing; },
+      hash: '1,8'
     };
 
     monome[exports.hash] = exports;
@@ -2263,7 +2344,7 @@ window.animations = (function() {
 
       _.each(circles, function(c, i) {
 
-        var theta = Math.PI * 2 * Math.random();
+        var theta = TWO_PI * Math.random();
 
         var x = Math.random() * center.y * Math.cos(theta);
         var y = Math.random() * center.y * Math.sin(theta);
