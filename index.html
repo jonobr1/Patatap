@@ -8,12 +8,17 @@
   <body>
     <div id="loader" style="display: none;"></div>
     <div class="scripts" style="display: none;">
+      <script src="//connect.soundcloud.com/sdk.js"></script>
+      <script src="./third-party/url.js"></script>
       <script src="./third-party/jquery.js"></script>
       <script src="./third-party/tween.js"></script>
       <script src="./third-party/two.js"></script>
       <script src="./src/animations.js"></script>
+      <script src="./src/player.js"></script>
       <!-- // <script src="/socket.io/socket.io.js"></script> -->
       <script>
+
+        var player = new Player('f362eb7eaa0b6c159e1148e127a78b88');
 
         $(window).bind('keyup', function(e) {
 
@@ -138,6 +143,15 @@
           }
 
         });
+
+        url.permalink = 'https://soundcloud.com/ghostly';
+        // url.permalink = 'https://soundcloud.com/ghostly/sets/various-artists-smm-opiate';
+
+        var params = _.defaults(url, {
+          permalink: 'https://soundcloud.com/ghostly/lusine-panoramic'
+        });
+
+
 
         two
           .bind('update', function() {
