@@ -1,21 +1,28 @@
 @import 'bourbon/bourbon';
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
+// @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
 
-$padding: 10px;
-$font-size: 12px;
-$line-height: 40px;
+$padding: 7px;
+$font-size: 11px;
+$line-height: 30px;
 $height: $line-height + $padding * 2;
 
 // Colors
 $black: #555;
 $white: #efefef;
+$green: rgb(0, 255, 200);
 
 .sc-player, .sc-player * {
   margin: 0;
   padding: 0;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Ubuntu', 'Lucida Grande', Arial, sans-serif;
   font-size: $font-size;
   text-shadow: 1px 1px #000;
+  ::selection {
+    background: $green; /* Safari */
+    }
+  ::-moz-selection {
+    background: $green; /* Firefox */
+  }
 }
 
 .sc-player {
@@ -35,9 +42,9 @@ $white: #efefef;
     position: relative;
     width: 100%;
     height: 100%;
-    padding-top: $padding;
+    // padding-top: $padding;
     text-align: center;
-    top: 100%;
+    // top: 100%;
     @include transition(top 0.5s $ease-out-circ);
     @include linear-gradient(to top, #444, $black);
   }
@@ -63,33 +70,81 @@ $white: #efefef;
     }
   }
 
-  li.primary {
-    width: 10%;
+  li.primary,
+  li.track-info,
+  li.volume,
+  li.fullscreen,
+  li.kick-back {
+    padding-top: $padding;
+    padding-bottom: $padding;
+    &:not(:first-child) {
+      margin-left: $padding;
+      padding-left: $padding;
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    @include transition(margin-top 0.35s $ease-out-circ);
+    & > * {
+      margin-bottom: $padding;
+    }
+  }
+
+  li.primary,
+  li.volume,
+  li.fullscreen,
+  li.kick-back {
+    width: 40px;
   }
   li.track-info {
     width: 50%;
     & > * {
       padding: 0 $padding;
     }
-    p {
-      text-align: left;
-      line-height: $line-height / 2;
-      a {
-        text-decoration: none;
+    .track {
+      text-align: middle;
+      vertical-align: middle;
+      overflow: hidden;
+      @include user-select(none);
+      & > * {
+        @include inline-block;
+        vertical-align: middle;
+      }
+      div.bar {
+        width: 75%;
+        height: $font-size;
+        margin: 0 $padding;
+        border-radius: $font-size;
+        background: rgba(0, 0, 0, 0.33);
+        box-shadow: inset 0 0 $font-size / 2 rgba(0, 0, 0, 0.5);
+        @include user-select(none);
+        div.needle {
+          width: $font-size / 2;
+          height: $font-size * 1.5;
+          background: $white;
+          border: 1px solid #bbb;
+          box-shadow: 0 0 3px black;
+          border-radius: $font-size / 2;
+          margin-left: - $font-size / 4;
+          margin-top: - ($font-size / 4 + 1);
+          cursor: pointer;
+          position: relative;
+        }
+      }
+      p {
+        text-align: left;
       }
     }
-    p.author {
-      font-weight: bold;
+    .meta {
+      p {
+        text-align: left;
+        line-height: $line-height / 2;
+        a {
+          text-decoration: none;
+        }
+      }
+      p.author {
+        font-weight: bold;
+      }
     }
-  }
-  li.volume {
-    width: 10%;
-  }
-  li.fullscreen {
-    width: 10%;
-  }
-  li.kick-back {
-    width: 10%;
   }
 
   a.soundcloud-button {
@@ -98,7 +153,9 @@ $white: #efefef;
     text-indent: -9999px;
     width: 100%;
     height: 100%;
+    // 64 43
     background: url(http://developers.soundcloud.com/assets/logo_big_white.png) center center no-repeat;
+    background-size: (64px / 2) (43px / 2);
   }
 
   button {
@@ -106,6 +163,14 @@ $white: #efefef;
     background: transparent;
     color: $white;
     cursor: pointer;
+    border-radius: $font-size / 4;
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    &:active {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    outline: none;
   }
 
 }
