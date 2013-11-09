@@ -1,0 +1,79 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
+.sc-player, .sc-player * {
+  margin: 0;
+  padding: 0;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 12px;
+  text-shadow: 1px 1px #000; }
+
+.sc-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  line-height: 40px;
+  color: #efefef; }
+  .sc-player a {
+    color: #efefef; }
+  .sc-player > ul {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+    text-align: center;
+    top: 100%;
+    -webkit-transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -moz-transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    background-color: #444444;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #444444), color-stop(100%, #555555));
+    background-image: -webkit-linear-gradient(bottom, #444444, #555555);
+    background-image: linear-gradient(to top,#444444, #555555); }
+  .sc-player:hover ul, .sc-player.enabled ul {
+    top: 0; }
+  .sc-player ul > * {
+    display: inline-block;
+    vertical-align: baseline;
+    zoom: 1;
+    *display: inline;
+    *vertical-align: auto;
+    overflow: hidden;
+    height: 40px;
+    text-align: center; }
+    .sc-player ul > * button {
+      display: block;
+      margin: 0 auto;
+      height: 40px;
+      width: 100%; }
+  .sc-player li.primary {
+    width: 10%; }
+  .sc-player li.track-info {
+    width: 50%; }
+    .sc-player li.track-info > * {
+      padding: 0 10px; }
+    .sc-player li.track-info p {
+      text-align: left;
+      line-height: 20px; }
+      .sc-player li.track-info p a {
+        text-decoration: none; }
+    .sc-player li.track-info p.author {
+      font-weight: bold; }
+  .sc-player li.volume {
+    width: 10%; }
+  .sc-player li.fullscreen {
+    width: 10%; }
+  .sc-player li.kick-back {
+    width: 10%; }
+  .sc-player a.soundcloud-button {
+    display: block;
+    overflow: hidden;
+    text-indent: -9999px;
+    width: 100%;
+    height: 100%;
+    background: url(http://developers.soundcloud.com/assets/logo_big_white.png) center center no-repeat; }
+  .sc-player button {
+    border: 0;
+    background: transparent;
+    color: #efefef;
+    cursor: pointer; }

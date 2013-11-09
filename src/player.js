@@ -11,6 +11,8 @@
     this.domElement = document.createElement('div');
     this.domElement.classList.add('sc-player');
 
+    this.domElement.innerHTML = _.template(Player.template, {});
+
     if (_.isString(client_id)) {
       Player.initialize(client_id);
     }
@@ -32,7 +34,9 @@
         client_id: id
       });
 
-    }
+    },
+
+    template: ''
 
   });
 
@@ -50,6 +54,8 @@
     },
 
     fetch: function(permalink, callback) {
+
+      var _this = this;
 
       $.getJSON('http://api.soundcloud.com/resolve.json?url=' + permalink + '&client_id=' + Player.CLIENT, function(resp) {
 
@@ -75,13 +81,12 @@
           return this;
         }
 
-        SC.stream(request, _.bind(function(sound){
-          console.log(sound);
-          this.stream(sound);
+        SC.stream(request, function(sound){
+          _this.stream(sound);
           if (_.isFunction(callback)) {
-            callback.call(this, sound);
+            callback.call(_this, sound);
           }
-        }, this));
+        });
 
       });
 

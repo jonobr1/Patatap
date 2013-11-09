@@ -3,4 +3,10 @@
 node_modules/
 ./node_modules/
 ./node_modules/*
-node_modules
+node_modulesstyles/bourbon/
+styles/bourbon/_bourbon-deprecated-upcoming.scss
+styles/bourbon/_bourbon.scss
+styles/bourbon/addons
+styles/bourbon/css3
+styles/bourbon/functions
+styles/bourbon/helpers

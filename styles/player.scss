@@ -1,0 +1,111 @@
+@import 'bourbon/bourbon';
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
+
+$padding: 10px;
+$font-size: 12px;
+$line-height: 40px;
+$height: $line-height + $padding * 2;
+
+// Colors
+$black: #555;
+$white: #efefef;
+
+.sc-player, .sc-player * {
+  margin: 0;
+  padding: 0;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: $font-size;
+  text-shadow: 1px 1px #000;
+}
+
+.sc-player {
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $height;
+  line-height: $line-height;
+  color: $white;
+  a {
+    color: $white;
+  }
+
+  & > ul {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: $padding;
+    text-align: center;
+    top: 100%;
+    @include transition(top 0.5s $ease-out-circ);
+    @include linear-gradient(to top, #444, $black);
+  }
+
+  &:hover,
+  &.enabled {
+    ul {
+      top: 0;
+    }
+  }
+
+  ul > * {
+    @include inline-block;
+    overflow: hidden;
+    height: $line-height;
+    // background: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    button {
+      display: block;
+      margin: 0 auto;
+      height: $line-height;
+      width: 100%;
+    }
+  }
+
+  li.primary {
+    width: 10%;
+  }
+  li.track-info {
+    width: 50%;
+    & > * {
+      padding: 0 $padding;
+    }
+    p {
+      text-align: left;
+      line-height: $line-height / 2;
+      a {
+        text-decoration: none;
+      }
+    }
+    p.author {
+      font-weight: bold;
+    }
+  }
+  li.volume {
+    width: 10%;
+  }
+  li.fullscreen {
+    width: 10%;
+  }
+  li.kick-back {
+    width: 10%;
+  }
+
+  a.soundcloud-button {
+    display: block;
+    overflow: hidden;
+    text-indent: -9999px;
+    width: 100%;
+    height: 100%;
+    background: url(http://developers.soundcloud.com/assets/logo_big_white.png) center center no-repeat;
+  }
+
+  button {
+    border: 0;
+    background: transparent;
+    color: $white;
+    cursor: pointer;
+  }
+
+}
