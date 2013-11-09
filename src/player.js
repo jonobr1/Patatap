@@ -107,7 +107,7 @@
       return this.stop().play();
     },
 
-    seek: function() {
+    seek: function(t) {
 
     },
 
