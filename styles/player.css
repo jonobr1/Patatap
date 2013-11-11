@@ -21,6 +21,8 @@
   color: #efefef; }
   .sc-player a {
     color: #efefef; }
+    .sc-player a:hover {
+      color: #fff; }
   .sc-player > ul {
     position: relative;
     width: 100%;
@@ -51,8 +53,8 @@
       width: 100%; }
   .sc-player li.primary,
   .sc-player li.track-info,
-  .sc-player li.volume,
-  .sc-player li.fullscreen,
+  .sc-player li.audio,
+  .sc-player li.view,
   .sc-player li.kick-back {
     padding-top: 7px;
     padding-bottom: 7px;
@@ -61,27 +63,28 @@
     transition: margin-top 0.35s cubic-bezier(0.075, 0.82, 0.165, 1); }
     .sc-player li.primary:not(:first-child),
     .sc-player li.track-info:not(:first-child),
-    .sc-player li.volume:not(:first-child),
-    .sc-player li.fullscreen:not(:first-child),
+    .sc-player li.audio:not(:first-child),
+    .sc-player li.view:not(:first-child),
     .sc-player li.kick-back:not(:first-child) {
       margin-left: 7px;
       padding-left: 7px;
-      border-left: 1px solid rgba(0, 0, 0, 0.1); }
+      border-left: 1px solid rgba(0, 0, 0, 0.2); }
     .sc-player li.primary > *,
     .sc-player li.track-info > *,
-    .sc-player li.volume > *,
-    .sc-player li.fullscreen > *,
+    .sc-player li.audio > *,
+    .sc-player li.view > *,
     .sc-player li.kick-back > * {
       margin-bottom: 7px; }
   .sc-player li.primary,
-  .sc-player li.volume,
-  .sc-player li.fullscreen,
+  .sc-player li.audio,
+  .sc-player li.view,
   .sc-player li.kick-back {
     width: 40px; }
   .sc-player li.track-info {
     width: 50%; }
     .sc-player li.track-info > * {
-      padding: 0 7px; }
+      padding: 0 7px;
+      height: 30px; }
     .sc-player li.track-info .track {
       text-align: middle;
       vertical-align: middle;
@@ -89,7 +92,10 @@
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
-      user-select: none; }
+      user-select: none;
+      -webkit-transition: margin-top 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+      -moz-transition: margin-top 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+      transition: margin-top 1s cubic-bezier(0.075, 0.82, 0.165, 1); }
       .sc-player li.track-info .track > * {
         display: inline-block;
         vertical-align: baseline;
@@ -117,7 +123,6 @@
           border-radius: 5.5px;
           margin-left: -2.75px;
           margin-top: -3.75px;
-          cursor: pointer;
           position: relative; }
       .sc-player li.track-info .track p {
         text-align: left; }
@@ -144,6 +149,27 @@
     border-radius: 2.75px;
     outline: none; }
     .sc-player button:hover {
-      background: rgba(255, 255, 255, 0.1); }
+      background-color: rgba(255, 255, 255, 0.1); }
     .sc-player button:active {
-      background: rgba(0, 0, 0, 0.2); }
+      background-color: rgba(0, 0, 0, 0.2); }
+  .sc-player .repeat,
+  .sc-player .play,
+  .sc-player .pause,
+  .sc-player .volume,
+  .sc-player .fullscreen {
+    overflow: hidden;
+    text-indent: -9999px; }
+  .sc-player .repeat {
+    background: transparent url(../images/repeat.svg) center center no-repeat; }
+  .sc-player .play {
+    background: transparent url(../images/play.svg) center center no-repeat; }
+  .sc-player .pause {
+    background: transparent url(../images/pause.svg) center center no-repeat; }
+  .sc-player .volume {
+    background: transparent url(../images/volume.svg) center center no-repeat; }
+  .sc-player .volume.mute {
+    background: transparent url(../images/mute.svg) center center no-repeat; }
+  .sc-player .fullscreen {
+    background: transparent url(../images/fullscreen.svg) center center no-repeat; }
+  .sc-player .fullscreen.partial {
+    background: transparent url(../images/partialscreen.svg) center center no-repeat; }

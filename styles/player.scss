@@ -36,6 +36,9 @@ $green: rgb(0, 255, 200);
   color: $white;
   a {
     color: $white;
+    &:hover {
+      color: #fff;
+    }
   }
 
   & > ul {
@@ -72,15 +75,15 @@ $green: rgb(0, 255, 200);
 
   li.primary,
   li.track-info,
-  li.volume,
-  li.fullscreen,
+  li.audio,
+  li.view,
   li.kick-back {
     padding-top: $padding;
     padding-bottom: $padding;
     &:not(:first-child) {
       margin-left: $padding;
       padding-left: $padding;
-      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
     }
     @include transition(margin-top 0.35s $ease-out-circ);
     & > * {
@@ -89,8 +92,8 @@ $green: rgb(0, 255, 200);
   }
 
   li.primary,
-  li.volume,
-  li.fullscreen,
+  li.audio,
+  li.view,
   li.kick-back {
     width: 40px;
   }
@@ -98,12 +101,14 @@ $green: rgb(0, 255, 200);
     width: 50%;
     & > * {
       padding: 0 $padding;
+      height: $line-height;
     }
     .track {
       text-align: middle;
       vertical-align: middle;
       overflow: hidden;
       @include user-select(none);
+      @include transition(margin-top 1s $ease-out-circ);
       & > * {
         @include inline-block;
         vertical-align: middle;
@@ -125,7 +130,7 @@ $green: rgb(0, 255, 200);
           border-radius: $font-size / 2;
           margin-left: - $font-size / 4;
           margin-top: - ($font-size / 4 + 1);
-          cursor: pointer;
+          // cursor: pointer; 
           position: relative;
         }
       }
@@ -165,12 +170,42 @@ $green: rgb(0, 255, 200);
     cursor: pointer;
     border-radius: $font-size / 4;
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.1);
     }
     &:active {
-      background: rgba(0, 0, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.2);
     }
     outline: none;
+  }
+
+  .repeat,
+  .play,
+  .pause,
+  .volume,
+  .fullscreen {
+    overflow: hidden;
+    text-indent: -9999px;
+  }
+  .repeat {
+    background: transparent url(../images/repeat.svg) center center no-repeat;
+  }
+  .play {
+    background: transparent url(../images/play.svg) center center no-repeat;
+  }
+  .pause {
+    background: transparent url(../images/pause.svg) center center no-repeat;
+  }
+  .volume {
+    background: transparent url(../images/volume.svg) center center no-repeat;
+  }
+  .volume.mute {
+    background: transparent url(../images/mute.svg) center center no-repeat;
+  }
+  .fullscreen {
+    background: transparent url(../images/fullscreen.svg) center center no-repeat;
+  }
+  .fullscreen.partial {
+    background: transparent url(../images/partialscreen.svg) center center no-repeat;
   }
 
 }
