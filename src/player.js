@@ -135,6 +135,11 @@
 
       }, this), 10000);
 
+      // Animate in
+      _.defer(_.bind(function() {
+        this.$.domElement.addClass('enabled');
+      }, this))
+
       return this.showPlayButton();
 
     },

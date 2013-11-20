@@ -1,33 +1,17 @@
 var two = new Two({
   type: Two.Types.canvas,
   fullscreen: true
-}).appendTo(document.body);
+}).appendTo(document.querySelector('#content'));
 
 /**
  * Collection of animations and such for Neuronal Synchrony.
- */
-
-/**
- * Panoramic by Lusine
- */
-
-/**
- * Things needed for the shoot:
- * + long usb 2.0 male - male a - b cable
- *   http://www.radioshack.com/product/index.jsp?productId=2103746
- * + Muslin fabric * Shipped
- * + Something to stretch the canvas on
- * + A table to put down the monome
- * + Camera & Tripod for camera
- * + Projector
- * + Extension cable 100ft
- * + Power Strip
  */
 
 var TWO_PI = Math.PI * 2;
 
 window.animations = (function() {
 
+  var container = document.querySelector('#content');
   var width = two.width, height = two.height;
   var center = { x: width / 2, y: height / 2 };
   var duration = 1000;
@@ -117,7 +101,7 @@ window.animations = (function() {
     return PROPERTIES[Math.floor(Math.random() * PROPERTIES.length)];
   };
 
-  document.body.style.background = colors.background;
+  container.style.background = colors.background;
 
   var wipe = (function() {
 
@@ -711,6 +695,7 @@ window.animations = (function() {
         vertices[1].set(center.x, - center.y);
         vertices[2].set(center.x, center.y);
         vertices[3].set(- center.x, center.y);
+        shape.translation.copy(center);
       };
 
       two.bind('update', function() {
@@ -2377,6 +2362,10 @@ window.animations = (function() {
   })();
 
   two.bind('resize', function() {
+    var rect = container.getBoundingClientRect();
+    two.renderer.setSize(rect.width, rect.height);
+    two.width = rect.width;
+    two.height = rect.height;
     width = two.width;
     height = two.height;
     center.x = width / 2;
@@ -2444,7 +2433,7 @@ window.animations = (function() {
           o.update();
         }
       });
-      document.body.style.background = colors.background;
+      container.style.background = colors.background;
     },
 
     map: monome

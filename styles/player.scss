@@ -48,7 +48,7 @@ $yellow: #fff687;
     height: 100%;
     // padding-top: $padding;
     text-align: center;
-    // top: 100%;
+    top: 100%;
     @include transition(top 0.5s $ease-out-circ);
     @include linear-gradient(to top, #444, $black);
   }

@@ -1,51 +1,14 @@
-body {
-  cursor: none; }
+* {
+  margin: 0;
+  padding: 0; }
 
-.trigger {
-  width: 6px;
-  height: 6px;
+#content {
   position: absolute;
   top: 0;
   left: 0;
-  margin-top: -3px;
-  margin-left: -3px;
-  cursor: move;
-  background: #00A79D;
-  border-radius: 50%; }
-  .trigger.animating {
-    background: #EF4136; }
-
-.no-select {
-  -webkit-user-select: none;
-  /* Chrome all / Safari all */
-  -moz-user-select: none;
-  /* Firefox all */
-  -ms-user-select: none;
-  /* IE 10+ */
-  /* No support for these yet, use at own risk */
-  -o-user-select: none;
-  user-select: none; }
-
-p.comment {
-  margin: 0 0 15px 0;
-  padding: 0;
-  overflow: hidden; }
-  p.comment a:link, p.comment a:visited {
-    color: white;
-    border-bottom: 2px solid white;
-    text-decoration: none;
-    box-shadow: 0 1px #777777; }
-  p.comment a:hover, p.comment a:active {
-    border-bottom: 2px solid transparent;
-    box-shadow: 0 1px transparent; }
-
-.comment {
-  font-family: "Lekton", monospace;
-  font-size: 25px;
-  line-height: 30px;
-  font-weight: normal;
-  color: white;
-  text-shadow: 1px 1px #333333; }
+  right: 0;
+  bottom: 0;
+  background: #b5b5b5; }
 
 #loader {
   position: fixed;
@@ -53,5 +16,46 @@ p.comment {
   left: 50%;
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.gif) center center no-repeat;
-  border-radius: 50%; }
+  background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
+  background-size: 16px 16px;
+  border-radius: 50%;
+  -webkit-animation-name: rotate;
+  -moz-animation-name: rotate;
+  animation-name: rotate;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  -moz-animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite; }
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0); }
+
+  to {
+    -webkit-transform: rotate(360deg); } }
+
+@-moz-keyframes rotate {
+  from {
+    -moz-transform: rotate(0); }
+
+  to {
+    -moz-transform: rotate(360deg); } }
+
+@-o-keyframes rotate {
+  from {
+    -o-transform: rotate(0); }
+
+  to {
+    -o-transform: rotate(360deg); } }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0); }
+
+  to {
+    transform: rotate(360deg); } }
