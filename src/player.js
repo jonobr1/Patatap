@@ -36,7 +36,7 @@
 
     LineHeight: 37,
 
-    template: '<ul><li class="primary"><button class="repeat">Repeat</button><button class="play">Play</button><button class="pause">Pause</button></li><li class="track-info"><div class="track"><p class="elapsed">0:00</p><div class="bar"><div class="needle"></div></div><p class="total"><%= duration %></p></div><div class="meta"><p class="author"><a href="<%= author_url %>" target="_blank"><%= author %></a></p><p class="title"><a href="<%= permalink %>" target="_blank"><%= title %></a></p></div><!-- <div class="eq"><canvas width="100%" height="100%"></canvas></div> --></li><li class="audio"><button class="volume">Volume</button></li><li class="view"><button class="fullscreen">Fullscreen</button></li><li class="kick-back"><button><a class="soundcloud-button" href="<%= permalink %>" target="_blank">SoundCloud</a></button></li></ul>'
+    template: '<ul><li class="primary"><button class="repeat">Repeat</button><button class="play">Play</button><button class="pause">Pause</button></li><li class="track-info"><div class="track"><p class="elapsed">0:00</p><div class="bar"><div class="buffered"></div><div class="needle"></div></div><p class="total"><%= duration %></p></div><div class="meta"><p class="author"><a href="<%= author_url %>" target="_blank"><%= author %></a></p><p class="title"><a href="<%= permalink %>" target="_blank"><%= title %></a></p></div><!-- <div class="eq"><canvas width="100%" height="100%"></canvas></div> --></li><li class="audio"><button class="volume">Volume</button></li><li class="view"><button class="fullscreen">Fullscreen</button></li><li class="kick-back"><button><a class="soundcloud-button" href="<%= permalink %>" target="_blank">SoundCloud</a></button></li></ul>'
 
   });
 
@@ -85,6 +85,7 @@
       this.$.trackInfo = this.$.domElement.find('.track-info');
       this.$.track = this.$.domElement.find('.track');
       this.$.elapsed = this.$.domElement.find('.elapsed');
+      this.$.buffered = this.$.domElement.find('.buffered');
       this.$.needle = this.$.domElement.find('.needle');
       this.$.volume = this.$.domElement.find('.volume')
         .click(_.bind(this.toggleMute, this));
@@ -98,6 +99,14 @@
       }
 
       var position, duration;
+
+      this.sound.options.whileloading = _.bind(function() {
+
+        pct = (this.sound.bytesLoaded / this.sound.bytesTotal) || 0;
+        pct *= 98;
+        this.$.buffered.css('width', Math.floor(pct) + '%');
+
+      }, this);
 
       this.sound.options.whileplaying = _.bind(function() {
 

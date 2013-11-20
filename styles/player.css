@@ -104,6 +104,7 @@
         *vertical-align: auto;
         vertical-align: middle; }
       .sc-player li.track-info .track div.bar {
+        position: relative;
         width: 75%;
         height: 11px;
         margin: 0 7px;
@@ -114,6 +115,18 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none; }
+        .sc-player li.track-info .track div.bar div.buffered {
+          width: 0;
+          height: 2px;
+          position: absolute;
+          left: 1%;
+          right: 1%;
+          background: #7fffe3;
+          opacity: 0.33;
+          margin-top: 4.5px;
+          -webkit-transition: width 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+          -moz-transition: width 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+          transition: width 0.35s cubic-bezier(0.075, 0.82, 0.165, 1); }
         .sc-player li.track-info .track div.bar div.needle {
           width: 5.5px;
           height: 16.5px;
