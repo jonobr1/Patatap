@@ -88,6 +88,14 @@
       this.$.needle = this.$.domElement.find('.needle');
       this.$.volume = this.$.domElement.find('.volume')
         .click(_.bind(this.toggleMute, this));
+      this.$.view = this.$.domElement.find('.view');
+      this.$.fullscreen = this.$.domElement.find('.fullscreen')
+        .click(_.bind(this.toggleFullscreen, this));
+
+      // If no fullscreen available, remove it!
+      if (!BigScreen.enabled) {
+        this.$.view.remove();
+      }
 
       var position, duration;
 
@@ -246,6 +254,24 @@
         return this.unmute();
       }
       return this.mute();
+    },
+
+    toggleFullscreen: function() {
+      if (!BigScreen.enabled) {
+        return this;
+      }
+      var parent = this.$.domElement.parent();
+      if (parent.length <= 0) {
+        return this;
+      }
+      var enter = _.bind(function() {
+        this.$.fullscreen.addClass('partial');
+      }, this);
+      var exit = _.bind(function() {
+        this.$.fullscreen.removeClass('partial');
+      }, this);
+      BigScreen.toggle(parent[0], enter, exit);
+      return this;
     }
 
   });
