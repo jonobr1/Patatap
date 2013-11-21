@@ -29,7 +29,7 @@
           var player = new Player('f362eb7eaa0b6c159e1148e127a78b88')
             .appendTo(container[0]);
 
-          $(document).bind('keyup', function(e) {
+          $(window).bind('keyup', function(e) {
 
             e.preventDefault();
             var code = e.which;
@@ -164,16 +164,14 @@
            * Add recording functionality
            */
           if (url.boolean('record', false)) {
-            player
-              .bind('play', function() {
-                record.start();
-              })
-              .bind('finish', function() {
-                record.end();
-              });
+            // record.data = ; // Set data to replay
+            player.bind('play', record.start)
+          } else if (url.boolean('replay', true)) {
+            player.bind('play', record.replay);
           }
 
           player
+            .bind('finish', record.end)
             .fetch(params.permalink, function(resp) {
               $('#loader').fadeOut(150);
             });
@@ -182,6 +180,7 @@
             .bind('update', function() {
               animations.update();
               TWEEN.update();
+              record.update();
             })
             .play();
 

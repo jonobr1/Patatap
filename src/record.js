@@ -44,7 +44,9 @@ window.record = (function() {
 
       startTime = Date.now();
 
-      record.data = data;
+      if (_.isObject(data)) {
+        record.data = data;
+      }
 
       return record;
 
@@ -52,12 +54,16 @@ window.record = (function() {
 
     update: function(time) {
 
+      if (!playing) {
+        return record;
+      }
+
       var elapsed = time || (Date.now() - startTime);
 
       for (var i = index, l = this.data.length; i < l; i+=2) {
         if (record.data[i + 1] < elapsed) {
           $window.trigger('keyup', [record.data[i]]);
-          index = i + 1;
+          index = i + 2;
         } else {
           break;
         }
@@ -73,7 +79,11 @@ window.record = (function() {
 
       endTime = Date.now();
 
-      $(window).unbind('keyup', record.save);
+      if (_.isFunction(record.save)) {
+        $(window).unbind('keyup', record.save);
+      }
+
+      index = 0;
 
       return record;
 
