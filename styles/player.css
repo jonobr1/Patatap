@@ -1,0 +1,189 @@
+.sc-player, .sc-player * {
+  margin: 0;
+  padding: 0;
+  font-family: 'Ubuntu', 'Lucida Grande', Arial, sans-serif;
+  font-size: 11px;
+  text-shadow: 1px 1px #000; }
+  .sc-player ::selection, .sc-player * ::selection {
+    background: #00ffc8;
+    /* Safari */ }
+  .sc-player ::-moz-selection, .sc-player * ::-moz-selection {
+    background: #00ffc8;
+    /* Firefox */ }
+
+.sc-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  line-height: 30px;
+  color: #efefef; }
+  .sc-player a {
+    color: #efefef; }
+    .sc-player a:hover {
+      color: #fff; }
+  .sc-player > ul {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    top: 100%;
+    -webkit-transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -moz-transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    background-color: #444444;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #444444), color-stop(100%, #555555));
+    background-image: -webkit-linear-gradient(bottom, #444444, #555555);
+    background-image: linear-gradient(to top,#444444, #555555); }
+  .sc-player:hover ul, .sc-player.enabled ul {
+    top: 0; }
+  .sc-player ul > * {
+    display: inline-block;
+    vertical-align: baseline;
+    zoom: 1;
+    *display: inline;
+    *vertical-align: auto;
+    overflow: hidden;
+    height: 30px;
+    text-align: center; }
+    .sc-player ul > * button {
+      display: block;
+      margin: 0 auto;
+      height: 30px;
+      width: 100%; }
+  .sc-player li.primary,
+  .sc-player li.track-info,
+  .sc-player li.audio,
+  .sc-player li.view,
+  .sc-player li.kick-back {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    -webkit-transition: margin-top 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -moz-transition: margin-top 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: margin-top 0.35s cubic-bezier(0.075, 0.82, 0.165, 1); }
+    .sc-player li.primary:not(:first-child),
+    .sc-player li.track-info:not(:first-child),
+    .sc-player li.audio:not(:first-child),
+    .sc-player li.view:not(:first-child),
+    .sc-player li.kick-back:not(:first-child) {
+      margin-left: 7px;
+      padding-left: 7px;
+      border-left: 1px solid rgba(0, 0, 0, 0.2); }
+    .sc-player li.primary > *,
+    .sc-player li.track-info > *,
+    .sc-player li.audio > *,
+    .sc-player li.view > *,
+    .sc-player li.kick-back > * {
+      margin-bottom: 7px; }
+  .sc-player li.primary,
+  .sc-player li.audio,
+  .sc-player li.view,
+  .sc-player li.kick-back {
+    width: 40px; }
+  .sc-player li.track-info {
+    width: 50%; }
+    .sc-player li.track-info > * {
+      padding: 0 7px;
+      height: 30px; }
+    .sc-player li.track-info .track {
+      text-align: middle;
+      vertical-align: middle;
+      overflow: hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: margin-top 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+      -moz-transition: margin-top 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+      transition: margin-top 1s cubic-bezier(0.075, 0.82, 0.165, 1); }
+      .sc-player li.track-info .track > * {
+        display: inline-block;
+        vertical-align: baseline;
+        zoom: 1;
+        *display: inline;
+        *vertical-align: auto;
+        vertical-align: middle; }
+      .sc-player li.track-info .track div.bar {
+        position: relative;
+        width: 75%;
+        height: 11px;
+        margin: 0 7px;
+        border-radius: 11px;
+        background: rgba(0, 0, 0, 0.33);
+        box-shadow: inset 0 0 5.5px rgba(0, 0, 0, 0.5);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none; }
+        .sc-player li.track-info .track div.bar div.buffered {
+          width: 0;
+          height: 2px;
+          position: absolute;
+          left: 1%;
+          right: 1%;
+          background: #7fffe3;
+          opacity: 0.33;
+          margin-top: 4.5px;
+          -webkit-transition: width 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+          -moz-transition: width 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+          transition: width 0.35s cubic-bezier(0.075, 0.82, 0.165, 1); }
+        .sc-player li.track-info .track div.bar div.needle {
+          width: 5.5px;
+          height: 16.5px;
+          background: #efefef;
+          border: 1px solid #bbb;
+          box-shadow: 0 0 3px black;
+          border-radius: 5.5px;
+          margin-left: -2.75px;
+          margin-top: -3.75px;
+          position: relative; }
+      .sc-player li.track-info .track p {
+        text-align: left; }
+    .sc-player li.track-info .meta p {
+      text-align: left;
+      line-height: 15px; }
+      .sc-player li.track-info .meta p a {
+        text-decoration: none; }
+    .sc-player li.track-info .meta p.author {
+      font-weight: bold; }
+  .sc-player a.soundcloud-button {
+    display: block;
+    overflow: hidden;
+    text-indent: -9999px;
+    width: 100%;
+    height: 100%;
+    background: url(http://developers.soundcloud.com/assets/logo_big_white.png) center center no-repeat;
+    background-size: 32px 21.5px; }
+  .sc-player button {
+    border: 0;
+    background: transparent;
+    color: #efefef;
+    cursor: pointer;
+    border-radius: 2.75px;
+    outline: none; }
+    .sc-player button:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important; }
+    .sc-player button:active {
+      background-color: rgba(0, 0, 0, 0.2) !important; }
+  .sc-player .repeat,
+  .sc-player .play,
+  .sc-player .pause,
+  .sc-player .volume,
+  .sc-player .fullscreen {
+    overflow: hidden;
+    text-indent: -9999px; }
+  .sc-player .repeat {
+    background: transparent url(../images/repeat.svg) center center no-repeat; }
+  .sc-player .play {
+    background: transparent url(../images/play.svg) center center no-repeat; }
+  .sc-player .pause {
+    background: transparent url(../images/pause.svg) center center no-repeat; }
+  .sc-player .volume {
+    background: transparent url(../images/volume.svg) center center no-repeat; }
+  .sc-player .volume.mute {
+    background: transparent url(../images/mute.svg) center center no-repeat; }
+  .sc-player .fullscreen {
+    background: transparent url(../images/fullscreen.svg) center center no-repeat; }
+  .sc-player .fullscreen.partial {
+    background: transparent url(../images/partialscreen.svg) center center no-repeat; }

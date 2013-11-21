@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" type="text/css" href="./styles/player.css">
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+  </head>
+  <body>
+    <!-- <div id="loader" style="display: none;"></div> -->
+    <div class="scripts" style="display: none;">
+      <script src="//connect.soundcloud.com/sdk.js"></script>
+      <script src="./third-party/url.js"></script>
+      <script src="./third-party/jquery.js"></script>
+      <script src="./third-party/tween.js"></script>
+      <script src="./third-party/two.js"></script>
+      <script src="./src/player.js"></script>
+      <script src="./third-party/jquery.bigscreen.js"></script>
+      <script>
+
+        var player = new Player('f362eb7eaa0b6c159e1148e127a78b88')
+          .appendTo(document.body);
+
+        // url.permalink = 'https://soundcloud.com/ghostly';
+        // url.permalink = 'https://soundcloud.com/ghostly/sets/various-artists-smm-opiate';
+
+        var params = _.defaults(url, {
+          permalink: 'https://soundcloud.com/ghostly/lusine-panoramic'
+        });
+
+        player.fetch(params.permalink, function(resp) {
+          console.log(resp);
+        });
+
+      </script>
+    </div>
+  </body>
+</html>

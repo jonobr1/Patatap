@@ -1,0 +1,39 @@
+@import 'bourbon/bourbon';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(181, 181, 181);
+}
+
+#loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
+  background-size: 16px 16px;
+  border-radius: 50%;
+  @include animation-name(rotate);
+  @include animation-duration(1s);
+  @include animation-timing-function($ease-in-out-circ);
+  @include animation-iteration-count(infinite);
+}
+
+@include keyframes(rotate) {
+  from {
+    @include transform(rotate(0));
+  }
+  to {
+    @include transform(rotate(360deg));
+  }
+}

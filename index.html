@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Neuronal Synchrony</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/player.css">
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+  </head>
+  <body>
+    <div id="content">
+      <div id="loader"></div>
+    </div>
+    <div class="scripts" style="display: none;">
+      <script src="//connect.soundcloud.com/sdk.js"></script>
+      <script src="./third-party/url.js"></script>
+      <script src="./third-party/jquery.js"></script>
+      <script src="./third-party/tween.js"></script>
+      <script src="./third-party/two.js"></script>
+      <script src="./src/animations.js"></script>
+      <script src="./third-party/jquery.bigscreen.js"></script>
+      <script src="./src/player.js"></script>
+      <script src="./src/record.js"></script>
+      <script src="./src/track-data.js"></script>
+      <script>
+
+        $(function() {
+
+          var container = $('#content');
+          var player = new Player('f362eb7eaa0b6c159e1148e127a78b88')
+            .appendTo(container[0]);
+
+          $(window).bind('keyup', function(e, data) {
+
+            e.preventDefault();
+            var code = e.which || data;
+            var index;
+
+            switch (code) {
+
+              // Q - I
+              case 81:
+                index = '0,7';
+                break;
+              case 87:
+                index = '0,6';
+                break;
+              case 69:
+                index = '0,5';
+                break;
+              case 82:
+                index = '0,4';
+                break;
+              case 84:
+                index = '0,3';
+                break;
+              case 89:
+                index = '0,2';
+                break;
+              case 85:
+                index = '0,1';
+                break;
+              case 73:
+                index = '0,0';
+                break;
+
+              // O - P
+              case 79:
+                index = '0,8';
+                break;
+              case 80:
+                index = '0,9';
+                break;
+
+              // A - K
+              case 65:
+                index = '1,7';
+                break;
+              case 83:
+                index = '1,6';
+                break;
+              case 68:
+                index = '1,5';
+                break;
+              case 70:
+                index = '1,4';
+                break;
+              case 71:
+                index = '1,3';
+                break;
+              case 72:
+                index = '1,2';
+                break;
+              case 74:
+                index = '1,1';
+                break;
+              case 75:
+                index = '1,0';
+                break;
+
+              // L - '
+              case 76:
+                index = '1,8';
+                break;
+              case 186:
+                index = '2,0';
+                break;
+              case 222:
+                index = '2,0';
+                break;
+
+              // Z - ,
+              case 90:
+                index = '2,7';
+                break;
+              case 88:
+                index = '2,6';
+                break;
+              case 67:
+                index = '2,5';
+                break;
+              case 86:
+                index = '2,4';
+                break;
+              case 66:
+                index = '2,3';
+                break;
+              case 78:
+                index = '2,2';
+                break;
+              case 77:
+                index = '2,1';
+                break;
+              case 188:
+                index = '2,0';
+                break;
+
+              // .
+              case 190:
+                index = '0,0';
+                break;
+
+              // SPACE
+              case 32:
+                index = '3,0';
+                break;
+
+            }
+
+            var animation = animations.map[index];
+            if (animation && !animation.playing()) {
+              animation.start();
+            }
+
+          });
+
+          // url.permalink = 'https://soundcloud.com/ghostly';
+          // url.permalink = 'https://soundcloud.com/ghostly/sets/various-artists-smm-opiate';
+
+          var params = _.defaults(url, {
+            permalink: TrackData.Lusine.Panoramic.url
+          });
+
+          /**
+           * Add recording functionality
+           */
+          if (url.boolean('record', false)) {
+            player.bind('play', record.start)
+          } else if (url.boolean('replay', false)) {
+            record.data = TrackData.Lusine.Panoramic.data; // Set data to replay
+            player.bind('play', record.replay);
+          }
+
+          player
+            .bind('finish', record.end)
+            .fetch(params.permalink, function(resp) {
+              $('#loader').fadeOut(150);
+            });
+
+          two
+            .bind('update', function() {
+              animations.update();
+              TWEEN.update();
+              if (player.sound) {
+                record.update(player.sound.position);
+              }
+            })
+            .play();
+
+        });
+
+      </script>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-5927630-17', 'jonobr1.github.io');
+        ga('send', 'pageview');
+
+      </script>
+    </div>
+  </body>
+</html>

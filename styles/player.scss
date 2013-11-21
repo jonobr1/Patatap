@@ -1,0 +1,225 @@
+@import 'bourbon/bourbon';
+// @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
+
+$padding: 7px;
+$font-size: 11px;
+$line-height: 30px;
+$height: $line-height + $padding * 2;
+
+// Colors
+$black: #555;
+$white: #efefef;
+$green: rgb(0, 255, 200);
+$yellow: #fff687;
+
+.sc-player, .sc-player * {
+  margin: 0;
+  padding: 0;
+  font-family: 'Ubuntu', 'Lucida Grande', Arial, sans-serif;
+  font-size: $font-size;
+  text-shadow: 1px 1px #000;
+  ::selection {
+    background: $green; /* Safari */
+    }
+  ::-moz-selection {
+    background: $green; /* Firefox */
+  }
+}
+
+.sc-player {
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $height;
+  line-height: $line-height;
+  color: $white;
+  a {
+    color: $white;
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  & > ul {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    // padding-top: $padding;
+    text-align: center;
+    top: 100%;
+    @include transition(top 0.5s $ease-out-circ);
+    @include linear-gradient(to top, #444, $black);
+  }
+
+  &:hover,
+  &.enabled {
+    ul {
+      top: 0;
+    }
+  }
+
+  ul > * {
+    @include inline-block;
+    overflow: hidden;
+    height: $line-height;
+    // background: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    button {
+      display: block;
+      margin: 0 auto;
+      height: $line-height;
+      width: 100%;
+    }
+  }
+
+  li.primary,
+  li.track-info,
+  li.audio,
+  li.view,
+  li.kick-back {
+    padding-top: $padding;
+    padding-bottom: $padding;
+    &:not(:first-child) {
+      margin-left: $padding;
+      padding-left: $padding;
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    @include transition(margin-top 0.35s $ease-out-circ);
+    & > * {
+      margin-bottom: $padding;
+    }
+  }
+
+  li.primary,
+  li.audio,
+  li.view,
+  li.kick-back {
+    width: 40px;
+  }
+  li.track-info {
+    width: 50%;
+    & > * {
+      padding: 0 $padding;
+      height: $line-height;
+    }
+    .track {
+      text-align: middle;
+      vertical-align: middle;
+      overflow: hidden;
+      @include user-select(none);
+      @include transition(margin-top 1s $ease-out-circ);
+      & > * {
+        @include inline-block;
+        vertical-align: middle;
+      }
+      div.bar {
+        position: relative;
+        width: 75%;
+        height: $font-size;
+        margin: 0 $padding;
+        border-radius: $font-size;
+        background: rgba(0, 0, 0, 0.33);
+        box-shadow: inset 0 0 $font-size / 2 rgba(0, 0, 0, 0.5);
+        @include user-select(none);
+        div.buffered {
+          width: 0;
+          $height: 2px;
+          height: $height;
+          position: absolute;
+          left: 1%;
+          right: 1%;
+          background: tint($green, 50%);
+          opacity: 0.33;
+          margin-top: ($font-size - $height) / 2;
+          @include transition(width 0.35s $ease-out-circ);
+        }
+        div.needle {
+          width: $font-size / 2;
+          height: $font-size * 1.5;
+          background: $white;
+          border: 1px solid #bbb;
+          box-shadow: 0 0 3px black;
+          border-radius: $font-size / 2;
+          margin-left: - $font-size / 4;
+          margin-top: - ($font-size / 4 + 1);
+          // cursor: pointer;
+          position: relative;
+        }
+      }
+      p {
+        text-align: left;
+      }
+    }
+    .meta {
+      p {
+        text-align: left;
+        line-height: $line-height / 2;
+        a {
+          text-decoration: none;
+        }
+      }
+      p.author {
+        font-weight: bold;
+      }
+    }
+  }
+
+  a.soundcloud-button {
+    display: block;
+    overflow: hidden;
+    text-indent: -9999px;
+    width: 100%;
+    height: 100%;
+    // 64 43
+    background: url(http://developers.soundcloud.com/assets/logo_big_white.png) center center no-repeat;
+    background-size: (64px / 2) (43px / 2);
+  }
+
+  button {
+    border: 0;
+    background: transparent;
+    color: $white;
+    cursor: pointer;
+    border-radius: $font-size / 4;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    &:active {
+      background-color: rgba(0, 0, 0, 0.2) !important;
+    }
+    outline: none;
+  }
+
+  .repeat,
+  .play,
+  .pause,
+  .volume,
+  .fullscreen {
+    overflow: hidden;
+    text-indent: -9999px;
+  }
+  .repeat {
+    background: transparent url(../images/repeat.svg) center center no-repeat;
+  }
+  .play {
+    background: transparent url(../images/play.svg) center center no-repeat;
+  }
+  .pause {
+    background: transparent url(../images/pause.svg) center center no-repeat;
+  }
+  .volume {
+    background: transparent url(../images/volume.svg) center center no-repeat;
+  }
+  .volume.mute {
+    background: transparent url(../images/mute.svg) center center no-repeat;
+  }
+  .fullscreen {
+    background: transparent url(../images/fullscreen.svg) center center no-repeat;
+  }
+  .fullscreen.partial {
+    background: transparent url(../images/partialscreen.svg) center center no-repeat;
+  }
+
+}
