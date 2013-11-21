@@ -121,6 +121,7 @@
       this.sound.options.onfinish = _.bind(function() {
 
         this.showRepeatButton();
+        this.trigger('finish');
 
       }, this);
 
@@ -231,17 +232,19 @@
 
     play: function() {
       this.sound.play();
-      return this.showPauseButton();
+      this.showPauseButton();
+      return this.trigger('play');
     },
 
     pause: function() {
       this.sound.pause();
-      return this.showPlayButton();
+      this.showPlayButton();
+      return this.trigger('pause');
     },
 
     stop: function() {
       this.sound.stop();
-      return this;
+      return this.trigger('stop');
     },
 
     repeat: function() {

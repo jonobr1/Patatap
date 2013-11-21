@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <title>Neuronal Synchrony</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
     <link rel="stylesheet" type="text/css" href="./styles/player.css">
@@ -19,6 +20,7 @@
       <script src="./src/animations.js"></script>
       <script src="./third-party/jquery.bigscreen.js"></script>
       <script src="./src/player.js"></script>
+      <script src="./src/record.js"></script>
       <script>
 
         $(function() {
@@ -158,15 +160,30 @@
             permalink: 'https://soundcloud.com/ghostly/lusine-panoramic'
           });
 
-          player.fetch(params.permalink, function(resp) {
-            $('#loader').fadeOut(150);
-          });
+          /**
+           * Add recording functionality
+           */
+          if (url.boolean('record', false)) {
+            player
+              .bind('play', function() {
+                record.start();
+              })
+              .bind('finish', function() {
+                record.end();
+              });
+          }
+
+          player
+            .fetch(params.permalink, function(resp) {
+              $('#loader').fadeOut(150);
+            });
 
           two
             .bind('update', function() {
               animations.update();
               TWEEN.update();
-            }).play();
+            })
+            .play();
 
         });
 
