@@ -155,6 +155,7 @@
 
         switch (resp.kind) {
 
+          // Continue to play tracks
           case 'playlist':
             request = '/tracks/' + resp.tracks[0].id;
             break;
