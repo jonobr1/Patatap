@@ -21,6 +21,7 @@
       <script src="./third-party/jquery.bigscreen.js"></script>
       <script src="./src/player.js"></script>
       <script src="./src/record.js"></script>
+      <script src="./src/track-data.js"></script>
       <script>
 
         $(function() {
@@ -29,10 +30,10 @@
           var player = new Player('f362eb7eaa0b6c159e1148e127a78b88')
             .appendTo(container[0]);
 
-          $(window).bind('keyup', function(e) {
+          $(window).bind('keyup', function(e, data) {
 
             e.preventDefault();
-            var code = e.which;
+            var code = e.which || data;
             var index;
 
             switch (code) {
@@ -157,16 +158,16 @@
           // url.permalink = 'https://soundcloud.com/ghostly/sets/various-artists-smm-opiate';
 
           var params = _.defaults(url, {
-            permalink: 'https://soundcloud.com/ghostly/lusine-panoramic'
+            permalink: TrackData.Lusine.Panoramic.url
           });
 
           /**
            * Add recording functionality
            */
           if (url.boolean('record', false)) {
-            // record.data = ; // Set data to replay
             player.bind('play', record.start)
-          } else if (url.boolean('replay', true)) {
+          } else if (url.boolean('replay', false)) {
+            record.data = TrackData.Lusine.Panoramic.data; // Set data to replay
             player.bind('play', record.replay);
           }
 
@@ -180,7 +181,9 @@
             .bind('update', function() {
               animations.update();
               TWEEN.update();
-              record.update();
+              if (player.sound) {
+                record.update(player.sound.position);
+              }
             })
             .play();
 
