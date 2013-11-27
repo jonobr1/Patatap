@@ -175,6 +175,9 @@
             .bind('finish', record.end)
             .fetch(params.permalink, function(resp) {
               $('#loader').fadeOut(150);
+              if (url.boolean('autostart', false)) {
+                player.play();
+              }
             });
 
           two
