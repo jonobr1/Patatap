@@ -54,8 +54,6 @@ window.record = (function() {
 
     update: function(time) {
 
-      console.log(playing, record.data.length);
-
       if (!playing) {
         return record;
       }
