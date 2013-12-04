@@ -1,0 +1,3 @@
+[submodule "third-party/physics"]
+	path = third-party/physics
+	url = git://github.com/jonobr1/Physics.git
