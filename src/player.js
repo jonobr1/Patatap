@@ -172,7 +172,10 @@
           return this;
         }
 
-        SC.stream(request, function(sound){
+        SC.stream(request, {
+          useHTML5Audio: true,
+          preferFlash: false
+        }, function(sound){
           sound.response = resp;
           _this.stream(sound);
           if (_.isFunction(callback)) {
