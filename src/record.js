@@ -54,13 +54,15 @@ window.record = (function() {
 
     update: function(time) {
 
+      console.log(playing, record.data.length);
+
       if (!playing) {
         return record;
       }
 
       var elapsed = time || (Date.now() - startTime);
 
-      for (var i = index, l = this.data.length; i < l; i+=2) {
+      for (var i = index, l = record.data.length; i < l; i+=2) {
         if (record.data[i + 1] < elapsed) {
           $window.trigger('keyup', [record.data[i]]);
           index = i + 2;
