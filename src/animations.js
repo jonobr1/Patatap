@@ -123,6 +123,9 @@ window.animations = (function() {
       playing = true;
       shape.visible = true;
       animate_in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -198,7 +201,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '2,6'
+      hash: '2,6',
+      filename: 'wipe'
     };
 
     monome[exports.hash] = exports;
@@ -227,6 +231,9 @@ window.animations = (function() {
       playing = true;
       shape.visible = true;
       animate_in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -302,7 +309,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '1,6'
+      hash: '1,6',
+      filename: 'veil'
     };
 
     monome[exports.hash] = exports;
@@ -345,6 +353,9 @@ window.animations = (function() {
       var start = function(onComplete) {
         group.visible = true;
         _in.start();
+        if (exports.sound) {
+          exports.sound.play();
+        }
         if (_.isFunction(onComplete)) {
           callback = onComplete;
         }
@@ -390,7 +401,8 @@ window.animations = (function() {
         update: update,
         resize: resize,
         playing: function() { return playing; },
-        hash: i + ',1'
+        hash: i + ',1',
+        filename: 'prism-' + (i + 1)
       };
 
       monome[exports.hash] = exports;
@@ -432,6 +444,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       clay.visible = true;
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -530,7 +545,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,6'
+      hash: '0,6',
+      filename: 'clay'
     };
 
     monome[exports.hash] = exports;
@@ -576,6 +592,9 @@ window.animations = (function() {
           shape.visible = true;
         });
         _in.start();
+        if (exports.sound) {
+          exports.sound.play();
+        }
         if (_.isFunction(onComplete)) {
           callback = onComplete;
         }
@@ -651,7 +670,8 @@ window.animations = (function() {
         resize: resize,
         start: start,
         playing: function() { return playing; },
-        hash: i + ',4'
+        hash: i + ',4',
+        filename: 'piston-' + (i + 1)
       };
 
       monome[exports.hash] = exports;
@@ -675,6 +695,9 @@ window.animations = (function() {
 
       var start = function(onComplete) {
         playing = true;
+        if (exports.sound) {
+          exports.sound.play();
+        }
         _.delay(function() {
           playing = false;
           callback();
@@ -710,7 +733,8 @@ window.animations = (function() {
         resize: resize,
         start: start,
         playing: function() { return playing; },
-        hash: i + ',7'
+        hash: i + ',7',
+        filename: 'flash-' + (i + 1)
       };
 
       monome[exports.hash] = exports;
@@ -759,6 +783,9 @@ window.animations = (function() {
 
     var start = function(onComplete) {
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete
       }
@@ -813,7 +840,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,9'
+      hash: '0,9',
+      filename: 'dotted-spiral'
     };
 
     monome[exports.hash] = exports;
@@ -844,8 +872,11 @@ window.animations = (function() {
     var start = function(onComplete) {
       _.each(circles, function(c) {
         c.visible = true;
-      })
+      });
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -913,7 +944,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,2'
+      hash: '0,2',
+      filename: 'suspension'
     };
 
     monome[exports.hash] = exports;
@@ -946,6 +978,9 @@ window.animations = (function() {
         c.visible = true;
       })
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1035,7 +1070,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '2,2'
+      hash: '2,2',
+      filename: 'confetti'
     };
 
     monome[exports.hash] = exports;
@@ -1076,6 +1112,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       timer.visible = true;
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1150,7 +1189,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,3'
+      hash: '0,3',
+      filename: 'timer'
     };
 
     monome[exports.hash] = exports;
@@ -1173,6 +1213,9 @@ window.animations = (function() {
       playing = true;
       _in.start();
       circle.visible = true;
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1232,7 +1275,8 @@ window.animations = (function() {
       update: update,
       start: start,
       playing: function() { return playing; },
-      hash: '1,5'
+      hash: '1,5',
+      filename: 'ufo'
     };
 
     monome[exports.hash] = exports;
@@ -1281,6 +1325,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       playing = true;
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1342,7 +1389,8 @@ window.animations = (function() {
       update: update,
       start: start,
       playing: function() { return playing; },
-      hash: '2,5'
+      hash: '2,5',
+      filename: 'splits'
     };
 
     monome[exports.hash] = exports;
@@ -1378,6 +1426,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       moon.visible = true;
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1451,88 +1502,8 @@ window.animations = (function() {
       update: update,
       start: start,
       playing: function() { return playing; },
-      hash: '0,5'
-    };
-
-    monome[exports.hash] = exports;
-
-    return exports;
-
-  })();
-
-  var triangle = (function() {
-
-    var playing = false;
-    var callback = _.identity;
-    var radius = height / 12;
-
-    var a = two.makePolygon(
-      0, - radius,
-      radius  * 0.75, 0,
-      - radius * 0.75, 0
-    );
-    a.noStroke().fill = colors.accent;
-
-    _.defer(function() {
-      a.center();
-    });
-
-    var group = two.makeGroup(a);
-
-    group.translation.set(center.x, center.y);
-
-    var start = function(onComplete) {
-      group.visible = true;
-      _in.start();
-      if (_.isFunction(onComplete)) {
-        callback = onComplete;
-      }
-    };
-
-    start.onComplete = reset;
-
-    var update = function() {
-      group.fill = colors.accent;
-    };
-    var resize = function() {
-      group.translation.set(center.x, center.y);
-    };
-
-    var _in = new TWEEN.Tween(a.translation)
-      .to({
-        y: - center.y
-      }, 500)
-      .onStart(function() {
-        playing = true;
-      })
-      .onUpdate(function(t) {
-        a.scale = t;
-      })
-      .easing(Easing.Elastic.Out)
-      .onComplete(function() {
-        start.onComplete();
-        callback();
-      });
-
-    function reset() {
-
-      playing = false;
-
-      group.visible = false;
-      a.translation.clear();
-
-      group.rotation = Math.random() * TWO_PI;
-
-    }
-
-    reset();
-
-    var exports = {
-      start: start,
-      update: update,
-      resize: resize,
-      playing: function() { return playing; },
-      hash: '1,8'
+      hash: '0,5',
+      filename: 'moon'
     };
 
     monome[exports.hash] = exports;
@@ -1560,6 +1531,9 @@ window.animations = (function() {
       line.visible = true;
       playing = true;
       animate_in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1599,7 +1573,8 @@ window.animations = (function() {
       resize: resize,
       update: update,
       playing: function() { return playing; },
-      hash: '1,2'
+      hash: '1,2',
+      filename: 'strike'
     };
 
     var a = {
@@ -1665,6 +1640,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       zigzag.visible = true;
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1738,7 +1716,8 @@ window.animations = (function() {
       resize: resize,
       update: update,
       playing: function() { return playing; },
-      hash: '2,0'
+      hash: '1,8',
+      filename: 'zig-zag'
     };
 
     monome[exports.hash] = exports;
@@ -1773,6 +1752,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       squiggle.visible = true;
       _in.start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1839,7 +1821,8 @@ window.animations = (function() {
       resize: resize,
       update: update,
       playing: function() { return playing; },
-      hash: '0,0'
+      hash: '0,0',
+      filename: 'squiggle'
     };
 
     monome[exports.hash] = exports;
@@ -1879,6 +1862,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       playing = true;
       ins[0].start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -1979,7 +1965,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '1,3'
+      hash: '1,3',
+      filename: 'bubbles'
     };
 
     monome[exports.hash] = exports;
@@ -2020,6 +2007,9 @@ window.animations = (function() {
     var start = function(onComplete) {
       playing = true;
       ins[0].start();
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -2122,7 +2112,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '2,3'
+      hash: '2,3',
+      filename: 'corona'
     };
 
     monome[exports.hash] = exports;
@@ -2158,6 +2149,9 @@ window.animations = (function() {
       _.each(sequence[0], function(tween) {
         tween.start();
       });
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -2248,7 +2242,8 @@ window.animations = (function() {
       resize: resize,
       update: update,
       playing: function() { return playing; },
-      hash: '1,0'
+      hash: '1,0',
+      filename: 'pinwheel'
     };
 
     monome[exports.hash] = exports;
@@ -2308,6 +2303,9 @@ window.animations = (function() {
         c.visible = true;
         c.tween.start();
       });
+      if (exports.sound) {
+        exports.sound.play();
+      }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
       }
@@ -2352,7 +2350,8 @@ window.animations = (function() {
       update: update,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,8'
+      hash: '0,8',
+      filename: 'glimmer'
     };
 
     monome[exports.hash] = exports;
@@ -2436,7 +2435,8 @@ window.animations = (function() {
       container.style.background = colors.background;
     },
 
-    map: monome
+    map: monome,
+    list: _.toArray(monome)
 
   };
 

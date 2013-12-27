@@ -12,15 +12,16 @@
       <div id="loader"></div>
     </div>
     <div class="scripts" style="display: none;">
-      <script src="//connect.soundcloud.com/sdk.js"></script>
+      <!-- // <script src="//connect.soundcloud.com/sdk.js"></script> -->
       <script src="./third-party/has.js"></script>
       <script src="./third-party/url.js"></script>
       <script src="./third-party/jquery.js"></script>
       <script src="./third-party/tween.js"></script>
       <script src="./third-party/two.js"></script>
+      <script src="./src/sound.js"></script>
       <script src="./src/animations.js"></script>
       <script src="./third-party/jquery.bigscreen.js"></script>
-      <script src="./src/player.js"></script>
+      <!-- // <script src="./src/player.js"></script> -->
       <script src="./src/record.js"></script>
       <script src="./src/track-data.js"></script>
       <script>
@@ -28,8 +29,8 @@
         $(function() {
 
           var container = $('#content');
-          var player = new Player('f362eb7eaa0b6c159e1148e127a78b88')
-            .appendTo(container[0]);
+          // var player = new Player('f362eb7eaa0b6c159e1148e127a78b88')
+          //   .appendTo(container[0]);
 
           $(window).bind('keyup', function(e, data) {
 
@@ -165,29 +166,56 @@
           /**
            * Add recording functionality
            */
-          if (url.boolean('record', false)) {
-            player.bind('play', record.start)
-          } else if (url.boolean('replay', false)) {
-            record.data = TrackData.Lusine.Panoramic.data; // Set data to replay
-            player.bind('play', record.replay);
-          }
+          // if (url.boolean('record', false)) {
+          //   player.bind('play', record.start)
+          // } else if (url.boolean('replay', false)) {
+          //   record.data = TrackData.Lusine.Panoramic.data; // Set data to replay
+          //   player.bind('play', record.replay);
+          // }
 
-          player
-            .bind('finish', record.end)
-            .fetch(params.permalink, function(resp) {
-              $('#loader').fadeOut(150);
-              if (url.boolean('autostart', false)) {
-                player.play();
+          // player
+          //   .bind('finish', record.end)
+          //   .fetch(params.permalink, function(resp) {
+          //     $('#loader').fadeOut(150);
+          //     if (url.boolean('autostart', false)) {
+          //       player.play();
+          //     }
+          //   });
+
+          /**
+           * Append Sound Generation to Animations
+           */
+
+          var path = './assets/A/', filetype = '.wav';
+
+          var soundsBuffered = _.after(26, function() {
+            if (url.loop && url.loop.match(/(clap|groove)/ig)) {
+              new Sound(path + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
+                this.play({
+                  loop: true
+                });
+                $('#loader').fadeOut(150);
+              });
+              return;
+            }
+            $('#loader').fadeOut(150);
+          });
+
+          Sound.ready(function() {
+            _.each(animations.list, function(a, i) {
+              if (a.filename) {
+                a.sound = new Sound(path + a.filename + filetype, soundsBuffered);
               }
             });
+          });
 
           two
             .bind('update', function() {
               animations.update();
               TWEEN.update();
-              if (player.sound) {
-                record.update(player.sound.position);
-              }
+              // if (player.sound) {
+              //   record.update(player.sound.position);
+              // }
             })
             .play();
 
