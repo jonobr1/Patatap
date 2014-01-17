@@ -150,7 +150,8 @@
             }
 
             var animation = animations.map[index];
-            if (animation && !animation.playing()) {
+            if (animation) {
+              animation.clear();
               animation.start();
             }
 

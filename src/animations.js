@@ -1,5 +1,5 @@
 var two = new Two({
-  type: (has.Safari || has.iOS) ? Two.Types.svg : Two.Types.canvas,
+  type: Two.Types.canvas,//(has.Safari || has.iOS) ? Two.Types.svg : Two.Types.canvas,
   fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
@@ -124,7 +124,7 @@ window.animations = (function() {
       shape.visible = true;
       animate_in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -200,6 +200,7 @@ window.animations = (function() {
       start: start,
       update: update,
       resize: resize,
+      clear: reset,
       playing: function() { return playing; },
       hash: '2,6',
       filename: 'wipe'
@@ -232,7 +233,7 @@ window.animations = (function() {
       shape.visible = true;
       animate_in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -308,6 +309,7 @@ window.animations = (function() {
       start: start,
       update: update,
       resize: resize,
+      clear: reset,
       playing: function() { return playing; },
       hash: '1,6',
       filename: 'veil'
@@ -354,7 +356,7 @@ window.animations = (function() {
         group.visible = true;
         _in.start();
         if (exports.sound) {
-          exports.sound.play();
+          exports.sound.stop().play();
         }
         if (_.isFunction(onComplete)) {
           callback = onComplete;
@@ -399,6 +401,7 @@ window.animations = (function() {
       var exports = {
         start: start,
         update: update,
+        clear: reset,
         resize: resize,
         playing: function() { return playing; },
         hash: i + ',1',
@@ -445,7 +448,7 @@ window.animations = (function() {
       clay.visible = true;
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -543,6 +546,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '0,6',
@@ -593,7 +597,7 @@ window.animations = (function() {
         });
         _in.start();
         if (exports.sound) {
-          exports.sound.play();
+          exports.sound.stop().play();
         }
         if (_.isFunction(onComplete)) {
           callback = onComplete;
@@ -666,9 +670,10 @@ window.animations = (function() {
       reset();
 
       var exports = {
-        update: update,
-        resize: resize,
         start: start,
+        update: update,
+        clear: reset,
+        resize: resize,
         playing: function() { return playing; },
         hash: i + ',4',
         filename: 'piston-' + (i + 1)
@@ -690,15 +695,20 @@ window.animations = (function() {
       var callback = _.identity;
 
       var shape = two.makeRectangle(center.x, center.y, width, height);
+      var timeout;
       shape.noStroke().fill = colors[PROPERTIES[PROPERTIES.length - 1 - (i % PROPERTIES.length)]];
       shape.visible = false;
 
       var start = function(onComplete) {
+        if (!_.isUndefined(timeout)) {
+          clearTimeout(timeout);
+          timeout = undefined;
+        }
         playing = true;
         if (exports.sound) {
-          exports.sound.play();
+          exports.sound.stop().play();
         }
-        _.delay(function() {
+        timeout = setTimeout(function() {
           playing = false;
           callback();
           shape.visible = false;
@@ -729,9 +739,10 @@ window.animations = (function() {
       });
 
       var exports = {
-        update: update,
-        resize: resize,
         start: start,
+        update: update,
+        clear: _.identity,
+        resize: resize,
         playing: function() { return playing; },
         hash: i + ',7',
         filename: 'flash-' + (i + 1)
@@ -784,7 +795,7 @@ window.animations = (function() {
     var start = function(onComplete) {
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete
@@ -838,6 +849,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '0,9',
@@ -875,7 +887,7 @@ window.animations = (function() {
       });
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -942,6 +954,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '0,2',
@@ -979,7 +992,7 @@ window.animations = (function() {
       })
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1068,6 +1081,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '2,2',
@@ -1113,7 +1127,7 @@ window.animations = (function() {
       timer.visible = true;
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1187,6 +1201,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '0,3',
@@ -1214,7 +1229,7 @@ window.animations = (function() {
       _in.start();
       circle.visible = true;
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1273,6 +1288,7 @@ window.animations = (function() {
     var exports = {
       resize: resize,
       update: update,
+      clear: reset,
       start: start,
       playing: function() { return playing; },
       hash: '1,5',
@@ -1326,7 +1342,7 @@ window.animations = (function() {
       playing = true;
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1385,9 +1401,10 @@ window.animations = (function() {
     reset();
 
     var exports = {
-      resize: resize,
-      update: update,
       start: start,
+      update: update,
+      clear: reset,
+      resize: resize,
       playing: function() { return playing; },
       hash: '2,5',
       filename: 'splits'
@@ -1427,7 +1444,7 @@ window.animations = (function() {
       moon.visible = true;
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1498,9 +1515,10 @@ window.animations = (function() {
     reset();
 
     var exports = {
-      resize: resize,
-      update: update,
       start: start,
+      update: update,
+      clear: reset,
+      resize: resize,
       playing: function() { return playing; },
       hash: '0,5',
       filename: 'moon'
@@ -1532,7 +1550,7 @@ window.animations = (function() {
       playing = true;
       animate_in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1570,8 +1588,9 @@ window.animations = (function() {
 
     var exports = {
       start: start,
-      resize: resize,
       update: update,
+      clear: reset,
+      resize: resize,
       playing: function() { return playing; },
       hash: '1,2',
       filename: 'strike'
@@ -1641,7 +1660,7 @@ window.animations = (function() {
       zigzag.visible = true;
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1713,8 +1732,9 @@ window.animations = (function() {
 
     var exports = {
       start: start,
-      resize: resize,
       update: update,
+      clear: reset,
+      resize: resize,
       playing: function() { return playing; },
       hash: '1,8',
       filename: 'zig-zag'
@@ -1753,7 +1773,7 @@ window.animations = (function() {
       squiggle.visible = true;
       _in.start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1818,8 +1838,9 @@ window.animations = (function() {
 
     var exports = {
       start: start,
-      resize: resize,
       update: update,
+      clear: reset,
+      resize: resize,
       playing: function() { return playing; },
       hash: '0,0',
       filename: 'squiggle'
@@ -1863,7 +1884,7 @@ window.animations = (function() {
       playing = true;
       ins[0].start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -1963,6 +1984,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '1,3',
@@ -2008,7 +2030,7 @@ window.animations = (function() {
       playing = true;
       ins[0].start();
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -2110,6 +2132,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '2,3',
@@ -2150,7 +2173,7 @@ window.animations = (function() {
         tween.start();
       });
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -2233,14 +2256,16 @@ window.animations = (function() {
         p.set(x, y);
       });
       shape.scale = 1;
+      shape._update();
     }
 
     reset();
 
     var exports = {
       start: start,
-      resize: resize,
       update: update,
+      clear: reset,
+      resize: resize,
       playing: function() { return playing; },
       hash: '1,0',
       filename: 'pinwheel'
@@ -2304,7 +2329,7 @@ window.animations = (function() {
         c.tween.start();
       });
       if (exports.sound) {
-        exports.sound.play();
+        exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
         callback = onComplete;
@@ -2348,6 +2373,7 @@ window.animations = (function() {
     var exports = {
       start: start,
       update: update,
+      clear: reset,
       resize: resize,
       playing: function() { return playing; },
       hash: '0,8',

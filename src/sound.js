@@ -73,6 +73,25 @@
 
   _.extend(Sound.prototype, Backbone.Events, {
 
+    stop: function(options) {
+
+      if (!this.source) {
+        return this;
+      }
+
+      var params = _.defaults(options || {}, {
+        time: ctx.currentTime
+      });
+
+      this.source.stop(params.time);
+      return this;
+
+    },
+
+    pause: function() {
+
+    },
+
     play: function(options) {
 
       var params = _.defaults(options || {}, {
