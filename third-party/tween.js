@@ -8,15 +8,24 @@
  * @author lechecacharro
  * @author Josh Faul / http://jocafa.com/
  * @author egraether / http://egraether.com/
+ * @author jonobr1 / http://jonobr1.com/
  */
 
 var TWEEN = TWEEN || ( function () {
 
-	var _tweens = [];
+	var _tweens = {}, _id = 0;
 
 	return {
 
-		REVISION: '9',
+		REVISION: '10-br1',
+
+		generateId: function () {
+
+			var result = _id;
+			_id++;
+			return result;
+
+		},
 
 		getAll: function () {
 
@@ -26,37 +35,27 @@ var TWEEN = TWEEN || ( function () {
 
 		removeAll: function () {
 
-			_tweens = [];
+			_tweens = {};
 
 		},
 
 		add: function ( tween ) {
 
-			_tweens.push( tween );
+			_tweens[tween.id] = tween;
 
 		},
 
 		remove: function ( tween ) {
 
-			var i = _tweens.indexOf( tween );
-
-			if ( i !== -1 ) {
-
-				_tweens.splice( i, 1 );
-
-			}
+			delete _tweens[tween.id];
 
 		},
 
 		update: function ( time ) {
 
-			if ( _tweens.length === 0 ) return false;
-
-			var i = 0, numTweens = _tweens.length;
-
 			time = time !== undefined ? time : ( window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now() );
 
-			while ( i < numTweens ) {
+			for ( var i in  _tweens ) {
 
 				if ( _tweens[ i ].update( time ) ) {
 
@@ -64,9 +63,7 @@ var TWEEN = TWEEN || ( function () {
 
 				} else {
 
-					_tweens.splice( i, 1 );
-
-					numTweens --;
+					delete _tweens[ i ];
 
 				}
 
@@ -96,6 +93,8 @@ TWEEN.Tween = function ( object ) {
 	var _onStartCallbackFired = false;
 	var _onUpdateCallback = null;
 	var _onCompleteCallback = null;
+
+	this.id = TWEEN.generateId();
 
 	this.to = function ( properties, duration ) {
 

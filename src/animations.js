@@ -194,6 +194,8 @@ window.animations = (function() {
         points[2].set(width, height);
         points[3].set(width, 0);
       }
+      animate_in.stop();
+      animate_out.stop();
     }
 
     var exports = {
@@ -303,6 +305,8 @@ window.animations = (function() {
         points[2].set(width, height);
         points[3].set(0, height);
       }
+      animate_in.stop();
+      animate_out.stop();
     }
 
     var exports = {
@@ -394,6 +398,7 @@ window.animations = (function() {
         // group.rotation = Math.random() * TWO_PI;
         options.ending = group.scale = 0;
         playing = false;
+        _in.stop();
       }
 
       reset();
@@ -538,7 +543,10 @@ window.animations = (function() {
         var y = a * Math.sin(theta) + v.y;
         destinations[i].set(x, y);
       });
+
       playing = false;
+      _in.stop();
+
     }
 
     reset();
@@ -664,7 +672,12 @@ window.animations = (function() {
           var points = s.vertices;
           points[0].x = points[1].x = points[2].x = points[3].x = begin;
         });
+
         playing = false;
+
+        _in.stop();
+        _out.stop();
+
       }
 
       reset();
@@ -838,7 +851,7 @@ window.animations = (function() {
       group.rotation = Math.random() * TWO_PI;
       group.scale = 1;
 
-      _in.to({ rotation: group.rotation + Math.PI / 8, scale: Math.random() * 2 + 10 }, duration * 2);
+      _in.to({ rotation: group.rotation + Math.PI / 8, scale: Math.random() * 2 + 10 }, duration * 2).stop();
 
       playing = false;
 
@@ -946,6 +959,8 @@ window.animations = (function() {
       });
 
       playing = false;
+
+      _in.stop();
 
     }
 
@@ -1074,6 +1089,8 @@ window.animations = (function() {
 
       playing = false;
 
+      _in.stop();
+
     }
 
     reset();
@@ -1194,6 +1211,8 @@ window.animations = (function() {
       options.ending = options.beginning = 0;
       timer.ending = timer.beginning = direction ? 0 : 1;
       playing = false;
+      _in.stop();
+      _out.stop();
     }
 
     reset();
@@ -1281,6 +1300,8 @@ window.animations = (function() {
       }
       circle.destination = center.y;
       circle.scale = 1;
+      _in.stop();
+      _out.stop();
     }
 
     reset();
@@ -1396,6 +1417,9 @@ window.animations = (function() {
       b.translation.copy(b.origin);
       shape.opacity = 1;
 
+      _in.stop();
+      _out.stop();
+
     }
 
     reset();
@@ -1510,6 +1534,8 @@ window.animations = (function() {
         v.set(x, Math.abs(y));
       });
       playing = false;
+      _in.stop();
+      _out.stop();
     }
 
     reset();
@@ -1621,6 +1647,8 @@ window.animations = (function() {
         p.x = lerp(a.x, b.x, pct);
         p.y = lerp(a.y, b.y, pct);
       });
+      animate_in.stop();
+      animate_out.stop();
     }
 
     reset();
@@ -1726,6 +1754,10 @@ window.animations = (function() {
         v.set(x, y);
       });
       playing = false;
+
+      _in.stop();
+      _out.stop();
+
     }
 
     reset();
@@ -1832,6 +1864,8 @@ window.animations = (function() {
         v.set(x, y);
       });
       playing = false;
+      _in.stop();
+      _out.stop();
     }
 
     reset();
@@ -1973,10 +2007,12 @@ window.animations = (function() {
       shape.visible = false;
       shape.rotation = TWO_PI * Math.random();
       playing = false;
-      _.each(circles, function(c) {
+      _.each(circles, function(c, i) {
         c.theta = 0;
         c.translation.set(radius, 0);
-      })
+        ins[i].stop();
+        outs[i].stop();
+      });
     }
 
     reset();
@@ -2121,10 +2157,12 @@ window.animations = (function() {
       shape.visible = false;
       shape.rotation = TWO_PI * Math.random();
       playing = false;
-      _.each(circles, function(c) {
+      _.each(circles, function(c, i) {
         c.theta = 0;
         c.translation.set(radius, 0);
-      })
+        ins[i].stop();
+        outs[i].stop();
+      });
     }
 
     reset();
@@ -2257,6 +2295,12 @@ window.animations = (function() {
       });
       shape.scale = 1;
       shape._update();
+      tween_out.stop();
+      _.each(sequence, function(parallel) {
+        _.each(parallel, function(tween) {
+          tween.stop();
+        });
+      });
     }
 
     reset();
@@ -2361,6 +2405,8 @@ window.animations = (function() {
         c.visible = false;
         c.scale = 0;
         c.linewidth = c.__linewidth;
+
+        c.tween.stop();
 
       });
 
