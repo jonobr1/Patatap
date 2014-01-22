@@ -58,6 +58,10 @@
           function initialize() {
 
             $(window)
+              .bind('touchstart touchmove touchend touchcancel', function(e) {
+                e.preventDefault();
+                return false;
+              })
               .bind('keydown', function(e, data) {
 
                 e.preventDefault();
