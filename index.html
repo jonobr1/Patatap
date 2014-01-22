@@ -1,10 +1,11 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Neuronal Synchrony</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
-    <link rel="stylesheet" type="text/css" href="./styles/player.css">
     <link rel="icon" type="image/png" href="./images/favicon.png" />
   </head>
   <body>
@@ -12,176 +13,20 @@
       <div id="loader"></div>
     </div>
     <div class="scripts" style="display: none;">
-      <!-- // <script src="//connect.soundcloud.com/sdk.js"></script> -->
       <script src="./third-party/has.js"></script>
       <script src="./third-party/url.js"></script>
       <script src="./third-party/jquery.js"></script>
       <script src="./third-party/tween.js"></script>
       <script src="./third-party/two.js"></script>
+      <script src="./src/two.rounded-rectangle.js"></script>
+      <script src="./third-party/jquery.bigscreen.js"></script>
       <script src="./src/sound.js"></script>
       <script src="./src/animations.js"></script>
-      <script src="./third-party/jquery.bigscreen.js"></script>
-      <!-- // <script src="./src/player.js"></script> -->
-      <script src="./src/record.js"></script>
-      <script src="./src/track-data.js"></script>
       <script>
 
         $(function() {
 
-          var container = $('#content');
-          // var player = new Player('f362eb7eaa0b6c159e1148e127a78b88')
-          //   .appendTo(container[0]);
-
-          $(window).bind('keydown', function(e, data) {
-
-            e.preventDefault();
-            var code = e.which || data;
-            var index;
-
-            switch (code) {
-
-              // Q - I
-              case 81:
-                index = '0,7';
-                break;
-              case 87:
-                index = '0,6';
-                break;
-              case 69:
-                index = '0,5';
-                break;
-              case 82:
-                index = '0,4';
-                break;
-              case 84:
-                index = '0,3';
-                break;
-              case 89:
-                index = '0,2';
-                break;
-              case 85:
-                index = '0,1';
-                break;
-              case 73:
-                index = '0,0';
-                break;
-
-              // O - P
-              case 79:
-                index = '0,8';
-                break;
-              case 80:
-                index = '0,9';
-                break;
-
-              // A - K
-              case 65:
-                index = '1,7';
-                break;
-              case 83:
-                index = '1,6';
-                break;
-              case 68:
-                index = '1,5';
-                break;
-              case 70:
-                index = '1,4';
-                break;
-              case 71:
-                index = '1,3';
-                break;
-              case 72:
-                index = '1,2';
-                break;
-              case 74:
-                index = '1,1';
-                break;
-              case 75:
-                index = '1,0';
-                break;
-
-              // L - '
-              case 76:
-                index = '1,8';
-                break;
-              case 186:
-                index = '2,0';
-                break;
-              case 222:
-                index = '2,0';
-                break;
-
-              // Z - ,
-              case 90:
-                index = '2,7';
-                break;
-              case 88:
-                index = '2,6';
-                break;
-              case 67:
-                index = '2,5';
-                break;
-              case 86:
-                index = '2,4';
-                break;
-              case 66:
-                index = '2,3';
-                break;
-              case 78:
-                index = '2,2';
-                break;
-              case 77:
-                index = '2,1';
-                break;
-              case 188:
-                index = '2,0';
-                break;
-
-              // .
-              case 190:
-                index = '0,0';
-                break;
-
-              // SPACE
-              case 32:
-                index = '3,0';
-                break;
-
-            }
-
-            var animation = animations.map[index];
-            if (animation) {
-              animation.clear();
-              animation.start();
-            }
-
-          });
-
-          // url.permalink = 'https://soundcloud.com/ghostly';
-          // url.permalink = 'https://soundcloud.com/ghostly/sets/various-artists-smm-opiate';
-
-          var params = _.defaults(url, {
-            permalink: TrackData.Lusine.Panoramic.url
-          });
-
-          /**
-           * Add recording functionality
-           */
-          // if (url.boolean('record', false)) {
-          //   player.bind('play', record.start)
-          // } else if (url.boolean('replay', false)) {
-          //   record.data = TrackData.Lusine.Panoramic.data; // Set data to replay
-          //   player.bind('play', record.replay);
-          // }
-
-          // player
-          //   .bind('finish', record.end)
-          //   .fetch(params.permalink, function(resp) {
-          //     $('#loader').fadeOut(150);
-          //     if (url.boolean('autostart', false)) {
-          //       player.play();
-          //     }
-          //   });
+          var container = $('#content'), ui, buttons;
 
           /**
            * Append Sound Generation to Animations
@@ -195,11 +40,11 @@
                 this.play({
                   loop: true
                 });
-                $('#loader').fadeOut(150);
               });
+              initialize();
               return;
             }
-            $('#loader').fadeOut(150);
+            initialize();
           });
 
           Sound.ready(function() {
@@ -210,15 +55,259 @@
             });
           });
 
-          two
-            .bind('update', function() {
-              animations.update();
-              TWEEN.update();
-              // if (player.sound) {
-              //   record.update(player.sound.position);
-              // }
-            })
-            .play();
+          function initialize() {
+
+            $(window)
+              .bind('keydown', function(e, data) {
+
+                e.preventDefault();
+                var code = e.which || data;
+                var index;
+
+                switch (code) {
+
+                  // Q - P
+                  case 81:
+                    index = '0,7';
+                    break;
+                  case 87:
+                    index = '0,6';
+                    break;
+                  case 69:
+                    index = '0,5';
+                    break;
+                  case 82:
+                    index = '0,4';
+                    break;
+                  case 84:
+                    index = '0,3';
+                    break;
+                  case 89:
+                    index = '0,2';
+                    break;
+                  case 85:
+                    index = '0,1';
+                    break;
+                  case 73:
+                    index = '0,0';
+                    break;
+                  case 79:
+                    index = '0,8';
+                    break;
+                  case 80:
+                    index = '0,9';
+                    break;
+
+                  // A - L
+                  case 65:
+                    index = '1,7';
+                    break;
+                  case 83:
+                    index = '1,6';
+                    break;
+                  case 68:
+                    index = '1,5';
+                    break;
+                  case 70:
+                    index = '1,4';
+                    break;
+                  case 71:
+                    index = '1,3';
+                    break;
+                  case 72:
+                    index = '1,2';
+                    break;
+                  case 74:
+                    index = '1,1';
+                    break;
+                  case 75:
+                    index = '1,0';
+                    break;
+                  case 76:
+                    index = '1,8';
+                    break;
+
+                  // Z - M
+                  case 90:
+                    index = '2,7';
+                    break;
+                  case 88:
+                    index = '2,6';
+                    break;
+                  case 67:
+                    index = '2,5';
+                    break;
+                  case 86:
+                    index = '2,4';
+                    break;
+                  case 66:
+                    index = '2,3';
+                    break;
+                  case 78:
+                    index = '2,2';
+                    break;
+                  case 77:
+                    index = '2,1';
+                    break;
+                  case 188:
+                    index = '2,0';
+                    break;
+
+                  // SPACE
+                  case 32:
+                    index = '3,0';
+                    break;
+
+                }
+
+                trigger(index);
+
+              });
+
+            if (has.mobile) {
+              createMobileUI();
+            }
+
+            two
+              .bind('resize', orientUserInterface)
+              .bind('update', function() {
+
+                TWEEN.update();
+                animations.update();
+
+                if (!ui) {
+                  return;
+                }
+
+                _.each(buttons.needsUpdate, function(button, i) {
+
+                  button.fillOpacity += (0 - button.fillOpacity) * 0.2;
+                  button.fill = 'rgba(255, 255, 255,' + button.fillOpacity + ')';
+
+                  if (button.fillOpacity <= 0.1) {
+                    button.noFill();
+                    buttons.needsUpdate.splice(i, 1);
+                  }
+
+                });
+
+                ui.update();
+
+              }).play();
+
+            $('#loader').fadeOut(150);
+
+          }
+
+          function createMobileUI() {
+
+            ui = new Two({
+              fullscreen: true
+            }).appendTo(container[0]);
+
+            ui.renderer.domElement.id = 'ui';
+
+            buttons = [];
+            buttons.width = buttons.height = 32;
+            buttons.margin = 12;
+            buttons.needsUpdate = [];
+
+            buttons[0] = _.map(_.range(10), createButton, ui);
+            buttons[1] = _.map(_.range(9), createButton, ui);
+            buttons[2] = _.map(_.range(7), createButton, ui);
+
+            ui.update();
+
+            _.each(buttons, function(group, i) {
+
+              _.each(group, function(button, j) {
+
+                var elem = button._renderer.elem;
+                var index = i + ',' + (i == 2 ? j + 1 : j);
+                $(elem)
+                  .css({
+                    cursor: 'pointer'
+                  })
+                  .bind('touchstart mousedown', function() {
+                    trigger(index);
+                    button.fillOpacity = 1.0;
+                    buttons.needsUpdate.push(button);
+                  });
+
+              });
+
+            });
+
+            orientUserInterface();
+
+          }
+
+          function createButton() {
+
+            var shape = this.makeRoundedRectangle(0, 0, buttons.width, buttons.height, buttons.margin / 2);
+            shape.noFill().stroke = 'rgba(0, 0, 0, 0.1)';
+            shape.linewidth = 3;
+            shape.cap = shape.join = 'round';
+            shape.visible = false;
+            return shape;
+
+          }
+
+          function orientUserInterface() {
+
+            if (!ui) {
+              return;
+            }
+
+            var landscape = ui.width < ui.height;
+            var scale = 0.66;
+            var width = ui.width * scale;
+            var height = ui.height * scale;
+
+            _.each(buttons, function(group, i) {
+
+              _.each(group, function(button, j) {
+
+                var x = j, y = i, xl = group.length - 1, yl = buttons.length - 1;
+
+                if (landscape) {
+                  x = i;
+                  y = j;
+                  xl = buttons.length - 1;
+                  yl = group.length - 1;
+                }
+
+                x *= (buttons.width + buttons.margin);
+                y *= (buttons.height + buttons.margin);
+
+                x -= (buttons.width + buttons.margin) * xl / 2;
+                y -= (buttons.height + buttons.margin) * yl / 2;
+
+                button.translation.set(x, y);
+                button.visible = true;
+
+              });
+
+            });
+
+            ui.scene.translation.set(ui.width / 2, ui.height / 2);
+
+            ui.update();
+
+          }
+
+          function trigger(index) {
+
+            var animation = animations.map[index];
+
+            if (animation) {
+              if (animation.playing()) {
+                animation.clear();
+              }
+              animation.start();
+            }
+
+          }
 
         });
 
