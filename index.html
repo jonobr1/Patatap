@@ -26,7 +26,7 @@
 
         $(function() {
 
-          var container = $('#content'), ui, buttons;
+          var container = $('#content'), $window, ui, buttons;
 
           /**
            * Append Sound Generation to Animations
@@ -57,7 +57,8 @@
 
           function initialize() {
 
-            $(window)
+            $window = $(window)
+              // Disable scrolling
               .bind('touchstart touchmove touchend touchcancel', function(e) {
                 e.preventDefault();
                 return false;
@@ -72,28 +73,28 @@
 
                   // Q - P
                   case 81:
-                    index = '0,7';
+                    index = '0,0';
                     break;
                   case 87:
-                    index = '0,6';
-                    break;
-                  case 69:
-                    index = '0,5';
-                    break;
-                  case 82:
-                    index = '0,4';
-                    break;
-                  case 84:
-                    index = '0,3';
-                    break;
-                  case 89:
-                    index = '0,2';
-                    break;
-                  case 85:
                     index = '0,1';
                     break;
+                  case 69:
+                    index = '0,2';
+                    break;
+                  case 82:
+                    index = '0,3';
+                    break;
+                  case 84:
+                    index = '0,4';
+                    break;
+                  case 89:
+                    index = '0,5';
+                    break;
+                  case 85:
+                    index = '0,6';
+                    break;
                   case 73:
-                    index = '0,0';
+                    index = '0,7';
                     break;
                   case 79:
                     index = '0,8';
@@ -104,28 +105,28 @@
 
                   // A - L
                   case 65:
-                    index = '1,7';
+                    index = '1,0';
                     break;
                   case 83:
-                    index = '1,6';
-                    break;
-                  case 68:
-                    index = '1,5';
-                    break;
-                  case 70:
-                    index = '1,4';
-                    break;
-                  case 71:
-                    index = '1,3';
-                    break;
-                  case 72:
-                    index = '1,2';
-                    break;
-                  case 74:
                     index = '1,1';
                     break;
+                  case 68:
+                    index = '1,2';
+                    break;
+                  case 70:
+                    index = '1,3';
+                    break;
+                  case 71:
+                    index = '1,4';
+                    break;
+                  case 72:
+                    index = '1,5';
+                    break;
+                  case 74:
+                    index = '1,6';
+                    break;
                   case 75:
-                    index = '1,0';
+                    index = '1,7';
                     break;
                   case 76:
                     index = '1,8';
@@ -133,28 +134,28 @@
 
                   // Z - M
                   case 90:
-                    index = '2,7';
+                    index = '2,0';
                     break;
                   case 88:
-                    index = '2,6';
-                    break;
-                  case 67:
-                    index = '2,5';
-                    break;
-                  case 86:
-                    index = '2,4';
-                    break;
-                  case 66:
-                    index = '2,3';
-                    break;
-                  case 78:
-                    index = '2,2';
-                    break;
-                  case 77:
                     index = '2,1';
                     break;
+                  case 67:
+                    index = '2,2';
+                    break;
+                  case 86:
+                    index = '2,3';
+                    break;
+                  case 66:
+                    index = '2,4';
+                    break;
+                  case 78:
+                    index = '2,5';
+                    break;
+                  case 77:
+                    index = '2,6';
+                    break;
                   case 188:
-                    index = '2,0';
+                    index = '2,7';
                     break;
 
                   // SPACE
@@ -232,7 +233,7 @@
                   .css({
                     cursor: 'pointer'
                   })
-                  .bind('touchstart mousedown', function() {
+                  .bind('mouseup touchstart', function() {
                     trigger(index);
                     button.fillOpacity = 1.0;
                     buttons.needsUpdate.push(button);
@@ -248,9 +249,9 @@
 
           function createButton() {
 
-            var shape = this.makeRoundedRectangle(0, 0, buttons.width, buttons.height, buttons.margin / 2);
+            var shape = this.makeRectangle(0, 0, buttons.width, buttons.height);
             shape.noFill().stroke = 'rgba(0, 0, 0, 0.1)';
-            shape.linewidth = 3;
+            shape.linewidth = 1;
             shape.cap = shape.join = 'round';
             shape.visible = false;
             return shape;
@@ -263,29 +264,43 @@
               return;
             }
 
-            var landscape = ui.width < ui.height;
-            var scale = 0.66;
-            var width = ui.width * scale;
-            var height = ui.height * scale;
+            var width = $window.width();
+            var height = $window.height();
+            var landscape = width >= height;
+            var size = buttons.length;
 
             _.each(buttons, function(group, i) {
 
+              var length = group.length;
+              var w, h, w2, h2, x, y;
+
+              if (landscape) {
+                w = width / length;
+                h = height / size;
+              } else {
+                w = width / size;
+                h = height / length;
+              }
+
+              w /= 2;
+              h /= 2;
+
               _.each(group, function(button, j) {
 
-                var x = j, y = i, xl = group.length - 1, yl = buttons.length - 1;
+                var vertices = button.vertices;
 
                 if (landscape) {
-                  x = i;
-                  y = j;
-                  xl = buttons.length - 1;
-                  yl = group.length - 1;
+                  x = width * (j + 0.5) / length;
+                  y = height * (i + 0.5) / size;
+                } else {
+                  x = width * (i + 0.5) / size;
+                  y = height * (j + 0.5) / length;
                 }
 
-                x *= (buttons.width + buttons.margin);
-                y *= (buttons.height + buttons.margin);
-
-                x -= (buttons.width + buttons.margin) * xl / 2;
-                y -= (buttons.height + buttons.margin) * yl / 2;
+                vertices[0].set(- w, - h);
+                vertices[1].set(w, - h);
+                vertices[2].set(w, h);
+                vertices[3].set(- w, h);
 
                 button.translation.set(x, y);
                 button.visible = true;
@@ -293,10 +308,6 @@
               });
 
             });
-
-            ui.scene.translation.set(ui.width / 2, ui.height / 2);
-
-            ui.update();
 
           }
 

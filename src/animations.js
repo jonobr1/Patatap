@@ -1,5 +1,5 @@
 var two = new Two({
-  type: Two.Types.canvas,//(has.Safari || has.iOS) ? Two.Types.svg : Two.Types.canvas,
+  type: (has.Safari || has.iOS) ? Two.Types.svg : Two.Types.canvas,
   fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
@@ -204,7 +204,7 @@ window.animations = (function() {
       resize: resize,
       clear: reset,
       playing: function() { return playing; },
-      hash: '2,6',
+      hash: '2,1',
       filename: 'wipe'
     };
 
@@ -315,7 +315,7 @@ window.animations = (function() {
       resize: resize,
       clear: reset,
       playing: function() { return playing; },
-      hash: '1,6',
+      hash: '1,1',
       filename: 'veil'
     };
 
@@ -409,7 +409,7 @@ window.animations = (function() {
         clear: reset,
         resize: resize,
         playing: function() { return playing; },
-        hash: i + ',1',
+        hash: i + ',6',
         filename: 'prism-' + (i + 1)
       };
 
@@ -557,7 +557,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,6',
+      hash: '0,1',
       filename: 'clay'
     };
 
@@ -688,7 +688,7 @@ window.animations = (function() {
         clear: reset,
         resize: resize,
         playing: function() { return playing; },
-        hash: i + ',4',
+        hash: i + ',3',
         filename: 'piston-' + (i + 1)
       };
 
@@ -757,7 +757,7 @@ window.animations = (function() {
         clear: _.identity,
         resize: resize,
         playing: function() { return playing; },
-        hash: i + ',7',
+        hash: i + ',0',
         filename: 'flash-' + (i + 1)
       };
 
@@ -972,7 +972,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,2',
+      hash: '0,5',
       filename: 'suspension'
     };
 
@@ -1101,7 +1101,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '2,2',
+      hash: '2,5',
       filename: 'confetti'
     };
 
@@ -1223,7 +1223,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,3',
+      hash: '0,4',
       filename: 'timer'
     };
 
@@ -1312,7 +1312,7 @@ window.animations = (function() {
       clear: reset,
       start: start,
       playing: function() { return playing; },
-      hash: '1,5',
+      hash: '1,2',
       filename: 'ufo'
     };
 
@@ -1430,7 +1430,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '2,5',
+      hash: '2,2',
       filename: 'splits'
     };
 
@@ -1546,7 +1546,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,5',
+      hash: '0,2',
       filename: 'moon'
     };
 
@@ -1618,7 +1618,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '1,2',
+      hash: '1,5',
       filename: 'strike'
     };
 
@@ -1876,7 +1876,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '0,0',
+      hash: '0,7',
       filename: 'squiggle'
     };
 
@@ -2023,7 +2023,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '1,3',
+      hash: '1,4',
       filename: 'bubbles'
     };
 
@@ -2173,7 +2173,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '2,3',
+      hash: '2,4',
       filename: 'corona'
     };
 
@@ -2311,7 +2311,7 @@ window.animations = (function() {
       clear: reset,
       resize: resize,
       playing: function() { return playing; },
-      hash: '1,0',
+      hash: '1,7',
       filename: 'pinwheel'
     };
 
