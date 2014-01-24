@@ -184,17 +184,7 @@
                   return;
                 }
 
-                _.each(buttons.needsUpdate, function(button, i) {
-
-                  button.fillOpacity += (0 - button.fillOpacity) * 0.2;
-                  button.fill = 'rgba(255, 255, 255,' + button.fillOpacity + ')';
-
-                  if (button.fillOpacity <= 0.1) {
-                    button.noFill();
-                    buttons.needsUpdate.splice(i, 1);
-                  }
-
-                });
+                _.each(buttons.needsUpdate, updateButtons);
 
                 ui.update();
 
@@ -215,11 +205,11 @@
             buttons = [];
             buttons.width = buttons.height = 32;
             buttons.margin = 12;
-            buttons.needsUpdate = [];
+            buttons.needsUpdate = {};
 
             buttons[0] = _.map(_.range(10), createButton, ui);
             buttons[1] = _.map(_.range(9), createButton, ui);
-            buttons[2] = _.map(_.range(7), createButton, ui);
+            buttons[2] = _.map(_.range(8), createButton, ui);
 
             ui.update();
 
@@ -228,15 +218,24 @@
               _.each(group, function(button, j) {
 
                 var elem = button._renderer.elem;
-                var index = i + ',' + (i == 2 ? j + 1 : j);
+                var index = i + ',' + j;
                 $(elem)
                   .css({
                     cursor: 'pointer'
                   })
-                  .bind('mouseup touchstart', function() {
+                  .bind('mousedown touchstart', function() {
+
                     trigger(index);
-                    button.fillOpacity = 1.0;
-                    buttons.needsUpdate.push(button);
+
+                    if (animations.getColorPalette().isDark) {
+                      button.fill = 'rgba(255, 255, 255, 0.3)';
+                    } else {
+                      button.fill = 'rgba(0, 0, 0, 0.3)';
+                    }
+
+                    button.opacity = 1.0;
+                    buttons.needsUpdate[button.id] = button;
+
                   });
 
               });
@@ -250,9 +249,10 @@
           function createButton() {
 
             var shape = this.makeRectangle(0, 0, buttons.width, buttons.height);
-            shape.noFill().stroke = 'rgba(0, 0, 0, 0.1)';
-            shape.linewidth = 1;
-            shape.cap = shape.join = 'round';
+            shape.noFill().noStroke();
+            // shape.fill = 'rgba(0, 0, 0, 0.1)';
+            // shape.stroke = 'rgba(0, 0, 0, 0.1)';
+            shape.opacity = 0;
             shape.visible = false;
             return shape;
 
@@ -308,6 +308,17 @@
               });
 
             });
+
+          }
+
+          function updateButtons(button, i) {
+
+            button.opacity += (- button.opacity) * 0.2;
+
+            if (button.opacity <= 0.1) {
+              button.opacity = 0;
+              delete buttons.needsUpdate[button.id];
+            }
 
           }
 

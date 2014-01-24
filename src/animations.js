@@ -31,7 +31,8 @@ window.animations = (function() {
       highlight: { r: 163, g: 141, b: 116 },
       accent: { r: 255, g: 197, b: 215 },
       white: { r: 255, g: 255, b: 255 },
-      black: { r: 0, g: 0, b: 0 }
+      black: { r: 0, g: 0, b: 0 },
+      isDark: false
     },
     {
       background: { r: 57, g: 109, b: 193 },
@@ -40,7 +41,8 @@ window.animations = (function() {
       highlight: { r: 213, g: 160, b: 255 },
       accent: { r: 36, g: 221, b: 165 },
       white: { r: 215, g: 236, b: 255 },
-      black: { r: 0, g: 0, b: 0 }
+      black: { r: 0, g: 0, b: 0 },
+      isDark: true
     },
     {
       background: { r: 217, g: 82, b: 31 },
@@ -49,7 +51,8 @@ window.animations = (function() {
       highlight: { r: 255, g: 126, b: 138 },
       accent: { r: 227, g: 190, b: 141 },
       white: { r: 255, g: 255, b: 255 },
-      black: { r: 0, g: 0, b: 0 }
+      black: { r: 0, g: 0, b: 0 },
+      isDark: false
     },
     {
       background: { r: 255, g: 244, b: 211 },
@@ -58,7 +61,8 @@ window.animations = (function() {
       highlight: { r: 178, g: 87, b: 53 },
       accent: { r: 235, g: 192, b: 92 },
       white: { r: 226, g: 82, b: 87 },
-      black: { r: 0, g: 0, b: 0 }
+      black: { r: 0, g: 0, b: 0 },
+      isDark: false
     },
     {
       background: { r: 191, g: 178, b: 138 },
@@ -67,7 +71,8 @@ window.animations = (function() {
       highlight: { r: 217, g: 210, b: 176 },
       accent: { r: 242, g: 239, b: 220 },
       white: { r: 22, g: 33, b: 44 },
-      black: { r: 255, g: 255, b: 255 }
+      black: { r: 255, g: 255, b: 255 },
+      isDark: true
     },
     {
       background: { r: 255, g: 255, b: 255 },
@@ -76,7 +81,8 @@ window.animations = (function() {
       highlight: { r: 255, g: 255, b: 0 },
       accent: { r: 255, g: 51, b: 148 },
       white: { r: 255, g: 255, b: 255 },
-      black: { r: 255, g: 255, b: 255 }
+      black: { r: 255, g: 255, b: 255 },
+      isDark: true
     },
     {
       background: { r: 39, g: 6, b: 54 },
@@ -85,9 +91,11 @@ window.animations = (function() {
       highlight: { r: 52, g: 255, b: 253 },
       accent: { r: 133, g: 102, b: 193 },
       white: { r: 253, g: 228, b: 252 },
-      black: { r: 255, g: 255, b: 255 }
+      black: { r: 255, g: 255, b: 255 },
+      isDark: true
     }
   ];
+
   var current = 0;
   var _colors = {};
   var colors = {};
@@ -136,7 +144,7 @@ window.animations = (function() {
     var update = function() {
       shape.fill = colors.middleground;
     };
-    var resize = function() {};
+    var resize = _.identity;
 
     var options = {
       i: 0,
@@ -2507,7 +2515,7 @@ window.animations = (function() {
 
   });
 
-  var changedColors = false;
+  var changedColors = true;
   var changeColors = {};
 
   changeColors.start = function(onComplete) {
@@ -2535,11 +2543,62 @@ window.animations = (function() {
   _.each(_.range(8), function(i) {
     monome[changeColors.hash + i] = changeColors;
   });
+  monome['2,7'] = changeColors;  // Export for mobile
 
   var iterateUpdate = function(o) {
     if (_.isFunction(o.update)) {
       o.update();
     }
+  };
+
+  var setColors = function(palette) {
+
+    amount = 0;
+
+    for (k in _colors) {
+
+      v = _colors[k];
+      c = palette[k];
+
+      v.r = c.r;
+      v.g = c.g;
+      v.b = c.b;
+
+      amount++;
+
+      colors[k] = toRGB(v);
+
+    }
+
+    return amount;
+
+  };
+
+  var tweenColors = function(palette) {
+
+    amount = 0;
+
+    for (k in _colors) {
+
+      v = _colors[k];
+
+      c = palette[k];
+      r = v.r, g = v.g, b = v.b;
+
+      if (colorsEqual(c, v)) {
+        amount++;
+      }
+
+      v.r = ease(r, c.r, drag);
+      v.g = ease(g, c.g, drag);
+      v.b = ease(b, c.b, drag);
+
+      colors[k] = toRGB(v);
+
+    }
+
+    return amount;
+
   };
 
   var palette, amount, c, r, g, b, k, v;
@@ -2549,27 +2608,20 @@ window.animations = (function() {
 
     update: function() {
 
-      palette = PALETTE[current];
-      amount = 0;
-
-      for (k in _colors) {
-
-        v = _colors[k];
-
-        c = palette[k];
-        r = v.r, g = v.g, b = v.b;
-
-        if (colorsEqual(c, v)) {
-          amount++;
-        }
-
-        v.r = ease(r, c.r, drag);
-        v.g = ease(g, c.g, drag);
-        v.b = ease(b, c.b, drag);
-
-        colors[k] = toRGB(v);
-
+      if (changedColors) {
+        return;
       }
+
+      palette = PALETTE[current];
+
+      if (has.mobile) {
+        amount = setColors(palette);
+      } else {
+        amount = tweenColors(palette);
+      }
+
+      _.each(this.map, iterateUpdate);
+      container.style.background = colors.background;
 
       if (amount >= PALETTE.length) {
 
@@ -2582,14 +2634,15 @@ window.animations = (function() {
 
       }
 
-      _.each(this.map, iterateUpdate);
-
-      container.style.background = colors.background;
-
     },
 
     map: monome,
-    list: _.toArray(monome)
+
+    list: _.toArray(monome),
+
+    getColorPalette: function() {
+      return PALETTE[current];
+    }
 
   };
 
