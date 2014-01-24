@@ -32,11 +32,11 @@
            * Append Sound Generation to Animations
            */
 
-          var path = './assets/A/', filetype = '.wav';
+          var path = './assets/B/', filetype = '.wav';
 
           var soundsBuffered = _.after(26, function() {
             if (url.loop && url.loop.match(/(clap|groove)/ig)) {
-              new Sound(path + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
+              new Sound('./assets/' + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
                 this.play({
                   loop: true
                 });
