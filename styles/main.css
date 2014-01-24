@@ -18,6 +18,8 @@
   height: 32px;
   background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
   background-size: 16px 16px;
+  margin-left: -16px;
+  margin-top: -16px;
   border-radius: 50%;
   -webkit-animation-name: rotate;
   -moz-animation-name: rotate;

@@ -12,19 +12,19 @@
   right: 0;
   bottom: 0;
   background: rgb(181, 181, 181);
-  #ui {
-    
-  }
 }
 
 #loader {
+  $d: 32px;
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 32px;
-  height: 32px;
+  width: $d;
+  height: $d;
   background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
-  background-size: 16px 16px;
+  background-size: ($d / 2) ($d / 2);
+  margin-left: - ($d / 2);
+  margin-top: - ($d / 2);
   border-radius: 50%;
   @include animation-name(rotate);
   @include animation-duration(1s);
