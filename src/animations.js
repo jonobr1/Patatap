@@ -82,7 +82,7 @@ window.animations = (function() {
       accent: { r: 255, g: 51, b: 148 },
       white: { r: 255, g: 255, b: 255 },
       black: { r: 255, g: 255, b: 255 },
-      isDark: true
+      isDark: false
     },
     {
       background: { r: 39, g: 6, b: 54 },
