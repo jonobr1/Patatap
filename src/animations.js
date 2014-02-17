@@ -14,6 +14,7 @@ window.animations = (function() {
   var container = document.querySelector('#content');
   var width = two.width, height = two.height;
   var center = { x: width / 2, y: height / 2 };
+  var min_dimension = width > height ? height : width;
   var duration = 1000;
   var drag = 0.125;
   var monome = {};
@@ -612,10 +613,12 @@ window.animations = (function() {
 
       var options = { ending: 0, beginning: 0 };
 
+      var showShape = function(shape) {
+        shape.visible = true;
+      };
+
       var start = function(onComplete) {
-        _.each(shapes, function(shape) {
-          shape.visible = true;
-        });
+        _.each(shapes, showShape);
         _in.start();
         if (exports.sound) {
           exports.sound.stop().play();
@@ -790,8 +793,8 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 120, linewidth = (width > height ? height : width) / 60, resolution = 4;
-    var magnitude = (width > height ? height : width) / 2;
+    var amount = 120, linewidth = min_dimension / 60, resolution = 4;
+    var magnitude = min_dimension / 2;
 
     var lines = _.map(_.range(amount), function(i) {
 
@@ -840,7 +843,7 @@ window.animations = (function() {
     };
     var resize = function() {
       group.translation.set(center.x, center.y);
-      group.linewidth = (width > height ? height : width) / 60;
+      group.linewidth = min_dimension / 60;
     };
 
     var i, t, index;
@@ -862,11 +865,13 @@ window.animations = (function() {
         callback();
       });
 
+    var resetLine = function(l) {
+      l.visible = false;
+    };
+
     function reset() {
 
-      _.each(lines, function(l) {
-        l.visible = false;
-      });
+      _.each(lines, resetLine);
 
       group.rotation = Math.random() * TWO_PI;
       group.scale = 1;
@@ -899,7 +904,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 16, r1 = (width > height ? height : width) * 12 / 900, r2 = (width > height ? height : width) * 20 / 900, theta, deviation, distance = height;
+    var amount = 16, r1 = min_dimension * 12 / 900, r2 = min_dimension * 20 / 900, theta, deviation, distance = height;
 
     var destinations = [];
     var circles = _.map(_.range(amount), function(i) {
@@ -1010,8 +1015,8 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 32, r1 = (width > height ? height : width) * 12 / 900,
-      r2 = (width > height ? height : width) * 20 / 900, theta, deviation, distance = width;
+    var amount = 32, r1 = min_dimension * 12 / 900,
+      r2 = min_dimension * 20 / 900, theta, deviation, distance = width;
 
     var destinations = [];
     var circles = _.map(_.range(amount), function(i) {
@@ -1027,10 +1032,12 @@ window.animations = (function() {
     var group = two.makeGroup(circles);
     // group.translation.set(center.x, center.y);
 
+    var showCircle = function(c) {
+      c.visible = true;
+    };
+
     var start = function(onComplete) {
-      _.each(circles, function(c) {
-        c.visible = true;
-      })
+      _.each(circles, showCircle);
       _in.start();
       if (exports.sound) {
         exports.sound.stop().play();
@@ -1042,11 +1049,13 @@ window.animations = (function() {
 
     start.onComplete = reset;
 
+    var updateCircleFill = function(circle) {
+      circle.fill = colors[circle.property];
+    };
+
     var update = function() {
       // group.fill = colors.white;
-      _.each(circles, function(circle) {
-        circle.fill = colors[circle.property];
-      });
+      _.each(circles, updateCircleFill);
     };
     var resize = function() {
       group.translation.set(center.x, center.y);
@@ -1147,7 +1156,7 @@ window.animations = (function() {
 
     var callback = _.identity;
     var playing = false;
-    var amount = 48, radius = (width > height ? height : width) / 3;
+    var amount = 48, radius = min_dimension / 3;
 
     var points = _.map(_.range(amount), function(i) {
 
@@ -1165,7 +1174,7 @@ window.animations = (function() {
     var timer = two.makePolygon(points, true);
     timer.stroke = colors.highlight;
     timer.cap = 'butt';
-    timer.linewidth = (width > height ? height : width) / 10;
+    timer.linewidth = min_dimension / 10;
     timer.noFill();
 
     timer.translation.set(center.x, center.y);
@@ -1185,20 +1194,22 @@ window.animations = (function() {
 
     start.onComplete = reset;
 
+    var resizePoints = function(v, i) {
+      var pct = i / amount;
+      var theta = pct * TWO_PI;
+      var x = radius * Math.cos(theta);
+      var y = radius * Math.sin(theta);
+      v.set(x, y);
+    };
+
     var update = function() {
       timer.stroke = colors.highlight;
     };
     var resize = function() {
       timer.translation.set(center.x, center.y);
-      radius = (width > height ? height : width) / 3
-      timer.linewidth = (width > height ? height : width) / 10;
-      _.each(points, function(v, i) {
-        var pct = i / amount;
-        var theta = pct * TWO_PI;
-        var x = radius * Math.cos(theta);
-        var y = radius * Math.sin(theta);
-        v.set(x, y);
-      });
+      radius = min_dimension / 3
+      timer.linewidth = min_dimension / 10;
+      _.each(points, resizePoints);
     };
 
     var options = { ending: 0, beginning: 0 };
@@ -1270,7 +1281,7 @@ window.animations = (function() {
     var playing = false;
     var callback = _.identity;
 
-    var radius = (width > height ? height : width) * 0.25;
+    var radius = min_dimension * 0.25;
     var circle = two.makeCircle(0, 0, radius);
     circle.noStroke().fill = colors.accent;
 
@@ -1293,7 +1304,7 @@ window.animations = (function() {
       circle.fill = colors.accent;
     };
     var resize = function() {
-      radius = (width > height ? height : width) * 0.25;
+      radius = min_dimension * 0.25;
     };
 
     var _in = new TWEEN.Tween(options)
@@ -1360,7 +1371,7 @@ window.animations = (function() {
     var callback = _.identity;
 
     var amount = 25, last = amount - 1;
-    var radius = (width > height ? height : width) * 0.33;
+    var radius = min_dimension * 0.33;
     var distance = height / 6;
 
     var points = _.map(_.range(amount), function(i) {
@@ -1409,7 +1420,7 @@ window.animations = (function() {
     };
 
     var resize = function() {
-      radius = (width > height ? height : width) * 0.33;
+      radius = min_dimension * 0.33;
       distance = height / 6;
       shape.translation.set(center.x, center.y);
     };
@@ -1477,7 +1488,7 @@ window.animations = (function() {
     var playing = false;
     var callback = _.identity;
     var amount = 50, half = amount / 2;
-    var radius = (width > height ? height : width) * 0.33;
+    var radius = min_dimension * 0.33;
 
     var destinations = [];
     var points = _.map(_.range(amount), function(i) {
@@ -1513,7 +1524,7 @@ window.animations = (function() {
       moon.fill = colors.foreground;
     };
     var resize = function() {
-      radius = (width > height ? height : width) * 0.33;
+      radius = min_dimension * 0.33;
       moon.translation.set(center.x, center.y);
     };
 
@@ -1722,7 +1733,7 @@ window.animations = (function() {
 
     var zigzag = two.makePolygon(points, true);
     zigzag.stroke = colors.black;
-    zigzag.linewidth = (width > height ? height : width) / 30;
+    zigzag.linewidth = min_dimension / 30;
     zigzag.noFill();
     zigzag.join = 'miter';
     zigzag.miter = 4;
@@ -1844,7 +1855,7 @@ window.animations = (function() {
     var squiggle = two.makePolygon(points, true);
     squiggle.translation.set(center.x, center.y);
     squiggle.stroke = colors.accent;
-    squiggle.linewidth = (width > height ? height : width) / 40;
+    squiggle.linewidth = min_dimension / 40;
     squiggle.cap = squiggle.join = 'round';
     squiggle.noFill();
 
@@ -1870,7 +1881,7 @@ window.animations = (function() {
     var resize = function() {
       w = center.x;
       h = height * 0.33;
-      squiggle.linewidth = (width > height ? height : width) / 40;
+      squiggle.linewidth = min_dimension / 40;
       squiggle.translation.set(center.x, center.y);
     };
 
@@ -1936,10 +1947,10 @@ window.animations = (function() {
 
     var callback = _.identity;
     var playing = false;
-    var amount = 24, radius = (width > height ? height : width) * .33;
+    var amount = 24, radius = min_dimension * .33;
     var last = amount - 1;
     var dur = duration * 0.2;
-    var bubbleRadius = (width > height ? height : width) * 10 / 900;
+    var bubbleRadius = min_dimension * 10 / 900;
     var direction = true;
 
     var circles = _.map(_.range(amount), function(i) {
@@ -1978,7 +1989,7 @@ window.animations = (function() {
     };
     var resize = function() {
       shape.translation.set(center.x, center.y);
-      radius = (width > height ? height : width) * .33;
+      radius = min_dimension * .33;
     };
 
     var options = { ending: 0, beginning: 0 };
@@ -2087,7 +2098,7 @@ window.animations = (function() {
     var callback = _.identity;
     var playing = false;
 
-    var amount = 32, radius = (width > height ? height : width) * .45;
+    var amount = 32, radius = min_dimension * .45;
     var last = amount - 1;
     var dur = duration * 0.1;
     var bubbleRadius = height * 12 / 900;
@@ -2129,7 +2140,7 @@ window.animations = (function() {
     };
     var resize = function() {
       shape.translation.set(center.x, center.y);
-      radius = (width > height ? height : width) * .45;
+      radius = min_dimension * .45;
     };
 
     var options = { ending: 0, beginning: 0 };
@@ -2284,6 +2295,10 @@ window.animations = (function() {
 
     var sequence = [];
 
+    var startTween = function(tween) {
+      tween.start();
+    };
+
     _.each(_.range(amount), function(i) {
 
       var index = i + 1;
@@ -2314,9 +2329,7 @@ window.animations = (function() {
       tween.onComplete(function() {
         var parallel = sequence[index];
         if (_.isArray(parallel)) {
-          _.each(parallel, function(tween) {
-            tween.start();
-          })
+          _.each(parallel, startTween);
           return;
         }
         tween_out.start();
@@ -2515,6 +2528,8 @@ window.animations = (function() {
 
     center.x = width / 2;
     center.y = height / 2;
+
+    min_dimension = width > height ? height : width;
 
     _.each(animations.map, iterateResize);
 
