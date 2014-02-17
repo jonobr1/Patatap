@@ -1890,8 +1890,6 @@ window.animations = (function() {
     var _in = new TWEEN.Tween(squiggle)
       .to({ ending: 1.0 }, duration / 2)
       .easing(Easing.Sinusoidal.Out)
-      .onStart(function() {
-      })
       .onComplete(function() {
         _out.start();
       });
@@ -1910,8 +1908,7 @@ window.animations = (function() {
       phi = Math.round(Math.random() * 6) + 1;
       offset = Math.PI / 2;
       squiggle.rotation = Math.random() > 0.5 ? Math.PI : 0;
-      // options.beginning = options.ending = 0;
-      squiggle.beginning = squiggle.ending = 0;
+      squiggle.ending = squiggle.beginning = 0;
       for (i = 0; i < amount; i++) {
         v = points[i];
         pct = i / amount;
