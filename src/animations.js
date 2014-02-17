@@ -1607,7 +1607,7 @@ window.animations = (function() {
     var callback = _.identity;
 
     var amount = 32;
-    var distance = height * 0.5;
+    var distance = min_dimension * 0.5;
 
     var points = _.map(_.range(amount), function(i) {
       return new Two.Anchor();
@@ -1692,7 +1692,7 @@ window.animations = (function() {
       b.x = distance * Math.cos(theta);
       b.y = distance * Math.sin(theta);
 
-      line.beginning = line.ending = 0;
+      line.ending = line.beginning = 0;
       line.visible = false;
 
       for (i = 0; i < amount; i++) {
