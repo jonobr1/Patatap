@@ -119,10 +119,10 @@ window.animations = (function() {
 
     var direction = true;
     var points = [
-      new Two.Vector(- center.x, -center.y),
-      new Two.Vector(center.x, - center.y),
-      new Two.Vector(center.x, center.y),
-      new Two.Vector(- center.x, center.y)
+      new Two.Anchor(- center.x, -center.y),
+      new Two.Anchor(center.x, - center.y),
+      new Two.Anchor(center.x, center.y),
+      new Two.Anchor(- center.x, center.y)
     ];
     var shape = two.makePolygon(points);
     shape.fill = colors.middleground;
@@ -230,10 +230,10 @@ window.animations = (function() {
 
     var direction = true;
     var points = [
-      new Two.Vector(- center.x, - center.y),
-      new Two.Vector(center.x, - center.y),
-      new Two.Vector(center.x, center.y),
-      new Two.Vector(- center.x, center.y)
+      new Two.Anchor(- center.x, - center.y),
+      new Two.Anchor(center.x, - center.y),
+      new Two.Anchor(center.x, center.y),
+      new Two.Anchor(- center.x, center.y)
     ];
     var shape = two.makePolygon(points);
     shape.fill = colors.highlight;
@@ -352,7 +352,7 @@ window.animations = (function() {
         circle.fill = colors.black;
         circle.noStroke();
         circles.push(circle);
-        return new Two.Vector(x, y);
+        return new Two.Anchor(x, y);
       });
 
       var prism = two.makePolygon(points);
@@ -451,7 +451,7 @@ window.animations = (function() {
       var x = distance * Math.sin(theta);
       var y = distance * Math.cos(theta);
       destinations.push(new Two.Vector(x, y));
-      return new Two.Vector(x, y);
+      return new Two.Anchor(x, y);
     });
 
     var clay = two.makeCurve(points);
@@ -1160,16 +1160,14 @@ window.animations = (function() {
 
     var points = _.map(_.range(amount), function(i) {
 
-      var pct = i / amount;
+      var pct = i / (amount - 1);
       var theta = pct * TWO_PI;
       var x = radius * Math.cos(theta);
       var y = radius * Math.sin(theta);
 
-      return new Two.Vector(x, y);
+      return new Two.Anchor(x, y);
 
     });
-
-    points.push(points[0], points[1]);
 
     var timer = two.makePolygon(points, true);
     timer.stroke = colors.highlight;
@@ -1212,8 +1210,10 @@ window.animations = (function() {
       _.each(points, resizePoints);
     };
 
-    var options = { ending: 0, beginning: 0 };
-    var diretion = true;
+    var diretion = true, options = {
+      beginning: 0,
+      ending: 0
+    };
 
     var _in = new TWEEN.Tween(options)
       .to({ ending: 1 }, duration / 3)
@@ -1379,7 +1379,7 @@ window.animations = (function() {
       var theta = pct * Math.PI;
       var x = radius * Math.cos(theta);
       var y = radius * Math.sin(theta);
-      return new Two.Vector(x, y);
+      return new Two.Anchor(x, y);
     });
 
     var a = two.makePolygon(points);
@@ -1390,7 +1390,7 @@ window.animations = (function() {
       var theta = pct * Math.PI + Math.PI;
       var x = radius * Math.cos(theta);
       var y = radius * Math.sin(theta);
-      return new Two.Vector(x, y);
+      return new Two.Anchor(x, y);
     });
 
     var b = two.makePolygon(points);
@@ -1497,7 +1497,7 @@ window.animations = (function() {
       var x = radius * Math.cos(theta);
       var y = radius * Math.sin(theta);
       destinations.push({ x: x, y: y });
-      return new Two.Vector(x, y);
+      return new Two.Anchor(x, y);
     });
 
     var moon = two.makePolygon(points);
@@ -1610,7 +1610,7 @@ window.animations = (function() {
     var distance = height * 0.5;
 
     var points = _.map(_.range(amount), function(i) {
-      return new Two.Vector();
+      return new Two.Anchor();
     });
     var line = two.makePolygon(points, true);
     line.noFill().stroke = colors.black;
@@ -1728,7 +1728,7 @@ window.animations = (function() {
       var theta = TWO_PI * phi * pct + offset;
       var x = w * Math.sin(theta);
       var y = map(pct, 0, 1, - h / 2, h / 2);
-      return new Two.Vector(x, y);
+      return new Two.Anchor(x, y);
     });
 
     var zigzag = two.makePolygon(points, true);
@@ -1849,7 +1849,7 @@ window.animations = (function() {
       var theta = TWO_PI * phi * pct + offset;
       var x = map(pct, 0, 1, - w / 2, w / 2);
       var y = h * Math.sin(theta);
-      return new Two.Vector(x, y);
+      return new Two.Anchor(x, y);
     });
 
     var squiggle = two.makePolygon(points, true);
@@ -2259,7 +2259,7 @@ window.animations = (function() {
     var drift = Math.random() * TWO_PI;
 
     var points = _.map(_.range(amount), function(i) {
-      return new Two.Vector();
+      return new Two.Anchor();
     });
 
     var shape = two.makePolygon(points);
@@ -2675,9 +2675,9 @@ function makeTriangle(x, y, radius) {
   var t2 = TWO_PI * .66;
   var t3 = TWO_PI;
   var points = [
-    new Two.Vector(radius * Math.cos(t1) + x, radius * Math.sin(t1) + y),
-    new Two.Vector(radius * Math.cos(t2) + x, radius * Math.sin(t2) + y),
-    new Two.Vector(radius * Math.cos(t3) + x, radius * Math.sin(t3) + y)
+    new Two.Anchor(radius * Math.cos(t1) + x, radius * Math.sin(t1) + y),
+    new Two.Anchor(radius * Math.cos(t2) + x, radius * Math.sin(t2) + y),
+    new Two.Anchor(radius * Math.cos(t3) + x, radius * Math.sin(t3) + y)
   ];
   var shape = two.makePolygon(points);
   return shape;
