@@ -1802,7 +1802,7 @@ window.animations = (function() {
       offset = Math.PI / 2;
       zigzag.rotation = Math.random() > 0.5 ? Math.PI : 0;
       x = 0;
-      zigzag.beginning = zigzag.ending = 0;
+      zigzag.ending = zigzag.beginning = 0;
 
       for (i = 0; i < amount; i++) {
         v = points[i];
