@@ -790,8 +790,8 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 120, linewidth = 10, resolution = 4;
-    var magnitude = 300;
+    var amount = 120, linewidth = (width > height ? height : width) / 60, resolution = 4;
+    var magnitude = (width > height ? height : width) / 2;
 
     var lines = _.map(_.range(amount), function(i) {
 
@@ -840,6 +840,7 @@ window.animations = (function() {
     };
     var resize = function() {
       group.translation.set(center.x, center.y);
+      group.linewidth = (width > height ? height : width) / 60;
     };
 
     var i, t, index;
@@ -898,7 +899,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 16, r1 = height * 12 / 900, r2 = height * 20 / 900, theta, deviation, distance = height;
+    var amount = 16, r1 = (width > height ? height : width) * 12 / 900, r2 = (width > height ? height : width) * 20 / 900, theta, deviation, distance = height;
 
     var destinations = [];
     var circles = _.map(_.range(amount), function(i) {
@@ -1005,18 +1006,19 @@ window.animations = (function() {
 
   })();
 
-  // TODO: Change to rectangles and force rotation and colors
   var confetti = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 32, r1 = height * 12 / 900, r2 = height * 20 / 900, theta, deviation, distance = width;
+    var amount = 32, r1 = (width > height ? height : width) * 12 / 900,
+      r2 = (width > height ? height : width) * 20 / 900, theta, deviation, distance = width;
 
     var destinations = [];
     var circles = _.map(_.range(amount), function(i) {
       var r = Math.round(map(Math.random(), 0, 1, r1, r2));
       var circle = two.makeCircle(0, 0, r);
-      circle.fill = colors.white;
+      circle.property = PROPERTIES[Math.floor(Math.random() * PROPERTIES.length)];
+      circle.fill = colors[circle.property];
       circle.noStroke();
       destinations.push(new Two.Vector());
       return circle;
@@ -1041,7 +1043,10 @@ window.animations = (function() {
     start.onComplete = reset;
 
     var update = function() {
-      group.fill = colors.white;
+      // group.fill = colors.white;
+      _.each(circles, function(circle) {
+        circle.fill = colors[circle.property];
+      });
     };
     var resize = function() {
       group.translation.set(center.x, center.y);
@@ -1142,7 +1147,7 @@ window.animations = (function() {
 
     var callback = _.identity;
     var playing = false;
-    var amount = 48, radius = height / 3;
+    var amount = 48, radius = (width > height ? height : width) / 3;
 
     var points = _.map(_.range(amount), function(i) {
 
@@ -1160,7 +1165,7 @@ window.animations = (function() {
     var timer = two.makePolygon(points, true);
     timer.stroke = colors.highlight;
     timer.cap = 'butt';
-    timer.linewidth = height / 10;
+    timer.linewidth = (width > height ? height : width) / 10;
     timer.noFill();
 
     timer.translation.set(center.x, center.y);
@@ -1185,8 +1190,8 @@ window.animations = (function() {
     };
     var resize = function() {
       timer.translation.set(center.x, center.y);
-      radius = height / 3;
-      timer.linewidth = height / 10;
+      radius = (width > height ? height : width) / 3
+      timer.linewidth = (width > height ? height : width) / 10;
       _.each(points, function(v, i) {
         var pct = i / amount;
         var theta = pct * TWO_PI;
@@ -1265,7 +1270,7 @@ window.animations = (function() {
     var playing = false;
     var callback = _.identity;
 
-    var radius = height * 0.25;
+    var radius = (width > height ? height : width) * 0.25;
     var circle = two.makeCircle(0, 0, radius);
     circle.noStroke().fill = colors.accent;
 
@@ -1288,7 +1293,7 @@ window.animations = (function() {
       circle.fill = colors.accent;
     };
     var resize = function() {
-      radius = height * 0.25;
+      radius = (width > height ? height : width) * 0.25;
     };
 
     var _in = new TWEEN.Tween(options)
@@ -1355,7 +1360,7 @@ window.animations = (function() {
     var callback = _.identity;
 
     var amount = 25, last = amount - 1;
-    var radius = height * 0.33;
+    var radius = (width > height ? height : width) * 0.33;
     var distance = height / 6;
 
     var points = _.map(_.range(amount), function(i) {
@@ -1404,7 +1409,7 @@ window.animations = (function() {
     };
 
     var resize = function() {
-      radius = height * 0.33;
+      radius = (width > height ? height : width) * 0.33;
       distance = height / 6;
       shape.translation.set(center.x, center.y);
     };
@@ -1472,7 +1477,7 @@ window.animations = (function() {
     var playing = false;
     var callback = _.identity;
     var amount = 50, half = amount / 2;
-    var radius = height * 0.33;
+    var radius = (width > height ? height : width) * 0.33;
 
     var destinations = [];
     var points = _.map(_.range(amount), function(i) {
@@ -1508,7 +1513,7 @@ window.animations = (function() {
       moon.fill = colors.foreground;
     };
     var resize = function() {
-      radius = height * 0.33;
+      radius = (width > height ? height : width) * 0.33;
       moon.translation.set(center.x, center.y);
     };
 
@@ -1704,7 +1709,7 @@ window.animations = (function() {
     var playing = false;
     var callback = _.identity;
 
-    var amount = 72, w = width / 16, phi = 6, h = height * 0.66;
+    var amount = 120, w = width / 16, phi = 6, h = height * 0.66;
     var offset = Math.PI * 0.5;
 
     var points = _.map(_.range(amount), function(i) {
@@ -1716,9 +1721,8 @@ window.animations = (function() {
     });
 
     var zigzag = two.makePolygon(points, true);
-    // zigzag.translation.set();
     zigzag.stroke = colors.black;
-    zigzag.linewidth = 15;
+    zigzag.linewidth = (width > height ? height : width) / 30;
     zigzag.noFill();
     zigzag.join = 'miter';
     zigzag.miter = 4;
@@ -1840,7 +1844,7 @@ window.animations = (function() {
     var squiggle = two.makePolygon(points, true);
     squiggle.translation.set(center.x, center.y);
     squiggle.stroke = colors.accent;
-    squiggle.linewidth = 12;
+    squiggle.linewidth = (width > height ? height : width) / 40;
     squiggle.cap = squiggle.join = 'round';
     squiggle.noFill();
 
@@ -1866,6 +1870,7 @@ window.animations = (function() {
     var resize = function() {
       w = center.x;
       h = height * 0.33;
+      squiggle.linewidth = (width > height ? height : width) / 40;
       squiggle.translation.set(center.x, center.y);
     };
 
@@ -1931,10 +1936,10 @@ window.animations = (function() {
 
     var callback = _.identity;
     var playing = false;
-    var amount = 24, radius = height * .33;
+    var amount = 24, radius = (width > height ? height : width) * .33;
     var last = amount - 1;
     var dur = duration * 0.2;
-    var bubbleRadius = height * 10 / 900;
+    var bubbleRadius = (width > height ? height : width) * 10 / 900;
     var direction = true;
 
     var circles = _.map(_.range(amount), function(i) {
@@ -1973,7 +1978,7 @@ window.animations = (function() {
     };
     var resize = function() {
       shape.translation.set(center.x, center.y);
-      radius = height / 3;
+      radius = (width > height ? height : width) * .33;
     };
 
     var options = { ending: 0, beginning: 0 };
@@ -2082,7 +2087,7 @@ window.animations = (function() {
     var callback = _.identity;
     var playing = false;
 
-    var amount = 32, radius = height * .45;
+    var amount = 32, radius = (width > height ? height : width) * .45;
     var last = amount - 1;
     var dur = duration * 0.1;
     var bubbleRadius = height * 12 / 900;
@@ -2124,7 +2129,7 @@ window.animations = (function() {
     };
     var resize = function() {
       shape.translation.set(center.x, center.y);
-      radius = height * .45;
+      radius = (width > height ? height : width) * .45;
     };
 
     var options = { ending: 0, beginning: 0 };
