@@ -1692,7 +1692,7 @@ window.animations = (function() {
       b.x = distance * Math.cos(theta);
       b.y = distance * Math.sin(theta);
 
-      line.beginning = line.ending = 0;
+      line.ending = line.beginning = 0;
       line.visible = false;
 
       for (i = 0; i < amount; i++) {
