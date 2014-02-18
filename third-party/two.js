@@ -1736,28 +1736,18 @@ var Backbone = Backbone || {};
 
       /**
        * Return the computed matrix of a nested object.
-       * TODO: Optimize traversal.
        */
       getComputedMatrix: function(object, matrix) {
 
-        var matrices = [];
         var matrix = (matrix && matrix.identity()) || new Two.Matrix();
         var parent = object;
 
         while (parent && parent._matrix) {
-          matrices.push(parent._matrix);
-          parent = parent.parent;
-        }
-
-        matrices.reverse();
-
-        _.each(matrices, function(m) {
-
-          var e = m.elements;
+          var e = parent._matrix.elements;
           matrix.multiply(
             e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9]);
-
-        });
+          parent = parent.parent;
+        }
 
         return matrix;
 
@@ -1853,7 +1843,6 @@ var Backbone = Backbone || {};
         },
 
         polygon: function(node, open) {
-
           var points = node.getAttribute('points');
 
           var verts = [];
@@ -1862,7 +1851,6 @@ var Backbone = Backbone || {};
           });
 
           var poly = new Two.Polygon(verts, !open).noStroke();
-          poly.fill = 'black';
 
           return Two.Utils.applySvgAttributes(node, poly);
 
@@ -1932,8 +1920,8 @@ var Backbone = Backbone || {};
                   result.addSelf(coord);
                 }
 
-                // result.controls.left.copy(result);
-                // result.controls.right.copy(result);
+                result.controls.left.copy(result);
+                result.controls.right.copy(result);
 
                 coord = result;
                 break;
@@ -1957,8 +1945,8 @@ var Backbone = Backbone || {};
                   result[a] += coord[a];
                 }
 
-                // result.controls.left.copy(result);
-                // result.controls.right.copy(result);
+                result.controls.left.copy(result);
+                result.controls.right.copy(result);
 
                 coord = result;
                 break;
@@ -2000,10 +1988,10 @@ var Backbone = Backbone || {};
                   Two.Anchor.AppendCurveProperties(coord);
                 }
 
-                coord.controls.right.set(x2 - coord.x, y2 - coord.y);
+                coord.controls.right.set(x2, y2);
                 result = new Two.Anchor(
                   x4, y4,
-                  x3 - x4, y3 - y4,
+                  x3, y3,
                   undefined, undefined,
                   Two.Commands.curve
                 );
@@ -2052,10 +2040,10 @@ var Backbone = Backbone || {};
                   Two.Anchor.AppendCurveProperties(coord);
                 }
 
-                coord.controls.right.set(x2 - coord.x, y2 - coord.y);
+                coord.controls.right.set(x2, y2);
                 result = new Two.Anchor(
                   x4, y4,
-                  x3 - x4, y3 - y4,
+                  x3, y3,
                   undefined, undefined,
                   Two.Commands.curve
                 );
@@ -2080,7 +2068,6 @@ var Backbone = Backbone || {};
           points = _.compact(points);
 
           var poly = new Two.Polygon(points, closed, undefined, true).noStroke();
-          poly.fill = 'black';
 
           return Two.Utils.applySvgAttributes(node, poly);
 
@@ -2103,7 +2090,6 @@ var Backbone = Backbone || {};
 
           var circle = new Two.Polygon(points, true, true).noStroke();
           circle.translation.set(x, y);
-          circle.fill = 'black';
 
           return Two.Utils.applySvgAttributes(node, circle);
 
@@ -2127,7 +2113,6 @@ var Backbone = Backbone || {};
 
           var ellipse = new Two.Polygon(points, true, true).noStroke();
           ellipse.translation.set(x, y);
-          ellipse.fill = 'black';
 
           return Two.Utils.applySvgAttributes(node, ellipse);
 
@@ -2152,7 +2137,6 @@ var Backbone = Backbone || {};
 
           var rect = new Two.Polygon(points, true).noStroke();
           rect.translation.set(x + w2, y + h2);
-          rect.fill = 'black';
 
           return Two.Utils.applySvgAttributes(node, rect);
 
@@ -2266,14 +2250,12 @@ var Backbone = Backbone || {};
 
         // So we know which angle corresponds to which side.
 
-        b.u = _.isObject(b.controls.left) ? b.controls.left : new Two.Vector(0, 0);
-        b.v = _.isObject(b.controls.right) ? b.controls.right : new Two.Vector(0, 0);
+        b.u = _.isObject(b.controls.left) ? b.controls.left : new Two.Vector(b.x, b.y);
+        b.v = _.isObject(b.controls.right) ? b.controls.right : new Two.Vector(b.x, b.y);
 
         if (d1 < 0.0001 || d2 < 0.0001) {
-          if (!b._relative) {
-            b.controls.left.copy(b);
-            b.controls.right.copy(b);
-          }
+          b.controls.left.copy(b);
+          b.controls.right.copy(b);
           return b;
         }
 
@@ -2286,20 +2268,13 @@ var Backbone = Backbone || {};
           mid -= HALF_PI;
         }
 
-        b.controls.left.x = cos(mid) * d1;
-        b.controls.left.y = sin(mid) * d1;
+        b.controls.left.x = b.x + cos(mid) * d1;
+        b.controls.left.y = b.y + sin(mid) * d1;
 
         mid -= PI;
 
-        b.controls.right.x = cos(mid) * d2;
-        b.controls.right.y = sin(mid) * d2;
-
-        if (!b._relative) {
-          b.controls.left.x += b.x;
-          b.controls.left.y += b.y;
-          b.controls.right.x += b.x;
-          b.controls.right.y += b.y;
-        }
+        b.controls.right.x = b.x + cos(mid) * d2;
+        b.controls.right.y = b.y + sin(mid) * d2;
 
         return b;
 
@@ -2310,9 +2285,11 @@ var Backbone = Backbone || {};
        */
       getReflection: function(a, b, relative) {
 
-        var d = b.distanceTo(Two.Vector.zero);
-        var theta = angleBetween(Two.Vector.zero, b);
-
+        var d = a.distanceTo(b);
+        if (d <= 0.0001) {
+          return relative ? new Two.Vector() : a.clone();
+        }
+        var theta = angleBetween(a, b);
         return new Two.Vector(
           d * Math.cos(theta) + (relative ? 0 : a.x),
           d * Math.sin(theta) + (relative ? 0 : a.y)
@@ -2708,7 +2685,7 @@ var Backbone = Backbone || {};
     /**
      * Interpret an SVG Node and add it to this instance's scene. The
      * distinction should be made that this doesn't `import` svg's, it solely
-     * interprets them into something compatible for Two.js — this is slightly
+     * interprets them into something compatible for Two.js — this is slightly
      * different than a direct transcription.
      */
     interpret: function(svgNode) {
@@ -2783,12 +2760,6 @@ var Backbone = Backbone || {};
     this.y = y || 0;
 
   };
-
-  _.extend(Vector, {
-
-    zero: new Two.Vector()
-
-  });
 
   _.extend(Vector.prototype, Backbone.Events, {
 
@@ -3091,7 +3062,7 @@ var Backbone = Backbone || {};
 (function() {
 
   // Localized variables
-  var commands = Two.Commands, x, y, o, controls, clone;
+  var commands = Two.Commands, x, y, controls;
 
   /**
    * An object that holds 3 `Two.Vector`s, the anchor point and its
@@ -3105,15 +3076,29 @@ var Backbone = Backbone || {};
       this.trigger(Two.Events.change);
     }, this);
 
+    Object.defineProperty(this, 'command', {
+
+      get: function() {
+        return this._command;
+      },
+
+      set: function(c) {
+        this._command = c;
+        if (this._command === commands.curve && !_.isObject(this.controls)) {
+          Anchor.AppendCurveProperties(this);
+        }
+        return this.trigger(Two.Events.change);
+      }
+
+    });
+
     this._command = command || commands.move;
-    this._relative = true;
 
     if (!command) {
       return this;
     }
 
     Anchor.AppendCurveProperties(this);
-
     if (_.isNumber(ux)) {
       this.controls.left.x = ux;
     }
@@ -3137,8 +3122,8 @@ var Backbone = Backbone || {};
       y = anchor._y || anchor.y;
 
       anchor.controls = {
-        left: new Two.Vector(0, 0),
-        right: new Two.Vector(0, 0)
+        left: new Two.Vector(x, y),
+        right: new Two.Vector(x, y)
       };
 
     }
@@ -3175,7 +3160,7 @@ var Backbone = Backbone || {};
 
       controls = this.controls;
 
-      clone = new Two.Anchor(
+      return new Two.Anchor(
         this.x,
         this.y,
         controls && controls.left.x,
@@ -3184,21 +3169,16 @@ var Backbone = Backbone || {};
         controls && controls.right.y,
         this.command
       );
-      clone.relative = this._relative;
-      return clone;
 
     },
 
     toObject: function() {
-      o = {
+      var o = {
         x: this.x,
         y: this.y
       };
-      if (this._command) {
-        o.command = this._command;
-      }
-      if (this._relative) {
-        o.relative = this._relative;
+      if (this.command) {
+        o.command = this.command;
       }
       if (this.controls) {
         o.controls = {
@@ -3211,49 +3191,12 @@ var Backbone = Backbone || {};
 
   };
 
-  Object.defineProperty(Anchor.prototype, 'command', {
-
-    get: function() {
-      return this._command;
-    },
-
-    set: function(c) {
-      this._command = c;
-      if (this._command === commands.curve && !_.isObject(this.controls)) {
-        Anchor.AppendCurveProperties(this);
-      }
-      return this.trigger(Two.Events.change);
-    }
-
-  });
-
-  Object.defineProperty(Anchor.prototype, 'relative', {
-
-    get: function() {
-      return this._relative;
-    },
-
-    set: function(b) {
-      if (this._relative == b) {
-        return this;
-      }
-      this._relative = !!b;
-      return this.trigger(Two.Events.change);
-    }
-
-  });
-
   _.extend(Anchor.prototype, Two.Vector.prototype, AnchorProto);
 
   // Make it possible to bind and still have the Anchor specific
-  // inheritance from Two.Vector
+  // inheritance.
   Two.Anchor.prototype.bind = Two.Anchor.prototype.on = function() {
     Two.Vector.prototype.bind.apply(this, arguments);
-    _.extend(this, AnchorProto);
-  };
-
-  Two.Anchor.prototype.unbind = Two.Anchor.prototype.off = function() {
-    Two.Vector.prototype.unbind.apply(this, arguments);
     _.extend(this, AnchorProto);
   };
 
@@ -3701,8 +3644,7 @@ var Backbone = Backbone || {};
     toString: function(points, closed) {
 
       var l = points.length,
-        last = l - 1,
-        d;  // The elusive last Two.Commands.move point
+        last = l - 1;
 
       return _.map(points, function(b, i) {
 
@@ -3729,33 +3671,19 @@ var Backbone = Backbone || {};
             var ar = (a.controls && a.controls.right) || a;
             var bl = (b.controls && b.controls.left) || b;
 
-            if (a._relative) {
-              vx = (ar.x + a.x).toFixed(3);
-              vy = (ar.y + a.y).toFixed(3);
-            } else {
-              vx = ar.x.toFixed(3);
-              vy = ar.y.toFixed(3);
-            }
+            vx = ar.x.toFixed(3);
+            vy = ar.y.toFixed(3);
 
-            if (b._relative) {
-              ux = (bl.x + b.x).toFixed(3);
-              uy = (bl.y + b.y).toFixed(3);
-            } else {
-              ux = bl.x.toFixed(3);
-              uy = bl.y.toFixed(3);
-            }
+            ux = bl.x.toFixed(3);
+            uy = bl.y.toFixed(3);
 
             command = ((i === 0) ? Two.Commands.move : Two.Commands.curve)
               + ' ' + vx + ' ' + vy + ' ' + ux + ' ' + uy + ' ' + x + ' ' + y;
             break;
 
-          case Two.Commands.move:
-            d = b;
-            command = Two.Commands.move + ' ' + x + ' ' + y;
-            break;
-
           default:
-            command = b._command + ' ' + x + ' ' + y;
+            command = (i === 0 ? Two.Commands.move : b._command)
+              + ' ' + x + ' ' + y;
 
         }
 
@@ -3765,27 +3693,14 @@ var Backbone = Backbone || {};
 
           if (b._command === Two.Commands.curve) {
 
-            // Make sure we close to the most previous Two.Commands.move
-            c = d;
-
             br = (b.controls && b.controls.right) || b;
             cl = (c.controls && c.controls.left) || c;
 
-            if (b._relative) {
-              vx = (br.x + b.x).toFixed(3);
-              vy = (br.y + b.y).toFixed(3);
-            } else {
-              vx = br.x.toFixed(3);
-              vy = br.y.toFixed(3);
-            }
+            vx = br.x.toFixed(3);
+            vy = br.y.toFixed(3);
 
-            if (c._relative) {
-              ux = (cl.x + c.x).toFixed(3);
-              uy = (cl.y + c.y).toFixed(3);
-            } else {
-              ux = cl.x.toFixed(3);
-              uy = cl.y.toFixed(3);
-            }
+            ux = cl.x.toFixed(3);
+            uy = cl.y.toFixed(3);
 
             x = c.x.toFixed(3);
             y = c.y.toFixed(3);
@@ -3988,7 +3903,7 @@ var Backbone = Backbone || {};
   // Localized variables
   var matrix, stroke, linewidth, fill, opacity, visible, cap, join, miter,
     closed, commands, length, last;
-  var next, prev, a, c, d, ux, uy, vx, vy, ar, bl, br, cl, x, y;
+  var next, prev, a, c, ux, uy, vx, vy, ar, bl, br, cl, x, y;
 
   var canvas = {
 
@@ -4097,46 +4012,24 @@ var Backbone = Backbone || {};
               ar = (a.controls && a.controls.right) || a;
               bl = (b.controls && b.controls.left) || b;
 
-              if (a._relative) {
-                vx = (ar.x + a.x).toFixed(3);
-                vy = (ar.y + a.y).toFixed(3);
-              } else {
-                vx = ar.x.toFixed(3);
-                vy = ar.y.toFixed(3);
-              }
+              vx = ar.x.toFixed(3);
+              vy = ar.y.toFixed(3);
 
-              if (b._relative) {
-                ux = (bl.x + b.x).toFixed(3);
-                uy = (bl.y + b.y).toFixed(3);
-              } else {
-                ux = bl.x.toFixed(3);
-                uy = bl.y.toFixed(3);
-              }
+              ux = bl.x.toFixed(3);
+              uy = bl.y.toFixed(3);
 
               ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
 
               if (i >= last && closed) {
 
-                c = d;
-
                 br = (b.controls && b.controls.right) || b;
                 cl = (c.controls && c.controls.left) || c;
 
-                if (b._relative) {
-                  vx = (br.x + b.x).toFixed(3);
-                  vy = (br.y + b.y).toFixed(3);
-                } else {
-                  vx = br.x.toFixed(3);
-                  vy = br.y.toFixed(3);
-                }
+                vx = br.x.toFixed(3);
+                vy = br.y.toFixed(3);
 
-                if (c._relative) {
-                  ux = (cl.x + c.x).toFixed(3);
-                  uy = (cl.y + c.y).toFixed(3);
-                } else {
-                  ux = cl.x.toFixed(3);
-                  uy = cl.y.toFixed(3);
-                }
+                ux = cl.x.toFixed(3);
+                uy = cl.y.toFixed(3);
 
                 x = c.x.toFixed(3);
                 y = c.y.toFixed(3);
@@ -4152,7 +4045,6 @@ var Backbone = Backbone || {};
               break;
 
             case Two.Commands.move:
-              d = b;
               ctx.moveTo(x, y);
               break;
 
@@ -4576,46 +4468,24 @@ var Backbone = Backbone || {};
             ar = (a.controls && a.controls.right) || a;
             bl = (b.controls && b.controls.left) || b;
 
-            if (a._relative) {
-              vx = ((ar.x + a.x) * scale + cx).toFixed(3);
-              vy = ((ar.y + a.y) * scale + cy).toFixed(3);
-            } else {
-              vx = (ar.x * scale + cx).toFixed(3);
-              vy = (ar.y * scale + cy).toFixed(3);
-            }
+            vx = (ar.x * scale + cx).toFixed(3);
+            vy = (ar.y * scale + cy).toFixed(3);
 
-            if (b._relative) {
-              ux = ((bl.x + b.x) * scale + cx).toFixed(3);
-              uy = ((bl.y + b.y) * scale + cy).toFixed(3);
-            } else {
-              ux = (bl.x * scale + cx).toFixed(3);
-              uy = (bl.y * scale + cy).toFixed(3);
-            }
+            ux = (bl.x * scale + cx).toFixed(3);
+            uy = (bl.y * scale + cy).toFixed(3);
 
             ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
 
             if (i >= last && closed) {
 
-              c = d;
-
               br = (b.controls && b.controls.right) || b;
               cl = (c.controls && c.controls.left) || c;
 
-              if (b._relative) {
-                vx = ((br.x + b.x) * scale + cx).toFixed(3);
-                vy = ((br.y + b.y) * scale + cy).toFixed(3);
-              } else {
-                vx = (br.x * scale + cx).toFixed(3);
-                vy = (br.y * scale + cy).toFixed(3);
-              }
+              vx = (br.x * scale + cx).toFixed(3);
+              vy = (br.y * scale + cy).toFixed(3);
 
-              if (c._relative) {
-                ux = ((cl.x + c.x) * scale + cx).toFixed(3);
-                uy = ((cl.y + c.y) * scale + cx).toFixed(3);
-              } else {
-                ux = (cl.x * scale + cx).toFixed(3);
-                uy = (cl.y * scale + cy).toFixed(3);
-              }
+              ux = (cl.x * scale + cx).toFixed(3);
+              uy = (cl.y * scale + cy).toFixed(3);
 
               x = (c.x * scale + cx).toFixed(3);
               y = (c.y * scale + cy).toFixed(3);
@@ -4631,7 +4501,6 @@ var Backbone = Backbone || {};
             break;
 
           case Two.Commands.move:
-            d = b;
             ctx.moveTo(x, y);
             break;
 
@@ -4911,7 +4780,7 @@ var Backbone = Backbone || {};
 (function() {
 
   // Localized variables
-  var zero = Two.Vector.zero, clone;
+  var zero = new Two.Vector(), clone;
 
   var Shape = Two.Shape = function(limited) {
 
@@ -5006,11 +4875,6 @@ var Backbone = Backbone || {};
           .scale(this.scale)
           .rotate(this.rotation);
 
-      }
-
-      // Bubble up to parents mainly for `getBoundingClientRect` method.
-      if (this.parent && _.isFunction(this.parent._update)) {
-        this.parent._update();
       }
 
       return this;
@@ -5167,7 +5031,7 @@ var Backbone = Backbone || {};
           return this._beginning;
         },
         set: function(v) {
-          this._beginning = min(max(v, 0.0), this._ending);
+          this._beginning = min(max(v, 0.0), 1.0);
           this._flagVertices = true;
         }
       });
@@ -5177,7 +5041,7 @@ var Backbone = Backbone || {};
           return this._ending;
         },
         set: function(v) {
-          this._ending = min(max(v, this._beginning), 1.0);
+          this._ending = min(max(v, 0.0), 1.0);
           this._flagVertices = true;
         }
       });
@@ -5393,20 +5257,36 @@ var Backbone = Backbone || {};
       // TODO: Update this to not __always__ update. Just when it needs to.
       this._update();
 
-      matrix = !!shallow ? this._matrix : getComputedMatrix(this);
-
       border = this.linewidth / 2, temp;
       left = Infinity, right = -Infinity;
       top = Infinity, bottom = -Infinity;
 
       _.each(this._vertices, function(v) {
         x = v.x, y = v.y;
-        v = matrix.multiply(x, y , 1);
-        top = min(v.y - border, top);
-        left = min(v.x - border, left);
-        right = max(v.x + border, right);
-        bottom = max(v.y + border, bottom);
+        top = min(y, top);
+        left = min(x, left);
+        right = max(x, right);
+        bottom = max(y, bottom);
       });
+
+      // Expand borders
+
+      top -= border;
+      left -= border;
+      right += border;
+      bottom += border;
+
+      matrix = !!shallow ? this._matrix : getComputedMatrix(this);
+
+      a = matrix.multiply(left, top, 1);
+      b = matrix.multiply(right, top, 1);
+      c = matrix.multiply(right, bottom, 1);
+      d = matrix.multiply(left, bottom, 1);
+
+      top = min(a.y, b.y, c.y, d.y);
+      left = min(a.x, b.x, c.x, d.x);
+      right = max(a.x, b.x, c.x, d.x);
+      bottom = max(a.y, b.y, c.y, d.y);
 
       return {
         top: top,
@@ -5426,11 +5306,11 @@ var Backbone = Backbone || {};
     plot: function() {
 
       if (this.curved) {
-        Two.Utils.getCurveFromPoints(this._vertices, this.closed);
+        Two.Utils.getCurveFromPoints(this.vertices, this.closed);
         return this;
       }
 
-      _.each(this._vertices, function(p, i) {
+      _.each(this.vertices, function(p, i) {
         p._command = i === 0 ? Two.Commands.move : Two.Commands.line;
       }, this);
 
@@ -5444,21 +5324,14 @@ var Backbone = Backbone || {};
 
       last = this.vertices.length - 1;
       b = this.vertices[last];
-      closed = this._closed || this.vertices[last]._command === Two.Commands.close;
+      closed = this._closed || this.vertices[last].command === Two.Commands.close;
       points = [];
 
       _.each(this.vertices, function(a, i) {
 
-        if (i <= 0 && !closed) {
-          b = a;
-          return;
-        }
-
-        if (a.command === Two.Commands.move) {
+        if ((i <= 0 && !closed) || a.command === Two.Commands.move) {
           points.push(new Two.Anchor(b.x, b.y));
-          if (i > 0) {
-            points[points.length - 1].command = Two.Commands.line;
-          }
+          points[points.length - 1].command = Two.Commands.line;
           b = a;
           return;
         }
@@ -5470,16 +5343,6 @@ var Backbone = Backbone || {};
         x2 = (right || b).x, y2 = (right || b).y;
         x3 = (left || a).x, y3 = (left || a).y;
         x4 = a.x, y4 = a.y;
-
-        if (b._relative) {
-          x2 += b.x;
-          y2 += b.y;
-        }
-
-        if (a._relative) {
-          x3 += a.x;
-          y3 += a.y;
-        }
 
         var verts = Two.Utils.subdivide(x1, y1, x2, y2, x3, y3, x4, y4, limit);
         points = points.concat(verts);
@@ -5514,6 +5377,10 @@ var Backbone = Backbone || {};
 
       if (this._flagVertices) {
 
+        if (this._automatic) {
+          this.plot();
+        }
+
         l = this.vertices.length;
         last = l - 1;
 
@@ -5525,10 +5392,6 @@ var Backbone = Backbone || {};
         for (i = ia; i < ib + 1; i++) {
           v = this.vertices[i];
           this._vertices.push(v);
-        }
-
-        if (this._automatic) {
-          this.plot();
         }
 
       }
@@ -5828,13 +5691,12 @@ var Backbone = Backbone || {};
       // TODO: Update this to not __always__ update. Just when it needs to.
       this._update();
 
-      // Variables need to be defined here, because of nested nature of groups.
-      var left = Infinity, right = -Infinity;
-      var top = Infinity, bottom = -Infinity;
+      left = Infinity, right = -Infinity;
+      top = Infinity, bottom = -Infinity;
 
       _.each(this.children, function(child) {
 
-        rect = child.getBoundingClientRect();
+        rect = child.getBoundingClientRect(true);
 
         if (!_.isNumber(rect.top) || !_.isNumber(rect.left)
           || !_.isNumber(rect.right) || !_.isNumber(rect.bottom)) {
@@ -5847,6 +5709,18 @@ var Backbone = Backbone || {};
         bottom = max(rect.bottom, bottom);
 
       }, this);
+
+      matrix = !!shallow ? this._matrix : Two.Utils.getComputedMatrix(this);
+
+      a = matrix.multiply(left, top, 1);
+      b = matrix.multiply(right, top, 1);
+      c = matrix.multiply(right, bottom, 1);
+      d = matrix.multiply(left, bottom, 1);
+
+      top = min(a.y, b.y, c.y, d.y);
+      left = min(a.x, b.x, c.x, d.x);
+      right = max(a.x, b.x, c.x, d.x);
+      bottom = max(a.y, b.y, c.y, d.y);
 
       return {
         top: top,
