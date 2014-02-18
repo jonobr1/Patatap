@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Neuronal Synchrony</title>
+    <title>P A T A T A P</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
@@ -30,9 +30,10 @@
            * Append Sound Generation to Animations
            */
 
-          var path = './assets/B/', filetype = '.wav';
+          var letters = ['B', 'C', 'D'];
+          var path = './assets/', filetype = '.wav';
 
-          var soundsBuffered = _.after(26, function() {
+          var soundsBuffered = _.after(26 * letters.length, function() {
             if (url.loop && url.loop.match(/(clap|groove)/ig)) {
               new Sound('./assets/' + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
                 this.play({
@@ -48,12 +49,16 @@
           Sound.ready(function() {
             _.each(animations.list, function(a, i) {
               if (a.filename) {
-                a.sound = new Sound(path + a.filename + filetype, soundsBuffered);
+                a.sounds = _.map(letters, function(type) {
+                  return new Sound(path + type + '/' + a.filename + filetype, soundsBuffered);
+                });
               }
             });
           });
 
           function initialize() {
+
+            animations.initializeSound();
 
             $window = $(window)
               // Disable scrolling
@@ -337,6 +342,7 @@
 
       </script>
       <script>
+
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
