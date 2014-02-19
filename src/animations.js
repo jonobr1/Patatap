@@ -2537,6 +2537,7 @@ window.animations = (function() {
 
   changeColors.start = function(onComplete) {
     current = (current + 1) % PALETTE.length;
+    _.each(exports.list, iterateSoundUpdate);
     changedColors = false;
     if (_.isFunction(onComplete)) {
       changeColors.callback = onComplete;
@@ -2561,6 +2562,13 @@ window.animations = (function() {
     monome[changeColors.hash + i] = changeColors;
   });
   monome['2,7'] = changeColors;  // Export for mobile
+
+  var iterateSoundUpdate = function(o) {
+    if (!_.isArray(o.sounds)) {
+      return;
+    }
+    o.sound = o.sounds[current % o.sounds.length];
+  };
 
   var iterateUpdate = function(o) {
     if (_.isFunction(o.update)) {
@@ -2621,12 +2629,19 @@ window.animations = (function() {
   var palette, amount, c, r, g, b, k, v;
   var exports = {
 
+    initializeSound: function() {
+
+      _.each(exports.list, iterateSoundUpdate);
+      return exports;
+
+    },
+
     // An update loop
 
     update: function() {
 
       if (changedColors) {
-        return;
+        return exports;
       }
 
       palette = PALETTE[current];
@@ -2637,7 +2652,7 @@ window.animations = (function() {
         amount = tweenColors(palette);
       }
 
-      _.each(this.map, iterateUpdate);
+      _.each(exports.list, iterateUpdate);
       container.style.background = colors.background;
 
       if (amount >= PALETTE.length) {
@@ -2647,9 +2662,11 @@ window.animations = (function() {
           changeColors.onComplete();
         }
 
-        return;
+        // return exports;
 
       }
+
+      return exports;
 
     },
 
