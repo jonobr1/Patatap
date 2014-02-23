@@ -7,8 +7,26 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: #b5b5b5; }
+  bottom: 0; }
+  #content #stage {
+    -webkit-transition: background-color 1s;
+    -moz-transition: background-color 1s;
+    transition: background-color 1s;
+    background: #b5b5b5; }
+    #content #stage.background-0 {
+      background: #b5b5b5; }
+    #content #stage.background-1 {
+      background: #396dc1; }
+    #content #stage.background-2 {
+      background: #d9521f; }
+    #content #stage.background-3 {
+      background: #fff4d3; }
+    #content #stage.background-4 {
+      background: #bfb28a; }
+    #content #stage.background-5 {
+      background: white; }
+    #content #stage.background-6 {
+      background: #270636; }
 
 #loader {
   position: fixed;
