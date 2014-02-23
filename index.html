@@ -5,13 +5,19 @@
     <title>P A T A T A P</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata:700,400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
     <link rel="icon" type="image/png" href="./images/favicon.png" />
   </head>
   <body>
     <div id="content">
     </div>
-    <div id="loader"></div>
+    <div id="lobby">
+      <div id="loader"></div>
+      <div id="asset-info">
+        <span id="loaded">0</span> / <span id="total-assets"></span>
+      </div>
+    </div>
     <div class="scripts" style="display: none;">
       <script src="./third-party/has.js"></script>
       <script src="./third-party/url.js"></script>
@@ -32,6 +38,9 @@
 
           var letters = ['A', 'B', 'C', 'D', 'E'];
           var path = './assets/', filetype = '.mp3';
+          var asset_count = 0, $loaded = $('#loaded');
+
+          $('#total-assets').html(26 * letters.length);
 
           var soundsBuffered = _.after(26 * letters.length, function() {
             if (url.loop && url.loop.match(/(clap|groove)/ig)) {
@@ -50,7 +59,11 @@
             _.each(animations.list, function(a, i) {
               if (a.filename) {
                 a.sounds = _.map(letters, function(type) {
-                  return new Sound(path + type + '/' + a.filename + filetype, soundsBuffered);
+                  return new Sound(path + type + '/' + a.filename + filetype, function() {
+                    asset_count++;
+                    $loaded.html(asset_count);
+                    soundsBuffered();
+                  });
                 });
               }
             });
@@ -193,7 +206,9 @@
 
               }).play();
 
-            $('#loader').fadeOut(150);
+            _.delay(function() {
+              $('#lobby').fadeOut();
+            }, 1000);
 
           }
 
