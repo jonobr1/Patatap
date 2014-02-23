@@ -30,13 +30,14 @@
 
         $(function() {
 
-          var container = $('#content'), $window, ui, buttons;
+          var container = $('#content'), $window, ui, buttons, width, height,
+            landscape;
 
           /**
            * Append Sound Generation to Animations
            */
 
-          var letters = ['A', 'B', 'C', 'D', 'E'];
+          var letters = ['A'];//, 'B', 'C', 'D', 'E'];
           var path = './assets/', filetype = '.mp3';
           var asset_count = 0, $loaded = $('#loaded');
 
@@ -221,15 +222,75 @@
             ui.renderer.domElement.id = 'ui';
 
             buttons = [];
+            buttons_map = {};
             buttons.width = buttons.height = 32;
-            buttons.margin = 12;
             buttons.needsUpdate = {};
 
             buttons[0] = _.map(_.range(10), createButton, ui);
             buttons[1] = _.map(_.range(9), createButton, ui);
             buttons[2] = _.map(_.range(8), createButton, ui);
 
+            var rows = 3;
+
             ui.update();
+
+            var touches = [], e, x, y, row, index;
+
+            var getIndex = function(x, y) {
+              if (landscape) {
+                row = Math.floor(y / buttons.height);
+                return row + ','
+                  + Math.floor(x / buttons.height);
+              }
+              row = Math.floor(x / buttons.width);
+              return row + ','
+                + Math.floor(y / buttons.height);
+            };
+
+            var startTouchEnter = function(touch) {
+              x = touch.clientX;
+              y = touch.clientY;
+              touches[touch.identifier] = getIndex(x, y);
+            };
+
+            var updateTouchEnter = function(touch) {
+              x = touch.clientX;
+              y = touch.clientY;
+              index = getIndex(x, y);
+              if (touches[touch.identifier] && touches[touch.identifier] !== index) {
+                triggerButton(index, buttons_map[index]);
+                touches[touch.identifier] = index;
+              }
+            };
+
+            var triggerButton = function(index, button) {
+
+              trigger(index);
+
+              if (animations.getColorPalette().isDark) {
+                button.fill = 'rgba(255, 255, 255, 0.3)';
+              } else {
+                button.fill = 'rgba(0, 0, 0, 0.3)';
+              }
+
+              button.opacity = 1.0;
+              buttons.needsUpdate[button.id] = button;
+
+            };
+
+            $window
+              .bind('touchstart', function(event) {
+
+                e = event.originalEvent;
+                _.each(e.touches, startTouchEnter);
+
+              })
+              .bind('touchmove', function(event) {
+
+                e = event.originalEvent;
+                _.each(e.touches, updateTouchEnter);
+
+              });
 
             _.each(buttons, function(group, i) {
 
@@ -237,22 +298,17 @@
 
                 var elem = button._renderer.elem;
                 var index = i + ',' + j;
+
+                buttons_map[index] = button;
+
                 $(elem)
                   .css({
                     cursor: 'pointer'
                   })
-                  .bind('mousedown touchstart', function() {
+                  .bind('mousedown touchstart', function(event) {
 
-                    trigger(index);
-
-                    if (animations.getColorPalette().isDark) {
-                      button.fill = 'rgba(255, 255, 255, 0.3)';
-                    } else {
-                      button.fill = 'rgba(0, 0, 0, 0.3)';
-                    }
-
-                    button.opacity = 1.0;
-                    buttons.needsUpdate[button.id] = button;
+                    e = event.originalEvent;
+                    triggerButton(index, button);
 
                   });
 
@@ -282,9 +338,9 @@
               return;
             }
 
-            var width = $window.width();
-            var height = $window.height();
-            var landscape = width >= height;
+            width = $window.width();
+            height = $window.height();
+            landscape = width >= height;
             var size = buttons.length;
 
             _.each(buttons, function(group, i) {
@@ -299,6 +355,9 @@
                 w = width / size;
                 h = height / length;
               }
+
+              buttons.width = w;
+              buttons.height = h;
 
               w /= 2;
               h /= 2;
