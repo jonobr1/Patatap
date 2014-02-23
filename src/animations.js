@@ -113,6 +113,8 @@ window.animations = (function() {
     return PROPERTIES[Math.floor(Math.random() * PROPERTIES.length)];
   };
 
+  domElement.style.background = colors.background;
+
   var wipe = (function() {
 
     var callback = _.identity;
@@ -2541,7 +2543,6 @@ window.animations = (function() {
 
   changeColors.start = function(onComplete) {
     current = (current + 1) % PALETTE.length;
-    updateDomElementClass();
     _.each(exports.list, iterateSoundUpdate);
     changedColors = false;
     if (_.isFunction(onComplete)) {
@@ -2631,10 +2632,6 @@ window.animations = (function() {
 
   };
 
-  // domElement.style.background = colors.background;
-  // domElement.className = 'background-' + current;
-  updateDomElementClass();
-
   var palette, amount, c, r, g, b, k, v;
   var exports = {
 
@@ -2662,6 +2659,7 @@ window.animations = (function() {
       }
 
       _.each(exports.list, iterateUpdate);
+      domElement.style.background = colors.background;
 
       if (amount >= PALETTE.length) {
 
@@ -2669,6 +2667,8 @@ window.animations = (function() {
           changedColors = true;
           changeColors.onComplete();
         }
+
+        // return exports;
 
       }
 
@@ -2685,10 +2685,6 @@ window.animations = (function() {
     }
 
   };
-
-  function updateDomElementClass() {
-    domElement.setAttribute('class', 'background-' + current);
-  }
 
   return exports;
 

@@ -14,29 +14,7 @@
   bottom: 0;
 
   #stage {
-    @include transition(background-color 1s);
     background: rgb(181, 181, 181);
-    &.background-0 {
-      background: rgb(181, 181, 181);
-    }
-    &.background-1 {
-      background: rgb(57, 109, 193);
-    }
-    &.background-2 {
-      background: rgb(217, 82, 31);
-    }
-    &.background-3 {
-      background: rgb(255, 244, 211);
-    }
-    &.background-4 {
-      background: rgb(191, 178, 138);
-    }
-    &.background-5 {
-      background: rgb(255, 255, 255);
-    }
-    &.background-6 {
-      background: rgb(39, 6, 54);
-    }
   }
 
 }
