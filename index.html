@@ -222,9 +222,9 @@
             ui.renderer.domElement.id = 'ui';
 
             buttons = [];
-            buttons_map = {};
             buttons.width = buttons.height = 32;
             buttons.needsUpdate = {};
+            buttons.map = {};
 
             buttons[0] = _.map(_.range(10), createButton, ui);
             buttons[1] = _.map(_.range(9), createButton, ui);
@@ -238,13 +238,13 @@
 
             var getIndex = function(x, y) {
               if (landscape) {
-                row = Math.floor(y / buttons.height);
+                row = Math.max(Math.floor(y / buttons.height), 0);
                 return row + ','
-                  + Math.floor(x / buttons.height);
+                  + Math.max(Math.floor(x / buttons.height), 0);
               }
-              row = Math.floor(x / buttons.width);
+              row = Math.max(Math.floor(x / buttons.width), 0);
               return row + ','
-                + Math.floor(y / buttons.height);
+                + Math.max(Math.floor(y / buttons.height), 0);
             };
 
             var startTouchEnter = function(touch) {
@@ -258,7 +258,7 @@
               y = touch.clientY;
               index = getIndex(x, y);
               if (touches[touch.identifier] && touches[touch.identifier] !== index) {
-                triggerButton(index, buttons_map[index]);
+                triggerButton(index, buttons.map[index]);
                 touches[touch.identifier] = index;
               }
             };
@@ -299,7 +299,7 @@
                 var elem = button._renderer.elem;
                 var index = i + ',' + j;
 
-                buttons_map[index] = button;
+                buttons.map[index] = button;
 
                 $(elem)
                   .css({
