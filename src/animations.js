@@ -1,7 +1,9 @@
 var two = new Two({
-  // type: (!has.Safari) ? Two.Types.canvas : Two.Types.svg,
+  type: (!has.Safari) ? Two.Types.canvas : Two.Types.svg,
   fullscreen: true
 }).appendTo(document.querySelector('#content'));
+
+two.renderer.domElement.id = 'stage';
 
 /**
  * Collection of animations and such for Neuronal Synchrony.
@@ -12,6 +14,7 @@ var TWO_PI = Math.PI * 2;
 window.animations = (function() {
 
   var container = document.querySelector('#content');
+  var domElement = two.renderer.domElement;
   var width = two.width, height = two.height;
   var center = { x: width / 2, y: height / 2 };
   var min_dimension = width > height ? height : width;
@@ -109,8 +112,6 @@ window.animations = (function() {
   colors.getRandomKey = function() {
     return PROPERTIES[Math.floor(Math.random() * PROPERTIES.length)];
   };
-
-  container.style.background = colors.background;
 
   var wipe = (function() {
 
@@ -2537,6 +2538,7 @@ window.animations = (function() {
 
   changeColors.start = function(onComplete) {
     current = (current + 1) % PALETTE.length;
+    updateDomElementClass();
     _.each(exports.list, iterateSoundUpdate);
     changedColors = false;
     if (_.isFunction(onComplete)) {
@@ -2626,6 +2628,10 @@ window.animations = (function() {
 
   };
 
+  // domElement.style.background = colors.background;
+  // domElement.className = 'background-' + current;
+  updateDomElementClass();
+
   var palette, amount, c, r, g, b, k, v;
   var exports = {
 
@@ -2653,7 +2659,6 @@ window.animations = (function() {
       }
 
       _.each(exports.list, iterateUpdate);
-      container.style.background = colors.background;
 
       if (amount >= PALETTE.length) {
 
@@ -2661,8 +2666,6 @@ window.animations = (function() {
           changedColors = true;
           changeColors.onComplete();
         }
-
-        // return exports;
 
       }
 
@@ -2679,6 +2682,10 @@ window.animations = (function() {
     }
 
   };
+
+  function updateDomElementClass() {
+    domElement.setAttribute('class', 'background-' + current);
+  }
 
   return exports;
 
