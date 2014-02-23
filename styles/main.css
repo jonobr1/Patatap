@@ -15,7 +15,8 @@
 #lobby {
   position: fixed;
   top: 50%;
-  left: 50%; }
+  left: 50%;
+  overflow: visible; }
   #lobby #loader {
     position: relative;
     width: 32px;

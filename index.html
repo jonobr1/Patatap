@@ -5,7 +5,7 @@
     <title>Patatap</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link href='http://fonts.googleapis.com/css?family=Inconsolata:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Inconsolata:700,400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
     <link rel="icon" type="image/png" href="./images/favicon.png" />
   </head>
@@ -15,7 +15,7 @@
     <div id="lobby">
       <div id="loader"></div>
       <div id="asset-info">
-        <span id="loaded">0</span> / <span id="total-assets"></span>
+        <span id="loaded">0</span> / <span id="total-assets">130</span>
       </div>
     </div>
     <div class="scripts" style="display: none;">
@@ -241,7 +241,7 @@
                   .css({
                     cursor: 'pointer'
                   })
-                  .bind('mousedown touchstart touchenter', function() {
+                  .bind('mousedown touchstart', function() {
 
                     trigger(index);
 

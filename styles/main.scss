@@ -28,6 +28,7 @@ $font-size: 16px;
   position: fixed;
   top: 50%;
   left: 50%;
+  overflow: visible;
   $d: 32px;
 
   #loader {
