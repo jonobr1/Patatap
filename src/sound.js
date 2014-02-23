@@ -27,6 +27,12 @@
 
       this.buffer = buffer;
       this._ready = true;
+
+      this.source = ctx.createBufferSource();
+      this.source.buffer = this.buffer;
+      this.source.connect(ctx.destination);
+      this.source.loop = params.loop;
+
       if (_.isFunction(callback)) {
         callback.call(this);
       }
@@ -98,11 +104,6 @@
         time: ctx.currentTime,
         loop: false
       });
-
-      this.source = ctx.createBufferSource();
-      this.source.buffer = this.buffer;
-      this.source.connect(ctx.destination);
-      this.source.loop = params.loop;
 
       this.source.start(params.time);
 

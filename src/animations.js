@@ -2662,7 +2662,6 @@ window.animations = (function() {
       }
 
       _.each(exports.list, iterateUpdate);
-      // domElement.style.background = colors.background;
 
       if (amount >= PALETTE.length) {
 
@@ -2670,8 +2669,6 @@ window.animations = (function() {
           changedColors = true;
           changeColors.onComplete();
         }
-
-        // return exports;
 
       }
 
