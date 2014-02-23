@@ -1,5 +1,5 @@
 var two = new Two({
-  type: Two.Types.canvas,
+  type: (!has.Safari) ? Two.Types.canvas : Two.Types.svg,
   fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
