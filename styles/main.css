@@ -13,12 +13,11 @@
     background: #b5b5b5; }
 
 #lobby {
-  position: static;
-  display: block; }
+  position: fixed;
+  top: 50%;
+  left: 50%; }
   #lobby #loader {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: relative;
     width: 32px;
     height: 32px;
     background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
@@ -39,9 +38,7 @@
     -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite; }
   #lobby #asset-info {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: relative;
     font-family: "Inconsolata", monospace;
     font-size: 16px;
     text-align: center;

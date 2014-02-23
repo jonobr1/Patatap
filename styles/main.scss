@@ -25,14 +25,13 @@ $font-size: 16px;
 
 #lobby {
 
-  position: static;
-  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   $d: 32px;
 
   #loader {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: relative;
     width: $d;
     height: $d;
     background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
@@ -46,9 +45,7 @@ $font-size: 16px;
     @include animation-iteration-count(infinite);
   }
   #asset-info {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: relative;
     font-family: $font-family;
     font-size: $font-size;
     text-align: center;
