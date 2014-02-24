@@ -37,7 +37,7 @@
            * Append Sound Generation to Animations
            */
 
-          var letters = ['A', 'B', 'C', 'D', 'E'];
+          var letters = ['A'];//, 'B', 'C', 'D', 'E'];
           var path = './assets/', filetype = '.mp3';
           var asset_count = 0, $loaded = $('#loaded');
 
@@ -234,33 +234,46 @@
 
             ui.update();
 
-            var touches = [], e, x, y, row, index;
+            var touches = [], e, x, y, l, row, col, index;
 
-            var getIndex = function(x, y) {
+            var getIndex = function(x, y, px, py) {
+
+              l = buttons.length;
+
               if (landscape) {
-                row = Math.max(Math.floor(y / buttons.height), 0);
-                return row + ','
-                  + Math.max(Math.floor(x / buttons.height), 0);
+                row = Math.min(Math.max(Math.floor(l * y / height), 0), l - 1);
+                l = buttons[row].length;
+                col = Math.min(Math.max(Math.floor(l * x / width), 0), l - 1);
+              } else {
+                row = Math.min(Math.max(Math.floor(l * x / width), 0), l - 1);
+                l = buttons[row].length;
+                col = Math.min(Math.max(Math.floor(l * y / height), 0), l - 1);
               }
-              row = Math.max(Math.floor(x / buttons.width), 0);
-              return row + ','
-                + Math.max(Math.floor(y / buttons.height), 0);
+
+              return row + ',' + col;
+
             };
 
             var startTouchEnter = function(touch) {
               x = touch.clientX;
               y = touch.clientY;
-              touches[touch.identifier] = getIndex(x, y);
+              touches[touch.identifier] = {
+                id: getIndex(x, y, x, y),
+                x: x,
+                y: y
+              };
             };
 
             var updateTouchEnter = function(touch) {
               x = touch.clientX;
               y = touch.clientY;
-              index = getIndex(x, y);
-              if (touches[touch.identifier] && touches[touch.identifier] !== index) {
+              index = getIndex(x, y, touches[touch.identifier].x, touches[touch.identifier].y);
+              if (touches[touch.identifier] && touches[touch.identifier].id !== index) {
                 triggerButton(index, buttons.map[index]);
-                touches[touch.identifier] = index;
+                touches[touch.identifier].id = index;
               }
+              touches[touch.identifier].x = x;
+              touches[touch.identifier].y = y;
             };
 
             var triggerButton = function(index, button) {
@@ -356,8 +369,8 @@
                 h = height / length;
               }
 
-              buttons.width = w;
-              buttons.height = h;
+              group.width = w;
+              group.height = h;
 
               w /= 2;
               h /= 2;
