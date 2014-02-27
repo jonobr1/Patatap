@@ -29,6 +29,7 @@ window.animations = (function() {
   var PROPERTIES = ['background', 'middleground', 'foreground', 'highlight', 'accent', 'white', 'black'];
   var PALETTE = [
     {
+      // Grey
       background: { r: 181, g: 181, b: 181 },
       middleground: { r: 141, g: 164, b: 170 },
       foreground: { r: 227, g: 79, b: 12 },
@@ -39,46 +40,7 @@ window.animations = (function() {
       isDark: false
     },
     {
-      background: { r: 57, g: 109, b: 193 },
-      middleground: { r: 186, g: 60, b: 223 },
-      foreground: { r: 213, g: 255, b: 93 },
-      highlight: { r: 213, g: 160, b: 255 },
-      accent: { r: 36, g: 221, b: 165 },
-      white: { r: 215, g: 236, b: 255 },
-      black: { r: 0, g: 0, b: 0 },
-      isDark: true
-    },
-    {
-      background: { r: 217, g: 82, b: 31 },
-      middleground: { r: 143, g: 74, b: 45 },
-      foreground: { r: 255, g: 108, b: 87 },
-      highlight: { r: 255, g: 126, b: 138 },
-      accent: { r: 227, g: 190, b: 141 },
-      white: { r: 255, g: 255, b: 255 },
-      black: { r: 0, g: 0, b: 0 },
-      isDark: false
-    },
-    {
-      background: { r: 255, g: 244, b: 211 },
-      middleground: { r: 207, g: 145, b: 79 },
-      foreground: { r: 38, g: 83, b: 122 },
-      highlight: { r: 178, g: 87, b: 53 },
-      accent: { r: 235, g: 192, b: 92 },
-      white: { r: 226, g: 82, b: 87 },
-      black: { r: 0, g: 0, b: 0 },
-      isDark: false
-    },
-    {
-      background: { r: 191, g: 178, b: 138 },
-      middleground: { r: 115, g: 44, b: 3 },
-      foreground: { r: 89, g: 81, b: 57 },
-      highlight: { r: 217, g: 210, b: 176 },
-      accent: { r: 242, g: 239, b: 220 },
-      white: { r: 22, g: 33, b: 44 },
-      black: { r: 255, g: 255, b: 255 },
-      isDark: true
-    },
-    {
+      // White
       background: { r: 255, g: 255, b: 255 },
       middleground: { r: 151, g: 41, b: 164 },
       foreground: { r: 1, g: 120, b: 186 },
@@ -89,6 +51,40 @@ window.animations = (function() {
       isDark: false
     },
     {
+      // Orange
+      background: { r: 217, g: 82, b: 31 },
+      middleground: { r: 143, g: 74, b: 45 },
+      foreground: { r: 255, g: 108, b: 87 },
+      highlight: { r: 255, g: 126, b: 138 },
+      accent: { r: 227, g: 190, b: 141 },
+      white: { r: 255, g: 255, b: 255 },
+      black: { r: 0, g: 0, b: 0 },
+      isDark: false
+    },
+    {
+      // Blue
+      background: { r: 57, g: 109, b: 193 },
+      middleground: { r: 186, g: 60, b: 223 },
+      foreground: { r: 213, g: 255, b: 93 },
+      highlight: { r: 213, g: 160, b: 255 },
+      accent: { r: 36, g: 221, b: 165 },
+      white: { r: 215, g: 236, b: 255 },
+      black: { r: 0, g: 0, b: 0 },
+      isDark: true
+    },
+    {
+      // Cream
+      background: { r: 255, g: 244, b: 211 },
+      middleground: { r: 207, g: 145, b: 79 },
+      foreground: { r: 38, g: 83, b: 122 },
+      highlight: { r: 178, g: 87, b: 53 },
+      accent: { r: 235, g: 192, b: 92 },
+      white: { r: 226, g: 82, b: 87 },
+      black: { r: 0, g: 0, b: 0 },
+      isDark: false
+    },
+    {
+      // Purple
       background: { r: 39, g: 6, b: 54 },
       middleground: { r: 69, g: 26, b: 87 },
       foreground: { r: 252, g: 25, b: 246 },
