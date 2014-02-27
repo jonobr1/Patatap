@@ -2,15 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>P A T A T A P</title>
+    <title>Patatap</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href='//fonts.googleapis.com/css?family=Inconsolata:700,400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
     <link rel="icon" type="image/png" href="./images/favicon.png" />
   </head>
   <body>
     <div id="content">
+    </div>
+    <div id="lobby">
       <div id="loader"></div>
+      <div id="asset-info">
+        <span id="loaded">0</span> / <span id="total-assets">156</span>
+      </div>
     </div>
     <div class="scripts" style="display: none;">
       <script src="./third-party/has.js"></script>
@@ -24,14 +30,18 @@
 
         $(function() {
 
-          var container = $('#content'), $window, ui, buttons;
+          var container = $('#content'), $window, ui, buttons, width, height,
+            landscape;
 
           /**
            * Append Sound Generation to Animations
            */
 
-          var letters = ['A', 'B', 'C', 'D', 'E'];
+          var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
           var path = './assets/', filetype = '.mp3';
+          var asset_count = 0, $loaded = $('#loaded');
+
+          $('#total-assets').html(26 * letters.length);
 
           var soundsBuffered = _.after(26 * letters.length, function() {
             if (url.loop && url.loop.match(/(clap|groove)/ig)) {
@@ -50,7 +60,11 @@
             _.each(animations.list, function(a, i) {
               if (a.filename) {
                 a.sounds = _.map(letters, function(type) {
-                  return new Sound(path + type + '/' + a.filename + filetype, soundsBuffered);
+                  return new Sound(path + type + '/' + a.filename + filetype, function() {
+                    asset_count++;
+                    $loaded.html(asset_count);
+                    soundsBuffered();
+                  });
                 });
               }
             });
@@ -157,9 +171,9 @@
                   case 77:
                     index = '2,6';
                     break;
-                  case 188:
-                    index = '2,7';
-                    break;
+                  // case 188:
+                  //   index = '2,7';
+                  //   break;
 
                   // SPACE
                   case 32:
@@ -193,7 +207,9 @@
 
               }).play();
 
-            $('#loader').fadeOut(150);
+            _.delay(function() {
+              $('#lobby').fadeOut();
+            }, 1000);
 
           }
 
@@ -207,14 +223,87 @@
 
             buttons = [];
             buttons.width = buttons.height = 32;
-            buttons.margin = 12;
             buttons.needsUpdate = {};
+            buttons.map = {};
 
             buttons[0] = _.map(_.range(10), createButton, ui);
             buttons[1] = _.map(_.range(9), createButton, ui);
             buttons[2] = _.map(_.range(8), createButton, ui);
 
+            var rows = 3;
+
             ui.update();
+
+            var touches = [], e, x, y, l, row, col, index;
+
+            var getIndex = function(x, y, px, py) {
+
+              l = buttons.length;
+
+              if (landscape) {
+                row = Math.min(Math.max(Math.floor(l * y / height), 0), l - 1);
+                l = buttons[row].length;
+                col = Math.min(Math.max(Math.floor(l * x / width), 0), l - 1);
+              } else {
+                row = Math.min(Math.max(Math.floor(l * x / width), 0), l - 1);
+                l = buttons[row].length;
+                col = Math.min(Math.max(Math.floor(l * y / height), 0), l - 1);
+              }
+
+              return row + ',' + col;
+
+            };
+
+            var startTouchEnter = function(touch) {
+              x = touch.clientX;
+              y = touch.clientY;
+              touches[touch.identifier] = {
+                id: getIndex(x, y, x, y),
+                x: x,
+                y: y
+              };
+            };
+
+            var updateTouchEnter = function(touch) {
+              x = touch.clientX;
+              y = touch.clientY;
+              index = getIndex(x, y, touches[touch.identifier].x, touches[touch.identifier].y);
+              if (touches[touch.identifier] && touches[touch.identifier].id !== index) {
+                triggerButton(index, buttons.map[index]);
+                touches[touch.identifier].id = index;
+              }
+              touches[touch.identifier].x = x;
+              touches[touch.identifier].y = y;
+            };
+
+            var triggerButton = function(index, button) {
+
+              trigger(index);
+
+              if (animations.getColorPalette().isDark) {
+                button.fill = 'rgba(255, 255, 255, 0.3)';
+              } else {
+                button.fill = 'rgba(0, 0, 0, 0.3)';
+              }
+
+              button.opacity = 1.0;
+              buttons.needsUpdate[button.id] = button;
+
+            };
+
+            $window
+              .bind('touchstart', function(event) {
+
+                e = event.originalEvent;
+                _.each(e.touches, startTouchEnter);
+
+              })
+              .bind('touchmove', function(event) {
+
+                e = event.originalEvent;
+                _.each(e.touches, updateTouchEnter);
+
+              });
 
             _.each(buttons, function(group, i) {
 
@@ -222,22 +311,17 @@
 
                 var elem = button._renderer.elem;
                 var index = i + ',' + j;
+
+                buttons.map[index] = button;
+
                 $(elem)
                   .css({
                     cursor: 'pointer'
                   })
-                  .bind('mousedown touchstart', function() {
+                  .bind('mousedown touchstart', function(event) {
 
-                    trigger(index);
-
-                    if (animations.getColorPalette().isDark) {
-                      button.fill = 'rgba(255, 255, 255, 0.3)';
-                    } else {
-                      button.fill = 'rgba(0, 0, 0, 0.3)';
-                    }
-
-                    button.opacity = 1.0;
-                    buttons.needsUpdate[button.id] = button;
+                    e = event.originalEvent;
+                    triggerButton(index, button);
 
                   });
 
@@ -267,9 +351,9 @@
               return;
             }
 
-            var width = $window.width();
-            var height = $window.height();
-            var landscape = width >= height;
+            width = $window.width();
+            height = $window.height();
+            landscape = width >= height;
             var size = buttons.length;
 
             _.each(buttons, function(group, i) {
@@ -284,6 +368,9 @@
                 w = width / size;
                 h = height / length;
               }
+
+              group.width = w;
+              group.height = h;
 
               w /= 2;
               h /= 2;

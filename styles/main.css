@@ -7,50 +7,47 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0; }
+  bottom: 0;
+  background: #b5b5b5; }
   #content #stage {
-    -webkit-transition: background-color 1s;
-    -moz-transition: background-color 1s;
-    transition: background-color 1s;
     background: #b5b5b5; }
-    #content #stage.background-0 {
-      background: #b5b5b5; }
-    #content #stage.background-1 {
-      background: #396dc1; }
-    #content #stage.background-2 {
-      background: #d9521f; }
-    #content #stage.background-3 {
-      background: #fff4d3; }
-    #content #stage.background-4 {
-      background: #bfb28a; }
-    #content #stage.background-5 {
-      background: white; }
-    #content #stage.background-6 {
-      background: #270636; }
 
-#loader {
+#lobby {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
-  background-size: 16px 16px;
-  margin-left: -16px;
-  margin-top: -16px;
-  border-radius: 50%;
-  -webkit-animation-name: rotate;
-  -moz-animation-name: rotate;
-  animation-name: rotate;
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
-  -moz-animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
-  animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
-  -webkit-animation-iteration-count: infinite;
-  -moz-animation-iteration-count: infinite;
-  animation-iteration-count: infinite; }
+  overflow: visible; }
+  #lobby #loader {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
+    background-size: 16px 16px;
+    margin-left: -16px;
+    margin-top: -16px;
+    border-radius: 50%;
+    -webkit-animation-name: rotate;
+    -moz-animation-name: rotate;
+    animation-name: rotate;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    -moz-animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    animation-iteration-count: infinite; }
+  #lobby #asset-info {
+    position: relative;
+    font-family: "Inconsolata", monospace;
+    font-size: 16px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+    margin-top: 32px;
+    width: 300px;
+    margin-left: -150px; }
 
 @-webkit-keyframes rotate {
   from {

@@ -1,5 +1,8 @@
 @import 'bourbon/bourbon';
 
+$font-family: 'Inconsolata', monospace;
+$font-size: 16px;
+
 * {
   margin: 0;
   padding: 0;
@@ -12,51 +15,48 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background: rgb(181, 181, 181);
 
   #stage {
-    @include transition(background-color 1s);
     background: rgb(181, 181, 181);
-    &.background-0 {
-      background: rgb(181, 181, 181);
-    }
-    &.background-1 {
-      background: rgb(57, 109, 193);
-    }
-    &.background-2 {
-      background: rgb(217, 82, 31);
-    }
-    &.background-3 {
-      background: rgb(255, 244, 211);
-    }
-    &.background-4 {
-      background: rgb(191, 178, 138);
-    }
-    &.background-5 {
-      background: rgb(255, 255, 255);
-    }
-    &.background-6 {
-      background: rgb(39, 6, 54);
-    }
   }
 
 }
 
-#loader {
-  $d: 32px;
+#lobby {
+
   position: fixed;
   top: 50%;
   left: 50%;
-  width: $d;
-  height: $d;
-  background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
-  background-size: ($d / 2) ($d / 2);
-  margin-left: - ($d / 2);
-  margin-top: - ($d / 2);
-  border-radius: 50%;
-  @include animation-name(rotate);
-  @include animation-duration(1s);
-  @include animation-timing-function($ease-in-out-circ);
-  @include animation-iteration-count(infinite);
+  overflow: visible;
+  $d: 32px;
+
+  #loader {
+    position: relative;
+    width: $d;
+    height: $d;
+    background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
+    background-size: ($d / 2) ($d / 2);
+    margin-left: - ($d / 2);
+    margin-top: - ($d / 2);
+    border-radius: 50%;
+    @include animation-name(rotate);
+    @include animation-duration(1s);
+    @include animation-timing-function($ease-in-out-circ);
+    @include animation-iteration-count(infinite);
+  }
+  #asset-info {
+    position: relative;
+    font-family: $font-family;
+    font-size: $font-size;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+    margin-top: $d;
+    width: 300px;
+    margin-left: -150px;
+  }
+
 }
 
 @include keyframes(rotate) {
