@@ -449,7 +449,7 @@ $(function() {
       return;
     }
     $hint.fadeIn();
-  }, 10000);
+  }, 20000);  // Twenty Second timeout
 
   function triggered() {
     $hint.fadeOut();
