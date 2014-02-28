@@ -1,6 +1,6 @@
 var two = new Two({
   // type: (!has.Safari) ? Two.Types.canvas : Two.Types.svg,
-  fullscreen: true
+  // fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
 two.renderer.domElement.id = 'stage';
@@ -15,7 +15,7 @@ window.animations = (function() {
 
   var container = document.querySelector('#content');
   var domElement = two.renderer.domElement;
-  var width = two.width, height = two.height;
+  var width = $(window).width(), height = $(window).height();
   var center = { x: width / 2, y: height / 2 };
   var min_dimension = width > height ? height : width;
   var duration = 1000;
@@ -24,6 +24,8 @@ window.animations = (function() {
   var pistonAmount = 3;
   var prismAmount = 3;
   var flashAmount = 3;
+
+  two.renderer.setSize(width, height);
 
   var Easing = TWEEN.Easing;
   var PROPERTIES = ['background', 'middleground', 'foreground', 'highlight', 'accent', 'white', 'black'];
@@ -41,7 +43,7 @@ window.animations = (function() {
     },
     {
       // White
-      background: { r: 255, g: 255, b: 255 },
+      background: { r: 255, g: 230, b: 255 },
       middleground: { r: 151, g: 41, b: 164 },
       foreground: { r: 1, g: 120, b: 186 },
       highlight: { r: 255, g: 255, b: 0 },
@@ -96,7 +98,7 @@ window.animations = (function() {
     }
   ];
 
-  var current = 0;
+  var current = url.int('palette', 0);
   var _colors = {};
   var colors = {};
 
@@ -792,7 +794,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 120, linewidth = min_dimension / 60, resolution = 4;
+    var amount = 120, linewidth = min_dimension / amount, resolution = 4;
     var magnitude = min_dimension / 2;
 
     var lines = _.map(_.range(amount), function(i) {
@@ -820,6 +822,11 @@ window.animations = (function() {
 
     });
 
+    var updateLinewidth = function(line, i) {
+      var pct = i / amount;
+      line.linewidth = (Math.sqrt(1 - pct)) * linewidth;
+    };
+
     lines.reverse();
 
     var group = two.makeGroup(lines);
@@ -842,7 +849,8 @@ window.animations = (function() {
     };
     var resize = function() {
       group.translation.set(center.x, center.y);
-      group.linewidth = min_dimension / 60;
+      linewidth = min_dimension / amount;
+      _.each(lines, updateLinewidth);
     };
 
     var i, t, index;
@@ -2511,7 +2519,8 @@ window.animations = (function() {
     }
   };
 
-  two.bind('resize', function() {
+  // two.bind('resize', function() {
+  $(window).bind('resize', function() {
 
     var rect = container.getBoundingClientRect();
     two.renderer.setSize(rect.width, rect.height);
