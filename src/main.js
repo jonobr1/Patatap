@@ -196,10 +196,11 @@ $(function() {
       });
 
     if (has.mobile) {
-      $hint.find('.message').html('Press anywhere on the screen');
+      $hint.find('.message').html('Press anywhere on the screen and turn up speakers');
       createMobileUI();
     } else {
-      $hint.find('.message').html('Press any key A to Z or spacebar');
+      $credits.css('display', 'block');
+      $hint.find('.message').html('Press any key, A to Z or spacebar, and turn up speakers');
     }
 
     two

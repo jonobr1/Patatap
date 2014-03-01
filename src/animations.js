@@ -1176,6 +1176,8 @@ window.animations = (function() {
 
     });
 
+    points.push(points[0].clone(), points[1].clone());
+
     var timer = two.makePolygon(points, true);
     timer.stroke = colors.highlight;
     timer.cap = 'butt';
@@ -1183,8 +1185,6 @@ window.animations = (function() {
     timer.noFill();
 
     timer.translation.set(center.x, center.y);
-
-    points = timer.vertices;
 
     var start = function(onComplete) {
       timer.visible = true;

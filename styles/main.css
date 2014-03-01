@@ -30,11 +30,36 @@
       #credits ul li a {
         color: #ccc;
         text-decoration: none;
-        padding-bottom: 3px;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.5); }
+        padding-bottom: 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
         #credits ul li a:hover {
           color: #fff;
           border-bottom-color: rgba(255, 255, 255, 0.85); }
+        #credits ul li a#jonobr1, #credits ul li a#lullatone {
+          display: inline-block;
+          vertical-align: baseline;
+          zoom: 1;
+          *display: inline;
+          *vertical-align: auto;
+          width: 20px;
+          height: 16px;
+          margin: -3px 8px 0;
+          vertical-align: middle;
+          border-bottom-color: transparent;
+          text-shadow: none;
+          opacity: 0.5;
+          text-indent: -9999px;
+          overflow: hidden; }
+          #credits ul li a#jonobr1:hover, #credits ul li a#lullatone:hover {
+            opacity: 0.9;
+            color: transparent;
+            border-bottom-color: transparent; }
+        #credits ul li a#jonobr1 {
+          width: 20px;
+          background: url(../images/jonobr1.svg) center center no-repeat; }
+        #credits ul li a#lullatone {
+          width: 20px;
+          background: url(../images/lullatone.svg) center center no-repeat; }
     #credits ul li {
       border-left: 1px solid rgba(255, 255, 255, 0.1); }
     #credits ul li:last-child {
@@ -47,9 +72,9 @@
   width: 100%;
   height: 100%;
   background: #b5b5b5;
-  -webkit-transition: top 0.35s ease-in-out;
-  -moz-transition: top 0.35s ease-in-out;
-  transition: top 0.35s ease-in-out;
+  -webkit-transition: top 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+  -moz-transition: top 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: top 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1); }
   #content #stage {
     background: #b5b5b5; }
@@ -77,6 +102,9 @@
     line-height: 32px;
     border-radius: 10.56px;
     padding: 0 16px; }
+    @media (max-width: 400px) {
+      #hint .message {
+        font-size: 10px; } }
 
 #embed {
   position: fixed;

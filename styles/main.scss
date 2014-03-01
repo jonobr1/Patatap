@@ -35,11 +35,37 @@ $line-height: $font-size * 2;
       a {
         color: #ccc;
         text-decoration: none;
-        padding-bottom: 3px;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        padding-bottom: 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
         &:hover {
           color: #fff;
           border-bottom-color: rgba(255, 255, 255, 0.85);
+        }
+        &#jonobr1,
+        &#lullatone {
+          @include inline-block;
+          width: 20px;
+          height: $font-size;
+          margin: -3px ($font-size / 2) 0;
+          vertical-align: middle;
+          border-bottom-color: transparent;
+          text-shadow: none;
+          opacity: 0.5;
+          text-indent: -9999px;
+          overflow: hidden;
+          &:hover {
+            opacity: 0.9;
+            color: transparent;
+            border-bottom-color: transparent;
+          }
+        }
+        &#jonobr1 {
+          width: 20px;
+          background: url(../images/jonobr1.svg) center center no-repeat;
+        }
+        &#lullatone {
+          width: 20px;
+          background: url(../images/lullatone.svg) center center no-repeat;
         }
       }
     }
@@ -61,7 +87,7 @@ $line-height: $font-size * 2;
   height: 100%;
   background: rgb(181, 181, 181);
 
-  @include transition(top 0.35s ease-in-out);
+  @include transition(top 0.35s $ease-out-circ);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
 
   #stage {
@@ -85,6 +111,9 @@ $line-height: $font-size * 2;
     color: #666666;
     font-family: $body-family;
     font-size: $font-size * 0.75;
+    @media (max-width: 400px) {
+      font-size: $font-size / 1.6;
+    }
     line-height: $line-height;
     border-radius: $font-size * 0.66;
     padding: 0 $font-size;
