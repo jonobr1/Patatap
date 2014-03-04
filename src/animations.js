@@ -148,39 +148,18 @@ window.animations = (function() {
     };
     var resize = _.identity;
 
-    var options = {
-      i: 0,
-      o: 0
-    };
+    var dest_in = { x: center.x }, dest_out = { x: width * 1.5 };
 
-    var animate_in = new TWEEN.Tween(options)
-      .to({ i: 1 }, duration * 0.5)
+    var animate_in = new TWEEN.Tween(shape.translation)
+      .to(dest_in, duration * 0.5)
       .easing(Easing.Exponential.Out)
-      .onUpdate(function(t) {
-        if (direction) {
-          points[0].x = t * width;
-          points[1].x = t * width;
-        } else {
-          points[0].x = (1 - t) * width;
-          points[1].x = (1 - t) * width;
-        }
-      })
       .onComplete(function() {
         animate_out.start();
       });
 
-    var animate_out = new TWEEN.Tween(options)
-      .to({ o: 1 }, duration * 0.5)
+    var animate_out = new TWEEN.Tween(shape.translation)
+      .to(dest_out, duration * 0.5)
       .easing(Easing.Exponential.In)
-      .onUpdate(function(t) {
-        if (direction) {
-          points[2].x = t * width;
-          points[3].x = t * width;
-        } else {
-          points[2].x = (1 - t) * width;
-          points[3].x = (1 - t) * width;
-        }
-      })
       .onComplete(function() {
         start.onComplete();
         callback();
@@ -191,19 +170,15 @@ window.animations = (function() {
     function reset() {
       shape.visible = false;
       playing = false;
-      options.beginning = options.ending = 0;
       direction = Math.random() > 0.5;
       if (direction) {
-        points[0].clear();
-        points[1].set(0, height);
-        points[2].set(0, height);
-        points[3].clear();
+        shape.translation.set(- center.x, center.y);
+        dest_out.x = width * 1.5;
       } else {
-        points[0].set(width, 0);
-        points[1].set(width, height);
-        points[2].set(width, height);
-        points[3].set(width, 0);
+        shape.translation.set(width * 1.5, center.y);
+        dest_out.x = - center.x;
       }
+      dest_in.x = center.x;
       animate_in.stop();
       animate_out.stop();
     }
@@ -259,39 +234,18 @@ window.animations = (function() {
     };
     var resize = function() {};
 
-    var options = {
-      i: 0,
-      o: 0
-    };
+    var dest_in = { y: center.y }, dest_out = { y: 0 };
 
-    var animate_in = new TWEEN.Tween(options)
-      .to({ i: 1 }, duration * 0.5)
+    var animate_in = new TWEEN.Tween(shape.translation)
+      .to(dest_in, duration * 0.5)
       .easing(Easing.Exponential.Out)
-      .onUpdate(function(t) {
-        if (direction) {
-          points[0].y = t * height;
-          points[1].y = t * height;
-        } else {
-          points[0].y = (1 - t) * height;
-          points[1].y = (1 - t) * height;
-        }
-      })
       .onComplete(function() {
         animate_out.start();
       });
 
-    var animate_out = new TWEEN.Tween(options)
-      .to({ o: 1 }, duration * 0.5)
+    var animate_out = new TWEEN.Tween(shape.translation)
+      .to(dest_out, duration * 0.5)
       .easing(Easing.Exponential.In)
-      .onUpdate(function(t) {
-        if (direction) {
-          points[2].y = t * height;
-          points[3].y = t * height;
-        } else {
-          points[2].y = (1 - t) * height;
-          points[3].y = (1 - t) * height;
-        }
-      })
       .onComplete(function() {
         start.onComplete();
         callback();
@@ -302,19 +256,15 @@ window.animations = (function() {
     function reset() {
       shape.visible = false;
       playing = false;
-      options.beginning = options.ending = 0;
       direction = Math.random() > 0.5;
       if (direction) {
-        points[0].clear();
-        points[1].set(width, 0);
-        points[2].set(width, 0);
-        points[3].clear();
+        shape.translation.set(center.x, - center.y);
+        dest_out.y = center.y * 1.5;
       } else {
-        points[0].set(0, height);
-        points[1].set(width, height);
-        points[2].set(width, height);
-        points[3].set(0, height);
+        shape.translation.set(center.x, center.y * 1.5);
+        dest_out.y = - center.y;
       }
+      dest_in.y = center.y;
       animate_in.stop();
       animate_out.stop();
     }
