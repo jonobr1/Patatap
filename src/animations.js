@@ -1,5 +1,7 @@
+
+var animationRatio = url.int('ratio', 100) / 100;
 var two = new Two({
-  // type: (!has.Safari) ? Two.Types.canvas : Two.Types.svg,
+  type: has.mobile? Two.Types.canvas : Two.Types.svg
   // fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
@@ -25,7 +27,7 @@ window.animations = (function() {
   var prismAmount = 3;
   var flashAmount = 3;
 
-  two.renderer.setSize(width, height);
+  two.renderer.setSize(width, height, animationRatio);
 
   var Easing = TWEEN.Easing;
   var PROPERTIES = ['background', 'middleground', 'foreground', 'highlight', 'accent', 'white', 'black'];
@@ -146,7 +148,12 @@ window.animations = (function() {
     var update = function() {
       shape.fill = colors.middleground;
     };
-    var resize = _.identity;
+    var resize = function() {
+      points[0].set(- center.x, - center.y);
+      points[1].set(center.x, - center.y);
+      points[2].set(center.x, center.y);
+      points[3].set(- center.x, center.y);
+    };
 
     var dest_in = { x: center.x }, dest_out = { x: width * 1.5 };
 
@@ -232,7 +239,12 @@ window.animations = (function() {
     var update = function() {
       shape.fill = colors.highlight;
     };
-    var resize = function() {};
+    var resize = function() {
+      points[0].set(- center.x, - center.y);
+      points[1].set(center.x, - center.y);
+      points[2].set(center.x, center.y);
+      points[3].set(- center.x, center.y);
+    };
 
     var dest_in = { y: center.y }, dest_out = { y: 0 };
 
@@ -259,9 +271,9 @@ window.animations = (function() {
       direction = Math.random() > 0.5;
       if (direction) {
         shape.translation.set(center.x, - center.y);
-        dest_out.y = center.y * 1.5;
+        dest_out.y = height * 1.5;
       } else {
-        shape.translation.set(center.x, center.y * 1.5);
+        shape.translation.set(center.x, height * 1.5);
         dest_out.y = - center.y;
       }
       dest_in.y = center.y;
@@ -1113,7 +1125,7 @@ window.animations = (function() {
 
     var callback = _.identity;
     var playing = false;
-    var amount = 48, radius = min_dimension / 3;
+    var amount = 32, radius = min_dimension / 3;
 
     var points = _.map(_.range(amount), function(i) {
 
@@ -1242,7 +1254,6 @@ window.animations = (function() {
     var circle = two.makeCircle(0, 0, radius);
     circle.noStroke().fill = colors.accent;
 
-    var options = { i: 0, o: 0 };
     var start = function(onComplete) {
       playing = true;
       _in.start();
@@ -1264,12 +1275,11 @@ window.animations = (function() {
       radius = min_dimension * 0.25;
     };
 
-    var _in = new TWEEN.Tween(options)
-      .to({ ending: 1.0 }, duration / 2)
+    circle.destination = { y: center.y };
+
+    var _in = new TWEEN.Tween(circle.translation)
+      .to(circle.destination, duration / 2)
       .easing(Easing.Circular.Out)
-      .onUpdate(function(t) {
-        circle.translation.y = lerp(circle.origin, circle.destination, t);
-      })
       .onComplete(function() {
         _out.start();
       });
@@ -1298,7 +1308,7 @@ window.animations = (function() {
       } else {
         circle.origin = circle.translation.y = height * 1.5;
       }
-      circle.destination = center.y;
+      circle.destination.y = center.y;
       circle.scale = 1;
       _in.stop();
       _out.stop();
@@ -1444,17 +1454,18 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 50, half = amount / 2;
+    var amount = 42, half = amount / 2;
     var radius = min_dimension * 0.33;
 
     var destinations = [];
-    var points = _.map(_.range(amount), function(i) {
-      var pct = i / amount;
+    var points = [];
+    _.each(_.range(amount), function(i) {
+      var pct = i / (amount - 1);
       var theta = pct * TWO_PI;
       var x = radius * Math.cos(theta);
       var y = radius * Math.sin(theta);
       destinations.push({ x: x, y: y });
-      return new Two.Anchor(x, y);
+      points.push(new Two.Anchor(x, y));
     });
 
     var moon = two.makePolygon(points);
@@ -1489,13 +1500,9 @@ window.animations = (function() {
     var _in = new TWEEN.Tween(options)
       .to({ ending: 1.0 }, duration / 2)
       .easing(Easing.Sinusoidal.Out)
-      .onUpdate(function() {
-        t = options.ending;
+      .onUpdate(function(t) {
         for (i = half; i < amount; i++) {
-          v = points[i];
-          d = destinations[i];
-          y = lerp(v.y, d.y, t);
-          v.y = y;
+          points[i].y = lerp(points[i].y, destinations[i].y, t);
         }
       })
       .onStart(function() {
@@ -1508,13 +1515,9 @@ window.animations = (function() {
     var _out = new TWEEN.Tween(options)
       .to({ beginning: 1.0 }, duration / 2)
       .easing(Easing.Sinusoidal.Out)
-      .onUpdate(function() {
-        t = options.beginning;
+      .onUpdate(function(t) {
         for (i = 0; i < half; i++) {
-          v = points[i];
-          d = destinations[i];
-          y = lerp(v.y, negate(d.y), t);
-          v.y = y;
+          points[i].y = lerp(points[i].y, negate(destinations[i].y), t);
         }
       })
       .onComplete(function() {
@@ -1528,11 +1531,12 @@ window.animations = (function() {
       options.beginning = options.ending = 0;
       for (i = 0; i < amount; i++) {
         v = points[i];
-        pct = i / amount;
+        pct = i / (amount - 1);
         theta = pct * TWO_PI;
         x = radius * Math.cos(theta);
         y = radius * Math.sin(theta);
-        destinations[i] = { x: x, y: y };
+        destinations[i].x = x;
+        destinations[i].y = y;
         v.set(x, Math.abs(y));
       }
       playing = false;
@@ -2473,7 +2477,7 @@ window.animations = (function() {
   $(window).bind('resize', function() {
 
     var rect = container.getBoundingClientRect();
-    two.renderer.setSize(rect.width, rect.height);
+    two.renderer.setSize(rect.width, rect.height, animationRatio);
 
     two.width = rect.width;
     two.height = rect.height;
