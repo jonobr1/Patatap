@@ -756,7 +756,7 @@ window.animations = (function() {
 
     var playing = false;
     var callback = _.identity;
-    var amount = 120, linewidth = min_dimension / amount, resolution = 4;
+    var amount = 120, linewidth = min_dimension / (amount * 2), resolution = 4;
     var magnitude = min_dimension / 2;
 
     var lines = _.map(_.range(amount), function(i) {
@@ -1140,7 +1140,7 @@ window.animations = (function() {
 
     points.push(points[0].clone(), points[1].clone());
 
-    var timer = two.makePolygon(points, true);
+    var timer = two.makeCurve(points, true);
     timer.stroke = colors.highlight;
     timer.cap = 'butt';
     timer.linewidth = min_dimension / 10;
