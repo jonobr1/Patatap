@@ -2,21 +2,22 @@ $(function() {
 
   var container = $('#content'), $window, ui, buttons, width, height,
     landscape, $hint = $('#hint'), $credits = $('#credits'),
-    mouse = new Two.Vector(), $embed = $('#embed'), embedding = false;
+    mouse = new Two.Vector(), $embed = $('#embed'), embedding = false,
+    interacting = false;
 
   /**
    * Append Sound Generation to Animations
    */
 
   var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-  var path = './assets/', filetype = '.mp3';
+  var path = '/assets/', filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
 
   $('#total-assets').html(26 * letters.length);
 
   var soundsBuffered = _.after(26 * letters.length, function() {
     if (url.loop && url.loop.match(/(clap|groove)/ig)) {
-      new Sound('./assets/' + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
+      new Sound('/assets/' + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
         this.play({
           loop: true
         });
@@ -78,9 +79,9 @@ $(function() {
 
         mouse.set(e.clientX, e.clientY);
 
-        if (mouse.y > height - 64) {
-          showCredits();
-        }
+        // if (mouse.y > height - 64) {
+        showCredits();
+        // }
 
       })
       // Disable scrolling
@@ -225,6 +226,9 @@ $(function() {
       $('#lobby').fadeOut();
       if (window.localStorage && window.localStorage.visited) {
         triggered();
+        return;
+      }
+      if (url.boolean('kiosk')) {
         return;
       }
       $hint.fadeIn();
@@ -431,16 +435,43 @@ $(function() {
 
   }
 
-  function trigger(index) {
+  function trigger(hash, silent) {
 
-    var animation = animations.map[index];
+    var animation = animations.map[hash];
 
     if (animation) {
       if (animation.playing()) {
         animation.clear();
       }
-      animation.start();
+      animation.start(undefined, silent);
     }
+
+  }
+
+  var timeout;
+  var startDemonstration = _.debounce(function() {
+    interacting = false;
+    triggerOccasionally();
+  }, 20000);
+
+  function triggerOccasionally() {
+
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+
+    if (interacting) {
+      return;
+    }
+
+    trigger(Math.random() > 0.5 ? '2,1' : '1,1', true);
+
+    timeout = setTimeout(function() {
+
+      requestAnimationFrame(triggerOccasionally);
+
+    }, 8000);
 
   }
 
@@ -453,6 +484,11 @@ $(function() {
   }, 20000);  // Twenty Second timeout
 
   function triggered() {
+    if (url.boolean('kiosk')) {
+      startDemonstration();
+      interacting = true;
+      return;
+    }
     $hint.fadeOut();
     showHint();
   }

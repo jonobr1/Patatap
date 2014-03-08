@@ -1,7 +1,7 @@
 
-var animationRatio = url.int('ratio', 100) / 100;
+var animationRatio = url.int('resolution', 100) / 100;
 var two = new Two({
-  type: has.mobile? Two.Types.canvas : Two.Types.svg
+  type: (has.mobile && (has.iOS || has.Firefox)) ? Two.Types.canvas : Two.Types.svg
   // fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
@@ -131,11 +131,11 @@ window.animations = (function() {
     shape.fill = colors.middleground;
     shape.noStroke();
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       shape.visible = true;
       animate_in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -222,11 +222,11 @@ window.animations = (function() {
     shape.fill = colors.highlight;
     shape.noStroke();
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       shape.visible = true;
       animate_in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -328,10 +328,10 @@ window.animations = (function() {
 
       var options = { ending: 0 };
 
-      var start = function(onComplete) {
+      var start = function(onComplete, silent) {
         group.visible = true;
         _in.start();
-        if (exports.sound) {
+        if (!silent && exports.sound) {
           exports.sound.stop().play();
         }
         if (_.isFunction(onComplete)) {
@@ -423,10 +423,10 @@ window.animations = (function() {
 
     points = clay.vertices;
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       clay.visible = true;
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -580,10 +580,10 @@ window.animations = (function() {
         shape.visible = true;
       };
 
-      var start = function(onComplete) {
+      var start = function(onComplete, silent) {
         _.each(shapes, showShape);
         _in.start();
-        if (exports.sound) {
+        if (!silent && exports.sound) {
           exports.sound.stop().play();
         }
         if (_.isFunction(onComplete)) {
@@ -695,13 +695,13 @@ window.animations = (function() {
       shape.noStroke().fill = colors[PROPERTIES[PROPERTIES.length - 1 - (i % PROPERTIES.length)]];
       shape.visible = false;
 
-      var start = function(onComplete) {
+      var start = function(onComplete, silent) {
         if (!_.isUndefined(timeout)) {
           clearTimeout(timeout);
           timeout = undefined;
         }
         playing = true;
-        if (exports.sound) {
+        if (!silent && exports.sound) {
           exports.sound.stop().play();
         }
         timeout = setTimeout(function() {
@@ -794,9 +794,9 @@ window.animations = (function() {
     var group = two.makeGroup(lines);
     group.translation.set(center.x, center.y);
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -889,12 +889,12 @@ window.animations = (function() {
     group.translation.set(center.x, center.y);
 
     var i, c;
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       for (i = 0; i < amount; i++) {
         circles[i].visible = true;
       }
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1005,10 +1005,10 @@ window.animations = (function() {
       c.visible = true;
     };
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       _.each(circles, showCircle);
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1148,10 +1148,10 @@ window.animations = (function() {
 
     timer.translation.set(center.x, center.y);
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       timer.visible = true;
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1254,11 +1254,11 @@ window.animations = (function() {
     var circle = two.makeCircle(0, 0, radius);
     circle.noStroke().fill = colors.accent;
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       _in.start();
       circle.visible = true;
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1369,10 +1369,10 @@ window.animations = (function() {
 
     var options = { ending: 0, beginning: 0 };
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1475,10 +1475,10 @@ window.animations = (function() {
 
     var options = { ending: 0, beginning: 0 };
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       moon.visible = true;
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1578,11 +1578,11 @@ window.animations = (function() {
     line.translation.set(center.x, center.y);
     line.cap = 'round';
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       line.visible = true;
       playing = true;
       animate_in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1700,10 +1700,10 @@ window.animations = (function() {
     zigzag.miter = 4;
     zigzag.cap = 'butt';
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       zigzag.visible = true;
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1822,11 +1822,11 @@ window.animations = (function() {
 
     // points = squiggle.vertices;
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       squiggle.visible = true;
       playing = true;
       _in.start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -1929,10 +1929,10 @@ window.animations = (function() {
     shape.noStroke().fill = colors.black;
     shape.translation.set(center.x, center.y);
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       ins[0].start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -2080,10 +2080,10 @@ window.animations = (function() {
     shape.noStroke().fill = colors.white;
     shape.translation.set(center.x, center.y);
 
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       ins[0].start();
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -2226,14 +2226,14 @@ window.animations = (function() {
     shape.translation.set(center.x, center.y);
 
     var i, l, tween;
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       shape.visible = true;
       for (i = 0, l = sequence[0].length; i < l; i++) {
         tween = sequence[0][i];
         tween.start();
       }
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
@@ -2398,14 +2398,14 @@ window.animations = (function() {
     group.translation.set(center.x, center.y);
 
     var i, c;
-    var start = function(onComplete) {
+    var start = function(onComplete, silent) {
       playing = true;
       for (i = 0; i < amount; i++) {
         c = circles[i];
         c.visible = true;
         c.tween.start();
       }
-      if (exports.sound) {
+      if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
       if (_.isFunction(onComplete)) {
