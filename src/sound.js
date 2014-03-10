@@ -104,7 +104,11 @@
       this.source.connect(ctx.destination);
       this.source.loop = params.loop;
 
-      this.source.start(params.time);
+      if (_.isFunction(this.source.start)) {
+        this.source.start(params.time);
+      } else if (_.isFunction(this.source.noteOn)) {
+        this.source.noteOn(params.time);
+      }
 
       return this;
 
