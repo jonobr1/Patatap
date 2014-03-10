@@ -91,6 +91,10 @@ $(function() {
       })
       .bind('keydown', function(e, data) {
 
+        if (e.metaKey || e.ctrlKey) {
+          return;
+        }
+
         e.preventDefault();
         var code = e.which || data;
         var index;
