@@ -138,6 +138,120 @@ body {
     outline: none;
     resize: none; }
 
+#merchandise {
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: visible; }
+  @media (min-width: 1000px) and (min-height: 400px) {
+    #merchandise {
+      top: 50%; }
+      #merchandise .container {
+        position: relative;
+        width: 994px;
+        margin-top: -192px;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 3px; } }
+  @media (max-width: 1000px) {
+    #merchandise {
+      top: 0; }
+      #merchandise .container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0; } }
+  @media (max-height: 400px) {
+    #merchandise {
+      top: 0; }
+      #merchandise .container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0; } }
+  #merchandise .container {
+    background: white;
+    overflow: auto;
+    padding: 32px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+    #merchandise .container #close-merchandise {
+      position: absolute;
+      top: 2px;
+      right: 8px;
+      color: #555;
+      font-size: 20px;
+      vertical-align: top;
+      font-weight: bold;
+      cursor: pointer; }
+    #merchandise .container ul {
+      text-align: center;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 13px;
+      line-height: 26px;
+      color: #333333; }
+      #merchandise .container ul li {
+        list-style: none;
+        display: inline-block;
+        vertical-align: baseline;
+        zoom: 1;
+        *display: inline;
+        *vertical-align: auto;
+        margin-left: 8px;
+        margin-right: 8px; }
+        #merchandise .container ul li.poster {
+          width: 168px;
+          height: 310px;
+          border: 1px solid #c8c8c8;
+          overflow: hidden;
+          background: white; }
+          #merchandise .container ul li.poster div {
+            position: relative;
+            width: 170px;
+            height: 170px; }
+          #merchandise .container ul li.poster div.thumbnail {
+            background-color: white;
+            background-size: 200%;
+            background-position: 50% 20%;
+            background-repeat: no-repeat;
+            border-bottom: 1px solid #c8c8c8;
+            height: 168px; }
+          #merchandise .container ul li.poster #synesthesia {
+            background-image: url(https://m1.behance.net/rendition/modules/102811007/disp/ba88168e188e18adb93119aec9a708c7.jpg); }
+          #merchandise .container ul li.poster #two-polygon {
+            background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg); }
+          #merchandise .container ul li.poster p {
+            padding-left: 8px;
+            padding-right: 10px;
+            text-align: left; }
+          #merchandise .container ul li.poster a {
+            color: #333333;
+            text-decoration: none; }
+            #merchandise .container ul li.poster a:hover {
+              text-decoration: underline; }
+          #merchandise .container ul li.poster p.title {
+            margin-top: 6px;
+            height: 20px;
+            overflow: hidden; }
+          #merchandise .container ul li.poster p.artist {
+            height: 16px; }
+          #merchandise .container ul li.poster p.description {
+            margin-top: 12px;
+            font-size: 11px;
+            line-height: 22px;
+            height: 48px;
+            overflow: hidden;
+            text-wrap: ellipsis; }
+          #merchandise .container ul li.poster p.action {
+            margin-top: 4px;
+            font-weight: bold; }
+            #merchandise .container ul li.poster p.action * + * {
+              margin-left: 15px; }
+
 #lobby {
   position: fixed;
   top: 50%;

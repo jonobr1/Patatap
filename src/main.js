@@ -3,7 +3,7 @@ $(function() {
   var container = $('#content'), $window, ui, buttons, width, height,
     landscape, $hint = $('#hint'), $credits = $('#credits'),
     mouse = new Two.Vector(), $embed = $('#embed'), embedding = false,
-    interacting = false;
+    interacting = false, $merchandise = $('#merchandise');
 
   /**
    * Append Sound Generation to Animations
@@ -59,11 +59,36 @@ $(function() {
     $('#embed-button').click(function(e) {
       e.preventDefault();
       $hint.fadeOut();
+      $merchandise.fadeOut();
       $embed.fadeIn(function() {
         embedding = true;
         $embed.find('textarea').select();
         $window.bind('click', hideEmbed);
       });
+    });
+
+    var firstRun = true;
+
+    $('#merchandise-button').click(function(e) {
+      e.preventDefault();
+      if (firstRun) {
+        $merchandise.css({
+          display: 'none',
+          zIndex: 0
+        });
+        firstRun = false;
+      }
+      $hint.fadeOut();
+      $embed.fadeOut();
+      $merchandise.fadeIn(function() {
+        embedding = true;
+      });
+    });
+
+    $('#close-merchandise').click(function(e) {
+      e.preventDefault();
+      embedding = false;
+      $merchandise.fadeOut();
     });
 
     $window = $(window)
@@ -76,6 +101,10 @@ $(function() {
 
       })
       .bind('mousemove', function(e) {
+
+        if (has.mobile || embedding) {
+          return;
+        }
 
         mouse.set(e.clientX, e.clientY);
 
@@ -227,12 +256,9 @@ $(function() {
     $window.trigger('resize');
 
     _.delay(function() {
-      $('#lobby').fadeOut();
-      if (window.localStorage && window.localStorage.visited) {
+      $('#lobby').fadeOut(triggerLogo);
+      if (url.boolean('kiosk') || (window.localStorage && window.localStorage.visited)) {
         triggered();
-        return;
-      }
-      if (url.boolean('kiosk')) {
         return;
       }
       $hint.fadeIn();
@@ -439,6 +465,15 @@ $(function() {
 
   }
 
+  function triggerLogo() {
+
+    trigger('0,9');
+    trigger('2,6');
+    trigger('1,7');
+    trigger('2,1');
+
+  }
+
   function trigger(hash, silent) {
 
     var animation = animations.map[hash];
@@ -469,13 +504,16 @@ $(function() {
       return;
     }
 
-    trigger(Math.random() > 0.5 ? '2,1' : '1,1', true);
+    var index = Math.floor(Math.random() * animations.list.length);
+
+    // trigger(Math.random() > 0.5 ? '2,1' : '1,1', true);
+    trigger(animations.list[index].hash, true);
 
     timeout = setTimeout(function() {
 
       requestAnimationFrame(triggerOccasionally);
 
-    }, 8000);
+    }, 2000);
 
   }
 

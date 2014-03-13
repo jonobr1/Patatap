@@ -152,6 +152,168 @@ body {
   }
 }
 
+#merchandise {
+
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: visible;
+
+  @media (min-width: 1000px) and (min-height: 400px) {
+    top: 50%;
+    .container {
+      position: relative;
+      width: 994px;
+      margin-top: - 384px / 2;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 3px;
+    }
+  }
+  @media (max-width: 1000px) {
+    top: 0;
+    .container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+  @media (max-height: 400px) {
+    top: 0;
+    .container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .container {
+
+    background: white;
+    overflow: auto;
+    padding: $line-height;
+    @include user-select(none);
+
+    #close-merchandise {
+      position: absolute;
+      top: $font-size / 8;
+      right: $font-size / 2;
+      color: #555;
+      font-size: $font-size * 1.25;
+      vertical-align: top;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    ul {
+
+      $black: rgb(51, 51, 51);
+      text-align: center;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 13px;
+      line-height: 26px;
+      color: $black;
+
+      li {
+
+        list-style: none;
+        @include inline-block;
+        margin-left: $font-size / 2;
+        margin-right: $font-size / 2;
+
+        &.poster {
+
+          $width: 170px;
+          $height: 312px;
+          $border-width: 1px;
+          $border-color: rgb(200, 200, 200);
+
+          width: $width - $border-width * 2;
+          height: $height - $border-width * 2;
+          border: $border-width solid $border-color;
+          overflow: hidden;
+          background: white;
+
+          div {
+            position: relative;
+            width: $width;
+            height: $width;
+            // @include inline-block;
+          }
+
+          div.thumbnail {
+
+            background-color: white;
+            background-size: 200%;
+            background-position: 50% 20%;
+            background-repeat: no-repeat;
+            border-bottom: $border-width solid $border-color;
+            height: $width - $border-width * 2;
+
+          }
+
+          #synesthesia {
+            background-image: url(https://m1.behance.net/rendition/modules/102811007/disp/ba88168e188e18adb93119aec9a708c7.jpg);
+          }
+          #two-polygon {
+           background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg); 
+          }
+
+          p {
+            padding-left: 8px;
+            padding-right: 10px;
+            text-align: left;
+          }
+
+          a {
+            color: $black;
+            text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          p.title {
+            margin-top: 6px;
+            height: 20px;
+            overflow: hidden;
+          }
+
+          p.artist {
+            height: 16px;
+          }
+
+          p.description {
+            margin-top: 12px;
+            font-size: 11px;
+            line-height: 22px;
+            height: 48px;
+            overflow: hidden;
+            text-wrap: ellipsis;
+          }
+
+          p.action {
+            margin-top: 4px;
+            font-weight: bold;
+            * + * {
+              margin-left: 15px;
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
 #lobby {
 
   position: fixed;
