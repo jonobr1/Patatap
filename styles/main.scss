@@ -159,7 +159,7 @@ body {
   right: 0;
   overflow: visible;
 
-  @media (min-width: 1000px) and (min-height: 400px) {
+  @media (min-width: 1100px) and (min-height: 400px) {
     top: 50%;
     .container {
       position: relative;
@@ -170,7 +170,7 @@ body {
       border-radius: 3px;
     }
   }
-  @media (max-width: 1000px) {
+  @media (max-width: 1100px) {
     top: 0;
     .container {
       position: fixed;
@@ -204,9 +204,13 @@ body {
       right: $font-size / 2;
       color: #555;
       font-size: $font-size * 1.25;
+      padding: $font-size / 4;
       vertical-align: top;
       font-weight: bold;
       cursor: pointer;
+      &:hover {
+        color: #000;
+      }
     }
 
     ul {
