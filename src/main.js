@@ -73,6 +73,7 @@ $(function() {
       e.preventDefault();
       if (firstRun) {
         $merchandise.css({
+          opacity: 1.0,
           display: 'none',
           zIndex: 0
         });
@@ -467,10 +468,18 @@ $(function() {
 
   function triggerLogo() {
 
+    if (window.localStorage && window.localStorage.visited) {
+      return;
+    }
+
     trigger('0,9');
     trigger('2,6');
     trigger('1,7');
     trigger('2,1');
+
+    if (window.localStorage) {
+      window.localStorage.visited = true;
+    }
 
   }
 
