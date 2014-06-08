@@ -1,7 +1,7 @@
 
 var animationRatio = url.int('resolution', 100) / 100;
 var two = new Two({
-  type: ((has.mobile && has.iOS) || (!has.mobile && has.Firefox)) ? Two.Types.canvas : Two.Types.svg
+  type: (url.boolean('canvas') || (has.mobile && has.iOS) || (!has.mobile && has.Firefox)) ? Two.Types.canvas : Two.Types.svg
   // fullscreen: true
 }).appendTo(document.querySelector('#content'));
 

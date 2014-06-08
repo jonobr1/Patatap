@@ -4,28 +4,28 @@
     <meta charset="utf-8">
     <title>Patatap</title>
 
-    <meta name="keywords" content="patatap, neuronal synchrony, music, audio, visual, app, 2d, jonobr1, lullatone">
+    <meta name="keywords" content="patatap, neuronal synchrony, music, audio, visual, app, 2d, jonobr1, lullatone, synesthesia">
     <meta name="author" content="jonobr1">
 
     <!-- Sharing -->
     <meta name="name" content="Patatap">
     <meta name="image" content="http://www.patatap.com/images/thumbnail.png">
-    <meta name="description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes.">
+    <meta name="description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Patatap">
-    <meta name="twitter:description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes.">
+    <meta name="twitter:description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
     <meta name="twitter:image" content="http://www.patatap.com/images/thumbnail.png">
 
     <meta itemprop="name" content="Patatap">
-    <meta itemprop="description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes.">
+    <meta itemprop="description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
     <meta itemprop="image" src="http://www.patatap.com/images/thumbnail.png">
 
     <meta property="og:title" content="Patatap">
     <meta property="og:type" content="website">
     <meta property="og:image" content="http://www.patatap.com/images/thumbnail.png"/>
     <meta property="og:site_name" content="Patatap">
-    <meta property="og:description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes.">
+    <meta property="og:description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
 
     <!-- iOS specific catches -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,7 +43,7 @@
   </head>
   <body>
     <h1 style="width: 0; height: 0; overflow: hidden;">
-      Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes.
+      Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.
     </h1>
     <div id="credits" style="display: none;">
       <ul>
@@ -54,10 +54,13 @@
           <a href="mailto:inquiries@patatap.com">Inquiries</a>
         </li>
         <li>
-          <a id="embed-button" href="#">Embed</a>
+          <a id="embed-button" href="#" title="Embed Patatap on your site">Embed</a>
         </li>
         <li>
-          <a id="merchandise-button" href="#">Merchandise</a>
+          <a id="merchandise-button" href="#" title="Support the creators of Patatap">Merchandise</a>
+        </li>
+        <li>
+          <a href="http://patataptunes.com" target="_blank" title="Tunes made with Patatap">Tunes</a>
         </li>
         <li>
           <a id="jonobr1" href="http://jonobr1.com/" target="_blank">jonobr1</a> + <a id="lullatone" href="http://lullatone.com/" target="_blank">lullatone</a>
@@ -67,6 +70,7 @@
     <div id="content"></div>
     <div id="hint" style="display: none;">
       <p class="message"></p>
+      <a href="https://itunes.apple.com/us/app/patatap/id880626868?ls=1&mt=8" target="_blank"><div class="ios-app-store"></div></a>
     </div>
     <div id="embed" style="display: none;">
       <textarea><iframe src="http://www.patatap.com/" style="border: 3px solid #ccc" width="640" height="480"></iframe></textarea>
@@ -74,6 +78,9 @@
     <div id="merchandise" style="z-index: -1; opacity: 0.0;">
       <div class="container">
         <div id="close-merchandise">&times;</div>
+        <div class="vimeo">
+          <iframe src="//player.vimeo.com/video/95057507?title=0&amp;byline=0&amp;portrait=0&amp;color=e34d73" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
         <ul>
           <li class="music">
             <iframe style="border: 0; width: 170px; height: 312px;" src="http://bandcamp.com/EmbeddedPlayer/album=2161956980/size=large/bgcol=ffffff/linkcol=333333/tracklist=false/transparent=true/" seamless><a href="http://lullatone.bandcamp.com/album/soundtracks-for-everyday-adventures">Soundtracks for Everyday Adventures by Lullatone</a></iframe>
@@ -123,6 +130,8 @@
             <iframe style="border: 0; width: 170px; height: 312px;" src="http://bandcamp.com/EmbeddedPlayer/album=3085239466/size=large/bgcol=ffffff/linkcol=333333/tracklist=false/transparent=true/" seamless><a href="http://lullatone.bandcamp.com/album/falling-for-autumn-ep">Falling for Autumn - EP by Lullatone</a></iframe>
           </li>
         </ul>
+        <!-- Insert iOS App Store Button here -->
+        <a href="https://itunes.apple.com/us/app/patatap/id880626868?ls=1&mt=8" target="_blank"><div class="ios-app-store"></div></a>
       </div>
     </div>
     <div id="lobby">
@@ -135,11 +144,32 @@
       <script src="/third-party/has.js"></script>
       <script src="/third-party/url.js"></script>
       <script src="/third-party/jquery.js"></script>
+      <script>
+
+        /**
+         * Check before loading JavaScript that we have the necessary features
+         * in order to run the project. If we don't throw an error and display
+         * the error page.
+         */
+        if (!Object.defineProperty || !(window.AudioContext || window.webkitAudioContext)) {
+          $(function() {
+            $('#lobby').fadeOut();
+            $('#merchandise').css({
+              opacity: 1.0,
+              display: 'none',
+              zIndex: 0
+            }).fadeIn();
+            $('#close-merchandise').css('display', 'none');
+          });
+          throw 'Oof, I cannot load this application because it will break...';
+        }
+
+      </script>
       <script src="/third-party/tween.js"></script>
       <script src="/third-party/two.js"></script>
       <script src="/src/sound.js"></script>
-      <script src="/src/animations.js?id=789123473809214"></script>
-      <script src="/src/main.js?id=789123473809214"></script>
+      <script src="/src/animations.js"></script>
+      <script src="/src/main.js"></script>
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -13,6 +13,10 @@ $(function() {
   var path = '/assets/', filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
 
+  if (url.boolean('kiosk')) {
+    path += 'kiosk/';
+  }
+
   $('#total-assets').html(26 * letters.length);
 
   var soundsBuffered = _.after(26 * letters.length, function() {
@@ -258,8 +262,11 @@ $(function() {
 
     _.delay(function() {
       $('#lobby').fadeOut(triggerLogo);
-      if (url.boolean('kiosk') || (window.localStorage && window.localStorage.visited)) {
+      if (url.boolean('kiosk') /*|| (window.localStorage && window.localStorage.visited)*/) {
         triggered();
+        return;
+      } else if (/merchandise/ig.test(url.hash)) {
+        $('#merchandise-button').trigger('click');
         return;
       }
       $hint.fadeIn();
@@ -501,6 +508,9 @@ $(function() {
     interacting = false;
     triggerOccasionally();
   }, 20000);
+  var reloadOnIdle = _.debounce(function() {
+    window.location.reload();
+  }, 30 * 60 * 1000);
 
   function triggerOccasionally() {
 
@@ -537,6 +547,7 @@ $(function() {
   function triggered() {
     if (url.boolean('kiosk')) {
       startDemonstration();
+      reloadOnIdle();
       interacting = true;
       return;
     }
@@ -558,3 +569,7 @@ $(function() {
   }
 
 });
+
+if (window.console && window.console.log) {
+  console.log('Check out the code at http://github.com/jonobr1/Neuronal-Synchrony');
+}

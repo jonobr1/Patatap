@@ -113,6 +113,15 @@ body {
     @media (max-width: 400px) {
       #hint .message {
         font-size: 10px; } }
+  #hint .ios-app-store {
+    position: fixed;
+    bottom: 96px;
+    left: 50%;
+    margin-left: -67px;
+    cursor: pointer;
+    background: url(../images/app-store.svg) center center no-repeat;
+    width: 135px;
+    height: 40px; }
 
 #embed {
   position: fixed;
@@ -142,35 +151,14 @@ body {
   position: fixed;
   left: 0;
   right: 0;
-  overflow: visible; }
-  @media (min-width: 1100px) and (min-height: 400px) {
-    #merchandise {
-      top: 50%; }
-      #merchandise .container {
-        position: relative;
-        width: 994px;
-        margin-top: -192px;
-        margin-left: auto;
-        margin-right: auto;
-        border-radius: 3px; } }
-  @media (max-width: 1100px) {
-    #merchandise {
-      top: 0; }
-      #merchandise .container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0; } }
-  @media (max-height: 400px) {
-    #merchandise {
-      top: 0; }
-      #merchandise .container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0; } }
+  overflow: visible;
+  top: 0; }
+  #merchandise .container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; }
   #merchandise .container {
     background: white;
     overflow: auto;
@@ -182,7 +170,7 @@ body {
     #merchandise .container #close-merchandise {
       position: absolute;
       top: 2px;
-      right: 8px;
+      right: 16px;
       color: #555;
       font-size: 20px;
       padding: 4px;
@@ -191,6 +179,22 @@ body {
       cursor: pointer; }
       #merchandise .container #close-merchandise:hover {
         color: #000; }
+    #merchandise .container div.vimeo {
+      text-align: center;
+      margin-bottom: 32px; }
+      #merchandise .container div.vimeo iframe {
+        display: inline-block;
+        vertical-align: baseline;
+        zoom: 1;
+        *display: inline;
+        *vertical-align: auto;
+        width: 500px;
+        height: 281px;
+        border: 1px solid #c8c8c8; }
+      @media (max-width: 500px) {
+        #merchandise .container div.vimeo iframe {
+          width: 250px;
+          height: 140.5px; } }
     #merchandise .container ul {
       text-align: center;
       font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -254,6 +258,16 @@ body {
             font-weight: bold; }
             #merchandise .container ul li.poster p.action * + * {
               margin-left: 15px; }
+  #merchandise .ios-app-store {
+    position: relative;
+    top: 16px;
+    bottom: 16px;
+    left: 50%;
+    margin-left: -67px;
+    cursor: pointer;
+    background: url(../images/app-store.svg) center center no-repeat;
+    width: 135px;
+    height: 40px; }
 
 #lobby {
   position: fixed;
