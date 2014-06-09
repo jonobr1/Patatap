@@ -152,6 +152,7 @@ body {
   left: 0;
   right: 0;
   overflow: visible;
+  -webkit-overflow-scrolling: touch;
   top: 0; }
   #merchandise .container {
     position: fixed;
@@ -260,6 +261,11 @@ body {
               margin-left: 15px; }
   #merchandise .ios-app-store {
     position: relative;
+    display: inline-block;
+    vertical-align: baseline;
+    zoom: 1;
+    *display: inline;
+    *vertical-align: auto;
     top: 16px;
     bottom: 16px;
     left: 50%;

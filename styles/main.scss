@@ -169,6 +169,7 @@ body {
   left: 0;
   right: 0;
   overflow: visible;
+  -webkit-overflow-scrolling: touch;
 
   top: 0;
   .container {
@@ -359,6 +360,7 @@ body {
 
   .ios-app-store {
     position: relative;
+    @include inline-block;
     top: $font-size;
     bottom: $font-size;
     left: 50%;

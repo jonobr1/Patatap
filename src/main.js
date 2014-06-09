@@ -3,7 +3,8 @@ $(function() {
   var container = $('#content'), $window, ui, buttons, width, height,
     landscape, $hint = $('#hint'), $credits = $('#credits'),
     mouse = new Two.Vector(), $embed = $('#embed'), embedding = false,
-    interacting = false, $merchandise = $('#merchandise');
+    interacting = false, $merchandise = $('#merchandise'),
+    merchandising = false;
 
   /**
    * Append Sound Generation to Animations
@@ -87,12 +88,14 @@ $(function() {
       $embed.fadeOut();
       $merchandise.fadeIn(function() {
         embedding = true;
+        merchandising = true;
       });
     });
 
     $('#close-merchandise').click(function(e) {
       e.preventDefault();
       embedding = false;
+      merchandising = false;
       $merchandise.fadeOut();
     });
 
@@ -104,6 +107,13 @@ $(function() {
 
         orientUserInterface(e);
 
+      })
+      // Disable scrolling on mobile
+      .bind('touchstart touchmove touchend touchcancel', function(e) {
+        if (!(merchandising || $(e.target).hasClass('ios-app-store'))) {
+          e.preventDefault();
+          return false;
+        }
       })
       .bind('mousemove', function(e) {
 
@@ -117,13 +127,6 @@ $(function() {
         showCredits();
         // }
 
-      })
-      // Disable scrolling
-      .bind('touchstart touchmove touchend touchcancel', function(e) {
-        if (!$(e.target).hasClass('ios-app-store')) {
-          e.preventDefault();
-          return false;
-        }
       })
       .bind('keydown', function(e, data) {
 
