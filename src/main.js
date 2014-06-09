@@ -120,8 +120,10 @@ $(function() {
       })
       // Disable scrolling
       .bind('touchstart touchmove touchend touchcancel', function(e) {
-        e.preventDefault();
-        return false;
+        if (!$(e.target).hasClass('ios-app-store')) {
+          e.preventDefault();
+          return false;
+        }
       })
       .bind('keydown', function(e, data) {
 
@@ -356,7 +358,7 @@ $(function() {
 
     };
 
-    $window
+    container
       .bind('touchstart', function(event) {
 
         e = event.originalEvent;
