@@ -23,6 +23,7 @@
       <script src="./src/player.js"></script>
       <script src="./src/record.js"></script>
       <script src="./src/track-data.js"></script>
+      <script src="./src/editor.js"></script>
       <script>
 
         $(function() {
@@ -159,16 +160,17 @@
           // url.permalink = 'https://soundcloud.com/ghostly/sets/various-artists-smm-opiate';
 
           var params = _.defaults(url, {
-            permalink: TrackData.Lusine.Panoramic.url
+            // permalink: TrackData.Lusine.Panoramic.url
+            permalink: TrackData.Kimbra['90sMusic'].url
           });
 
           /**
            * Add recording functionality
            */
           if (url.boolean('record', false)) {
-            player.bind('play', record.start)
+            player.bind('play', record.start);
           } else if (url.boolean('replay', false)) {
-            record.data = TrackData.Lusine.Panoramic.data; // Set data to replay
+            record.data = TrackData.Kimbra['90sMusic'].data; // Set data to replay
             player.bind('play', record.replay);
           }
 

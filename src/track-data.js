@@ -12,6 +12,18 @@ window.TrackData = (function() {
 
       }
 
+    },
+
+    Kimbra: {
+
+      '90sMusic': {
+
+        url: 'https://soundcloud.com/kimbramusic/kimbra-90s-music',
+
+        data: []
+
+      }
+
     }
 
   };
