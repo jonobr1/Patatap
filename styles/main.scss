@@ -128,14 +128,26 @@ body {
     padding: 0 $font-size;
   }
 
+  $width: 135px;
+
   .ios-app-store {
     position: fixed;
     bottom: $line-height * 3;
     left: 50%;
-    margin-left: - 67px;
+    margin-left: - 75px - $width / 2;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
     width: 135px;
+    height: 40px;
+  }
+  .play-store {
+    position: fixed;
+    bottom: $line-height * 3;
+    left: 50%;
+    margin-left: 75px - $width / 2;
+    cursor: pointer;
+    background: url(../images/play-store.svg) center center no-repeat;
+    width: $width;
     height: 40px;
   }
 
@@ -358,15 +370,27 @@ body {
 
   }
 
-  .ios-app-store {
+  .app-cta-container {
     position: relative;
-    @include inline-block;
-    top: $font-size;
+    width: 100%;
+    text-align: center;
     bottom: $font-size;
-    left: 50%;
-    margin-left: - 67px;
+    top: $font-size;
+  }
+
+  .ios-app-store {
+    // position: relative;
+    @include inline-block;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
+    width: 135px;
+    height: 40px;
+  }
+  .play-store {
+    // position: relative;
+    @include inline-block;
+    cursor: pointer;
+    background: url(../images/play-store.svg) center center no-repeat;
     width: 135px;
     height: 40px;
   }

@@ -117,9 +117,18 @@ body {
     position: fixed;
     bottom: 96px;
     left: 50%;
-    margin-left: -67px;
+    margin-left: -142.5px;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
+    width: 135px;
+    height: 40px; }
+  #hint .play-store {
+    position: fixed;
+    bottom: 96px;
+    left: 50%;
+    margin-left: 7.5px;
+    cursor: pointer;
+    background: url(../images/play-store.svg) center center no-repeat;
     width: 135px;
     height: 40px; }
 
@@ -259,19 +268,30 @@ body {
             font-weight: bold; }
             #merchandise .container ul li.poster p.action * + * {
               margin-left: 15px; }
-  #merchandise .ios-app-store {
+  #merchandise .app-cta-container {
     position: relative;
+    width: 100%;
+    text-align: center;
+    bottom: 16px;
+    top: 16px; }
+  #merchandise .ios-app-store {
     display: inline-block;
     vertical-align: baseline;
     zoom: 1;
     *display: inline;
     *vertical-align: auto;
-    top: 16px;
-    bottom: 16px;
-    left: 50%;
-    margin-left: -67px;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
+    width: 135px;
+    height: 40px; }
+  #merchandise .play-store {
+    display: inline-block;
+    vertical-align: baseline;
+    zoom: 1;
+    *display: inline;
+    *vertical-align: auto;
+    cursor: pointer;
+    background: url(../images/play-store.svg) center center no-repeat;
     width: 135px;
     height: 40px; }
 
@@ -313,28 +333,55 @@ body {
 
 @-webkit-keyframes rotate {
   from {
-    -webkit-transform: rotate(0); }
-
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -o-transform: rotate(0);
+    transform: rotate(0); }
   to {
-    -webkit-transform: rotate(360deg); } }
-
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
 @-moz-keyframes rotate {
   from {
-    -moz-transform: rotate(0); }
-
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -o-transform: rotate(0);
+    transform: rotate(0); }
   to {
-    -moz-transform: rotate(360deg); } }
-
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
 @-o-keyframes rotate {
   from {
-    -o-transform: rotate(0); }
-
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -o-transform: rotate(0);
+    transform: rotate(0); }
   to {
-    -o-transform: rotate(360deg); } }
-
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
 @keyframes rotate {
   from {
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -o-transform: rotate(0);
     transform: rotate(0); }
-
   to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
     transform: rotate(360deg); } }
+
+/*# sourceMappingURL=main.css.map */
