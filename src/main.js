@@ -4,7 +4,7 @@ $(function() {
     landscape, $hint = $('#hint'), $credits = $('#credits'),
     mouse = new Two.Vector(), $embed = $('#embed'), embedding = false,
     interacting = false, $merchandise = $('#merchandise'),
-    merchandising = false;
+    merchandising = false, $window = $(window);
 
   /**
    * Append Sound Generation to Animations
@@ -20,7 +20,7 @@ $(function() {
 
   $('#total-assets').html(26 * letters.length);
 
-  var soundsBuffered = _.after(26 * letters.length, function() {
+  var soundsBuffered = _.after(26 * letters.length + 1, function() {
     if (url.loop && url.loop.match(/(clap|groove)/ig)) {
       new Sound('/assets/' + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
         this.play({
@@ -44,6 +44,15 @@ $(function() {
           });
         });
       }
+    });
+    var silent = new Sound('/assets/silent.mp3', function() {
+      var enableAudio = function () {
+        Sound.enabled = true;
+        silent.play();
+        $window.unbind('click', enableAudio);
+      };
+      $window.bind('click', enableAudio);
+      soundsBuffered();
     });
   });
 
@@ -99,7 +108,7 @@ $(function() {
       $merchandise.fadeOut();
     });
 
-    $window = $(window)
+    $window
       .bind('resize', function(e) {
 
         width = $window.width();
@@ -110,7 +119,7 @@ $(function() {
       })
       // Disable scrolling on mobile
       .bind('touchstart touchmove touchend touchcancel', function(e) {
-        if (!(merchandising || $(e.target).hasClass('ios-app-store'))) {
+        if (Sound.enabled && !(merchandising || $(e.target).hasClass('ios-app-store'))) {
           e.preventDefault();
           return false;
         }
