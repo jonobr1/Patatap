@@ -1,5 +1,35 @@
 $(function() {
 
+  (function() {
+
+    /**
+     * 68 - 99
+     */
+
+    var s = document.createElement('script');
+    var host = 'http://localhost:3000';
+    document.body.appendChild(s);
+    s.onload = onload;
+    s.src = host + '/socket.io/socket.io.js';
+
+    var arr = [77, 78, 66, 86, 67, 88, 90, 76, 75, 74, 72, 71, 70, 68, 83,
+      65, 80, 79, 73, 85, 89, 84, 82, 69, 87, 81];
+
+    function onload() {
+      var socket = io(host);
+      socket.on('key', function(data) {
+        var index = parseInt(data);
+        if (index <= 43) {
+          // Space is bottom row of keys
+          $(window).trigger('keydown', 32);
+          return;
+        }
+        $(window).trigger('keydown', arr[(index - 36) % arr.length]);
+      });
+    }
+
+  })();
+
   var container = $('#content'), $window, ui, buttons, width, height,
     landscape, $hint = $('#hint'), $credits = $('#credits'),
     mouse = new Two.Vector(), $embed = $('#embed'), embedding = false,
