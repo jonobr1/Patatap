@@ -12,7 +12,7 @@
       <div id="loader"></div>
     </div>
     <div class="scripts" style="display: none;">
-      <script src="//connect.soundcloud.com/sdk.js"></script>
+      <script src="//connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
       <script src="./third-party/has.js"></script>
       <script src="./third-party/url.js"></script>
       <script src="./third-party/jquery.js"></script>
@@ -29,7 +29,7 @@
         $(function() {
 
           var container = $('#content');
-          var player = new Player('1be2c599f1ef24a174ec0fc88a14052d')
+          var player = window.player = new Player('1be2c599f1ef24a174ec0fc88a14052d')
             .appendTo(container[0]);
 
           $(window).bind('keyup', function(e, data) {

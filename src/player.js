@@ -51,6 +51,8 @@
 
       var _this = this;
 
+      console.log(sound);
+
       if (this.sound) {
         this.sound.destruct();
       }
@@ -110,10 +112,14 @@
 
       this.sound.options.whileplaying = _.bind(function() {
 
-        position = this.sound.position;
+        if (!this.sound.controller) {
+          return;
+        }
+
+        position = this.sound.controller.getCurrentPosition();
         duration = this.sound.response.duration;
 
-        this.$.elapsed.html( format_time(this.sound.position) );
+        this.$.elapsed.html( format_time(position) );
         this.$.needle.css('left', 100 * position / duration + '%');
 
       }, this);
@@ -175,7 +181,7 @@
         SC.stream(request, {
           useHTML5Audio: true,
           preferFlash: false
-        }, function(sound){
+        }).then(function(sound){
           sound.response = resp;
           _this.stream(sound);
           if (_.isFunction(callback)) {
@@ -237,16 +243,25 @@
     play: function() {
       this.sound.play();
       this.showPauseButton();
+      this._loop = _.bind(function() {
+        if (_.isFunction(this._loop)) {
+          requestAnimationFrame(this._loop);
+        }
+        this.sound.options.whileplaying();
+      }, this);
+      this._loop();
       return this.trigger('play');
     },
 
     pause: function() {
+      this._loop = _.identity();
       this.sound.pause();
       this.showPlayButton();
       return this.trigger('pause');
     },
 
     stop: function() {
+      this._loop = _.identity();
       this.sound.stop();
       return this.trigger('stop');
     },
