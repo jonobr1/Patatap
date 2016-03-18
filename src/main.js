@@ -513,6 +513,9 @@ $(function() {
         animation.clear();
       }
       animation.start(undefined, silent);
+      if (window.ga) {
+        window.ga('send', 'event', 'animation', 'trigger', hash);
+      }
     }
 
   }
