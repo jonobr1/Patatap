@@ -12,6 +12,7 @@ $(function() {
 
   var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
   var path = window.location.href.match(/localhost/i) ? '/assets/' : '//cdn.patatap.com/assets/';
+  // var path = '/assets/';
   var filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
 
@@ -46,7 +47,7 @@ $(function() {
         });
       }
     });
-    var silent = new Sound(path + '/silent.mp3', function() {
+    var silent = new Sound(path + 'silent.mp3', function() {
       var enableAudio = function () {
         Sound.enabled = true;
         silent.play();
