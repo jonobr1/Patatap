@@ -11,7 +11,8 @@ $(function() {
    */
 
   var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-  var path = '/assets/', filetype = '.mp3';
+  var path = window.location.href.match(/localhost/i) ? '/assets/' : '//cdn.patatap.com/assets/';
+  var filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
 
   if (url.boolean('kiosk')) {
