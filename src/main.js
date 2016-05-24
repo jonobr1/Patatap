@@ -10,7 +10,9 @@ $(function() {
    * Append Sound Generation to Animations
    */
 
-  var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  var amount = _.keys(monome).length;
+  // var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  var letters = ['A'];
   var path = window.location.href.match(/localhost/i) ? '/assets/' : '//cdn.patatap.com/assets/';
   // var path = '/assets/';
   var filetype = '.mp3';
@@ -20,9 +22,9 @@ $(function() {
     path += 'kiosk/';
   }
 
-  $('#total-assets').html(26 * letters.length);
+  $('#total-assets').html(amount * letters.length);
 
-  var soundsBuffered = _.after(26 * letters.length + 1, function() {
+  var soundsBuffered = _.after(amount * letters.length + 1, function() {
     if (url.loop && url.loop.match(/(clap|groove)/ig)) {
       new Sound(path + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
         this.play({
