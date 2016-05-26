@@ -1,7 +1,7 @@
 
 var animationRatio = url.int('resolution', 100) / 100;
 var two = new Two({
-  type: (url.boolean('canvas') || (has.mobile && has.iOS) || (!has.mobile && has.Firefox)) ? Two.Types.canvas : Two.Types.svg
+  type: Two.Types.canvas,///(url.boolean('canvas') || (has.mobile && has.iOS) || (!has.mobile && has.Firefox)) ? Two.Types.canvas : Two.Types.svg
   // fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
@@ -124,7 +124,7 @@ window.animations = (function() {
     var playing = false;
 
     var start = function() {
-
+      playing = true;
     };
     var update = function() {
 
@@ -133,6 +133,7 @@ window.animations = (function() {
 
     };
 
+    start.onComplete = reset;
     reset();
 
     function reset() {
@@ -156,12 +157,122 @@ window.animations = (function() {
   })();
   **/
 
+  var spaghetti_os = (function() {
+
+    var names = ['achos!', 'adobe', 'andoni', 'atelier', 'bienal', 'carl', 'carla', 'cordova', 'can', 'daniel', 'danny', 'david', 'claudio', 'digitalkitchen', 'gavin', 'merlin', 'goldenwolf', 'hey', 'hiro', 'ideo', 'javier', 'johnny', 'joshua', 'kiran', 'lettersaremyfriends', 'linda', 'machineast', 'matt', 'morphika', 'monika', 'mrbingo', 'musketon', 'non-format', 'outrostudio', 'pablo', 'paula', 'randomstudio', 'sid', 'signalnoise', 'somerset', 'mills', 'themill', 'spin', 'tony', 'foundry', 'thesixandfive', 'timothy', 'unit9', 'ustwo', 'vasava', 'audi', 'stooorm', 'wix', 'lullatone', 'jonobr1'];
+
+    var amount = 0;
+    var gravity = new Two.Vector(0, 0.66);
+    var callback = _.identity;
+    var playing = false;
+
+    _.each(names, function(name) {
+      amount = Math.max(name.length, amount);
+    });
+
+    var letters = _.map(_.range(amount), function(i) {
+
+      var text = new Two.Text('A', center.x, center.y);
+      text.noStroke();
+
+      text.fill = colors.middleground;
+      text.weight = 700;
+      text.family = '"Proxima Nova", proxima-nova, arial, sans-serif';
+      text.alignment = 'center';
+      text.baseline = 'middle';
+      text.size = 150;
+      text.visible = false;
+
+      text.velocity = new Two.Vector();
+      text.velocity.x = 10 * (Math.random() - 0.5);
+      text.velocity.y = - (20 * Math.random() + 13);
+      text.velocity.r = Math.random() * Math.PI / 8;
+
+      return text;
+
+    });
+
+    two.add(letters);
+
+    var start = function() {
+
+      playing = true;
+      var name = names[Math.floor(Math.random() * names.length)];
+
+      for (var i = 0; i < name.length; i++) {
+
+        var text = letters[i];
+
+        text.value = name[i].toUpperCase();
+        text.velocity.y = - (20 * Math.random() + 13);
+        text.translation.x = Math.random() * width / 2 + width / 4;
+        text.translation.y = height * 1.25;
+        text.visible = true;
+
+      }
+
+    };
+    var update = function() {
+
+      _.each(letters, function(letter) {
+        letter.fill = colors.middleground;
+      });
+
+    };
+    var resize = function() {
+
+    };
+
+    two.bind('update', function() {
+
+      for (var i = 0; i < letters.length; i++) {
+
+        var text = letters[i];
+
+        if (text.visible) {
+
+          text.rotation += text.velocity.r;
+          text.translation.addSelf(text.velocity);
+          text.velocity.addSelf(gravity);
+
+          if (text.velocity.y > 0 && text.translation.y > height)  {
+            text.visible = false;
+          }
+
+        }
+
+      }
+    });
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '2,0',
+      filename: ''
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var toilet = (function() {
 
     var callback = _.identity;
     var playing = false;
 
-    var amount = 16;
+    var amount = 32;
     var group = two.makeGroup();
     var radius = 12;
     var last_duration = 0;
@@ -272,7 +383,7 @@ window.animations = (function() {
 
       path.destination = new Two.Vector();
       path.animate_in = new TWEEN.Tween(path)
-        .to({ scale: 3 + 1 }, Math.random() * duration * 0.5 + duration * 0.5)
+        .to({ scale: 3 * Math.random() + 1 }, Math.random() * duration * 0.5 + duration * 0.5)
         .easing(TWEEN.Easing.Elastic.Out)
         .onComplete(function() {
           path.animate_out.start();
@@ -316,22 +427,445 @@ window.animations = (function() {
 
   })();
 
+  var bubbles = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var cols = 8;
+    var rows = 8;
+    var elements = [];
+    var group = two.makeGroup();
+
+    var animate_out = function(circle) {
+      return function() {
+        circle.animate_out.start();
+      };
+    };
+    var complete = function() {
+      reset();
+      callback();
+    };
+
+    var i = 0;
+    for (var c = 0; c < cols; c++) {
+      for (var r = 0; r < rows; r++) {
+
+        var xpct = (c + 0.5) / cols;
+        var ypct = (r + 0.5) / rows;
+
+        var x = xpct * width - width / 2;
+        var y = ypct * height - height / 2;
+
+        var circle = two.makeCircle(x, y, 10);
+        circle.fill = colors.accent;
+        circle.noStroke();
+        circle.animate_in = new TWEEN.Tween(circle)
+          .to({ scale: 1 }, duration * 0.35)
+          .delay(c * 100)
+          .easing(TWEEN.Easing.Circular.Out)
+          .onComplete(animate_out(circle));
+
+        circle.animate_out = new TWEEN.Tween(circle)
+          .to({ scale: 0 }, duration * 0.35)
+          .easing(TWEEN.Easing.Circular.In);
+        circle.scale = 0;
+
+        elements.push(circle);
+        group.add(circle);
+
+        if (i >= cols * rows - 1) {
+          circle.animate_out.onComplete(complete);
+        }
+
+        i++;
+
+      }
+    }
+
+    var start = function() {
+      playing = true;
+      group.visible = true;
+      group.rotation = Math.random() > 0.5 ? 0 : Math.PI;
+      _.each(elements, function(circle) {
+
+        circle.animate_out.stop();
+        circle.animate_in.stop();
+        circle.scale = 0;
+
+        circle.animate_in.start();
+
+      });
+    };
+    var update = function() {
+      _.each(elements, function(e) {
+        e.fill.colors = colors.accent;
+      });
+    };
+    var resize = function() {
+
+      group.translation.copy(center);
+      _.each(elements, function(circle, i) {
+
+        var c = i % cols;
+        var r = Math.floor(i / cols);
+
+        var xpct = (c + 0.5) / cols;
+        var ypct = (r + 0.5) / rows;
+
+        var x = xpct * width - width / 2;
+        var y = ypct * height - height / 2;
+
+        circle.translation.set(x, y);
+
+      });
+
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+      group.visible = false;
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '0,1',
+      filename: ''
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var strike = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var line = two.makeLine(-0.5, 0.5, 0.5, -0.5);
+    line.noFill().stroke = colors.black;
+    // line.opacity = 0;
+    line.cap = 'round';
+
+    var animate_in = new TWEEN.Tween(line)
+      .easing(TWEEN.Easing.Circular.Out)
+      .onComplete(function() {
+        animate_out.start();
+      });
+
+    var animate_out = new TWEEN.Tween(line)
+      .easing(TWEEN.Easing.Circular.In)
+      .onComplete(function() {
+        reset();
+        callback();
+      })
+
+    var start = function() {
+      playing = true;
+      // line.opacity = 0;
+      line.visible = true;
+      var rotation = Math.random() * Math.PI * 10 + Math.PI * 2;
+      if (Math.random() > 0.5) {
+        rotation *= -1;
+      }
+      animate_in.to({ rotation: rotation }, duration * 0.5)
+      animate_out.to({ rotation: rotation * 2 }, duration * 0.5)
+      animate_in.start();
+    };
+    var update = function() {
+      line.stroke = colors.black;
+    };
+    var resize = function() {
+      line.translation.copy(center);
+      line.scale = Math.min(width, height) * 0.6;
+      line.linewidth = 12 / line.scale;
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+      line.visible = false;
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '1,1',
+      filename: ''
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var zigzag = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+
+    var amount = 120, w = width / 16, phi = 6, h = height * 0.66;
+    var offset = Math.PI * 0.5;
+
+    var points = _.map(_.range(amount), function(i) {
+      var pct = i / amount;
+      var theta = TWO_PI * phi * pct + offset;
+      var x = w * Math.sin(theta);
+      var y = map(pct, 0, 1, - h / 2, h / 2);
+      return new Two.Anchor(x, y);
+    });
+
+    var zigzag = two.makePath(points, true);
+    zigzag.stroke = colors.black;
+    zigzag.linewidth = min_dimension / 30;
+    zigzag.noFill();
+    zigzag.join = 'miter';
+    zigzag.miter = 4;
+    zigzag.cap = 'butt';
+
+    var start = function(onComplete, silent) {
+      zigzag.visible = true;
+      _in.start();
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      zigzag.stroke = colors.black;
+    };
+    var resize = function() {
+      w = width / 16;
+      h = height * 0.66;
+    };
+
+    var _in = new TWEEN.Tween(zigzag)
+      .to({ ending: 1.0 }, duration * 0.25)
+      .easing(Easing.Sinusoidal.Out)
+      .onStart(function() {
+        playing = true;
+      })
+      .onComplete(function() {
+        _out.start();
+      });
+
+    var _out = new TWEEN.Tween(zigzag)
+      .to({ beginning: 1.0 }, duration * 0.25)
+      .easing(Easing.Sinusoidal.Out)
+      .onComplete(function() {
+        start.onComplete();
+        callback();
+      });
+
+    var i, v, pct, theta, x, y, index;
+    function reset() {
+
+      if (Math.random() > 0.5) {
+        zigzag.translation.set(width * 0.85, center.y);
+      } else {
+        zigzag.translation.set(width * 0.15, center.y);
+      }
+
+      zigzag.visible = false;
+      index = Math.random() * 4;
+      if (index > 3) {
+        phi = 5;
+      } else if (index > 2) {
+        phi = 4;
+      } else if (index > 1) {
+        phi = 2
+      } else {
+        phi = 1;
+      }
+
+      offset = Math.PI / 2;
+      zigzag.rotation = Math.random() > 0.5 ? Math.PI : 0;
+      x = 0;
+      zigzag.beginning = zigzag.ending = 0;
+
+      for (i = 0; i < amount; i++) {
+        v = points[i];
+        pct = i / amount;
+        theta = Math.abs((((2 * (pct * TWO_PI * phi + offset) / Math.PI) - 1) % 4) - 2) - 1;
+        x = theta * w / 2;
+        y = map(pct, 0, 1, - h / 2, h / 2);
+        v.set(x, y);
+      }
+      playing = false;
+
+      _in.stop();
+      _out.stop();
+
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      update: update,
+      clear: reset,
+      resize: resize,
+      playing: function() { return playing; },
+      hash: '1,8',
+      filename: 'zig-zag'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var moon = (function() {
+
+    var playing = false;
+    var callback = _.identity;
+    var amount = 42, half = amount / 2;
+    var radius = min_dimension * 0.4;
+
+    var destinations = [];
+    var points = [];
+    _.each(_.range(amount), function(i) {
+      var pct = i / (amount - 1);
+      var theta = pct * TWO_PI;
+      var x = radius * Math.cos(theta);
+      var y = radius * Math.sin(theta);
+      destinations.push({ x: x, y: y });
+      points.push(new Two.Anchor(x, y));
+    });
+
+    var moon = two.makePath(points);
+    moon.translation.set(center.x, center.y);
+    moon.fill = colors.foreground;
+    moon.noStroke();
+
+    var options = { ending: 0, beginning: 0 };
+
+    var start = function(onComplete, silent) {
+      moon.visible = true;
+      _in.start();
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+      if (_.isFunction(onComplete)) {
+        callback = onComplete;
+      }
+    };
+
+    start.onComplete = reset;
+
+    var update = function() {
+      moon.fill = colors.foreground;
+    };
+    var resize = function() {
+      radius = min_dimension * 0.4;
+      moon.translation.set(center.x, center.y);
+    };
+
+    var i, t, v, d, x, y, pct, theta;
+    var _in = new TWEEN.Tween(options)
+      .to({ ending: 1.0 }, duration / 2)
+      .easing(Easing.Sinusoidal.Out)
+      .onUpdate(function(t) {
+        for (i = half; i < amount; i++) {
+          points[i].y = lerp(points[i].y, destinations[i].y, t);
+        }
+      })
+      .onStart(function() {
+        playing = true;
+      })
+      .onComplete(function() {
+        _out.start();
+      });
+
+    var _out = new TWEEN.Tween(options)
+      .to({ beginning: 1.0 }, duration / 2)
+      .easing(Easing.Sinusoidal.Out)
+      .onUpdate(function(t) {
+        for (i = 0; i < half; i++) {
+          points[i].y = lerp(points[i].y, negate(destinations[i].y), t);
+        }
+      })
+      .onComplete(function() {
+        start.onComplete();
+        callback();
+      });
+
+    function reset() {
+      moon.visible = false;
+      moon.rotation = Math.random() * TWO_PI;
+      options.beginning = options.ending = 0;
+      for (i = 0; i < amount; i++) {
+        v = points[i];
+        pct = i / (amount - 1);
+        theta = pct * TWO_PI;
+        x = radius * Math.cos(theta);
+        y = radius * Math.sin(theta);
+        destinations[i].x = x;
+        destinations[i].y = y;
+        v.set(x, Math.abs(y));
+      }
+      playing = false;
+      _in.stop();
+      _out.stop();
+    }
+
+    reset();
+
+    var exports = {
+      start: start,
+      update: update,
+      clear: reset,
+      resize: resize,
+      playing: function() { return playing; },
+      hash: '0,2',
+      filename: 'moon'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var offf = (function() {
 
     var callback = _.identity;
     var playing = false;
+    var group = two.makeGroup();
+    group.translation.copy(center);
 
     var amount = 4;
     var radius = Math.min(width, height) / 8;
     var drift = 0.85;
     var extension = 1.33;
-    var o = two.makeCircle(center.x, center.y, radius);
+    var o = two.makeCircle(0, 0, radius);
     o.linewidth = radius / 2;
     o.noFill();
     o.stroke = colors.white;
 
     fs = two.makeGroup();
-    fs.translation.copy(center);
+    group.add(fs, o);
 
     _.each(_.range(amount), function(i) {
 
@@ -362,7 +896,6 @@ window.animations = (function() {
         .delay(i * duration * 0.1)
         .onUpdate(function(t) {
           f.opacity = t;
-
         })
         .easing(Easing.Exponential.Out)
         .onComplete(function() {
@@ -388,8 +921,10 @@ window.animations = (function() {
     });
 
     var start = function(onComplete, silent) {
+
       playing = true;
       o.visible = true;
+
       o.translation.x = dest_in.x - radius * drift;
       o.translation.y = dest_in.y;
       o.opacity = 0;
@@ -430,9 +965,11 @@ window.animations = (function() {
     var resize = function() {
 
       radius = Math.min(width, height) / 8;
+      group.translation.copy(center);
+      group.translation.x += radius / 4;
 
       o.linewidth = radius / 2;
-      fs.translation.set(center.x + radius / 2, center.y);
+      fs.translation.set(radius / 2, 0);
 
       _.each(fs.children, function(f, i) {
 
@@ -462,15 +999,15 @@ window.animations = (function() {
 
       });
 
-      dest_in.x = center.x - radius * 1.5;
-      dest_in.y = center.y;
+      dest_in.x = - radius * 1.5;
+      dest_in.y = 0;
       dest_out.x = dest_in.x + radius * drift;
-      dest_out.y = center.y;
+      dest_out.y = 0;
 
     };
 
-    var dest_in = { x: center.x, y: center.y };
-    var dest_out = { x: center.x, y: center.y };
+    var dest_in = { x: 0, y: 0 };
+    var dest_out = { x: 0, y: 0 };
 
     var animate_in = new TWEEN.Tween(o.translation)
       .to(dest_in, duration * 0.5)
