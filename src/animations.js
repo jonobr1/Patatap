@@ -146,7 +146,7 @@ window.animations = (function() {
       clear: reset,
       playing: function() { return playing; },
       hash: '1,0',
-      filename: 'wipe'
+      filename: ''
     };
 
     monome[exports.hash] = exports;
@@ -155,6 +155,166 @@ window.animations = (function() {
 
   })();
   **/
+
+  var toilet = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var amount = 16;
+    var group = two.makeGroup();
+    var radius = 12;
+    var last_duration = 0;
+    var ao;
+
+    var particles = _.map(_.range(amount), function(i) {
+
+      var o = makeObject(radius);
+
+      if (o.getDuration() > last_duration) {
+        if (ao) {
+          ao.onComplete(_.identity);
+        }
+        last_duration = o.getDuration();
+        ao = o.animate_out;
+        o.animate_out.onComplete(function() {
+          start.onComplete();
+          callback();
+        });
+      }
+
+      return o;
+
+    });
+
+    group.add(particles);
+
+    var start = function() {
+      playing = true;
+      group.visible = true;
+      _.each(particles, function(p) {
+
+        p.scale = 1;
+        p.theta = Math.random() * TWO_PI;
+        p.revolutions = Math.random() * TWO_PI * 5 + TWO_PI;
+        p.amplitude = Math.random() * p.revolutions / (TWO_PI * 6)
+          * Math.max(width, height) * 0.66;
+
+        p.rotation = - p.revolutions;
+
+        p.translation.set(
+          p.amplitude * Math.cos(p.theta),
+          p.amplitude * Math.sin(p.theta)
+        );
+
+        p.animate_out.stop();
+        p.animate_in.stop();
+
+        p.animate_in.start();
+
+      });
+    };
+    var update = function() {
+      _.each(particles, function(p) {
+        if (p.fillStyle) {
+          p.fill = colors[p.fillStyle];
+        }
+        if (p.strokeStyle) {
+          p.stroke = colors[p.strokeStyle];
+        }
+      });
+    };
+    var resize = function() {
+      group.translation.copy(center);
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+      group.visible = false;
+    }
+
+    function makeObject(r) {
+
+      var path;
+      var color = PROPERTIES[Math.floor((PROPERTIES.length - 1) * Math.random()) + 1];
+
+      if (Math.random() > 0.5) {
+
+        // Plus Sign
+        path = new Two.Path([
+          new Two.Anchor(-r, 0, 0, 0, 0, 0, Two.Commands.move),
+          new Two.Anchor(r, 0, 0, 0, 0, 0, Two.Commands.line),
+          new Two.Anchor(0, -r, 0, 0, 0, 0, Two.Commands.move),
+          new Two.Anchor(0, r, 0, 0, 0, 0, Two.Commands.line)
+        ], false, false, true);
+        path.strokeStyle = color
+        path.stroke = colors[path.strokeStyle];
+        path.noFill();
+        path.linewidth = radius / 2;
+
+      } else {
+
+        // Star Symbol
+        path = new Two.Star(0, 0, r / 2, r, Math.floor(5 * Math.random()) + 4);
+        path.fillStyle = color;
+        path.fill = colors[path.fillStyle];
+        path.noStroke();
+
+      }
+
+      path.theta = Math.random() * TWO_PI;
+      path.revolutions = Math.random() * TWO_PI * 9 + TWO_PI;
+      path.amplitude = Math.random() * path.revolutions / (TWO_PI * 10)
+        * Math.min(width, height) / 2;
+
+      path.destination = new Two.Vector();
+      path.animate_in = new TWEEN.Tween(path)
+        .to({ scale: 3 + 1 }, Math.random() * duration * 0.5 + duration * 0.5)
+        .easing(TWEEN.Easing.Elastic.Out)
+        .onComplete(function() {
+          path.animate_out.start();
+        });
+
+      path.animate_out = new TWEEN.Tween(path)
+        .to({ scale: 0 }, duration * Math.random() + duration * 0.33)
+        .easing(TWEEN.Easing.Sinusoidal.In)
+        .onUpdate(function(t) {
+
+          var a = path.amplitude * (1 - t);
+          var x = a * Math.cos(path.revolutions * t + path.theta);
+          var y = a * Math.sin(path.revolutions * t + path.theta);
+
+          path.translation.set(x, y);
+          path.rotation = - (1 - t) * path.revolutions;
+
+        });
+
+      path.getDuration = function() {
+        return this.animate_in.getDuration() + this.animate_out.getDuration();
+      };
+
+      return path;
+
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '1,0',
+      filename: ''
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
 
   var offf = (function() {
 
@@ -238,9 +398,19 @@ window.animations = (function() {
         f.translation.copy(f.dest_in);
         f.translation.x += radius * drift;
         f.visible = true;
+
+        f.animate_in.stop();
+        f.animate_out.stop();
+
         f.animate_in.start();
+
       });
+
+      animate_out.stop();
+      animate_in.stop();
+
       animate_in.start();
+
       if (!silent && exports.sound) {
         exports.sound.stop().play();
       }
@@ -338,7 +508,7 @@ window.animations = (function() {
       clear: reset,
       playing: function() { return playing; },
       hash: '0,0',
-      filename: 'wipe'
+      filename: ''
     };
 
     monome[exports.hash] = exports;

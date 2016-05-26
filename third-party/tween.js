@@ -110,6 +110,12 @@ TWEEN.Tween = function ( object ) {
 
 	};
 
+	this.getDuration = function() {
+
+		return _duration || 0;
+
+	};
+
 	this.start = function ( time ) {
 
 		TWEEN.add( this );
@@ -687,5 +693,3 @@ TWEEN.Interpolation = {
 	}
 
 };
-
-

@@ -47,6 +47,8 @@ $(function() {
             soundsBuffered();
           });
         });
+      } else {
+        soundsBuffered();
       }
     });
     var silent = new Sound(path + 'silent.mp3', function() {
