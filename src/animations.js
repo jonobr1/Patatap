@@ -123,8 +123,11 @@ window.animations = (function() {
     var callback = _.identity;
     var playing = false;
 
-    var start = function() {
+    var start = function(silent) {
       playing = true;
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
     };
     var update = function() {
 
@@ -348,7 +351,7 @@ window.animations = (function() {
       resize: resize,
       clear: reset,
       playing: function() { return playing; },
-      hash: '2,0',
+      hash: '2,1',
       filename: ''
     };
 
@@ -391,7 +394,7 @@ window.animations = (function() {
 
     group.add(particles);
 
-    var start = function() {
+    var start = function(silent) {
       playing = true;
       group.visible = true;
       _.each(particles, function(p) {
@@ -574,7 +577,7 @@ window.animations = (function() {
       }
     }
 
-    var start = function() {
+    var start = function(silent) {
       playing = true;
       group.visible = true;
       group.rotation = Math.random() > 0.5 ? 0 : Math.PI;
@@ -637,6 +640,97 @@ window.animations = (function() {
 
   })();
 
+  var zag = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+    var w = width * 0.5;
+    var group = two.makeGroup();
+    group.translation.copy(center);
+
+    var amount = 5;
+    var triangles = _.map(_.range(amount), function(i) {
+
+      var pct = i / (amount - 1);
+      var x = pct * w - w / 2;
+      var triangle = two.makePolygon(x, 0, 50, 3);
+      triangle.subdivide();
+      triangle.noFill();
+      triangle.rotation = Math.PI / 2;
+      triangle.linewidth = 3;
+
+      triangle.ending = 0;
+      triangle.beginning = 0;
+
+      triangle.animate_in = new TWEEN.Tween(triangle)
+        .delay(0.35 * i * duration / amount)
+        .to({ ending: 1, scale: Math.random() + 1 }, duration * 0.5)
+        .easing(TWEEN.Easing.Circular.Out)
+        .onComplete(function() {
+          triangle.animate_out.start();
+        });
+
+      triangle.animate_out = new TWEEN.Tween(triangle)
+        .to({ beginning: 1, scale: 0 }, duration * 0.5)
+        .easing(TWEEN.Easing.Circular.In)
+        .onComplete(function() {
+          callback();
+          reset();
+        });
+
+      group.add(triangle);
+      return triangle;
+
+    });
+
+    var start = function(silent) {
+      playing = true;
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+      _.each(triangles, function(triangle, i) {
+
+        triangle.stroke = colors[PROPERTIES[Math.floor(Math.random() * PROPERTIES.length)]];
+        triangle.scale = 0;
+        triangle._ending = 0;
+        triangle._beginning = 0;
+        triangle.animate_in
+          .to({ ending: 1, scale: 2 * Math.random() + 1 }, Math.random() * duration * 0.35 + duration * 0.25);
+        triangle._flagVertiecs = true;
+        triangle.animate_in.start();
+
+      });
+    };
+    var update = function() {
+
+    };
+    var resize = function() {
+      group.translation.copy(center);
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '2,0',
+      filename: 'F'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var strike = (function() {
 
     var callback = _.identity;
@@ -660,7 +754,7 @@ window.animations = (function() {
         callback();
       })
 
-    var start = function() {
+    var start = function(silent) {
       playing = true;
       // line.opacity = 0;
       line.visible = true;
