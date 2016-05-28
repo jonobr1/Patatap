@@ -32,18 +32,13 @@
     -webkit-transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     -moz-transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     transition: top 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-    background-color: #444444;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #444444), color-stop(100%, #555555));
-    background-image: -webkit-linear-gradient(bottom, #444444, #555555);
-    background-image: linear-gradient(to top,#444444, #555555); }
+    background-color: #444;
+    background-image: -webkit-linear-gradient(bottom, #444, #555);
+    background-image: linear-gradient(to top,#444, #555); }
   .sc-player:hover ul, .sc-player.enabled ul {
     top: 0; }
   .sc-player ul > * {
     display: inline-block;
-    vertical-align: baseline;
-    zoom: 1;
-    *display: inline;
-    *vertical-align: auto;
     overflow: hidden;
     height: 30px;
     text-align: center; }
@@ -99,10 +94,6 @@
       transition: margin-top 1s cubic-bezier(0.075, 0.82, 0.165, 1); }
       .sc-player li.track-info .track > * {
         display: inline-block;
-        vertical-align: baseline;
-        zoom: 1;
-        *display: inline;
-        *vertical-align: auto;
         vertical-align: middle; }
       .sc-player li.track-info .track div.bar {
         position: relative;
@@ -122,7 +113,7 @@
           position: absolute;
           left: 1%;
           right: 1%;
-          background: #7fffe3;
+          background: #80ffe4;
           opacity: 0.33;
           margin-top: 4.5px;
           -webkit-transition: width 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -187,3 +178,5 @@
     background: transparent url(../images/fullscreen.svg) center center no-repeat; }
   .sc-player .fullscreen.partial {
     background: transparent url(../images/partialscreen.svg) center center no-repeat; }
+
+/*# sourceMappingURL=player.css.map */

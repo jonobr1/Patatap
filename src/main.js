@@ -41,7 +41,6 @@ $(function() {
     _.each(animations.list, function(a, i) {
       if (a.filename) {
         a.sounds = _.map(letters, function(type) {
-          console.log(path + type + '/' + a.filename + filetype);
           return new Sound(path + type + '/' + a.filename + filetype, function() {
             asset_count++;
             $loaded.html(asset_count);

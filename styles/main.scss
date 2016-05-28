@@ -87,6 +87,10 @@ body {
   }
 }
 
+body {
+  background: rgb(180, 180, 180);
+}
+
 #content {
 
   position: absolute;
@@ -94,14 +98,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgb(181, 181, 181);
 
   @include transition(top 0.35s $ease-out-circ);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-
-  #stage {
-    background: rgb(181, 181, 181);
-  }
 
 }
 
@@ -318,7 +317,7 @@ body {
             background-image: url(https://m1.behance.net/rendition/modules/102811007/disp/ba88168e188e18adb93119aec9a708c7.jpg);
           }
           #two-polygon {
-           background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg); 
+           background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg);
           }
 
           p {

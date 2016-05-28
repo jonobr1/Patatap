@@ -1,7 +1,7 @@
 
 var animationRatio = url.int('resolution', 100) / 100;
 var two = new Two({
-  type: Two.Types.canvas,///(url.boolean('canvas') || (has.mobile && has.iOS) || (!has.mobile && has.Firefox)) ? Two.Types.canvas : Two.Types.svg
+  type: (url.boolean('canvas') || (has.mobile && has.iOS) || (!has.mobile && has.Firefox)) ? Two.Types.canvas : Two.Types.svg
   // fullscreen: true
 }).appendTo(document.querySelector('#content'));
 
@@ -30,6 +30,9 @@ window.animations = (function() {
   var flashAmount = 3;
 
   two.renderer.setSize(width, height, animationRatio);
+  _.extend(two.renderer.domElement.style, {
+    zIndex: 1000
+  });
 
   var Easing = TWEEN.Easing;
   var PROPERTIES = ['background', 'middleground', 'foreground', 'highlight', 'accent', 'white', 'black'];
@@ -115,7 +118,7 @@ window.animations = (function() {
     return PROPERTIES[Math.floor(Math.random() * PROPERTIES.length)];
   };
 
-  domElement.style.background = colors.background;
+  document.body.background = colors.background;
 
   /**
   var template = (function() {
@@ -251,6 +254,243 @@ window.animations = (function() {
 
   })();
 
+  var tyson = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var video = document.createElement('video');
+    video.src = './images/L_Cloud_patatat.mov';
+    video.addEventListener('canplaythrough', function() {
+      video.ready = true;
+      resize();
+    }, false);
+    video.addEventListener('ended', function() {
+      reset();
+      callback();
+    }, false);
+    video.load();
+
+    _.extend(video.style, {
+      position: 'fixed',
+      top: '50%',
+      left: '50%'
+    });
+
+    document.body.insertBefore(video, container);
+
+    var start = function(silent) {
+      if (!video.ready) {
+        return;
+      }
+      video.style.display = 'block';
+      playing = true;
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+      video.play();
+      video.currentTime = 0;
+      playing = true;
+    };
+    var update = function() {
+
+    };
+    var resize = function() {
+
+      if (!video.ready) {
+        return;
+      }
+
+      var aspect = video.videoHeight / video.videoWidth;
+      video.style.width = width + 'px';
+      video.style.height = width * aspect + 'px';
+      video.style.marginLeft = - width / 2 + 'px';
+      video.style.marginTop = - width * aspect / 2 + 'px';
+
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+      video.style.display = 'none';
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '0,5',
+      filename: 'L'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var ricci = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var video = document.createElement('video');
+    video.src = './images/bug.mp4';
+    video.addEventListener('canplaythrough', function() {
+      video.ready = true;
+      resize();
+    }, false);
+    video.addEventListener('ended', function() {
+      reset();
+      callback();
+    }, false);
+    video.load();
+
+    _.extend(video.style, {
+      position: 'fixed',
+      top: '50%',
+      left: '50%'
+    });
+
+    document.body.insertBefore(video, container);
+
+    var start = function(silent) {
+      if (!video.ready) {
+        return;
+      }
+      video.style.display = 'block';
+      playing = true;
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+      video.play();
+      video.currentTime = 0;
+      playing = true;
+    };
+    var update = function() {
+
+    };
+    var resize = function() {
+
+      if (!video.ready) {
+        return;
+      }
+
+      var aspect = video.videoHeight / video.videoWidth;
+      video.style.width = width + 'px';
+      video.style.height = width * aspect + 'px';
+      video.style.marginLeft = - width / 2 + 'px';
+      video.style.marginTop = - width * aspect / 2 + 'px';
+
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+      video.style.display = 'none';
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '1,5',
+      filename: 'N'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var joe = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var video = document.createElement('video');
+    video.src = './images/offf_pop.mov';
+    video.addEventListener('canplaythrough', function() {
+      video.ready = true;
+      resize();
+    }, false);
+    video.addEventListener('ended', function() {
+      reset();
+      callback();
+    }, false);
+    video.load();
+
+    _.extend(video.style, {
+      position: 'fixed',
+      top: '50%',
+      left: '50%'
+    });
+
+    document.body.insertBefore(video, container);
+
+    var start = function(silent) {
+      if (!video.ready) {
+        return;
+      }
+      video.style.display = 'block';
+      playing = true;
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+      video.play();
+      video.currentTime = 0;
+      playing = true;
+    };
+    var update = function() {
+
+    };
+    var resize = function() {
+
+      if (!video.ready) {
+        return;
+      }
+
+      var aspect = video.videoHeight / video.videoWidth;
+      video.style.width = width + 'px';
+      video.style.height = width * aspect + 'px';
+      video.style.marginLeft = - width / 2 + 'px';
+      video.style.marginTop = - width * aspect / 2 + 'px';
+
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+      video.style.display = 'none';
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '2,5',
+      filename: 'corona'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var spaghetti_os = (function() {
 
     var names = ['achos!', 'adobe', 'andoni', 'atelier', 'bienal', 'carl', 'carla', 'cordova', 'can', 'daniel', 'danny', 'david', 'claudio', 'digitalkitchen', 'gavin', 'merlin', 'goldenwolf', 'hey', 'hiro', 'ideo', 'javier', 'johnny', 'joshua', 'kiran', 'lettersaremyfriends', 'linda', 'machineast', 'matt', 'morphika', 'monika', 'mrbingo', 'musketon', 'non-format', 'outrostudio', 'pablo', 'paula', 'randomstudio', 'sid', 'signalnoise', 'somerset', 'mills', 'themill', 'spin', 'tony', 'foundry', 'thesixandfive', 'timothy', 'unit9', 'ustwo', 'vasava', 'audi', 'stooorm', 'wix', 'lullatone', 'jonobr1'];
@@ -288,7 +528,7 @@ window.animations = (function() {
 
     two.add(letters);
 
-    var start = function() {
+    var start = function(silent) {
 
       playing = true;
       var name = names[Math.floor(Math.random() * names.length)];
@@ -303,6 +543,10 @@ window.animations = (function() {
         text.translation.y = height * 1.25;
         text.visible = true;
 
+      }
+
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
       }
 
     };
@@ -352,7 +596,7 @@ window.animations = (function() {
       clear: reset,
       playing: function() { return playing; },
       hash: '2,1',
-      filename: ''
+      filename: 'artist-names'
     };
 
     monome[exports.hash] = exports;
@@ -395,8 +639,14 @@ window.animations = (function() {
     group.add(particles);
 
     var start = function(silent) {
+
       playing = true;
       group.visible = true;
+
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+
       _.each(particles, function(p) {
 
         p.scale = 1;
@@ -512,7 +762,7 @@ window.animations = (function() {
       clear: reset,
       playing: function() { return playing; },
       hash: '1,0',
-      filename: ''
+      filename: 'toilet'
     };
 
     monome[exports.hash] = exports;
@@ -578,9 +828,12 @@ window.animations = (function() {
     }
 
     var start = function(silent) {
+
       playing = true;
+
       group.visible = true;
       group.rotation = Math.random() > 0.5 ? 0 : Math.PI;
+
       _.each(elements, function(circle) {
 
         circle.animate_out.stop();
@@ -590,6 +843,11 @@ window.animations = (function() {
         circle.animate_in.start();
 
       });
+
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+
     };
     var update = function() {
       _.each(elements, function(e) {
@@ -631,7 +889,194 @@ window.animations = (function() {
       clear: reset,
       playing: function() { return playing; },
       hash: '0,1',
-      filename: ''
+      filename: 'lewitt'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var powerup = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+    var amplitude = 1 / 5;
+
+    var group;
+    two.load('./images/powerupstar.svg', function(svg) {
+
+      group = svg;
+
+      group.center();
+      group.translation.copy(center);
+      group.scale = 5;
+
+      _.each(group.children, function(el) {
+
+        el.origin = new Two.Vector().copy(el.translation).toObject();
+        el.destination = new Two.Vector(
+          Math.random() * two.width * amplitude - two.width * amplitude / 2,
+          Math.random() * two.width * amplitude - two.width * amplitude / 2
+        ).toObject();
+        el.translation.set(
+          Math.random() * two.width * amplitude - two.width * amplitude / 2,
+          Math.random() * two.width * amplitude - two.width * amplitude / 2
+        );
+
+        el.animate_in = new TWEEN.Tween(el.translation)
+          .to(el.origin, duration * 0.5)
+          .easing(TWEEN.Easing.Circular.Out)
+          .onUpdate(function(t) {
+            el.opacity = t;
+          })
+          .onComplete(function() {
+            el.animate_out.start();
+          });
+        el.animate_out = new TWEEN.Tween(el.translation)
+          .to(el.destination, duration * 0.5)
+          .delay(duration * 0.35)
+          .onUpdate(function(t) {
+            el.opacity = 1 - t;
+          })
+          .easing(TWEEN.Easing.Circular.In);
+
+        el.opacity = 0;
+
+      });
+
+
+    });
+
+    var start = function(silent) {
+      playing = true;
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+
+      if (!group) {
+        return;
+      }
+
+      var color = PROPERTIES[Math.floor(PROPERTIES.length * Math.random())];
+      group.fill = colors[color];
+
+      _.each(group.children, function(el) {
+        el.translation.set(
+          Math.random() * two.width * amplitude - two.width * amplitude / 2,
+          Math.random() * two.width * amplitude - two.width * amplitude / 2
+        );
+        el.animate_in.start();
+      });
+
+    };
+    var update = function() {
+
+    };
+    var resize = function() {
+
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '0,9',
+      filename: 'bubbles'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
+  var ring = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+    var radius = Math.max(center.x, center.y) / 3;
+
+    var fillStyle = { r: 255, g: 188, b: 188, a: 0 };
+    var strokeStyle = { r: 255, g: 0, b: 0, a: 0 };
+
+    fillStyle.toString = function() {
+      return ['rgba(', Math.floor(fillStyle.r), ',', Math.floor(fillStyle.g), ',',
+        Math.floor(fillStyle.b), ',', fillStyle.a, ')'].join('');
+    };
+    strokeStyle.toString = function() {
+      return ['rgba(', Math.floor(strokeStyle.r), ',', Math.floor(strokeStyle.g), ',',
+        Math.floor(strokeStyle.b), ',', strokeStyle.a, ')'].join('');
+    };
+
+    var circle = two.makeCircle(center.x, center.y, radius);
+    circle.opacity = 0;
+
+    var animate_in = new TWEEN.Tween(fillStyle)
+      .to({ a: 1 }, duration * 0.5)
+      .onUpdate(function(t) {
+        circle.scale = t;
+        strokeStyle.a = t;
+        circle.linewidth = t * radius / 5;
+        circle.stroke = strokeStyle.toString();
+        circle.fill = fillStyle.toString();
+      })
+      .easing(TWEEN.Easing.Circular.Out)
+      .onComplete(function() {
+        animate_out.start();
+      });
+    var animate_out = new TWEEN.Tween(circle.translation)
+      .to({ y: circle.translation.y + 150 }, duration * 0.5)
+      .easing(TWEEN.Easing.Circular.InOut)
+      .onUpdate(function(t) {
+        circle.opacity = 1 - t;
+      });
+
+    var start = function(silent) {
+      playing = true;
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+
+      circle.opacity = 1;
+      circle.translation.copy(center);
+      animate_out.to({ y: circle.translation.y + 250 }, duration * 0.5)
+      fillStyle.a = 0;
+      animate_in.start();
+
+    };
+    var update = function() {
+
+    };
+    var resize = function() {
+
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '0,3',
+      filename: 'ring'
     };
 
     monome[exports.hash] = exports;
@@ -765,6 +1210,9 @@ window.animations = (function() {
       animate_in.to({ rotation: rotation }, duration * 0.5)
       animate_out.to({ rotation: rotation * 2 }, duration * 0.5)
       animate_in.start();
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
     };
     var update = function() {
       line.stroke = colors.black;
@@ -790,7 +1238,7 @@ window.animations = (function() {
       clear: reset,
       playing: function() { return playing; },
       hash: '1,1',
-      filename: ''
+      filename: 'A'
     };
 
     monome[exports.hash] = exports;
@@ -1230,7 +1678,7 @@ window.animations = (function() {
       clear: reset,
       playing: function() { return playing; },
       hash: '0,0',
-      filename: ''
+      filename: 'offf'
     };
 
     monome[exports.hash] = exports;
@@ -1387,7 +1835,7 @@ window.animations = (function() {
       }
 
       _.each(exports.list, iterateUpdate);
-      domElement.style.background = colors.background;
+      // domElement.style.background = colors.background;
 
       if (amount >= PALETTE.length) {
 
