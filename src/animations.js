@@ -157,6 +157,97 @@ window.animations = (function() {
   })();
   **/
 
+  var beach = (function() {
+
+    var callback = _.identity;
+    var playing = false;
+
+    var radius = Math.max(center.x, center.y);
+    var amount = 6;
+    var group = two.makeGroup();
+    group.translation.copy(center);
+    group.visible = false;
+
+    var triangles = _.map(_.range(amount), function(i) {
+
+      var triangle = two.makePolygon(0, 0, radius, 3);
+      _.each(triangle.vertices, function(v) {
+        v.y += radius;
+      });
+      triangle.rotation = Math.PI * 2 * i / amount
+      var color = PROPERTIES[i % PROPERTIES.length];
+      triangle.fill = colors[color];
+      triangle.noStroke();
+      group.add(triangle);
+
+    });
+
+    var circle = two.makeCircle(0, 0, center.y / 3);
+    circle.fill = '#ffff99';
+    circle.noStroke();
+    circle.visible = false;
+
+    group.add(circle);
+
+    var animate_in = new TWEEN.Tween(group)
+      .to({ rotation: group.rotation + Math.PI * 2 * 2 }, duration)
+      .easing(TWEEN.Easing.Circular.InOut)
+      .onComplete(function() {
+        animate_out.start();
+      });
+
+    var animate_out = new TWEEN.Tween(circle)
+      .to({ scale: 10 }, duration)
+      .easing(TWEEN.Easing.Circular.InOut)
+      .onComplete(function() {
+        callback();
+        reset();
+      });
+
+    var start = function(silent) {
+      playing = true;
+      animate_in.to({ rotation: group.rotation + Math.PI * 2 * 2 }, duration);
+      circle.scale = 1;
+      group.visible = true;
+      group.opacity = 1;
+      circle.visible = true;
+      animate_in.start();
+      if (!silent && exports.sound) {
+        exports.sound.stop().play();
+      }
+    };
+    var update = function() {
+
+    };
+    var resize = function() {
+
+    };
+
+    start.onComplete = reset;
+    reset();
+
+    function reset() {
+      playing = false;
+      group.visible = false;
+      circle.visible = false;
+    }
+
+    var exports = {
+      start: start,
+      update: update,
+      resize: resize,
+      clear: reset,
+      playing: function() { return playing; },
+      hash: '2,4',
+      filename: 'K'
+    };
+
+    monome[exports.hash] = exports;
+
+    return exports;
+
+  })();
+
   var spaghetti_os = (function() {
 
     var names = ['achos!', 'adobe', 'andoni', 'atelier', 'bienal', 'carl', 'carla', 'cordova', 'can', 'daniel', 'danny', 'david', 'claudio', 'digitalkitchen', 'gavin', 'merlin', 'goldenwolf', 'hey', 'hiro', 'ideo', 'javier', 'johnny', 'joshua', 'kiran', 'lettersaremyfriends', 'linda', 'machineast', 'matt', 'morphika', 'monika', 'mrbingo', 'musketon', 'non-format', 'outrostudio', 'pablo', 'paula', 'randomstudio', 'sid', 'signalnoise', 'somerset', 'mills', 'themill', 'spin', 'tony', 'foundry', 'thesixandfive', 'timothy', 'unit9', 'ustwo', 'vasava', 'audi', 'stooorm', 'wix', 'lullatone', 'jonobr1'];
