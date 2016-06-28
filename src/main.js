@@ -11,7 +11,7 @@ $(function() {
    */
 
   var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-  var path = window.location.href.match(/localhost/i) ? '/assets/' : '//cdn.patatap.com/assets/';
+  var path = window.location.href.match(/localhost/i) ? '/assets/' : '//d3o508uuo64enc.cloudfront.net/';
   // var path = '/assets/';
   var filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
