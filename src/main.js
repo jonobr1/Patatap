@@ -20,9 +20,7 @@ $(function() {
     path += 'kiosk/';
   }
 
-  $('#total-assets').html(26 * letters.length);
-
-  var soundsBuffered = _.after(26 * letters.length + 1, function() {
+  var soundsBuffered = _.after(1, function() {
     if (url.loop && url.loop.match(/(clap|groove)/ig)) {
       new Sound(path + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
         this.play({
@@ -38,13 +36,7 @@ $(function() {
   Sound.ready(function() {
     _.each(animations.list, function(a, i) {
       if (a.filename) {
-        a.sounds = _.map(letters, function(type) {
-          return new Sound(path + type + '/' + a.filename + filetype, function() {
-            asset_count++;
-            $loaded.html(asset_count);
-            soundsBuffered();
-          });
-        });
+        a.sounds = [];
       }
     });
     var silent = new Sound(path + 'silent.mp3', function() {

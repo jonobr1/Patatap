@@ -25,10 +25,6 @@ body {
     line-height: 64px; }
     #credits ul li {
       display: inline-block;
-      vertical-align: baseline;
-      zoom: 1;
-      *display: inline;
-      *vertical-align: auto;
       padding: 0 16px;
       color: #ccc;
       text-shadow: 1px 1px rgba(0, 0, 0, 0.1); }
@@ -45,10 +41,6 @@ body {
           border-bottom-color: rgba(255, 255, 255, 0.85); }
         #credits ul li a#jonobr1, #credits ul li a#lullatone {
           display: inline-block;
-          vertical-align: baseline;
-          zoom: 1;
-          *display: inline;
-          *vertical-align: auto;
           width: 20px;
           height: 16px;
           margin: -3px 8px 0;
@@ -99,10 +91,6 @@ body {
   user-select: none; }
   #hint .message {
     display: inline-block;
-    vertical-align: baseline;
-    zoom: 1;
-    *display: inline;
-    *vertical-align: auto;
     background: white;
     color: #666666;
     font-family: "Lucida Grande", verdana, sans-serif;
@@ -138,10 +126,6 @@ body {
   left: 50%; }
   #embed textarea {
     display: inline-block;
-    vertical-align: baseline;
-    zoom: 1;
-    *display: inline;
-    *vertical-align: auto;
     width: 320px;
     height: 32px;
     margin-left: -176px;
@@ -194,10 +178,6 @@ body {
       margin-bottom: 32px; }
       #merchandise .container div.vimeo iframe {
         display: inline-block;
-        vertical-align: baseline;
-        zoom: 1;
-        *display: inline;
-        *vertical-align: auto;
         width: 500px;
         height: 281px;
         border: 1px solid #c8c8c8; }
@@ -214,10 +194,6 @@ body {
       #merchandise .container ul li {
         list-style: none;
         display: inline-block;
-        vertical-align: baseline;
-        zoom: 1;
-        *display: inline;
-        *vertical-align: auto;
         margin-left: 8px;
         margin-right: 8px; }
         #merchandise .container ul li.poster {
@@ -276,24 +252,26 @@ body {
     top: 16px; }
   #merchandise .ios-app-store {
     display: inline-block;
-    vertical-align: baseline;
-    zoom: 1;
-    *display: inline;
-    *vertical-align: auto;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
     width: 135px;
     height: 40px; }
   #merchandise .play-store {
     display: inline-block;
-    vertical-align: baseline;
-    zoom: 1;
-    *display: inline;
-    *vertical-align: auto;
     cursor: pointer;
     background: url(../images/play-store.svg) center center no-repeat;
     width: 135px;
     height: 40px; }
+  #merchandise .attribution {
+    text-align: center;
+    margin-top: 32px;
+    font-family: "Lucida Grande", verdana, sans-serif;
+    font-weight: 100;
+    font-size: 12px;
+    line-height: 32px;
+    color: #333; }
+    #merchandise .attribution a {
+      color: #333; }
 
 #lobby {
   position: fixed;
@@ -333,43 +311,14 @@ body {
 
 @-webkit-keyframes rotate {
   from {
-    -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -ms-transform: rotate(0);
-    -o-transform: rotate(0);
-    transform: rotate(0); }
+    -webkit-transform: rotate(0); }
   to {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg); } }
+    -webkit-transform: rotate(360deg); } }
 @-moz-keyframes rotate {
   from {
-    -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -ms-transform: rotate(0);
-    -o-transform: rotate(0);
-    transform: rotate(0); }
+    -moz-transform: rotate(0); }
   to {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-@-o-keyframes rotate {
-  from {
-    -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -ms-transform: rotate(0);
-    -o-transform: rotate(0);
-    transform: rotate(0); }
-  to {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg); } }
+    -moz-transform: rotate(360deg); } }
 @keyframes rotate {
   from {
     -webkit-transform: rotate(0);

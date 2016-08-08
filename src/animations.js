@@ -2499,7 +2499,8 @@ window.animations = (function() {
 
   changeColors.start = function(onComplete) {
     current = (current + 1) % PALETTE.length;
-    _.each(exports.list, iterateSoundUpdate);
+    // _.each(exports.list, iterateSoundUpdate);
+    exports.updateAudio();
     changedColors = false;
     if (_.isFunction(onComplete)) {
       changeColors.callback = onComplete;
@@ -2593,8 +2594,60 @@ window.animations = (function() {
 
     initializeSound: function() {
 
-      _.each(exports.list, iterateSoundUpdate);
+      exports.updateAudio();
       return exports;
+
+    },
+
+    updateAudio: function(callback) {
+
+      var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+      var path = window.location.href.match(/localhost/i) ? '/assets/' : '//d3o508uuo64enc.cloudfront.net/';
+      var filetype = '.mp3';
+      var list = _.filter(exports.list, function(o) {
+        return _.isArray(o.sounds);
+      });
+
+      var type = letters[current];
+      var $lobby = $('#lobby');
+      var $loaded = $lobby.find('#loaded');
+      var $totalAssets = $lobby.find('#total-assets');
+
+      $loaded.update = function() {
+        $loaded.index++;
+        $loaded.html($loaded.index);
+      };
+
+      var show = _.once(function() {
+        $loaded.index = 0;
+        $loaded.html($loaded.index);
+        $totalAssets.html(list.length);
+        $lobby.fadeIn();
+      });
+
+      var buffered = _.after(list.length, function() {
+        if (_.isFunction(callback)) {
+          callback();
+        } else {
+          $('#lobby').fadeOut();
+        }
+      });
+
+      _.each(list, function(o) {
+        var sound = o.sounds[current];
+        if (!sound) {
+          show();
+          sound = new Sound(path + type + '/' + o.filename + filetype, function() {
+            $loaded.update();
+            buffered();
+          });
+          o.sounds.push(sound);
+        }
+        o.sound = sound;
+      });
+
+      return exports;
+
 
     },
 

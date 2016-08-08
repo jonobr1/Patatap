@@ -395,6 +395,19 @@ body {
     height: 40px;
   }
 
+  .attribution {
+    text-align: center;
+    margin-top: $line-height;
+    font-family: $body-family;
+    font-weight: 100;
+    font-size: $font-size * 0.75;
+    line-height: $line-height;
+    color: #333;
+    a {
+      color: #333;
+    }
+  }
+
 }
 
 #lobby {

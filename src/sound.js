@@ -75,7 +75,7 @@
 
     stop: function(options) {
 
-      if (!this.source) {
+      if (!this.source || !this._ready) {
         return this;
       }
 
@@ -90,9 +90,19 @@
 
     pause: function() {
 
+      if (!this._ready) {
+        return this;
+      }
+
+      return this;
+
     },
 
     play: function(options) {
+
+      if (!this._ready) {
+        return this;
+      }
 
       var params = _.defaults(options || {}, {
         time: ctx.currentTime,
