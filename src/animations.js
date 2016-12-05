@@ -97,6 +97,17 @@ window.animations = (function() {
       white: { r: 253, g: 228, b: 252 },
       black: { r: 255, g: 255, b: 255 },
       isDark: true
+    },
+    {
+      // Red Bull
+      background: { r: 215, g: 205, b: 190 },
+      middleground: { r: 100, g: 200, b: 175 },
+      foreground: { r: 255, g: 240, b: 50 },
+      highlight: { r: 255, g: 100, b: 130 },
+      accent: { r: 100, g: 75, b: 120 },
+      white: { r: 255, g: 255, b: 255 },
+      black: { r: 33, g: 33, b: 33 },
+      isDark: false
     }
   ];
 
@@ -2601,7 +2612,7 @@ window.animations = (function() {
 
     updateAudio: function(callback) {
 
-      var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+      var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
       var path = window.location.href.match(/localhost/i) ? '/assets/' : '//d3o508uuo64enc.cloudfront.net/';
       var filetype = '.mp3';
       var list = _.filter(exports.list, function(o) {
