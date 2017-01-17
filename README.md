@@ -1,4 +1,4 @@
-Neuronal Synchrony
+Neuronal Synchrony (remix)
 ==================
 
 A collection of two dimensional animations that are triggered by sound.
