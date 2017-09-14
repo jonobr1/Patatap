@@ -2613,7 +2613,7 @@ window.animations = (function() {
     updateAudio: function(callback) {
 
       var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-      var path = window.location.href.match(/localhost/i) ? '/assets/' : '//d3o508uuo64enc.cloudfront.net/';
+      var path = window.location.href.match(/localhost/i) ? '/assets/' : '//storage.googleapis.com/cdn.patatap.com/';
       var filetype = '.mp3';
       var list = _.filter(exports.list, function(o) {
         return _.isArray(o.sounds);
