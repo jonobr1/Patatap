@@ -552,7 +552,7 @@ $(function() {
       return;
     }
     $hint.fadeIn();
-  }, 5000);  // Twenty Second timeout
+  }, 20000);  // Twenty Second timeout
 
   function triggered() {
     if (url.boolean('kiosk')) {
