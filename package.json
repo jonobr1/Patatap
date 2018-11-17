@@ -1,0 +1,22 @@
+{
+  "name": "patatap",
+  "version": "1.0.0",
+  "description": "A collection of two dimensional animations that are triggered by sound.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonobr1/Neuronal-Synchrony.git"
+  },
+  "author": "jonobr1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonobr1/Neuronal-Synchrony/issues"
+  },
+  "homepage": "https://github.com/jonobr1/Neuronal-Synchrony#readme",
+  "devDependencies": {
+    "mpe": "^1.0.4"
+  }
+}
