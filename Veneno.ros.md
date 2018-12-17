@@ -1,0 +1,1 @@
+# Dioa.mio.ros.patch
