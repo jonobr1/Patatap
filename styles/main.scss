@@ -134,7 +134,7 @@ body {
     position: fixed;
     bottom: $line-height * 3;
     left: 50%;
-    margin-left: - 75px - $width / 2;
+    margin-left: - $width / 2;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
     width: 135px;
@@ -318,7 +318,7 @@ body {
             background-image: url(https://m1.behance.net/rendition/modules/102811007/disp/ba88168e188e18adb93119aec9a708c7.jpg);
           }
           #two-polygon {
-           background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg); 
+           background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg);
           }
 
           p {
