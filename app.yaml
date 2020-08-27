@@ -1,0 +1,12 @@
+runtime: python37
+
+handlers:
+
+  - url: /(.*\.(gif|png|jpg|jpeg|ico|css|json|js|eot|svg|ttf|woff|mp3|wav|ogg|mp4|webm|xml|html))$
+    static_files: \1
+    upload: .*\.(gif|png|jpg|jpeg|ico|css|json|js|eot|svg|ttf|woff|mp3|wav|ogg|mp4|webm|xml|html)$
+
+  # Catch all for other routes
+  - url: /.*
+    static_files: index.html
+    upload: index.html

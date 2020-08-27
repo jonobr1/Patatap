@@ -4,7 +4,8 @@
   "description": "A collection of two dimensional animations that are triggered by sound.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "dev_appserver.py .",
+    "deploy": "gcloud app deploy app.yaml --project=pat-a-tap"
   },
   "repository": {
     "type": "git",
