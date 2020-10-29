@@ -120,6 +120,9 @@ body {
     width: 135px;
     height: 40px; }
 
+body.kiosk .ios-app-store {
+  display: none !important; }
+
 #embed {
   position: fixed;
   top: 50%;

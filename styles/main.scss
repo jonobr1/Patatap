@@ -153,6 +153,10 @@ body {
 
 }
 
+body.kiosk .ios-app-store {
+  display: none !important;
+}
+
 #embed {
   position: fixed;
   top: 50%;

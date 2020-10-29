@@ -15,10 +15,6 @@ $(function() {
   var filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
 
-  if (url.boolean('kiosk')) {
-    path += 'kiosk/';
-  }
-
   var soundsBuffered = _.after(1, function() {
     if (url.loop && url.loop.match(/(clap|groove)/ig)) {
       new Sound(path + url.loop.replace(/\//ig, '') + '-loop' + filetype, function() {
@@ -119,7 +115,7 @@ $(function() {
       })
       .bind('mousemove', function(e) {
 
-        if (has.mobile || embedding) {
+        if (has.mobile || embedding || url.boolean('kiosk')) {
           return;
         }
 
@@ -270,6 +266,7 @@ $(function() {
     _.delay(function() {
       $('#lobby').fadeOut(triggerLogo);
       if (url.boolean('kiosk') /*|| (window.localStorage && window.localStorage.visited)*/) {
+        $(document.body).addClass('kiosk');
         triggered();
         return;
       } else if (/merchandise/ig.test(url.hash)) {
@@ -555,12 +552,12 @@ $(function() {
   }, 20000);  // Twenty Second timeout
 
   function triggered() {
-    if (url.boolean('kiosk')) {
-      startDemonstration();
-      reloadOnIdle();
-      interacting = true;
-      return;
-    }
+    // if (url.boolean('kiosk')) {
+    //   startDemonstration();
+    //   reloadOnIdle();
+    //   interacting = true;
+    //   return;
+    // }
     $hint.fadeOut();
     showHint();
   }
