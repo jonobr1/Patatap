@@ -109,7 +109,7 @@
         loop: false
       });
 
-      if (ctx && /suspended/.test(ctx.state)) {
+      if (ctx && !(/running/.test(ctx.state))) {
         ctx.resume();
       }
 

@@ -115,7 +115,7 @@ $(function() {
       })
       .bind('mousemove', function(e) {
 
-        if (has.mobile || embedding || url.boolean('kiosk')) {
+        if (embedding || url.boolean('kiosk')) {
           return;
         }
 
@@ -237,7 +237,7 @@ $(function() {
 
       });
 
-    if (has.mobile) {
+    if (has.touch) {
       $hint.find('.message').html('Press anywhere on the screen and turn up speakers');
       createMobileUI();
     } else {
