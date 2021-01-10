@@ -354,7 +354,7 @@ body.kiosk .ios-app-store {
     transform: rotate(360deg);
   }
 }
-body content,
-body content * {
+body #content,
+body #content * {
   user-select: none;
 }
