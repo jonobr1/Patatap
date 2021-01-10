@@ -2672,11 +2672,7 @@ window.animations = (function() {
 
       palette = PALETTE[current];
 
-      if (has.mobile) {
-        amount = setColors(palette);
-      } else {
-        amount = tweenColors(palette);
-      }
+      amount = tweenColors(palette);
 
       _.each(exports.list, iterateUpdate);
       domElement.style.background = colors.background;
