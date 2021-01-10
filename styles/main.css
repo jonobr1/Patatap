@@ -346,11 +346,13 @@ body.kiosk .ios-app-store {
   width: 300px;
   margin-left: -150px;
 }
-keyframes(rotate) from {
-  transform: rotate(0);
-}
-keyframes(rotate) to {
-  transform: rotate(360deg);
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 body content,
 body content * {
