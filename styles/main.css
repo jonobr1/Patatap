@@ -118,7 +118,7 @@ body {
   position: fixed;
   bottom: 96px;
   left: 50%;
-  margin-left: - 135px / 2;
+  margin-left: -67.5px;
   cursor: pointer;
   background: url(../images/app-store.svg) center center no-repeat;
   width: 135px;
@@ -128,7 +128,7 @@ body {
   position: fixed;
   bottom: 96px;
   left: 50%;
-  margin-left: 7.5px;
+  margin-left: 75px -67.5px;
   cursor: pointer;
   background: url(../images/play-store.svg) center center no-repeat;
   width: 135px;
@@ -205,8 +205,8 @@ body.kiosk .ios-app-store {
 }
 @media (max-width: 500px) {
   #merchandise .container div.vimeo iframe {
-    width: 500px / 2;
-    height: 281px / 2;
+    width: 250px;
+    height: 140.5px;
   }
 }
 #merchandise .container ul {
@@ -219,8 +219,8 @@ body.kiosk .ios-app-store {
 #merchandise .container ul li {
   list-style: none;
   display: inline-block;
-  margin-left: 16px / 2;
-  margin-right: 16px / 2;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 #merchandise .container ul li.poster {
   width: 168px;
@@ -328,8 +328,8 @@ body.kiosk .ios-app-store {
   height: 32px;
   background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
   background-size: 16px 16px;
-  margin-left: - 16px;
-  margin-top: - 16px;
+  margin-left: -16px;
+  margin-top: -16px;
   border-radius: 50%;
   animation-name: rotate;
   animation-duration: 1s;

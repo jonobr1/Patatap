@@ -47,7 +47,7 @@
     // padding-top: @padding;
     text-align: center;
     top: 100%;
-    transition: top 0.5s ease-out;
+    transition: top 0.5s @ease-out-circ;
     background: linear-gradient(to top, #444, @black);
   }
 
@@ -84,7 +84,7 @@
       padding-left: @padding;
       border-left: 1px solid rgba(0, 0, 0, 0.2);
     }
-    transition: margin-top 0.35s ease-out;
+    transition: margin-top 0.35s @ease-out-circ;
     & > * {
       margin-bottom: @padding;
     }
@@ -107,7 +107,7 @@
       vertical-align: middle;
       overflow: hidden;
       user-select: none;
-      transition: margin-top 1s ease-out;
+      transition: margin-top 1s @ease-out-circ;
       & > * {
         display: inline-block;
         vertical-align: middle;
@@ -119,7 +119,7 @@
         margin: 0 @padding;
         border-radius: @font-size;
         background: rgba(0, 0, 0, 0.33);
-        box-shadow: inset 0 0 @font-size / 2 rgba(0, 0, 0, 0.5);
+        box-shadow: inset 0 0 @font-size * 0.5 rgba(0, 0, 0, 0.5);
         user-select: none;
         div.buffered {
           width: 0;
@@ -130,18 +130,18 @@
           right: 1%;
           background: lighten(@green, 50%);
           opacity: 0.33;
-          margin-top: (@font-size - @height) / 2;
-          transition: width 0.35s ease-out;
+          margin-top: (@font-size - @height) * 0.5;
+          transition: width 0.35s @ease-out-circ;
         }
         div.needle {
-          width: @font-size / 2;
+          width: @font-size * 0.5;
           height: @font-size * 1.5;
           background: @white;
           border: 1px solid #bbb;
           box-shadow: 0 0 3px black;
-          border-radius: @font-size / 2;
-          margin-left: - @font-size / 4;
-          margin-top: - (@font-size / 4 + 1);
+          border-radius: @font-size * 0.5;
+          margin-left: -(@font-size * 0.25);
+          margin-top: -(@font-size * 0.25 + 1);
           // cursor: pointer;
           position: relative;
         }
@@ -153,7 +153,7 @@
     .meta {
       p {
         text-align: left;
-        line-height: @line-height / 2;
+        line-height: @line-height * 0.5;
         a {
           text-decoration: none;
         }
@@ -172,7 +172,7 @@
     height: 100%;
     // 64 43
     background: url(http://developers.soundcloud.com/assets/logo_big_white.png) center center no-repeat;
-    background-size: (64px / 2) (43px / 2);
+    background-size: (64px * 0.5) (43px * 0.5);
   }
 
   button {
@@ -180,7 +180,7 @@
     background: transparent;
     color: @white;
     cursor: pointer;
-    border-radius: @font-size / 4;
+    border-radius: @font-size * 0.25;
     &:hover {
       background-color: rgba(255, 255, 255, 0.1) !important;
     }

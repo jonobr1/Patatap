@@ -37,7 +37,7 @@
   height: 100%;
   text-align: center;
   top: 100%;
-  transition: top 0.5s ease-out;
+  transition: top 0.5s cubic-bezier(0, 0.55, 0.45, 1);
   background: linear-gradient(to top, #444, #555);
 }
 .sc-player:hover ul,
@@ -63,7 +63,7 @@
 .sc-player li.kick-back {
   padding-top: 7px;
   padding-bottom: 7px;
-  transition: margin-top 0.35s ease-out;
+  transition: margin-top 0.35s cubic-bezier(0, 0.55, 0.45, 1);
 }
 .sc-player li.primary:not(:first-child),
 .sc-player li.track-info:not(:first-child),
@@ -99,7 +99,7 @@
   vertical-align: middle;
   overflow: hidden;
   user-select: none;
-  transition: margin-top 1s ease-out;
+  transition: margin-top 1s cubic-bezier(0, 0.55, 0.45, 1);
 }
 .sc-player li.track-info .track > * {
   display: inline-block;
@@ -112,7 +112,7 @@
   margin: 0 7px;
   border-radius: 11px;
   background: rgba(0, 0, 0, 0.33);
-  box-shadow: inset 0 0 11px / 2 rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 5.5px rgba(0, 0, 0, 0.5);
   user-select: none;
 }
 .sc-player li.track-info .track div.bar div.buffered {
@@ -123,18 +123,18 @@
   right: 1%;
   background: #ffffff;
   opacity: 0.33;
-  margin-top: 9px / 2;
-  transition: width 0.35s ease-out;
+  margin-top: 4.5px;
+  transition: width 0.35s cubic-bezier(0, 0.55, 0.45, 1);
 }
 .sc-player li.track-info .track div.bar div.needle {
-  width: 11px / 2;
+  width: 5.5px;
   height: 16.5px;
   background: #efefef;
   border: 1px solid #bbb;
   box-shadow: 0 0 3px black;
-  border-radius: 11px / 2;
-  margin-left: - 11px / 4;
-  margin-top: - 3.75px;
+  border-radius: 5.5px;
+  margin-left: -2.75px;
+  margin-top: -3.75px;
   position: relative;
 }
 .sc-player li.track-info .track p {
@@ -142,7 +142,7 @@
 }
 .sc-player li.track-info .meta p {
   text-align: left;
-  line-height: 30px / 2;
+  line-height: 15px;
 }
 .sc-player li.track-info .meta p a {
   text-decoration: none;
@@ -164,7 +164,7 @@
   background: transparent;
   color: #efefef;
   cursor: pointer;
-  border-radius: 11px / 4;
+  border-radius: 2.75px;
   outline: none;
 }
 .sc-player button:hover {

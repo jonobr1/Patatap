@@ -54,7 +54,7 @@ body {
           display: inline-block;
           width: 20px;
           height: @font-size;
-          margin: -3px (@font-size / 2) 0;
+          margin: -3px (@font-size * 0.5) 0;
           vertical-align: middle;
           border-bottom-color: transparent;
           text-shadow: none;
@@ -133,7 +133,7 @@ body {
     position: fixed;
     bottom: @line-height * 3;
     left: 50%;
-    margin-left: - @width / 2;
+    margin-left: -(@width * 0.5);
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
     width: 135px;
@@ -143,7 +143,7 @@ body {
     position: fixed;
     bottom: @line-height * 3;
     left: 50%;
-    margin-left: 75px - (@width / 2);
+    margin-left: 75px -(@width * 0.5);
     cursor: pointer;
     background: url(../images/play-store.svg) center center no-repeat;
     width: @width;
@@ -200,7 +200,7 @@ body.kiosk .ios-app-store {
   //   .container {
   //     position: relative;
   //     width: 994px;
-  //     margin-top: - 384px / 2;
+  //     margin-top: - 384px * 0.5;
   //     margin-left: auto;
   //     margin-right: auto;
   //     border-radius: 3px;
@@ -266,8 +266,8 @@ body.kiosk .ios-app-store {
 
       @media (max-width: 500px) {
         iframe {
-          width: @width / 2;
-          height: @height / 2;
+          width: (@width * 0.5);
+          height: (@height * 0.5);
         }
       }
     }
@@ -285,8 +285,8 @@ body.kiosk .ios-app-store {
 
         list-style: none;
         display: inline-block;
-        margin-left: @font-size / 2;
-        margin-right: @font-size / 2;
+        margin-left: (@font-size * 0.5);
+        margin-right: (@font-size * 0.5);
 
         &.poster {
 
@@ -426,9 +426,9 @@ body.kiosk .ios-app-store {
     width: @d;
     height: @d;
     background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
-    background-size: (@d / 2) (@d / 2);
-    margin-left: - (@d / 2);
-    margin-top: - (@d / 2);
+    background-size: (@d * 0.5) (@d * 0.5);
+    margin-left: -(@d * 0.5);
+    margin-top: -(@d * 0.5);
     border-radius: 50%;
     animation-name: rotate;
     animation-duration: 1s;
