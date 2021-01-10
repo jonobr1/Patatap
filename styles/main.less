@@ -1,9 +1,8 @@
-@import 'bourbon/bourbon';
-
-$body-family: 'Lucida Grande', verdana, sans-serif;
-$font-family: 'Inconsolata', monospace;
-$font-size: 16px;
-$line-height: $font-size * 2;
+@body-family: 'Lucida Grande', verdana, sans-serif;
+@font-family: 'Inconsolata', monospace;
+@font-size: 16px;
+@line-height: @font-size * 2;
+@ease-out-circ: cubic-bezier(0, 0.55, 0.45, 1);
 
 * {
   margin: 0;
@@ -24,17 +23,17 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: $line-height * 2;
+  height: @line-height * 2;
   background: #666;
   ul {
     list-style: none;
     text-align: center;
-    font-family: $body-family;
-    font-size: $font-size * 0.75;
-    line-height: $line-height * 2;
+    font-family: @body-family;
+    font-size: @font-size * 0.75;
+    line-height: @line-height * 2;
     li {
-      @include inline-block;
-      padding: 0 $font-size;
+      display: inline-block;
+      padding: 0 @font-size;
       color: #ccc;
       text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
       strong {
@@ -52,10 +51,10 @@ body {
         }
         &#jonobr1,
         &#lullatone {
-          @include inline-block;
+          display: inline-block;
           width: 20px;
-          height: $font-size;
-          margin: -3px ($font-size / 2) 0;
+          height: @font-size;
+          margin: -3px (@font-size / 2) 0;
           vertical-align: middle;
           border-bottom-color: transparent;
           text-shadow: none;
@@ -96,7 +95,7 @@ body {
   height: 100%;
   background: rgb(181, 181, 181);
 
-  @include transition(top 0.35s $ease-out-circ);
+  transition: top 0.35s @ease-out-circ;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
 
   #stage {
@@ -112,29 +111,29 @@ body {
   right: 0;
   top: 15%;
   text-align: center;
-  @include user-select(none);
+  user-select: none;
 
   .message {
-    @include inline-block;
+    display: inline-block;
     background: white;
     color: #666666;
-    font-family: $body-family;
-    font-size: $font-size * 0.75;
+    font-family: @body-family;
+    font-size: @font-size * 0.75;
     @media (max-width: 400px) {
-      font-size: $font-size / 1.6;
+      font-size: @font-size / 1.6;
     }
-    line-height: $line-height;
-    border-radius: $font-size * 0.66;
-    padding: 0 $font-size;
+    line-height: @line-height;
+    border-radius: @font-size * 0.66;
+    padding: 0 @font-size;
   }
 
-  $width: 135px;
+  @width: 135px;
 
   .ios-app-store {
     position: fixed;
-    bottom: $line-height * 3;
+    bottom: @line-height * 3;
     left: 50%;
-    margin-left: - $width / 2;
+    margin-left: - @width / 2;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
     width: 135px;
@@ -142,12 +141,12 @@ body {
   }
   .play-store {
     position: fixed;
-    bottom: $line-height * 3;
+    bottom: @line-height * 3;
     left: 50%;
-    margin-left: 75px - $width / 2;
+    margin-left: 75px - (@width / 2);
     cursor: pointer;
     background: url(../images/play-store.svg) center center no-repeat;
-    width: $width;
+    width: @width;
     height: 40px;
   }
 
@@ -162,17 +161,17 @@ body.kiosk .ios-app-store {
   top: 50%;
   left: 50%;
   textarea {
-    @include inline-block;
+    display: inline-block;
     width: 320px;
-    height: $font-size * 2;
-    margin-left: -(160px + $font-size);
-    margin-top: -(80px + $font-size);
-    font-family: $font-family;
-    font-size: $font-size * 0.75;
-    line-height: $font-size;
+    height: @font-size * 2;
+    margin-left: -(160px + @font-size);
+    margin-top: -(80px + @font-size);
+    font-family: @font-family;
+    font-size: @font-size * 0.75;
+    line-height: @font-size;
     font-weight: 400;
-    padding: $font-size;
-    border-radius: $font-size * 0.66;
+    padding: @font-size;
+    border-radius: @font-size * 0.66;
     border: 0;
     outline: none;
     resize: none;
@@ -232,19 +231,19 @@ body.kiosk .ios-app-store {
 
     background: white;
     overflow: auto;
-    padding: $line-height;
-    @include user-select(none);
+    padding: @line-height;
+    user-select: none;
 
-    $border-width: 1px;
-    $border-color: rgb(200, 200, 200);
+    @border-width: 1px;
+    @border-color: rgb(200, 200, 200);
 
     #close-merchandise {
       position: absolute;
-      top: $font-size / 8;
-      right: $font-size;
+      top: @font-size / 8;
+      right: @font-size;
       color: #555;
-      font-size: $font-size * 1.25;
-      padding: $font-size / 4;
+      font-size: @font-size * 1.25;
+      padding: @font-size / 4;
       vertical-align: top;
       font-weight: bold;
       cursor: pointer;
@@ -255,56 +254,56 @@ body.kiosk .ios-app-store {
 
     div.vimeo {
       text-align: center;
-      margin-bottom: $line-height;
-      $width: 500px;
-      $height: 281px;
+      margin-bottom: @line-height;
+      @width: 500px;
+      @height: 281px;
       iframe {
-        @include inline-block;
-        width: $width;
-        height: $height;
-        border: $border-width solid $border-color;
+        display: inline-block;
+        width: @width;
+        height: @height;
+        border: @border-width solid @border-color;
       }
 
       @media (max-width: 500px) {
         iframe {
-          width: $width / 2;
-          height: $height / 2;
+          width: @width / 2;
+          height: @height / 2;
         }
       }
     }
 
     ul {
 
-      $black: rgb(51, 51, 51);
+      @black: rgb(51, 51, 51);
       text-align: center;
       font-family: 'Helvetica Neue', Arial, sans-serif;
       font-size: 13px;
       line-height: 26px;
-      color: $black;
+      color: @black;
 
       li {
 
         list-style: none;
-        @include inline-block;
-        margin-left: $font-size / 2;
-        margin-right: $font-size / 2;
+        display: inline-block;
+        margin-left: @font-size / 2;
+        margin-right: @font-size / 2;
 
         &.poster {
 
-          $width: 170px;
-          $height: 312px;
+          @width: 170px;
+          @height: 312px;
 
-          width: $width - $border-width * 2;
-          height: $height - $border-width * 2;
-          border: $border-width solid $border-color;
+          width: @width - @border-width * 2;
+          height: @height - @border-width * 2;
+          border: @border-width solid @border-color;
           overflow: hidden;
           background: white;
 
           div {
             position: relative;
-            width: $width;
-            height: $width;
-            // @include inline-block;
+            width: @width;
+            height: @width;
+            // display: inline-block;
           }
 
           div.thumbnail {
@@ -313,8 +312,8 @@ body.kiosk .ios-app-store {
             background-size: 200%;
             background-position: 50% 20%;
             background-repeat: no-repeat;
-            border-bottom: $border-width solid $border-color;
-            height: $width - $border-width * 2;
+            border-bottom: @border-width solid @border-color;
+            height: @width - @border-width * 2;
 
           }
 
@@ -332,7 +331,7 @@ body.kiosk .ios-app-store {
           }
 
           a {
-            color: $black;
+            color: @black;
             text-decoration: none;
             &:hover {
               text-decoration: underline;
@@ -378,13 +377,13 @@ body.kiosk .ios-app-store {
     position: relative;
     width: 100%;
     text-align: center;
-    bottom: $font-size;
-    top: $font-size;
+    bottom: @font-size;
+    top: @font-size;
   }
 
   .ios-app-store {
     // position: relative;
-    @include inline-block;
+    display: inline-block;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
     width: 135px;
@@ -392,7 +391,7 @@ body.kiosk .ios-app-store {
   }
   .play-store {
     // position: relative;
-    @include inline-block;
+    display: inline-block;
     cursor: pointer;
     background: url(../images/play-store.svg) center center no-repeat;
     width: 135px;
@@ -401,11 +400,11 @@ body.kiosk .ios-app-store {
 
   .attribution {
     text-align: center;
-    margin-top: $line-height;
-    font-family: $body-family;
+    margin-top: @line-height;
+    font-family: @body-family;
     font-weight: 100;
-    font-size: $font-size * 0.75;
-    line-height: $line-height;
+    font-size: @font-size * 0.75;
+    line-height: @line-height;
     color: #333;
     a {
       color: #333;
@@ -420,41 +419,46 @@ body.kiosk .ios-app-store {
   top: 50%;
   left: 50%;
   overflow: visible;
-  $d: 32px;
+  @d: 32px;
 
   #loader {
     position: relative;
-    width: $d;
-    height: $d;
+    width: @d;
+    height: @d;
     background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
-    background-size: ($d / 2) ($d / 2);
-    margin-left: - ($d / 2);
-    margin-top: - ($d / 2);
+    background-size: (@d / 2) (@d / 2);
+    margin-left: - (@d / 2);
+    margin-top: - (@d / 2);
     border-radius: 50%;
-    @include animation-name(rotate);
-    @include animation-duration(1s);
-    @include animation-timing-function($ease-in-out-circ);
-    @include animation-iteration-count(infinite);
+    animation-name: rotate;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
   }
   #asset-info {
     position: relative;
-    font-family: $font-family;
-    font-size: $font-size;
+    font-family: @font-family;
+    font-size: @font-size;
     text-align: center;
     color: rgba(255, 255, 255, 0.9);
     // font-weight: 700;
-    margin-top: $d;
+    margin-top: @d;
     width: 300px;
     margin-left: -150px;
   }
 
 }
 
-@include keyframes(rotate) {
+keyframes(rotate) {
   from {
-    @include transform(rotate(0));
+    transform: rotate(0);
   }
   to {
-    @include transform(rotate(360deg));
+    transform: rotate(360deg);
   }
+}
+
+body content,
+body content * {
+  user-select: none;
 }

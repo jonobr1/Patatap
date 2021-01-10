@@ -4,6 +4,8 @@
   "description": "A collection of two dimensional animations that are triggered by sound.",
   "main": "index.js",
   "scripts": {
+    "css:main": "lessc ./styles/main.less ./styles/main.css",
+    "css:player": "lessc ./styles/player.less ./styles/player.css",
     "dev": "dev_appserver.py .",
     "deploy": "gcloud app deploy app.yaml --project=pat-a-tap"
   },
@@ -18,6 +20,7 @@
   },
   "homepage": "https://github.com/jonobr1/Neuronal-Synchrony#readme",
   "devDependencies": {
+    "less": "^4.0.0",
     "mpe": "^1.0.4"
   }
 }
