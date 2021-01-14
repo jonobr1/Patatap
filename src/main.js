@@ -263,6 +263,11 @@ $(function() {
 
     $window.trigger('resize');
 
+    if (url.boolean('midi') && navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess()
+        .then(onMIDISuccess, onMIDIFailure);
+    }
+
     _.delay(function() {
       $('#lobby').fadeOut(triggerLogo);
       if (url.boolean('kiosk') /*|| (window.localStorage && window.localStorage.visited)*/) {
@@ -279,6 +284,142 @@ $(function() {
       }
     }, 1000);
 
+  }
+
+  function onMIDISuccess(midi) {
+
+    var inputs = [];
+    var outputs = [];
+
+    var notesToIndices = {
+
+      // Q — P
+      84: '0,0',
+      86: '0,1',
+      88: '0,2',
+      89: '0,3',
+      91: '0,4',
+      93: '0,5',
+      95: '0,6',
+      96: '0,7',
+      98: '0,8',
+      100: '0,9',
+
+      // A — L
+      72: '1,0',
+      74: '1,1',
+      76: '1,2',
+      77: '1,3',
+      79: '1,4',
+      81: '1,5',
+      83: '1,6',
+      84: '1,7',
+      86: '1,8',
+
+      // Z — M
+      60: '2,0',
+      62: '2,1',
+      64: '2,2',
+      65: '2,3',
+      67: '2,4',
+      69: '2,5',
+      71: '2,6',
+
+      // SPACE
+      48: '3,0',
+      108: '3,0'
+
+    };
+
+    var indicesToNotes = {};
+
+    for (var k in notesToIndices) {
+      var v = notesToIndices[k];
+      indicesToNotes[v] = k;
+    }
+
+    midi.addEventListener('statechange', init);
+    init({ target: midi });
+
+    onMIDISuccess.dispatch = function(index) {
+
+      var duration = 100;
+      var note = indicesToNotes[index];
+      var velocity = 100;
+
+      if (!note) {
+        return;
+      }
+
+      var on = [144, note, velocity];
+      var off = [128, note, 0];
+
+      for (var i = 0; i < outputs.length; i++) {
+        var output = outputs[i];
+        output.send(on);
+        output.send(off, Date.now() + duration);
+      }
+
+    };
+
+    function init(e) {
+
+      var midi = e.target;
+
+      for (var input of midi.inputs.values()) {
+        if (!containsById(inputs, input)) {
+          inputs.push(input);
+        }
+        input.onmidimessage = messageReceived;
+      }
+
+      for (var output of midi.outputs.values()) {
+        if (!containsById(outputs, output)) {
+          outputs.push(output);
+        }
+      }
+
+    }
+
+    function messageReceived(message) {
+
+      var command = message.data[0];
+      var note = message.data[1];
+      var velocity = (message.data.length > 2) ? message.data[2] : 0;
+
+      switch (command) {
+        case 144:
+          if (velocity > 0) {
+            noteOn(note, velocity);
+          }
+          break;
+      }
+
+    }
+
+    function noteOn(note) {
+      var index = notesToIndices[note];
+      if (index) {
+        onMIDISuccess.receiving = true;
+        trigger(index);
+        onMIDISuccess.receiving = false;
+      }
+    }
+
+  }
+
+  function onMIDIFailure() {
+    console.log('Unable to connect to MIDI');
+  }
+
+  function containsById(list, elem) {
+    for (var i = 0; i < list.length; i++) {
+      var item = list[i];
+      if (item.id === elem.id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function createMobileUI() {
@@ -506,6 +647,10 @@ $(function() {
       if (window.ga) {
         window.ga('send', 'event', 'animation', 'trigger', hash);
       }
+    }
+
+    if (!onMIDISuccess.receiving && onMIDISuccess.dispatch) {
+      onMIDISuccess.dispatch(hash);
     }
 
   }
