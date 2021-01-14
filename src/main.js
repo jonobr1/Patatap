@@ -290,6 +290,20 @@ $(function() {
 
     var inputs = [];
     var outputs = [];
+    var names = [];
+    var $midi = $('.midi-connections');
+
+    var show = function() {
+      $hint.find('.message').fadeOut(function() {
+        $midi.fadeIn();
+      });
+      hide();
+    };
+    var hide = _.debounce(function() {
+      $midi.fadeOut(function() {
+        $hint.find('.message').fadeIn();
+      });
+    }, 5000);
 
     var notesToIndices = {
 
@@ -365,10 +379,14 @@ $(function() {
     function init(e) {
 
       var midi = e.target;
+      var deviceString;
+
+      inputs.length = names.length = 0;
 
       for (var input of midi.inputs.values()) {
         if (!containsById(inputs, input)) {
           inputs.push(input);
+          names.push(input.name);
         }
         input.onmidimessage = messageReceived;
       }
@@ -378,6 +396,23 @@ $(function() {
           outputs.push(output);
         }
       }
+
+      if (names.length <= 0) {
+        return;
+      } else if (names.length <= 1) {
+        deviceString = names[0];
+      } else if (names.length <= 2) {
+        deviceString = names[0] + ' and ' + names[1];
+      } else {
+        var lastName = names.pop();
+        deviceString = names.join(', ') + ', and ' + lastName;
+        names.push(lastName);
+      }
+
+      $midi
+        .html('Connected to these MIDI devices: ' + deviceString)
+
+      show();
 
     }
 
@@ -409,7 +444,9 @@ $(function() {
   }
 
   function onMIDIFailure() {
-    console.log('Unable to connect to MIDI');
+    if (window.console && window.console.log) {
+      window.console.log('Unable to connect to MIDI');
+    }
   }
 
   function containsById(list, elem) {
@@ -723,5 +760,5 @@ $(function() {
 });
 
 if (window.console && window.console.log) {
-  console.log('Check out the code at http://github.com/jonobr1/Neuronal-Synchrony');
+  window.console.log('Check out the code at http://github.com/jonobr1/Neuronal-Synchrony');
 }

@@ -99,7 +99,8 @@ body {
   text-align: center;
   user-select: none;
 }
-#hint .message {
+#hint .message,
+#hint .midi-connections {
   display: inline-block;
   background: white;
   color: #666666;
@@ -108,11 +109,21 @@ body {
   line-height: 32px;
   border-radius: 10.56px;
   padding: 0 16px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 @media (max-width: 400px) {
-  #hint .message {
+  #hint .message,
+  #hint .midi-connections {
     font-size: 16px / 1.6;
+    line-height: 32px / 1.6;
   }
+}
+#hint .midi-connections {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 #hint .ios-app-store {
   position: fixed;
@@ -148,7 +159,7 @@ body.kiosk .ios-app-store {
   height: 32px;
   margin-left: -176px;
   margin-top: -96px;
-  font-family: 'Inconsolata', monospace;
+  font-family: 'Inconsolata', Menlo, Courier New, Courier, Mono, monospace;
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
@@ -338,7 +349,7 @@ body.kiosk .ios-app-store {
 }
 #lobby #asset-info {
   position: relative;
-  font-family: 'Inconsolata', monospace;
+  font-family: 'Inconsolata', Menlo, Courier New, Courier, Mono, monospace;
   font-size: 16px;
   text-align: center;
   color: rgba(255, 255, 255, 0.9);
