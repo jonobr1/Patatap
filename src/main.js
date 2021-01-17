@@ -294,14 +294,21 @@ $(function() {
     var $midi = $('.midi-connections');
 
     var show = function() {
-      $hint.find('.message').fadeOut(function() {
+      $hint.find('.message').animate({ opacity: 0 }, function() {
+        $hint.css({
+          display: 'block',
+          opacity: 1
+        });
         $midi.fadeIn();
       });
       hide();
     };
     var hide = _.debounce(function() {
       $midi.fadeOut(function() {
-        $hint.find('.message').fadeIn();
+        $hint.fadeOut(function() {
+          $hint.find('.message').css({ opacity: 1 });
+        });
+        showHint();
       });
     }, 5000);
 
@@ -441,6 +448,7 @@ $(function() {
       if (index) {
         onMIDISuccess.receiving = true;
         trigger(index);
+        triggered();
         onMIDISuccess.receiving = false;
       }
     }
