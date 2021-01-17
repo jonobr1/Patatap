@@ -352,6 +352,10 @@ $(function() {
       indicesToNotes[v] = k;
     }
 
+    // Expose callbacks for WKUserScript access in iOS applications
+    window.onmidistatechange = init;
+    window.onmidimessage = messageReceived;
+
     midi.addEventListener('statechange', init);
     init({ target: midi });
 
@@ -398,6 +402,7 @@ $(function() {
       }
 
       if (names.length <= 0) {
+        $midi.html('Disconnected from all MIDI devices');
         return;
       } else if (names.length <= 1) {
         deviceString = names[0];
@@ -409,8 +414,7 @@ $(function() {
         names.push(lastName);
       }
 
-      $midi
-        .html('Connected to these MIDI devices: ' + deviceString)
+      $midi.html('Connected to these MIDI devices: ' + deviceString)
 
       show();
 
