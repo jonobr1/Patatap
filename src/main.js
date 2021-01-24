@@ -29,20 +29,42 @@ $(function() {
   });
 
   Sound.ready(function() {
+
     _.each(animations.list, function(a, i) {
       if (a.filename) {
         a.sounds = [];
       }
     });
-    var silent = new Sound(path + 'silent.mp3', function() {
-      var enableAudio = function () {
-        Sound.enabled = true;
-        silent.play();
-        $window.unbind('click', enableAudio);
-      };
-      $window.bind('click', enableAudio);
+
+    var silent = document.createElement('audio');
+    silent.addEventListener('canplay', loaded, false);
+    silent.src = path + 'silent.mp3';
+    silent.preload = 'auto';
+    silent.load();
+
+    function loaded(e) {
+      $window
+        .bind('click', enableAudio)
+        .bind('visibilitychange', listenToEnableAudio);
       soundsBuffered();
-    });
+      silent.removeEventListener('canplay', loaded, false);
+    }
+
+    function enableAudio(e) {
+      Sound.enabled = true;
+      silent.play();
+      $window.unbind('click', enableAudio);
+    }
+
+    function listenToEnableAudio() {
+      if (/hidden/i.test(document.visibilityState)) {
+        Sound.enabled = false;
+        $window
+          .unbind('click', enableAudio)
+          .bind('click', enableAudio);
+      }
+    }
+
   });
 
   function initialize() {
