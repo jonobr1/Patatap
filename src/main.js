@@ -10,7 +10,7 @@ $(function() {
    * Append Sound Generation to Animations
    */
 
-  var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+  var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
   var path = window.location.href.match(/localhost/i) ? '/assets/' : '//storage.googleapis.com/cdn.patatap.com/';
   var filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
