@@ -1,5 +1,5 @@
 
-var animationRatio = url.int('resolution', 100) / 100;
+var animationRatio = url.int('resolution', 200) / 100;
 var two = new Two({
   type: (url.boolean('canvas') || (has.mobile && has.iOS) || (!has.mobile && has.Firefox)) ? Two.Types.canvas : Two.Types.svg
   // fullscreen: true

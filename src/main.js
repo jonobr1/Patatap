@@ -407,6 +407,14 @@ $(function() {
         output.send(off, Date.now() + duration);
       }
 
+      if (window.webkit) {
+        // Dispatch to WKWebView
+        window.webkit.messageHandlers.midi.postMessage(on);
+        setTimeout(function() {
+          window.webkit.messageHandlers.midi.postMessage(off);
+        }, duration);
+      }
+
     };
 
     function init(e) {
