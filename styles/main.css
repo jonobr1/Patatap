@@ -368,4 +368,7 @@ body.kiosk .ios-app-store {
 body #content,
 body #content * {
   user-select: none;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
 }

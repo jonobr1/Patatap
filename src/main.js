@@ -57,7 +57,7 @@ $(function() {
     }
 
     function listenToEnableAudio() {
-      if (/hidden/i.test(document.visibilityState)) {
+      if (/hidden/i.test(document.visibilityState) && Sound.enabled) {
         Sound.enabled = false;
         $window
           .unbind('click', enableAudio)
@@ -127,13 +127,6 @@ $(function() {
 
         orientUserInterface(e);
 
-      })
-      // Disable scrolling on mobile
-      .bind('touchstart touchmove touchend touchcancel', function(e) {
-        if (Sound.enabled && !(merchandising || $(e.target).hasClass('ios-app-store'))) {
-          e.preventDefault();
-          return false;
-        }
       })
       .bind('mousemove', function(e) {
 
@@ -592,6 +585,13 @@ $(function() {
         e = event.originalEvent;
         _.each(e.touches, updateTouchEnter);
 
+      })
+      // Disable scrolling on mobile
+      .bind('touchstart touchmove touchend touchcancel', function(e) {
+        if (Sound.enabled && !(merchandising || $(e.target).hasClass('ios-app-store'))) {
+          e.preventDefault();
+          return false;
+        }
       });
 
     _.each(buttons, function(group, i) {
