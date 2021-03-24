@@ -372,3 +372,19 @@ body #content * {
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: none;
 }
+#drop-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  visibility: hidden;
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.33);
+  transition: opacity 0.35s ease-in-out, visibility 0.35s ease-in-out;
+  z-index: 9999;
+}
+#drop-zone.drag-prompt {
+  opacity: 1;
+  visibility: visible;
+}

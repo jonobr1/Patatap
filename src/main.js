@@ -119,6 +119,54 @@ $(function() {
       $merchandise.fadeOut();
     });
 
+    if (window.MidiParser) {
+
+      var $dropZone = $('<div id="drop-zone" />');
+
+      $dropZone
+        .appendTo(document.body)
+        .bind('drop', function(e) {
+
+          e.stopPropagation();
+          e.preventDefault();
+
+          var file = e.originalEvent.dataTransfer.files[0];
+
+          if (!file) {
+            return;
+          }
+
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var buffer = e.target.result;
+            var data = new Uint8Array(buffer);
+            var midi = MidiParser.parse(data);
+          };
+
+          reader.readAsArrayBuffer(file);
+
+        });
+
+      var dragCount = 0;
+
+      $window
+        .bind('dragenter', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          dragCount++;
+          $dropZone.addClass('drag-prompt');
+        })
+        .bind('dragleave', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          dragCount--;
+          if (dragCount === 0) {
+            $dropZone.removeClass('drag-prompt');
+          }
+        });
+
+    }
+
     $window
       .bind('resize', function(e) {
 
