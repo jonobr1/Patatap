@@ -278,9 +278,8 @@ $(function() {
 
     $window.trigger('resize');
 
-    if (url.boolean('midi') && navigator.requestMIDIAccess) {
-      navigator.requestMIDIAccess()
-        .then(onMIDISuccess, onMIDIFailure);
+    if (navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
     }
 
     _.delay(function() {
