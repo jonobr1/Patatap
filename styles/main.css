@@ -192,11 +192,11 @@ body.kiosk .ios-app-store {
 }
 #merchandise .container #close-merchandise {
   position: absolute;
-  top: 16px / 8;
-  right: 16px;
+  top: 0;
+  right: 0;
   color: #555;
   font-size: 20px;
-  padding: 16px / 4;
+  padding: 16px;
   vertical-align: top;
   font-weight: bold;
   cursor: pointer;
