@@ -11,7 +11,7 @@ $(function() {
    */
 
   var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-  var path = window.location.href.match(/localhost/i) ? '/assets/' : '//storage.googleapis.com/cdn.patatap.com/';
+  var path = './assets/';
   var filetype = '.mp3';
   var asset_count = 0, $loaded = $('#loaded');
 
@@ -130,7 +130,7 @@ $(function() {
       })
       .bind('mousemove', function(e) {
 
-        if (embedding || url.boolean('kiosk')) {
+        if (embedding || true) {
           return;
         }
 
@@ -284,7 +284,7 @@ $(function() {
 
     _.delay(function() {
       $('#lobby').fadeOut(triggerLogo);
-      if (url.boolean('kiosk') /*|| (window.localStorage && window.localStorage.visited)*/) {
+      if (true /*|| (window.localStorage && window.localStorage.visited)*/) {
         $(document.body).addClass('kiosk');
         triggered();
         return;

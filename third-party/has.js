@@ -43,9 +43,9 @@
   };
 
   has.mobile = has.Android || has.Blackberry || has.iOS || has.OperaMini || has.Windows || has.WebOS;
-  has.touch = root.navigator.maxTouchPoints > 0;
+  has.touch = true;
   has.multitouch = root.navigator.maxTouchPoints > 1;
- 
+
   root.has = has;
 
 })();

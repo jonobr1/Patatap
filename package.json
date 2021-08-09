@@ -7,7 +7,16 @@
     "css:main": "lessc ./styles/main.less ./styles/main.css",
     "css:player": "lessc ./styles/player.less ./styles/player.css",
     "dev": "dev_appserver.py .",
-    "deploy": "gcloud app deploy app.yaml --project=pat-a-tap"
+    "deploy": "gcloud app deploy app.yaml --project=pat-a-tap",
+    "app": "electron .",
+    "zip": "rimraf app.zip && zip -r -X app.zip -8 ./ build/app-darwin-x64/ build/app-win32-ia32/",
+    "packager": "rimraf build/ && npm run packager:package",
+    "packager:package": "electron-packager . --platform=win32 --arch=ia32,x64 --out=build --overwrite --ignore=build --ignore=app.zip"
+  },
+  "directories": {
+    "assets": "assets",
+    "src": "src",
+    "third-party": "third-party"
   },
   "repository": {
     "type": "git",
@@ -21,6 +30,9 @@
   "homepage": "https://github.com/jonobr1/Neuronal-Synchrony#readme",
   "devDependencies": {
     "less": "^4.0.0",
-    "mpe": "^1.0.4"
+    "mpe": "^1.0.4",
+    "electron": "^5.0.3",
+    "electron-packager": "^13.1.1",
+    "rimraf": "^2.6.3"
   }
 }

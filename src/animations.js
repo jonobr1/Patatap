@@ -2602,7 +2602,7 @@ window.animations = (function() {
     updateAudio: function(callback) {
 
       var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-      var path = window.location.href.match(/localhost/i) ? '/assets/' : '//storage.googleapis.com/cdn.patatap.com/';
+      var path = './assets/';
       var filetype = '.mp3';
       var list = _.filter(exports.list, function(o) {
         return _.isArray(o.sounds);
