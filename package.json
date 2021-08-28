@@ -11,7 +11,7 @@
     "app": "electron .",
     "zip": "rimraf app.zip && zip -r -X app.zip -8 ./ build/app-darwin-x64/ build/app-win32-ia32/",
     "packager": "rimraf build/ && npm run packager:package",
-    "packager:package": "electron-packager . --platform=win32 --arch=ia32,x64 --out=build --overwrite --ignore=build --ignore=app.zip"
+    "packager:package": "electron-packager . --platform=linux --arch=ia32,x64,armv7l,arm64,mips64el --out=build --overwrite --ignore=build --ignore=app.zip"
   },
   "directories": {
     "assets": "assets",
