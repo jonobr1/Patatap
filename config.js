@@ -7,6 +7,8 @@ module.exports = {
 
   kiosk: true,
 
+  icon: 'images/apple-touch-icon.png',
+
   // Default background color before page loads
   backgroundColor: 'rgb(181, 181, 181)',
 

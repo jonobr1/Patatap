@@ -11,7 +11,7 @@ app.commandLine.appendSwitch('vmodule', 'console=0');
 // Disable security warnings for now
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
-let win;
+let win, icon;
 
 const entryFile = path.resolve(__dirname, './index.html');
 
@@ -27,9 +27,9 @@ function createWindow () {
     bounds.height = config.bounds.height;
   }
 
-  var displays = electron.screen.getAllDisplays();
-  var externalDisplay = null;
-  for (var i in displays) {
+  const displays = electron.screen.getAllDisplays();
+  let externalDisplay = null;
+  for (let i in displays) {
     if (displays[i].bounds.x !== 0 || displays[i].bounds.y !== 0) {
       externalDisplay = displays[i];
       break;
@@ -37,6 +37,10 @@ function createWindow () {
   }
   if (externalDisplay && config.useExternalDisplay) {
     Object.assign(bounds, externalDisplay.bounds);
+  }
+
+  if (config.icon) {
+    icon = path.resolve(__dirname, config.icon);
   }
 
   // Create the browser window.
@@ -47,7 +51,8 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: false,
       nodeIntegrationInWorker: false
-    }
+    },
+    icon: icon
   }, bounds));
 
   win.loadFile(entryFile);

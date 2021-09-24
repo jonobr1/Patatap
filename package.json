@@ -1,5 +1,6 @@
 {
-  "name": "patatap",
+  "name": "Patatap",
+  "productName": "Patatap",
   "version": "1.0.0",
   "description": "A collection of two dimensional animations that are triggered by sound.",
   "main": "index.js",
@@ -11,7 +12,7 @@
     "app": "electron .",
     "zip": "rimraf app.zip && zip -r -X app.zip -8 ./ build/app-darwin-x64/ build/app-win32-ia32/",
     "packager": "rimraf build/ && npm run packager:package",
-    "packager:package": "electron-packager . --platform=linux --arch=ia32,x64,armv7l,arm64,mips64el --out=build --overwrite --ignore=build --ignore=app.zip"
+    "packager:package": "electron-packager . --platform=darwin,linux --arch=x64,armv7l --out=build --overwrite --ignore=build --ignore=app.zip"
   },
   "directories": {
     "assets": "assets",
@@ -29,10 +30,10 @@
   },
   "homepage": "https://github.com/jonobr1/Neuronal-Synchrony#readme",
   "devDependencies": {
+    "electron": "^5.0.13",
+    "electron-packager": "^13.1.1",
     "less": "^4.0.0",
     "mpe": "^1.0.4",
-    "electron": "^5.0.3",
-    "electron-packager": "^13.1.1",
     "rimraf": "^2.6.3"
   }
 }
