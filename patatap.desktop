@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Patatap
+Exec=/home/pi/Downloads/Patatap-linux-armv7l/Patatap
+Icon=/home/pi/Downloads/Patatap-linux-armv7l/resources/app/images/apple-touch-icon.png
+Terminal=false
+Type=Application
+StartupNotify=true
+Encoding=UTF-8
