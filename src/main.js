@@ -579,9 +579,6 @@ $(function() {
         buttons.map[index] = button;
 
         $(elem)
-          .css({
-            cursor: 'pointer'
-          })
           .bind('mousedown touchstart', function(event) {
 
             e = event.originalEvent;
