@@ -155,6 +155,7 @@ body.kiosk .ios-app-store {
   color: black;
   top: 25%;
   left: auto;
+  text-align: center;
 }
 #drop-target {
   position: relative;
@@ -185,6 +186,35 @@ body.kiosk .ios-app-store {
   top: 50%;
   transform: translate(0, -50%);
   text-align: center;
+}
+#now-playing {
+  font-family: 'Lucida Grande', verdana, sans-serif;
+  font-size: 12px;
+  line-height: 32px;
+}
+#now-playing span {
+  display: inline-block;
+  padding: 0 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-radius: 10.56px;
+}
+#now-playing #midi-title {
+  background: white;
+  color: #666666;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+}
+#now-playing #midi-remove {
+  background: #ccc;
+  color: #666;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+  box-shadow: inset 2px 0px 10px rgb(0 0 0 / 10%);
+  cursor: pointer;
+}
+#now-playing #midi-remove:hover {
+  color: #fff;
 }
 #embed {
   position: fixed;

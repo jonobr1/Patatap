@@ -4,6 +4,7 @@ $(function() {
     var initDragMessage = document.querySelector(
         "#drop-target .message"
     ).textContent;
+    var $nowPlaying = $("#now-playing");
 
     function parseFile(file) {
         // Q: Show error if wrong file type?
@@ -18,6 +19,16 @@ $(function() {
             //Q: Call an autoplay function or will player loop always check for currentMidi?
         };
         reader.readAsArrayBuffer(file);
+
+        $("#midi-title").html(file.name);
+        $nowPlaying.fadeIn();
+    }
+
+    function removeFile() {
+        //Hide the title/player
+        $nowPlaying.fadeOut(100);
+        //Reset Var (This will stop the player)
+        currentMidiFile = null;
     }
 
     function dragOverHandler(ev) {
@@ -84,6 +95,10 @@ $(function() {
             dragEventCounter = 0;
             fileDrop.classList.remove("Hover");
             dropHandler(e);
+        });
+
+        document.querySelector("#midi-remove").addEventListener("click", (e) => {
+            removeFile();
         });
     }
 
