@@ -216,6 +216,15 @@ body.kiosk .ios-app-store {
 #now-playing #midi-remove:hover {
   color: #fff;
 }
+#midi-track {
+  background: #666;
+}
+#midi-track-progress {
+  height: 24px;
+  width: 0%;
+  background: #fff;
+  transition: width .1;
+}
 #embed {
   position: fixed;
   top: 50%;
