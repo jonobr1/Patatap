@@ -148,6 +148,44 @@ body {
 body.kiosk .ios-app-store {
   display: none !important;
 }
+#drop {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  color: black;
+  top: 25%;
+  left: auto;
+}
+#drop-target {
+  position: relative;
+  width: 50vh;
+  height: 25vh;
+  margin: 0 auto;
+  border: 17px dashed rgba(255,255,255,.4);
+  background: rgba(255,255,255,.2);
+  color: #666666;
+  font-family: 'Lucida Grande', verdana, sans-serif;
+  font-size: 12px;
+  line-height: 32px;
+  border-radius: 10.56px;
+  opacity: 0;
+  transition: opacity .5s;/*background-color .5s, color .5s;*/
+}
+#drop-target.Hover {
+  opacity: 1;
+  /*background-color: #cccccc;
+  color: #ffffff;*/
+}
+#drop-target .message {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  left: 0px;
+  top: 50%;
+  transform: translate(0, -50%);
+  text-align: center;
+}
 #embed {
   position: fixed;
   top: 50%;
