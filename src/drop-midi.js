@@ -35,10 +35,10 @@ $(function() {
     };
     
     var dragEventCounter = 0;
-    var initDragMessage = document.querySelector(
-        "#drop-target .message"
-    ).textContent;
+    var $message = $("#drop-target .message");
     var $nowPlaying = $("#now-playing");
+    var $midiProgress = $('#midi-progress');
+    var initDragMessage = $message.text();
 
     function parseFile(file) {
         // Q: Show error if wrong file type?
@@ -68,12 +68,14 @@ $(function() {
     function startFile(fileData) {
         $("#midi-title").html(midi.name);
         $nowPlaying.fadeIn();
+        $midiProgress.fadeIn();
         midi.start();
     }
 
     function removeFile() {
         //Hide the title/player
         $nowPlaying.fadeOut(100);
+        $midiProgress.fadeOut(100);
         //Reset Var (This will stop the player)
         midi.notes = [];
         midi.queue = [];
@@ -86,7 +88,7 @@ $(function() {
         var fill = 0.0;
         fill = (midi.playbackTime/midi.duration) * 100;
 
-        $("#midi-track-progress").width(fill+"%");
+        $("#midi-progress-fill").width(fill+"%");
     }
 
     function updateSoundQueue() {
@@ -144,9 +146,7 @@ $(function() {
         }
 
         if (file) {
-            document.querySelector(
-                "#drop-target .message"
-            ).textContent = file.name;
+            $message.html(file.name);
             parseFile(file);
         }
     }
@@ -159,33 +159,32 @@ $(function() {
             window.Blob
         )
     ) {
-        document.querySelector("#drop-target .message").textContent =
-            "Reading files not supported by this browser";
+        $message.html("Reading files not supported by this browser");
     } else {
+        const fileDrag = document.querySelector("#drop");
         const fileDrop = document.querySelector("#drop-target");
 
-        fileDrop.addEventListener("dragenter", (e) => {
+        fileDrag.addEventListener("dragenter", (e) => {
             dragEventCounter++;
             if (dragEventCounter === 1) {
                 fileDrop.classList.add("Hover")
-                document.querySelector(
-                    "#drop-target .message"
-                ).textContent = initDragMessage;
+                fileDrag.classList.add("Hover")
+                $message.html(initDragMessage);
             }
         }
         );
 
-        fileDrop.addEventListener("dragleave", (e) => {
+        fileDrag.addEventListener("dragleave", (e) => {
             dragEventCounter = Math.max(dragEventCounter-1, 0);
-            if (dragEventCounter === 0)
+            if (dragEventCounter === 0) {
                 fileDrop.classList.remove("Hover")
+                fileDrag.classList.remove("Hover")
+            }
         }
         );
 
-        fileDrop.addEventListener("dragover", (e) => {
-            dragOverHandler(e)
-        }
-        );
+        fileDrag.addEventListener("dragover", (e) => {dragOverHandler(e)});
+        fileDrop.addEventListener("dragover", (e) => {dragOverHandler(e)});
 
         fileDrop.addEventListener("drop", (e) => {
             dragEventCounter = 0;

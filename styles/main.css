@@ -150,18 +150,17 @@ body.kiosk .ios-app-store {
 }
 #drop {
   position: absolute;
-  width: 100%;
-  height: 50%;
-  color: black;
-  top: 25%;
-  left: auto;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
   text-align: center;
 }
 #drop-target {
   position: relative;
-  width: 50vh;
-  height: 25vh;
-  margin: 0 auto;
+  width: 90vw;
+  height: 90vh;
+  margin: 5vh 5vw;
   border: 17px dashed rgba(255,255,255,.4);
   background: rgba(255,255,255,.2);
   color: #666666;
@@ -170,7 +169,8 @@ body.kiosk .ios-app-store {
   line-height: 32px;
   border-radius: 10.56px;
   opacity: 0;
-  transition: opacity .5s;/*background-color .5s, color .5s;*/
+  transition: opacity .5s;
+  box-sizing: border-box;
 }
 #drop-target.Hover {
   opacity: 1;
@@ -190,14 +190,13 @@ body.kiosk .ios-app-store {
 #now-playing {
   font-family: 'Lucida Grande', verdana, sans-serif;
   font-size: 12px;
-  line-height: 32px;
 }
 #now-playing span {
-  display: inline-block;
-  padding: 0 16px;
+  padding: 8px 16px;
   white-space: nowrap;
   overflow: hidden;
   border-radius: 10.56px;
+  line-height: 64px;
 }
 #now-playing #midi-title {
   background: white;
@@ -216,13 +215,18 @@ body.kiosk .ios-app-store {
 #now-playing #midi-remove:hover {
   color: #fff;
 }
-#midi-track {
-  background: #666;
+#midi-progress {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: auto;
+  text-align: center;
+  background: rgb(255,244,211)
 }
-#midi-track-progress {
-  height: 24px;
+#midi-progress-fill {
+  height: 7px;
   width: 0%;
-  background: #fff;
+  background: rgb(235,192,92);
   transition: width .1;
 }
 #embed {

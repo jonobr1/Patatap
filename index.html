@@ -74,9 +74,18 @@
         <li>
           <a id="jonobr1" href="http://jonobr1.com/" target="_blank">jonobr1</a> + <a id="lullatone" href="http://lullatone.com/" target="_blank">lullatone</a>
         </li>
+        <li id="now-playing" style="display: none;">
+          <p>
+            <span id="midi-title"></span><!--this comment removes extra white space
+            --><span id="midi-remove">x</span>
+          </p>
+        </li>
       </ul>
     </div>
     <div id="content"></div>
+    <div id="midi-progress" style="display: none;">
+      <div id="midi-progress-fill"></div>
+    </div>
     <div id="hint" style="display: none;">
       <p class="message"></p>
       <br /><br />
@@ -86,14 +95,7 @@
     </div>
     <div id="drop">
       <div id="drop-target">
-        <p class="message">Drag &amp; drop a midi file.</p>
-      </div>
-      <div id="now-playing" style="display: none;">
-        <span id="midi-title"></span><!--this comment removes extra white space
-        --><span id="midi-remove">x</span>
-        <div id="midi-track">
-          <div id="midi-track-progress"></div>
-        </div>
+        <p class="message">Drop midi file here.</p>
       </div>
     </div>
     <div id="embed" style="display: none;">
