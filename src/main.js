@@ -326,26 +326,10 @@ $(function() {
       });
     }, 5000);
 
-    var notesToIndices = {
-      21: '2,0', 23: '2,1', 24: '2,2', 26: '2,3', 28: '2,4', 29: '2,5',
-      31: '2,6', 33: '1,0', 35: '1,1', 36: '1,2', 38: '1,3', 40: '1,4',
-      41: '1,5', 43: '1,6', 45: '1,7', 47: '1,8', 48: '0,0', 50: '0,1',
-      52: '0,2', 53: '0,3', 55: '0,4', 57: '0,5', 59: '0,6', 60: '0,7',
-      62: '0,8', 64: '0,9',
-      65: '2,0', 67: '2,1', 69: '2,2', 71: '2,3', 72: '2,4', 74: '2,5',
-      76: '2,6', 77: '1,0', 79: '1,1', 81: '1,2', 83: '1,3', 84: '1,4',
-      86: '1,5', 88: '1,6', 89: '1,7', 91: '1,8', 93: '0,0', 95: '0,1',
-      96: '0,2', 98: '0,3', 100: '0,4', 101: '0,5', 103: '0,6', 105: '0,7',
-      107: '0,8', 108: '0,9',
-      // SPACE
-      22: '3,0',
-      106: '3,0'
-    };
+    indicesToNotes = {};
 
-    var indicesToNotes = {};
-
-    for (var k in notesToIndices) {
-      var v = notesToIndices[k];
+    for (var k in midi.notesToIndices) {
+      var v = midi.notesToIndices[k];
       indicesToNotes[v] = k;
     }
 
@@ -357,7 +341,6 @@ $(function() {
     init({ target: midi });
 
     onMIDISuccess.dispatch = function(index) {
-
       var duration = 100;
       var note = indicesToNotes[index];
       var velocity = 100;
@@ -442,7 +425,7 @@ $(function() {
     }
 
     function noteOn(note) {
-      var index = notesToIndices[note];
+      var index = midi.notesToIndices[note];
       if (index) {
         onMIDISuccess.receiving = true;
         trigger(index);
@@ -707,6 +690,10 @@ $(function() {
       onMIDISuccess.dispatch(hash);
     }
 
+  }
+
+  if (window.midi) {
+    midi.onTrigger(trigger);
   }
 
   var timeout;
