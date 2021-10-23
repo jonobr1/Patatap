@@ -48,7 +48,8 @@ $(function() {
         const reader = new FileReader();
         reader.onload = function (e) {
             const json = new Midi(e.target.result);
-            midi.name = file.name; //json doesnt always include the name, so refer to file.
+            const maxTitleChars = 30;
+            midi.name = (file.name.length > maxTitleChars) ? file.name.substring(0,maxTitleChars-3) + "..." : file.name; //json doesnt always include the name, so refer to file.
             midi.duration = json.duration;
     
             for (var i = 0; i < json.tracks.length; i++) {
