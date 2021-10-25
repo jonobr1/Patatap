@@ -36,9 +36,12 @@ $(function() {
     
     var dragEventCounter = 0;
     var $message = $("#drop-target .message");
+    var initDragMessage = $message.text();
+    var $content = $("#content");
+    var $dropContainer = $("#drop");
+    var $dropTarget = $("#drop-target");
     var $nowPlaying = $("#now-playing");
     var $midiProgress = $('#midi-progress');
-    var initDragMessage = $message.text();
 
     function parseFile(file) {
         // Q: Show error if wrong file type?
@@ -130,16 +133,45 @@ $(function() {
     
     window.requestAnimationFrame(playLoop);
 
-    function dragOverHandler(ev) {
+    function showDropzone() {
+        $message.html(initDragMessage);
+        $dropContainer.fadeIn();
+    }
+
+    function hideDropzone(duration) {
+        duration = duration || 400;
+        dragEventCounter = 0;
+        $dropContainer.fadeOut(duration, function() {$dropContainer.hide();});
+    }
+
+    function dragEnterHandler(e) {
+        dragEventCounter++;
+        if (dragEventCounter === 1) {
+            showDropzone();
+        }
+    }
+
+    function dragLeaveHandler(e) {
+        dragEventCounter = Math.max(dragEventCounter-1, 0);
+        if (dragEventCounter === 0) {
+            hideDropzone();
+        }
+    }
+
+    function dragOverHandler(e) {
         // Prevent default behavior (Prevent file from being opened)
-        ev.preventDefault();
+        e.preventDefault();
       }
 
     function dropHandler(e) {
         // Prevent default behavior (Prevent file from being opened)
         e.preventDefault();
 
+        //reset dropzone vars
+        hideDropzone(200);
         let file = null;
+
+        var e = e.originalEvent;
         if (e.dataTransfer.items && e.dataTransfer.items.length > 0 && e.dataTransfer.items[0].kind === 'file') {
             file = e.dataTransfer.items[0].getAsFile();
         } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
@@ -162,40 +194,19 @@ $(function() {
     ) {
         $message.html("Reading files not supported by this browser");
     } else {
-        const fileDrag = document.querySelector("#drop");
-        const fileDrop = document.querySelector("#drop-target");
+        $content.on("dragenter", dragEnterHandler);
+        $dropContainer.on("dragenter", dragEnterHandler);
 
-        fileDrag.addEventListener("dragenter", (e) => {
-            dragEventCounter++;
-            if (dragEventCounter === 1) {
-                fileDrop.classList.add("Hover")
-                fileDrag.classList.add("Hover")
-                $message.html(initDragMessage);
-            }
-        }
-        );
+        $content.on("dragleave", dragLeaveHandler);
+        $dropContainer.on("dragleave", dragLeaveHandler);
 
-        fileDrag.addEventListener("dragleave", (e) => {
-            dragEventCounter = Math.max(dragEventCounter-1, 0);
-            if (dragEventCounter === 0) {
-                fileDrop.classList.remove("Hover")
-                fileDrag.classList.remove("Hover")
-            }
-        }
-        );
+        $content.on("dragover", dragOverHandler);
+        $dropContainer.on("dragover", dragOverHandler);
+        $dropTarget.on("dragover", dragOverHandler);
 
-        fileDrag.addEventListener("dragover", (e) => {dragOverHandler(e)});
-        fileDrop.addEventListener("dragover", (e) => {dragOverHandler(e)});
+        $dropTarget.on("drop", dropHandler);
 
-        fileDrop.addEventListener("drop", (e) => {
-            dragEventCounter = 0;
-            fileDrop.classList.remove("Hover");
-            dropHandler(e);
-        });
-
-        document.querySelector("#midi-remove").addEventListener("click", (e) => {
-            removeFile();
-        });
+        $("#midi-remove").click(removeFile);
     }
 
 });

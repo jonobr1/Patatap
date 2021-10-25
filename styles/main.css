@@ -168,14 +168,7 @@ body.kiosk .ios-app-store {
   font-size: 12px;
   line-height: 32px;
   border-radius: 10.56px;
-  opacity: 0;
-  transition: opacity .5s;
   box-sizing: border-box;
-}
-#drop-target.Hover {
-  opacity: 1;
-  /*background-color: #cccccc;
-  color: #ffffff;*/
 }
 #drop-target .message {
   position: absolute;
