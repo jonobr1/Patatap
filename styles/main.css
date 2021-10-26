@@ -180,10 +180,6 @@ body.kiosk .ios-app-store {
   transform: translate(0, -50%);
   text-align: center;
 }
-#now-playing {
-  font-family: 'Lucida Grande', verdana, sans-serif;
-  font-size: 12px;
-}
 #now-playing span {
   padding: 8px 16px;
   white-space: nowrap;
@@ -192,8 +188,8 @@ body.kiosk .ios-app-store {
   line-height: 64px;
 }
 #now-playing #midi-title {
-  background: white;
-  color: #666666;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #ccc;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
 }
@@ -203,7 +199,11 @@ body.kiosk .ios-app-store {
   border-bottom-left-radius: 0px;
   border-top-left-radius: 0px;
   box-shadow: inset 2px 0px 10px rgb(0 0 0 / 10%);
-  cursor: pointer;
+  padding: 0px 10px 0px 7px;
+  display: inline-block;
+  line-height: 33px;
+  vertical-align: middle;
+  margin-top: -2px;
 }
 #now-playing #midi-remove:hover {
   color: #fff;
@@ -244,6 +244,16 @@ body.kiosk .ios-app-store {
   outline: none;
   resize: none;
 }
+.close-button {
+  color: #555;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: none;
+  cursor: pointer;
+}
+.close-button:hover {
+  color: #000;
+}
 #merchandise {
   position: fixed;
   left: 0;
@@ -269,15 +279,8 @@ body.kiosk .ios-app-store {
   position: absolute;
   top: 0;
   right: 0;
-  color: #555;
-  font-size: 20px;
   padding: 16px;
   vertical-align: top;
-  font-weight: bold;
-  cursor: pointer;
-}
-#merchandise .container #close-merchandise:hover {
-  color: #000;
 }
 #merchandise .container div.vimeo {
   text-align: center;
