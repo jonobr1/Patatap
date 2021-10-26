@@ -253,11 +253,26 @@ $(function() {
       });
 
     if (has.touch) {
-      $hint.find('.message').html('Press anywhere on the screen and turn up speakers');
+      $hint.find('#intro-message').html('Press anywhere on the screen and turn up speakers');
       createMobileUI();
     } else {
       $credits.css('display', 'block');
-      $hint.find('.message').html('Press any key, A to Z or spacebar, and turn up speakers');
+      $hint.find('#intro-message').html('Press any key, A to Z or spacebar, and turn up speakers');
+
+      var base = $hint.find('#intro-message').html();
+      var midiStart = "<p id='midi-intro'>(You can also"
+      var midiPlay = " play a <span id='learn-midi-instrument'>midi instrument</span>";
+      var midiBoth = " or"
+      var midiDrop = " drop a <span id='learn-midi-file'>midi file</span>";
+      var midiEnd = ".)</p>";
+      // TODO: Should we do logic to only show parts of the message based on their browser / if they have midi / drop?
+      // or do we just explain it in the modals? 
+
+      $hint.find('#intro-message').html(base + midiStart + midiPlay + midiBoth + midiDrop + midiEnd);
+
+      $("#learn-midi-instrument").click(function() {$hint.find(".midi-modal").hide();$("#midi-instrument-modal").fadeToggle(200);})
+      $("#learn-midi-file").click(function() {$hint.find(".midi-modal").hide();$("#midi-file-modal").fadeToggle(200);})
+      $(".close-midi-modal").click(function() { $hint.find(".midi-modal").fadeOut(200); })
     }
 
     two

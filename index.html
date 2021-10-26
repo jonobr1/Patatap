@@ -87,7 +87,20 @@
       <div id="midi-progress-fill"></div>
     </div>
     <div id="hint" style="display: none;">
-      <p class="message"></p>
+      <div id="intro" class="message">
+        <p id="intro-message"></p>
+        <div id="midi-instrument-modal" class="midi-modal" style="display: none;">
+          <span class="close-midi-modal">x</span>
+          <p>To trigger Patatap from your own midi device:</p>
+            <ul><li>step one</li><li>step two</li><li>step three</li></ul>
+          <p>*Only works in Chrome browsers or on the app</p>
+        </div>
+        <div id="midi-file-modal" class="midi-modal" style="display: none;">
+          <span class="close-midi-modal">x</span>
+          <p>Drag & Drop a midi file here and Patatap will play it.</p>
+            <ul><li>Place notes on the same track</li><li>Patatap reads the first track with notes</li><li>Accepts .midi or .mid filetypes.</li></ul>
+        </div>
+      </div>
       <br /><br />
       <p class="midi-connections" style="display: none;"></p>
       <a class="ios-app-store" href="https://itunes.apple.com/us/app/patatap/id880626868?ls=1&mt=8" target="_blank"></a>

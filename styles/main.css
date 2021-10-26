@@ -99,25 +99,58 @@ body {
   text-align: center;
   user-select: none;
 }
+#intro {
+  width: 375px;
+}
 #hint .message,
-#hint .midi-connections {
+#hint .midi-connections,
+#hint .midi-modal {
   display: inline-block;
   background: white;
   color: #666666;
   font-family: 'Lucida Grande', verdana, sans-serif;
   font-size: 12px;
-  line-height: 32px;
+  line-height: 24px;
   border-radius: 10.56px;
-  padding: 0 16px;
+  padding: 16px;
   white-space: nowrap;
   overflow: hidden;
 }
 @media (max-width: 400px) {
   #hint .message,
-  #hint .midi-connections {
+  #hint .midi-connections,
+  #hint .midi-modal {
     font-size: 16px / 1.6;
     line-height: 32px / 1.6;
   }
+}
+#hint .midi-modal {
+  display: block;
+  text-align: left;
+  margin-top: 1.5em;
+  white-space: normal;
+  border-top: 1px dashed #ccc;
+  border-radius: 0;
+    /*option b
+  padding: 1em 1.5em;
+  margin: 1.5em 1.5em .5em 1.5em;
+  background: #f6f6f6;
+  color: #999;
+  */
+}
+#hint .midi-modal ul {
+  text-align: left;
+  padding-left: 2em;
+}
+#hint .close-midi-modal {
+  text-align: center;
+  color: #ccc;
+  width: 2em;
+  cursor: pointer;
+  display: block;
+  margin: -1.4em -1.4em 0 0;
+  float: right;
+  background: #fff;
 }
 #hint .midi-connections {
   position: absolute;
@@ -221,6 +254,17 @@ body.kiosk .ios-app-store {
   width: 0%;
   background: rgb(235,192,92);
   transition: width .1;
+}
+#midi-intro {
+  color: #999;
+  display: block;
+}
+#learn-midi-instrument, #learn-midi-file {
+  border-bottom: 1px solid #bbb;
+  cursor: pointer;
+}
+#learn-midi-instrument:hover, #learn-midi-file:hover, #hint .close-midi-modal:hover {
+  opacity: .5;
 }
 #embed {
   position: fixed;
