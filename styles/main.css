@@ -214,13 +214,14 @@ body.kiosk .ios-app-store {
   top: 0;
   left: auto;
   text-align: center;
-  background: rgb(255,244,211)
+  background: rgb(255,244,211);
+  transition: background-color .4s;
 }
 #midi-progress-fill {
   height: 7px;
   width: 0%;
   background: rgb(235,192,92);
-  transition: width .1;
+  transition: width .1, background-color .4s;
 }
 #embed {
   position: fixed;

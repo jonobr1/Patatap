@@ -2505,6 +2505,9 @@ window.animations = (function() {
     if (_.isFunction(onComplete)) {
       changeColors.callback = onComplete;
     }
+    if (window.midi && window.midi.handleChangeColors) {
+      window.midi.handleChangeColors();
+    }
   };
 
   changeColors.hash = '3,';

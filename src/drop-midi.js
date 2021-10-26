@@ -21,6 +21,22 @@ $(function() {
             midi._onTrigger = func;
         },
 
+        handleChangeColors: function() {
+            if (!window.animations) return;
+
+            function lighten(color) {
+                white = [255,255,255];
+                power = .33;
+                return [color[0]+(white[0]-color[0])*power, color[1]+(white[1]-color[1])*power, color[2]+(white[2]-color[2])*power]
+            }
+    
+            var fillColor = "rgb("+Object.values(window.animations.getColorPalette().accent).toString()+")";
+            var bgColor = "rgb("+lighten(Object.values(window.animations.getColorPalette().background)).toString()+")"; 
+            $("#midi-progress-fill").css("background", fillColor);
+    
+            $("#midi-progress").css("background", bgColor);
+        },
+
         playbackTime: 0.0,
         notes: [],
         queue: [],
@@ -30,6 +46,7 @@ $(function() {
         start: function() {
             midi.queue = midi.notes.slice(0);
             midi.playbackTime = 0.0;
+            midi.handleChangeColors();
         },
 
     };
