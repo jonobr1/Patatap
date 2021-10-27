@@ -166,6 +166,117 @@ body.kiosk .ios-app-store {
   display: none !important;
 }
 
+#drop {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  text-align: center;
+  background: rgba(0,0,0,.4);
+}
+
+#drop-target {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  margin: 5vh 5vw;
+  border: 17px dashed rgba(255,255,255,.4);
+  background: rgba(255,255,255,.2); 
+  border-radius: @font-size * 0.66;
+  box-sizing: border-box;
+
+  .message {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 50%;
+    transform: translate(0, -50%);
+    text-align: center;
+    font-family: @body-family;
+    font-size: @font-size * 0.75;  
+    color: #ffffff; 
+  }
+}
+
+#now-playing {
+  position: relative;
+
+  .pill-block {
+    padding: 8px 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 10.56px;
+    line-height: 64px;
+  }
+
+  #midi-title {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #ccc;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    cursor:pointer;
+  }
+
+  #midi-remove {
+    background: #ccc;
+    color: #666;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    box-shadow: inset 2px 0px 10px rgb(0 0 0 / 10%);
+    padding: 0px 10px 0px 7px;
+    display: inline-block;
+    line-height: 33px;
+    vertical-align: middle;
+    margin-top: -2px;
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+#midi-track-list {
+  position: absolute;
+  bottom: 48px;
+  left: 23px;
+  right: 46px;
+  z-index: 2;
+
+  .track-option {
+    display: block;
+    padding: 0 8px;
+    line-height: 20px;
+    background: #fff;
+    color: #666;
+    border-radius: 0;
+    cursor: pointer;
+    &:hover {
+      color: #ccc;
+    }
+  }
+  .track-option.selected, .track-option:active {
+    color: #fff;
+    background: #ccc;
+  }
+}
+
+#midi-progress {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: auto;
+  text-align: center;
+  background: rgb(255,244,211);
+  transition: background-color .4s;
+}
+
+#midi-progress-fill {
+  height: 7px;
+  width: 0%;
+  background: rgb(235,192,92);
+  transition: width .1, background-color .4s;
+}
+
 #embed {
   position: fixed;
   top: 50%;
@@ -185,6 +296,17 @@ body.kiosk .ios-app-store {
     border: 0;
     outline: none;
     resize: none;
+  }
+}
+
+.close-button {
+  color: #555;
+  font-size: @font-size * 1.25;
+  font-weight: bold;
+  font-family: none;
+  cursor: pointer;
+  &:hover {
+    color: #000;
   }
 }
 
@@ -251,15 +373,8 @@ body.kiosk .ios-app-store {
       position: absolute;
       top: 0;
       right: 0;
-      color: #555;
-      font-size: @font-size * 1.25;
       padding: @font-size;
       vertical-align: top;
-      font-weight: bold;
-      cursor: pointer;
-      &:hover {
-        color: #000;
-      }
     }
 
     div.vimeo {
