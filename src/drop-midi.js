@@ -62,6 +62,7 @@ $(function() {
     var $nowPlaying = $("#now-playing");
     var $midiProgress = $('#midi-progress');
     var $dropdown = $("#midi-track-list");
+    var $credits = $('#credits');
 
     function parseFile(file) {
         // Q: Show error if wrong file type?
@@ -142,6 +143,7 @@ $(function() {
     }
 
     function showTrackList() {
+        $credits.toggleClass('active');
         $dropdown.fadeToggle(100);
     }
 
@@ -154,6 +156,7 @@ $(function() {
 
     function removeFile() {
         //Hide the title/player
+        $credits.removeClass('active');
         $nowPlaying.fadeOut(100);
         $midiProgress.fadeOut(100);
         //Reset Var (This will stop the player)

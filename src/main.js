@@ -749,7 +749,7 @@ $(function() {
   }
 
   var hideCredits = _.debounce(function() {
-    if (mouse.y > height - 64) {
+    if ($credits.hasClass('active') || mouse.y > height - 64) {
       hideCredits();
       return;
     }
