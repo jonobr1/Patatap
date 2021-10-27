@@ -16,6 +16,9 @@ $(function() {
             106: '3,0'
         },
 
+        playing: false,
+        update: update,
+
         _onTrigger: null,
         onTrigger: function(func) {
             midi._onTrigger = func;
@@ -152,6 +155,7 @@ $(function() {
         $nowPlaying.fadeIn();
         $midiProgress.fadeIn();
         midi.start();
+        midi.playing = true;
     }
 
     function removeFile() {
@@ -167,6 +171,7 @@ $(function() {
         midi.playbackTime = 0.0;
         midi.activeTrackIndex = 0;
         midi.trackList = [];
+        midi.playing = false;
     }
 
     function updatePlayhead() {
@@ -192,27 +197,21 @@ $(function() {
 
         }
     }
-    
-    var tLastLoop = 0;
-    function playLoop(timestamp) {
-        if (Object.keys(midi.notes).length) {
-            
-            var deltaTime = timestamp - tLastLoop;
+
+    function update(deltaTime) {
+        if (midi.notes.length) {
+
             midi.playbackTime += (deltaTime * 0.001);
 
             if (midi.playbackTime > midi.duration) {
                 midi.start();
-            } 
-            
+            }
+
             updatePlayhead();
             updateSoundQueue();
-            tLastLoop = timestamp;
         }
 
-        window.requestAnimationFrame(playLoop);
     }
-    
-    window.requestAnimationFrame(playLoop);
 
     function showDropzone() {
         $message.html(initDragMessage);

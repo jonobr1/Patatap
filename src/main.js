@@ -261,10 +261,14 @@ $(function() {
     }
 
     two
-      .bind('update', function() {
+      .bind('update', function(frameCount, deltaTime) {
 
         TWEEN.update();
         animations.update();
+
+        if (midi.playing) {
+          midi.update(deltaTime);
+        }
 
         if (!ui) {
           return;
