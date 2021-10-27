@@ -37,6 +37,8 @@ $(function() {
             $("#midi-progress").css("background", bgColor);
         },
 
+        activeTrackIndex: 0,
+        trackList: [],
         playbackTime: 0.0,
         notes: [],
         queue: [],
@@ -59,6 +61,7 @@ $(function() {
     var $dropTarget = $("#drop-target");
     var $nowPlaying = $("#now-playing");
     var $midiProgress = $('#midi-progress');
+    var $dropdown = $("#midi-track-list");
 
     function parseFile(file) {
         // Q: Show error if wrong file type?
@@ -72,22 +75,78 @@ $(function() {
             midi.name = (file.name.length > maxTitleChars) ? file.name.substring(0,maxTitleChars-3) + "..." : file.name; //json doesnt always include the name, so refer to file.
             midi.duration = json.duration;
     
+            midi.trackList = [];
+
             for (var i = 0; i < json.tracks.length; i++) {
+                var _track = {"name": "",
+                "notes": []}
+                if (json.tracks[i].notes.length) {
+                    _track.notes = json.tracks[i].notes.sort(function (a, b) {
+                        return a.time - b.time;
+                    });
+                    if (json.tracks[i].name)
+                        _track.name = json.tracks[i].name;
+                    else if (json.tracks[i].instrument.name)
+                        _track.name = json.tracks[i].instrument.name;
+                    else
+                        _track.name = "Track " + i+1; //OR Instrument name if avail?
+
+                    midi.trackList.push(_track);
+                }
+
+                /* Only keep first track with notes
                 if (json.tracks[i].notes.length) {
                     midi.notes = json.tracks[i].notes.sort(function (a, b) {
                         return a.time - b.time;
                     });
                     break;
                 }
+                */
             }
-    
-            startFile();
+            
+            if(midi.trackList.length > 0) {
+                setTrack(0);
+                populateTrackDropdown();
+            } else {
+                //TODO: Error that couldnt find tracks with notes?
+            }
         };
         reader.readAsArrayBuffer(file);
     }
 
-    function startFile(fileData) {
-        $("#midi-title").html(midi.name);
+    function populateTrackDropdown() {
+        for (var i = 0; i < midi.trackList.length; i++) {
+            var className = "track-option";
+            if (i == 0)
+                className += " selected";
+            $dropdown.append("<span class='"+className+"' data-index="+i+">"+midi.trackList[i].name+"</span>");
+        }
+        $trackOptions = $(".track-option");
+        $trackOptions.click(function(e) {
+            e.stopPropagation();
+            var index = parseInt(e.target.getAttribute("data-index"));
+            setTrack(index)
+            $trackOptions.removeClass("selected");
+            $(e.target).addClass("selected");
+            $dropdown.hide();
+        })
+
+    }
+
+    function setTrack(index) {
+        if (index < midi.trackList.length) {
+            activeTrackIndex = index;
+            midi.notes = midi.trackList[activeTrackIndex].notes;
+            startFile();
+        }
+    }
+
+    function showTrackList() {
+        $dropdown.fadeToggle(100);
+    }
+
+    function startFile() {
+        $("#midi-title").html(midi.name + " - " + midi.trackList[activeTrackIndex].name);
         $nowPlaying.fadeIn();
         $midiProgress.fadeIn();
         midi.start();
@@ -103,6 +162,8 @@ $(function() {
         midi.name = "";
         midi.duration = 0;
         midi.playbackTime = 0.0;
+        midi.activeTrackIndex = 0;
+        midi.trackList = [];
     }
 
     function updatePlayhead() {
@@ -224,6 +285,14 @@ $(function() {
         $dropTarget.on("drop", dropHandler);
 
         $("#midi-remove").click(removeFile);
+
+        $("#midi-title").click(showTrackList);
+
+        $(window).click(function(e) {
+            if (e.target.id !== $dropdown.id && e.target.id != "midi-title" && $dropdown.is(":visible")) {
+                $dropdown.hide();
+            }
+        })
     }
 
 });

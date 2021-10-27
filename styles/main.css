@@ -180,7 +180,10 @@ body.kiosk .ios-app-store {
   transform: translate(0, -50%);
   text-align: center;
 }
-#now-playing span {
+#now-playing {
+  position: relative;
+}
+#now-playing .pill-block {
   padding: 8px 16px;
   white-space: nowrap;
   overflow: hidden;
@@ -192,6 +195,7 @@ body.kiosk .ios-app-store {
   color: #ccc;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
+  cursor:pointer;
 }
 #now-playing #midi-remove {
   background: #ccc;
@@ -207,6 +211,29 @@ body.kiosk .ios-app-store {
 }
 #now-playing #midi-remove:hover {
   color: #fff;
+}
+#midi-track-list {
+  position: absolute;
+  bottom: 48px;
+  left: 23px;
+  right: 46px;
+  z-index: 2;
+}
+#midi-track-list .track-option {
+  display: block;
+  padding: 0 8px;
+  line-height: 20px;
+  background: #fff;
+  color: #666;
+  border-radius: 0;
+  cursor: pointer;
+}
+#midi-track-list .track-option:hover {
+  color: #ccc;
+}
+#midi-track-list .track-option.selected, #midi-track-list .track-option:active {
+  color: #fff;
+  background: #ccc;
 }
 #midi-progress {
   position: absolute;
