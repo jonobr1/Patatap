@@ -56,12 +56,10 @@ $(function() {
 
     };
     
-    var dragEventCounter = 0;
     var $message = $("#drop-target .message");
     var initDragMessage = $message.text();
     var $content = $("#content");
     var $dropContainer = $("#drop");
-    var $dropTarget = $("#drop-target");
     var $nowPlaying = $("#now-playing");
     var $midiProgress = $('#midi-progress');
     var $dropdown = $("#midi-track-list");
@@ -224,18 +222,23 @@ $(function() {
         $dropContainer.fadeOut(duration, function() {$dropContainer.hide();});
     }
 
+    var dragEventCounter = 0;
     function dragEnterHandler(e) {
-        dragEventCounter++;
-        if (dragEventCounter === 1) {
+        if (dragEventCounter == 0) {
             showDropzone();
         }
+        dragEventCounter++;
+
+        e.preventDefault();
     }
 
     function dragLeaveHandler(e) {
-        dragEventCounter = Math.max(dragEventCounter-1, 0);
-        if (dragEventCounter === 0) {
+        dragEventCounter --;
+        if (dragEventCounter == 0) {
             hideDropzone();
         }
+        
+        e.preventDefault();
     }
 
     function dragOverHandler(e) {
@@ -275,16 +278,14 @@ $(function() {
         $message.html("Reading files not supported by this browser");
     } else {
         $content.on("dragenter", dragEnterHandler);
-        $dropContainer.on("dragenter", dragEnterHandler);
-
+        $content.on("dragover", dragOverHandler);
         $content.on("dragleave", dragLeaveHandler);
+
+        $dropContainer.on("dragenter", dragEnterHandler);
+        $dropContainer.on("dragover", dragOverHandler);
         $dropContainer.on("dragleave", dragLeaveHandler);
 
-        $content.on("dragover", dragOverHandler);
-        $dropContainer.on("dragover", dragOverHandler);
-        $dropTarget.on("dragover", dragOverHandler);
-
-        $dropTarget.on("drop", dropHandler);
+        $dropContainer.on("drop", dropHandler);
 
         $("#midi-remove").click(removeFile);
 
