@@ -19,6 +19,12 @@ $(function() {
         playing: false,
         update: update,
 
+        _onHint: null,
+        onHint: function(func) {
+            console.log("setting onhint");
+            midi._onHint = func;
+        },
+
         _onTrigger: null,
         onTrigger: function(func) {
             midi._onTrigger = func;
@@ -66,10 +72,10 @@ $(function() {
     var $credits = $('#credits');
 
     function parseFile(file) {
-        // Q: Show error if wrong file type?
-        if (!file.type.startsWith("audio/mid"))
+        if (!file.type.startsWith("audio/mid")) {
+            showMessage("Sorry, Patatap only reads midi files.");
             return;
-
+        }
         const reader = new FileReader();
         reader.onload = function (e) {
             const json = new Midi(e.target.result);
@@ -95,26 +101,46 @@ $(function() {
 
                     midi.trackList.push(_track);
                 }
-
-                /* Only keep first track with notes
-                if (json.tracks[i].notes.length) {
-                    midi.notes = json.tracks[i].notes.sort(function (a, b) {
-                        return a.time - b.time;
-                    });
-                    break;
-                }
-                */
             }
             
             if(midi.trackList.length > 0) {
                 setTrack(0);
                 populateTrackDropdown();
+                showMessage("Now Playing: " + midi.name + " - " + midi.trackList[activeTrackIndex].name);
             } else {
-                //TODO: Error that couldnt find tracks with notes?
+                showMessage("Sorry, Patatap couldn't find any notes in this file.");
             }
+
         };
         reader.readAsArrayBuffer(file);
     }
+
+    $hint = $("#hint");
+
+    $midiMessage = $hint.find(".midi-filedrop");
+    function showMessage(message) {
+        $midiMessage.html(message);
+
+        $hint.find('.message').animate({ opacity: 0 }, function() {
+            $hint.css({
+            display: 'block',
+            opacity: 1
+            });
+            $midiMessage.fadeIn();
+        });
+
+        hideMessage();
+    };
+
+    var hideMessage = _.debounce(function() {
+        $midiMessage.fadeOut(function() {
+            $hint.fadeOut(function() {
+            $hint.find('.message').css({ opacity: 1 });
+            });
+            if (midi._onHint)
+                midi._onHint();
+        });
+    }, 5000);
 
     function populateTrackDropdown() {
         for (var i = 0; i < midi.trackList.length; i++) {

@@ -429,7 +429,7 @@ $(function() {
     }
 
     function noteOn(note) {
-      var index = midi.notesToIndices[note];
+      var index = window.midi.notesToIndices[note];
       if (index) {
         onMIDISuccess.receiving = true;
         trigger(index);
@@ -696,10 +696,6 @@ $(function() {
 
   }
 
-  if (window.midi) {
-    midi.onTrigger(trigger);
-  }
-
   var timeout;
   var startDemonstration = _.debounce(function() {
     interacting = false;
@@ -763,6 +759,11 @@ $(function() {
   function showCredits() {
     container.css('top', - 64 + 'px');
     hideCredits();
+  }
+
+  if (window.midi) {
+    window.midi.onTrigger(trigger);
+    window.midi.onHint(showHint);
   }
 
 });

@@ -100,7 +100,7 @@ body {
   user-select: none;
 }
 #hint .message,
-#hint .midi-connections {
+#hint .midi-msg {
   display: inline-block;
   background: white;
   color: #666666;
@@ -114,12 +114,12 @@ body {
 }
 @media (max-width: 400px) {
   #hint .message,
-  #hint .midi-connections {
+  #hint .midi-msg {
     font-size: 16px / 1.6;
     line-height: 32px / 1.6;
   }
 }
-#hint .midi-connections {
+#hint .midi-msg {
   position: absolute;
   top: 0;
   left: 50%;
