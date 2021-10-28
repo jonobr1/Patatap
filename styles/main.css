@@ -181,6 +181,15 @@ body.kiosk .ios-app-store {
 #now-playing {
   position: relative;
 }
+#now-playing .spacer {
+  width: 245px;
+  display: inline-block;
+}
+#now-playing .pill-wrapper {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+}
 #now-playing .pill-block {
   padding: 8px 16px;
   white-space: nowrap;
@@ -194,6 +203,13 @@ body.kiosk .ios-app-store {
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
   cursor: pointer;
+  display: inline-block;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 32px;
+  padding: 0 16px;
 }
 #now-playing #midi-remove {
   background: #ccc;
@@ -203,8 +219,7 @@ body.kiosk .ios-app-store {
   box-shadow: inset 2px 0px 10px rgba(0, 0, 0, 0.1);
   padding: 0px 10px 0px 7px;
   display: inline-block;
-  line-height: 33px;
-  vertical-align: middle;
+  line-height: 34px;
   margin-top: -2px;
 }
 #now-playing #midi-remove:hover {

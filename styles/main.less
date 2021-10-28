@@ -202,6 +202,17 @@ body.kiosk .ios-app-store {
 #now-playing {
   position: relative;
 
+  .spacer {
+    width: 245px;
+    display: inline-block;
+  }
+
+  .pill-wrapper {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+  }
+
   .pill-block {
     padding: 8px 16px;
     white-space: nowrap;
@@ -216,6 +227,13 @@ body.kiosk .ios-app-store {
     border-bottom-right-radius: 0px;
     border-top-right-radius: 0px;
     cursor:pointer;
+    display: inline-block;
+    width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 32px;
+    padding: 0 16px;
   }
 
   #midi-remove {
@@ -226,15 +244,29 @@ body.kiosk .ios-app-store {
     box-shadow: inset 2px 0px 10px rgb(0 0 0 / 10%);
     padding: 0px 10px 0px 7px;
     display: inline-block;
-    line-height: @line-height + 1px;
-    vertical-align: middle;
+    line-height: @line-height + 2px;
     margin-top: -2px;
     &:hover {
       color: #fff;
     }
   }
 }
-
+::-webkit-scrollbar{
+  width: 6px;
+  height: 6px;
+  }
+  ::-webkit-scrollbar-thumb{
+  background: #C2C2C2;
+  border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+  background: #B1B2B5;
+  }
+  ::-webkit-scrollbar-track{
+  background: #FFFFFF;
+  box-shadow: inset 7px 10px 12px 0px #F0F0F0;
+  border-radius: 0px 11px 0 0;
+  }
 #midi-track-list {
   position: absolute;
   bottom: 48px;
@@ -243,6 +275,8 @@ body.kiosk .ios-app-store {
   z-index: 2;
   max-height: @line-height * 4;
   overflow: auto;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 6px 6px 0 0;
 
   .track-option {
     display: block;
@@ -252,13 +286,15 @@ body.kiosk .ios-app-store {
     color: #666;
     border-radius: 0;
     cursor: pointer;
+    text-shadow: none;
     &:hover {
       color: #ccc;
     }
   }
   .track-option.selected, .track-option:active {
-    color: #fff;
-    background: #ccc;
+    color: #666;
+    background: #e5e5e5;
+    text-shadow: 1px 1px 1px #fff;
   }
 }
 

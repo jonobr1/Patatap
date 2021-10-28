@@ -175,7 +175,7 @@ $(function() {
     }
 
     function startFile() {
-        $("#midi-title").html(midi.name + " - " + midi.trackList[activeTrackIndex].name);
+        $("#midi-title").find(".midi-title-message").html(midi.name + " - " + midi.trackList[activeTrackIndex].name);
         $nowPlaying.fadeIn();
         $midiProgress.fadeIn();
         midi.start();
@@ -318,7 +318,7 @@ $(function() {
         $("#midi-title").click(toggleTrackList);
 
         $(window).click(function(e) {
-            if (e.target.id !== $dropdown.id && e.target.id != "midi-title" && $dropdown.is(":visible")) {
+            if (!$(e.target).parents("#now-playing").length && $dropdown.is(":visible")) {
                 $dropdown.hide();
             }
         })
