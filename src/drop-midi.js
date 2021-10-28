@@ -156,7 +156,7 @@ $(function() {
             setTrack(index)
             $trackOptions.removeClass("selected");
             $(e.target).addClass("selected");
-            $dropdown.hide();
+            toggleTrackList();
         })
 
     }
@@ -169,7 +169,7 @@ $(function() {
         }
     }
 
-    function showTrackList() {
+    function toggleTrackList() {
         $credits.toggleClass('active');
         $dropdown.fadeToggle(100);
     }
@@ -315,7 +315,7 @@ $(function() {
 
         $("#midi-remove").click(removeFile);
 
-        $("#midi-title").click(showTrackList);
+        $("#midi-title").click(toggleTrackList);
 
         $(window).click(function(e) {
             if (e.target.id !== $dropdown.id && e.target.id != "midi-title" && $dropdown.is(":visible")) {
