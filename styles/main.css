@@ -149,7 +149,7 @@ body.kiosk .ios-app-store {
   display: none !important;
 }
 #drop {
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
   top: 0;
