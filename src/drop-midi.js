@@ -74,6 +74,7 @@ $(function() {
     function parseFile(file) {
         if (!file.type.startsWith("audio/mid")) {
             showMessage("Sorry, Patatap only reads midi files.");
+            trackEvent("drop-wrong-type", file.name);
             if (midi.playing) removeFile();
             return;
         }
@@ -108,13 +109,21 @@ $(function() {
                 setTrack(0);
                 populateTrackDropdown();
                 showMessage("Now Playing: " + midi.name + " - " + midi.trackList[activeTrackIndex].name);
+                trackEvent("drop-success", file.name);
             } else {
                 showMessage("Sorry, Patatap couldn't find any notes in this file.");
+                trackEvent("drop-empty", file.name);
                 if (midi.playing) removeFile();
             }
 
         };
         reader.readAsArrayBuffer(file);
+    }
+
+    function trackEvent(action, label) {
+        if (window.ga) {
+            window.ga('send', 'event', 'midi', action, label);
+        }
     }
 
     $hint = $("#hint");
@@ -159,6 +168,7 @@ $(function() {
             $trackOptions.removeClass("selected");
             $(e.target).addClass("selected");
             toggleTrackList();
+            trackEvent("track-change", midi.name + " - " + midi.trackList[activeTrackIndex].name);
         })
 
     }
@@ -315,7 +325,7 @@ $(function() {
 
         $dropContainer.on("drop", dropHandler);
 
-        $("#midi-remove").click(removeFile);
+        $("#midi-remove").click(function() { trackEvent("remove-file", midi.name); removeFile(); });
 
         $("#midi-title").click(toggleTrackList);
 
