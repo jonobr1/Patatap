@@ -226,7 +226,7 @@ body.kiosk .ios-app-store {
     box-shadow: inset 2px 0px 10px rgb(0 0 0 / 10%);
     padding: 0px 10px 0px 7px;
     display: inline-block;
-    line-height: 33px;
+    line-height: @line-height + 1px;
     vertical-align: middle;
     margin-top: -2px;
     &:hover {
@@ -241,11 +241,13 @@ body.kiosk .ios-app-store {
   left: 23px;
   right: 46px;
   z-index: 2;
+  max-height: @line-height * 4;
+  overflow: auto;
 
   .track-option {
     display: block;
     padding: 0 8px;
-    line-height: 20px;
+    line-height: @line-height * .75;
     background: #fff;
     color: #666;
     border-radius: 0;

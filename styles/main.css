@@ -210,29 +210,51 @@ body.kiosk .ios-app-store {
 #now-playing #midi-remove:hover {
   color: #fff;
 }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #C2C2C2;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B1B2B5;
+}
+::-webkit-scrollbar-track {
+  background: #FFFFFF;
+  box-shadow: inset 7px 10px 12px 0px #F0F0F0;
+  border-radius: 0px 11px 0 0;
+}
 #midi-track-list {
   position: absolute;
   bottom: 48px;
   left: 23px;
   right: 46px;
   z-index: 2;
+  max-height: 128px;
+  overflow: auto;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px 6px 0 0;
 }
 #midi-track-list .track-option {
   display: block;
   padding: 0 8px;
-  line-height: 20px;
+  line-height: 24px;
   background: #fff;
   color: #666;
   border-radius: 0;
   cursor: pointer;
+  text-shadow: none;
 }
 #midi-track-list .track-option:hover {
   color: #ccc;
 }
 #midi-track-list .track-option.selected,
 #midi-track-list .track-option:active {
-  color: #fff;
-  background: #ccc;
+  color: #666;
+  background: #e5e5e5;
+  text-shadow: 1px 1px 1px #fff;
 }
 #midi-progress {
   position: absolute;
