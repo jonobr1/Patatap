@@ -74,6 +74,7 @@ $(function() {
     function parseFile(file) {
         if (!file.type.startsWith("audio/mid")) {
             showMessage("Sorry, Patatap only reads midi files.");
+            if (midi.playing) removeFile();
             return;
         }
         const reader = new FileReader();
@@ -109,6 +110,7 @@ $(function() {
                 showMessage("Now Playing: " + midi.name + " - " + midi.trackList[activeTrackIndex].name);
             } else {
                 showMessage("Sorry, Patatap couldn't find any notes in this file.");
+                if (midi.playing) removeFile();
             }
 
         };
