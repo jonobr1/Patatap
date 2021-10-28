@@ -225,6 +225,35 @@ body.kiosk .ios-app-store {
 #now-playing #midi-remove:hover {
   color: #fff;
 }
+#now-playing .marquee {
+  position: relative;
+  overflow: hidden;
+  --offset: 0px;
+  --move-initial: calc(-25% + var(--offset));
+  --move-final: calc(-50% + var(--offset));
+}
+#now-playing .marquee-inner {
+  width: fit-content;
+  display: flex;
+  position: relative;
+  transform: translate3d(var(--move-initial), 0, 0);
+  animation: marquee 10s linear infinite;
+  animation-play-state: running;
+}
+#now-playing .marquee-inner span {
+  padding: 0 16px;
+}
+#now-playing .marquee:hover .marquee-inner {
+  animation-play-state: running;
+}
+@keyframes marquee {
+  0% {
+    transform: translate3d(var(--move-initial), 0, 0);
+  }
+  100% {
+    transform: translate3d(var(--move-final), 0, 0);
+  }
+}
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
