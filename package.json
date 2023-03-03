@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonobr1/Neuronal-Synchrony.git"
+    "url": "git+https://github.com/jonobr1/Patatap.git"
   },
   "author": "jonobr1",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jonobr1/Neuronal-Synchrony/issues"
+    "url": "https://github.com/jonobr1/Patatap/issues"
   },
-  "homepage": "https://github.com/jonobr1/Neuronal-Synchrony#readme",
+  "homepage": "https://github.com/jonobr1/Patatap#readme",
   "devDependencies": {
     "less": "^4.0.0",
     "mpe": "^1.0.4"

@@ -777,5 +777,5 @@ $(function() {
 });
 
 if (window.console && window.console.log) {
-  window.console.log('Check out the code at http://github.com/jonobr1/Neuronal-Synchrony');
+  window.console.log('Check out the code at http://github.com/jonobr1/Patatap');
 }
