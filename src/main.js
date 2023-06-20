@@ -698,8 +698,10 @@ $(function() {
         animation.clear();
       }
       animation.start(undefined, silent);
-      if (window.ga) {
-        window.ga('send', 'event', 'animation', 'trigger', hash);
+      if (window.gtag) {
+        gtag('event', 'animation', {
+          trigger: hash
+        });
       }
     }
 
