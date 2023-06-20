@@ -699,7 +699,7 @@ $(function() {
       }
       animation.start(undefined, silent);
       if (window.gtag) {
-        gtag('event', 'animation', {
+        window.gtag('event', 'animation', {
           trigger: hash
         });
       }
