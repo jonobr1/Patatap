@@ -1,133 +1,291 @@
-(function() {
+import { defaults } from './underscore.js';
 
-  var root = this;
-  var previousSound = root.Sound || {};
-  var callbacks = [], ctx;
+var identity = function(v) { return v; };
 
-  // Force polyfill for Web Audio
-  root.addEventListener('load', function() {
-    root.AudioContext = root.AudioContext || root.webkitAudioContext;
-    Sound._ready = true;
-    try {
-      Sound.ctx = ctx = new root.AudioContext();
-      Sound.has = true;
-      _.each(callbacks, function(c) {
-        c.call(Sound);
+var has;
+
+try {
+  has = !!AudioContext;
+} catch (e) {
+  has = false;
+}
+
+function load({ context, uri, callback }) {
+
+  return new Promise(function(resolve, reject) {
+
+    var r = new XMLHttpRequest();
+    r.open('GET', uri, true);
+    r.responseType = 'arraybuffer';
+
+    r.onerror = reject;
+    r.onload = function() {
+      resolve({
+        context,
+        data: r.response,
+        callback
       });
-    } catch (e) {
-      delete Sound.ctx;
-      Sound.has = false;
-    }
-    callbacks.length = 0;
-  }, false);
+    };
 
-  var Sound = root.Sound = function(url, callback) {
+    r.send();
 
-    Sound.get(url, _.bind(function(buffer) {
+  });
 
-      this.buffer = buffer;
-      this._ready = true;
-      if (_.isFunction(callback)) {
-        callback.call(this);
+}
+
+function decode({ context, data, callback }) {
+
+  return new Promise(function(resolve, reject) {
+
+    var success = function(buffer) {
+      resolve(buffer, data);
+      if (callback) {
+        callback(buffer, data);
       }
-      this.trigger('load');
+    };
 
-    }, this));
+    context.decodeAudioData(data, success, reject);
 
-  };
+  });
 
-  _.extend(Sound, {
+}
 
-    _ready: false,
 
-    ready: function(func) {
-      if (Sound._ready) {
-        func.call(Sound);
-        return;
-      }
-      callbacks.push(func);
-    },
+export class Sound {
 
-    noConflict: function() {
-      root.Sound = previousAudio;
-      return this;
-    },
+  #loop = false;
+  #volume = 1.0;
+  #speed = 1.0;
+  #startTime = 0;
+  #offset = 0;
 
-    get: function(url, callback) {
-      var request = new XMLHttpRequest();
-      request.open('GET', url, true);
-      request.responseType = 'arraybuffer';
-      request.onload = function() {
-        ctx.decodeAudioData(request.response, function(buffer) {
-          if (_.isFunction(callback)) {
-            callback(buffer);
-          }
-        }, function(e) {
-          console.log('Error loading', url, e);
+  playing = false;
+  filter = null;
+  buffer = null;
+  data = null;
+  gain = null;
+  src = null;
+  ctx = null;
+
+  static has = has;
+
+  constructor(context, uri, callback) {
+
+    var scope = this;
+
+    this.ctx = context;
+
+    switch (typeof uri) {
+
+      case 'string':
+        this.src = uri;
+        load({ context, uri, callback: assignBuffer }).then(decode);
+        break;
+
+      case 'object':
+        decode({
+          context,
+          data: uri,
+          callback: assignBuffer
         });
-      };
-      request.send();
+        break;
+
     }
 
-  });
+    function assignBuffer(buffer, data) {
 
-  _.extend(Sound.prototype, Backbone.Events, {
+      scope.buffer = buffer;
+      scope.data = data;
 
-    stop: function(options) {
+      scope.gain = scope.filter = context.createGain();
+      scope.gain.connect(context.destination);
+      scope.gain.gain.value = Math.max(Math.min(scope.#volume, 1.0), 0.0);
 
-      if (!this.source || !this._ready) {
-        return this;
+      if (callback) {
+        callback(this);
       }
 
-      var params = _.defaults(options || {}, {
-        time: ctx.currentTime
-      });
+    }
 
+  }
+
+  #ended() {
+    this.playing = false;
+  }
+
+  applyFilter(node) {
+
+    if (this.filter && this.filter !== this.gain) {
+      this.filter.disconnect(this.gain);
+    }
+
+    this.filter = node;
+    this.filter.connect(this.gain);
+
+    return this;
+
+  }
+
+  play(options) {
+
+    var params = defaults(options || {}, {
+      time: this.ctx.currentTime,
+      loop: this._loop,
+      offset: this._offset,
+      duration: this.buffer.duration - this._offset
+    });
+
+    if (this.ctx && /suspended/i.test(this.ctx.state)) {
+      this.ctx.resume();
+    }
+
+    if (this.source) {
+      this.stop();
+    }
+
+    this.#startTime = params.time;
+    this.#loop = params.loop;
+    this.playing = true;
+
+    this.source = this.ctx.createBufferSource();
+    this.source.onended = this.#ended;
+    this.source.buffer = this.buffer;
+    this.source.loop = params.loop;
+    this.source.playbackRate.value = this.#speed;
+
+    this.source.connect(this.filter);
+
+    if (this.source.start) {
+      this.source.start(params.time, params.offset);
+    } else if (this.source.noteOn) {
+      this.source.noteOn(params.time, params.offset);
+    }
+
+    return this;
+
+  }
+
+  pause(options) {
+
+    if (!this.source || !this.playing) {
+      return this;
+    }
+
+    var params = defaults(options || {}, {
+      time: this.ctx.currentTime
+    });
+
+    this.source.onended = identity;
+
+    if (this.source.stop) {
       this.source.stop(params.time);
-      return this;
-
-    },
-
-    pause: function() {
-
-      if (!this._ready) {
-        return this;
-      }
-
-      return this;
-
-    },
-
-    play: function(options) {
-
-      if (!this._ready) {
-        return this;
-      }
-
-      var params = _.defaults(options || {}, {
-        time: ctx.currentTime,
-        loop: false
-      });
-
-      if (ctx && !(/running/.test(ctx.state))) {
-        ctx.resume();
-      }
-
-      this.source = ctx.createBufferSource();
-      this.source.buffer = this.buffer;
-      this.source.connect(ctx.destination);
-      this.source.loop = params.loop;
-
-      if (_.isFunction(this.source.start)) {
-        this.source.start(params.time);
-      } else if (_.isFunction(this.source.noteOn)) {
-        this.source.noteOn(params.time);
-      }
-
-      return this;
-
+    } else if (this.source.noteOff) {
+      this.source.noteOff(params.time);
     }
 
-  });
+    this.playing = false;
 
-})();
+    var currentTime = this.ctx.currentTime;
+    if (params.time != 'undefined') {
+      currentTime = params.time;
+    }
+
+    this.#offset = currentTime - this.#startTime + (this.#offset || 0);
+
+    if (this.#loop) {
+      this.#offset = Math.max(this.#offset, 0.0) % this.buffer.duration;
+    } else {
+      this.#offset = Math.min(Math.max(this.#offset, 0.0), this.buffer.duration);
+    }
+
+    return this;
+
+  }
+
+  stop(options) {
+
+    if (!this.source || !this.playing) {
+      return this;
+    }
+
+    var params = defaults(options || {}, {
+      time: this.ctx.currentTime
+    });
+
+    this.source.onended = identity;
+
+    if (this.source.stop) {
+      this.source.stop(params.time);
+    } else if (this.source.noteOff) {
+      this.source.noteOff(params.time);
+    }
+
+    this.playing = false;
+    this.#offset = 0;
+
+    return this;
+
+  }
+
+  get volume() {
+    return this.#volume;
+  }
+
+  set volume(v) {
+    this.#volume = v;
+    if (this.gain) {
+      this.gain.gain.value = Math.max(Math.min(this.#volume, 1.0), 0.0);
+    }
+  }
+
+  get speed() {
+    return this.#speed;
+  }
+
+  set speed(s) {
+    this.#speed = s;
+    if (this.playing) {
+      this.play();
+    }
+  }
+
+  get currentTime() {
+    return this.playing
+      ? (this.ctx.currentTime - this.#startTime + this.#offset) * this.#speed
+      : this.#offset;
+  }
+
+  set currentTime(t) {
+
+    var time;
+
+    if (!this.buffer) {
+      return;
+    }
+
+    if (this.#loop) {
+      time = Math.max(t, 0.0) % this.buffer.duration;
+    } else {
+      time = Math.min(Math.max(t, 0.0), this.buffer.duration);
+    }
+
+    this.#offset = time;
+
+    if (this.playing) {
+      this.play();
+    }
+
+  }
+
+  get millis() {
+    return Math.floor(this.currentTime * 1000);
+  }
+
+  get duration() {
+    if (!this.buffer) {
+      return 0;
+    }
+    return this.buffer.duration;
+  }
+
+}
