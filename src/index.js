@@ -6,6 +6,7 @@ import palette from "./animations/palette.js";
 import animations from "./animations/index.js";
 
 import "./animations/change.js";
+import "./animations/wipe.js";
 
 $(() => {
 
@@ -679,7 +680,7 @@ $(() => {
       if (animation.playing) {
         animation.clear();
       }
-      animation.start(undefined, silent);
+      animation.start(silent);
       if (window.gtag) {
         window.gtag('event', 'animation', {
           trigger: hash

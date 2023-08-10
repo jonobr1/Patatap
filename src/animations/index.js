@@ -17,7 +17,7 @@ const types = [
   'name'
 ];
 
-const center = new Two.Vector(two.width / 2, two.height / 2);
+export const center = new Two.Vector(two.width / 2, two.height / 2);
 const domElement = two.renderer.domElement;
 
 let min_dimension = Math.min(two.width, two.height);
@@ -29,7 +29,7 @@ two.bind('resize', () => {
   center.x = two.width / 2;
   center.y = two.height / 2;
 
-  min_dimension = Math.min(width, height);
+  min_dimension = Math.min(two.width, two.height);
 
   list.forEach((animation) => animation.resize());
 
@@ -93,7 +93,7 @@ function updateAudio() {
       let sound = animation.sounds[current];
       if (!sound) {
         show();
-        const uri = `${path}${type}/${animation.filename}${filetype}`;
+        const uri = `${path}${type}/${animation.name}${filetype}`;
         sound = new Sound(ctx, uri, onLoad);
         animation.sounds.push(sound);
       }
@@ -110,7 +110,6 @@ function updateAudio() {
 }
 
 export default {
-  center,
   updateAudio,
   map,
   get min_dimension() {

@@ -1,4 +1,4 @@
-import { drag, two } from "../common.js";
+import { drag } from "../common.js";
 
 export const keys = ['background', 'middleground', 'foreground', 'highlight', 'accent', 'white', 'black'];
 export const palette = [
@@ -189,9 +189,7 @@ function update() {
 export default {
   keys,
   list: palette,
-  get colors() {
-    return colors;
-  },
+  colors,
   get current() {
     return current;
   },
