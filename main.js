@@ -18169,11 +18169,12 @@
     silent.preload = "auto";
     silent.load();
     function loaded() {
+      console.log("loaded", animations_default);
       $window.bind("click", enableAudio).bind("visibilitychange", listenToEnableAudio);
       silent.removeEventListener("canplay", loaded, false);
       initialize();
     }
-    function enableAudio(e) {
+    function enableAudio() {
       playing4 = true;
       silent.play();
       $window.unbind("click", enableAudio);

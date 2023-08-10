@@ -50,6 +50,7 @@ $(() => {
   silent.load();
 
   function loaded() {
+    console.log('loaded', animations);
     $window
       .bind('click', enableAudio)
       .bind('visibilitychange', listenToEnableAudio);
@@ -57,7 +58,7 @@ $(() => {
     initialize();
   }
 
-  function enableAudio(e) {
+  function enableAudio() {
     playing = true;
     silent.play();
     $window.unbind('click', enableAudio);
