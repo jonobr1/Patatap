@@ -72,7 +72,7 @@ export const palette = [
 
 let current = url.int('palette', 0);
 let changing = false;
-let _onStart = _onUpdate = _onComplete = () => {};
+let _onStart, _onUpdate, _onComplete;
 const _colors = {};
 const colors = {};
 
@@ -175,12 +175,16 @@ function update() {
   }
 
   const amount = tween(palette[current]);
-  _onUpdate();
+  if (_onUpdate) {
+    _onUpdate();
+  }
 
   if (amount >= keys.length) {
     if (changing) {
       changing = false;
-      _onComplete(current);
+      if (_onComplete) {
+        _onComplete(current);
+      }
     }
   }
 
@@ -196,7 +200,9 @@ export default {
   set current(v) {
     current = v % palette.length;
     changing = true;
-    _onStart(current);
+    if (_onStart) {
+      _onStart(current);
+    }
   },
   get changing() {
     return changing;

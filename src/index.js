@@ -7,6 +7,7 @@ import animations from "./animations/index.js";
 
 import "./animations/change.js";
 import "./animations/wipe.js";
+import "./animations/veil.js";
 
 $(() => {
 

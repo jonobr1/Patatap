@@ -35,6 +35,7 @@ two.bind('resize', () => {
 
 });
 
+palette.onStart(updateAudio);
 palette.onUpdate(() => {
   list.forEach(({ update }) => update());
   domElement.style.background = palette.colors.background;
@@ -67,7 +68,7 @@ function updateAudio() {
 
   var type = letters[current];
   var $lobby = $('#lobby');
-  var $loaded = $lobby.find('#loaded');
+  var $loaded = $lobby.find('#loaded').html(0);
   var $totalAssets = $lobby.find('#total-assets');
 
   const show = once(function() {
