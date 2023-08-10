@@ -50,7 +50,6 @@ $(() => {
   silent.load();
 
   function loaded() {
-    console.log('loaded', animations);
     $window
       .bind('click', enableAudio)
       .bind('visibilitychange', listenToEnableAudio);
@@ -265,8 +264,6 @@ $(() => {
             updateButton(button);
           }
         }
-
-        ui.update();
 
       }).play();
 
@@ -539,11 +536,7 @@ $(() => {
 
   function createMobileUI() {
 
-    ui = new Two({
-      fullscreen: true
-    }).appendTo($container[0]);
-
-    ui.renderer.domElement.id = 'ui';
+    ui = two.makeGroup();
 
     buttons = new Array(3);
     buttons.width = buttons.height = 32;
@@ -553,8 +546,6 @@ $(() => {
     buttons[0] = range(10).map(createButton);
     buttons[1] = range(9).map(createButton);
     buttons[2] = range(8).map(createButton);
-
-    ui.update();
 
     const touches = []
     let e, x, y, l, row, col, index;
@@ -606,10 +597,11 @@ $(() => {
 
     function createButton() {
 
-      const shape = ui.makeRectangle(0, 0, buttons.width, buttons.height);
+      const shape = new Two.Rectangle(0, 0, buttons.width, buttons.height);
       shape.noFill().noStroke();
       shape.opacity = 0;
       shape.visible = false;
+      ui.add(shape);
       return shape;
   
     }
