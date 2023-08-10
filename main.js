@@ -174,7 +174,7 @@
           splice: arr.splice
         };
         jQuery.extend = jQuery.fn.extend = function() {
-          var options, name2, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1, length = arguments.length, deep = false;
+          var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1, length = arguments.length, deep = false;
           if (typeof target === "boolean") {
             deep = target;
             target = arguments[i] || {};
@@ -189,13 +189,13 @@
           }
           for (; i < length; i++) {
             if ((options = arguments[i]) != null) {
-              for (name2 in options) {
-                copy = options[name2];
-                if (name2 === "__proto__" || target === copy) {
+              for (name in options) {
+                copy = options[name];
+                if (name === "__proto__" || target === copy) {
                   continue;
                 }
                 if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
-                  src = target[name2];
+                  src = target[name];
                   if (copyIsArray && !Array.isArray(src)) {
                     clone = [];
                   } else if (!copyIsArray && !jQuery.isPlainObject(src)) {
@@ -204,9 +204,9 @@
                     clone = src;
                   }
                   copyIsArray = false;
-                  target[name2] = jQuery.extend(deep, clone, copy);
+                  target[name] = jQuery.extend(deep, clone, copy);
                 } else if (copy !== void 0) {
-                  target[name2] = copy;
+                  target[name] = copy;
                 }
               }
             }
@@ -234,8 +234,8 @@
             return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
           },
           isEmptyObject: function(obj) {
-            var name2;
-            for (name2 in obj) {
+            var name;
+            for (name in obj) {
               return false;
             }
             return true;
@@ -341,8 +341,8 @@
         }
         jQuery.each(
           "Boolean Number String Function Array Date RegExp Object Error Symbol".split(" "),
-          function(_i, name2) {
-            class2type["[object " + name2 + "]"] = name2.toLowerCase();
+          function(_i, name) {
+            class2type["[object " + name + "]"] = name.toLowerCase();
           }
         );
         function isArrayLike2(obj) {
@@ -352,8 +352,8 @@
           }
           return type === "array" || length === 0 || typeof length === "number" && length > 0 && length - 1 in obj;
         }
-        function nodeName(elem, name2) {
-          return elem.nodeName && elem.nodeName.toLowerCase() === name2.toLowerCase();
+        function nodeName(elem, name) {
+          return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
         }
         var pop = arr.pop;
         var sort = arr.sort;
@@ -744,15 +744,15 @@
             }
             return jQuery.contains(context, elem);
           };
-          find.attr = function(elem, name2) {
+          find.attr = function(elem, name) {
             if ((elem.ownerDocument || elem) != document3) {
               setDocument(elem);
             }
-            var fn = Expr.attrHandle[name2.toLowerCase()], val = fn && hasOwn.call(Expr.attrHandle, name2.toLowerCase()) ? fn(elem, name2, !documentIsHTML) : void 0;
+            var fn = Expr.attrHandle[name.toLowerCase()], val = fn && hasOwn.call(Expr.attrHandle, name.toLowerCase()) ? fn(elem, name, !documentIsHTML) : void 0;
             if (val !== void 0) {
               return val;
             }
-            return elem.getAttribute(name2);
+            return elem.getAttribute(name);
           };
           find.error = function(msg) {
             throw new Error("Syntax error, unrecognized expression: " + msg);
@@ -843,9 +843,9 @@
                   );
                 });
               },
-              ATTR: function(name2, operator, check) {
+              ATTR: function(name, operator, check) {
                 return function(elem) {
-                  var result = find.attr(elem, name2);
+                  var result = find.attr(elem, name);
                   if (result == null) {
                     return operator === "!=";
                   }
@@ -882,28 +882,28 @@
                 return first === 1 && last === 0 ? function(elem) {
                   return !!elem.parentNode;
                 } : function(elem, _context, xml) {
-                  var cache, outerCache, node, nodeIndex, start4, dir2 = simple !== forward ? "nextSibling" : "previousSibling", parent = elem.parentNode, name2 = ofType && elem.nodeName.toLowerCase(), useCache = !xml && !ofType, diff = false;
+                  var cache, outerCache, node, nodeIndex, start, dir2 = simple !== forward ? "nextSibling" : "previousSibling", parent = elem.parentNode, name = ofType && elem.nodeName.toLowerCase(), useCache = !xml && !ofType, diff = false;
                   if (parent) {
                     if (simple) {
                       while (dir2) {
                         node = elem;
                         while (node = node[dir2]) {
-                          if (ofType ? nodeName(node, name2) : node.nodeType === 1) {
+                          if (ofType ? nodeName(node, name) : node.nodeType === 1) {
                             return false;
                           }
                         }
-                        start4 = dir2 = type === "only" && !start4 && "nextSibling";
+                        start = dir2 = type === "only" && !start && "nextSibling";
                       }
                       return true;
                     }
-                    start4 = [forward ? parent.firstChild : parent.lastChild];
+                    start = [forward ? parent.firstChild : parent.lastChild];
                     if (forward && useCache) {
                       outerCache = parent[expando] || (parent[expando] = {});
                       cache = outerCache[type] || [];
                       nodeIndex = cache[0] === dirruns && cache[1];
                       diff = nodeIndex && cache[2];
                       node = nodeIndex && parent.childNodes[nodeIndex];
-                      while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start4.pop()) {
+                      while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start.pop()) {
                         if (node.nodeType === 1 && ++diff && node === elem) {
                           outerCache[type] = [dirruns, nodeIndex, diff];
                           break;
@@ -917,8 +917,8 @@
                         diff = nodeIndex;
                       }
                       if (diff === false) {
-                        while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start4.pop()) {
-                          if ((ofType ? nodeName(node, name2) : node.nodeType === 1) && ++diff) {
+                        while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start.pop()) {
+                          if ((ofType ? nodeName(node, name) : node.nodeType === 1) && ++diff) {
                             if (useCache) {
                               outerCache = node[expando] || (node[expando] = {});
                               outerCache[type] = [dirruns, diff];
@@ -1000,8 +1000,8 @@
                 };
               }),
               target: function(elem) {
-                var hash2 = window2.location && window2.location.hash;
-                return hash2 && hash2.slice(1) === elem.id;
+                var hash = window2.location && window2.location.hash;
+                return hash && hash.slice(1) === elem.id;
               },
               root: function(elem) {
                 return elem === documentElement2;
@@ -1716,20 +1716,20 @@
             }
             return jQuery.merge([], elem.childNodes);
           }
-        }, function(name2, fn) {
-          jQuery.fn[name2] = function(until, selector) {
+        }, function(name, fn) {
+          jQuery.fn[name] = function(until, selector) {
             var matched = jQuery.map(this, fn, until);
-            if (name2.slice(-5) !== "Until") {
+            if (name.slice(-5) !== "Until") {
               selector = until;
             }
             if (selector && typeof selector === "string") {
               matched = jQuery.filter(selector, matched);
             }
             if (this.length > 1) {
-              if (!guaranteedUnique[name2]) {
+              if (!guaranteedUnique[name]) {
                 jQuery.uniqueSort(matched);
               }
-              if (rparentsprev.test(name2)) {
+              if (rparentsprev.test(name)) {
                 matched.reverse();
               }
             }
@@ -2280,10 +2280,10 @@
           return data;
         }
         function dataAttr(elem, key, data) {
-          var name2;
+          var name;
           if (data === void 0 && elem.nodeType === 1) {
-            name2 = "data-" + key.replace(rmultiDash, "-$&").toLowerCase();
-            data = elem.getAttribute(name2);
+            name = "data-" + key.replace(rmultiDash, "-$&").toLowerCase();
+            data = elem.getAttribute(name);
             if (typeof data === "string") {
               try {
                 data = getData(data);
@@ -2300,22 +2300,22 @@
           hasData: function(elem) {
             return dataUser.hasData(elem) || dataPriv.hasData(elem);
           },
-          data: function(elem, name2, data) {
-            return dataUser.access(elem, name2, data);
+          data: function(elem, name, data) {
+            return dataUser.access(elem, name, data);
           },
-          removeData: function(elem, name2) {
-            dataUser.remove(elem, name2);
+          removeData: function(elem, name) {
+            dataUser.remove(elem, name);
           },
-          _data: function(elem, name2, data) {
-            return dataPriv.access(elem, name2, data);
+          _data: function(elem, name, data) {
+            return dataPriv.access(elem, name, data);
           },
-          _removeData: function(elem, name2) {
-            dataPriv.remove(elem, name2);
+          _removeData: function(elem, name) {
+            dataPriv.remove(elem, name);
           }
         });
         jQuery.fn.extend({
           data: function(key, value) {
-            var i, name2, data, elem = this[0], attrs = elem && elem.attributes;
+            var i, name, data, elem = this[0], attrs = elem && elem.attributes;
             if (key === void 0) {
               if (this.length) {
                 data = dataUser.get(elem);
@@ -2323,10 +2323,10 @@
                   i = attrs.length;
                   while (i--) {
                     if (attrs[i]) {
-                      name2 = attrs[i].name;
-                      if (name2.indexOf("data-") === 0) {
-                        name2 = camelCase(name2.slice(5));
-                        dataAttr(elem, name2, data[name2]);
+                      name = attrs[i].name;
+                      if (name.indexOf("data-") === 0) {
+                        name = camelCase(name.slice(5));
+                        dataAttr(elem, name, data[name]);
                       }
                     }
                   }
@@ -2681,15 +2681,15 @@
         function returnFalse() {
           return false;
         }
-        function on(elem, types2, selector, data, fn, one) {
+        function on(elem, types, selector, data, fn, one) {
           var origFn, type;
-          if (typeof types2 === "object") {
+          if (typeof types === "object") {
             if (typeof selector !== "string") {
               data = data || selector;
               selector = void 0;
             }
-            for (type in types2) {
-              on(elem, type, selector, data, types2[type], one);
+            for (type in types) {
+              on(elem, type, selector, data, types[type], one);
             }
             return elem;
           }
@@ -2720,12 +2720,12 @@
             fn.guid = origFn.guid || (origFn.guid = jQuery.guid++);
           }
           return elem.each(function() {
-            jQuery.event.add(this, types2, fn, data, selector);
+            jQuery.event.add(this, types, fn, data, selector);
           });
         }
         jQuery.event = {
           global: {},
-          add: function(elem, types2, handler, data, selector) {
+          add: function(elem, types, handler, data, selector) {
             var handleObjIn, eventHandle, tmp, events, t, handleObj, special, handlers, type, namespaces, origType, elemData = dataPriv.get(elem);
             if (!acceptData(elem)) {
               return;
@@ -2749,10 +2749,10 @@
                 return typeof jQuery !== "undefined" && jQuery.event.triggered !== e.type ? jQuery.event.dispatch.apply(elem, arguments) : void 0;
               };
             }
-            types2 = (types2 || "").match(rnothtmlwhite) || [""];
-            t = types2.length;
+            types = (types || "").match(rnothtmlwhite) || [""];
+            t = types.length;
             while (t--) {
-              tmp = rtypenamespace.exec(types2[t]) || [];
+              tmp = rtypenamespace.exec(types[t]) || [];
               type = origType = tmp[1];
               namespaces = (tmp[2] || "").split(".").sort();
               if (!type) {
@@ -2794,20 +2794,20 @@
               jQuery.event.global[type] = true;
             }
           },
-          remove: function(elem, types2, handler, selector, mappedTypes) {
+          remove: function(elem, types, handler, selector, mappedTypes) {
             var j, origCount, tmp, events, t, handleObj, special, handlers, type, namespaces, origType, elemData = dataPriv.hasData(elem) && dataPriv.get(elem);
             if (!elemData || !(events = elemData.events)) {
               return;
             }
-            types2 = (types2 || "").match(rnothtmlwhite) || [""];
-            t = types2.length;
+            types = (types || "").match(rnothtmlwhite) || [""];
+            t = types.length;
             while (t--) {
-              tmp = rtypenamespace.exec(types2[t]) || [];
+              tmp = rtypenamespace.exec(types[t]) || [];
               type = origType = tmp[1];
               namespaces = (tmp[2] || "").split(".").sort();
               if (!type) {
                 for (type in events) {
-                  jQuery.event.remove(elem, type + types2[t], handler, selector, true);
+                  jQuery.event.remove(elem, type + types[t], handler, selector, true);
                 }
                 continue;
               }
@@ -2902,8 +2902,8 @@
             }
             return handlerQueue;
           },
-          addProp: function(name2, hook) {
-            Object.defineProperty(jQuery.Event.prototype, name2, {
+          addProp: function(name, hook) {
+            Object.defineProperty(jQuery.Event.prototype, name, {
               enumerable: true,
               configurable: true,
               get: isFunction(hook) ? function() {
@@ -2912,11 +2912,11 @@
                 }
               } : function() {
                 if (this.originalEvent) {
-                  return this.originalEvent[name2];
+                  return this.originalEvent[name];
                 }
               },
               set: function(value) {
-                Object.defineProperty(this, name2, {
+                Object.defineProperty(this, name, {
                   enumerable: true,
                   configurable: true,
                   writable: true,
@@ -3190,26 +3190,26 @@
           };
         });
         jQuery.fn.extend({
-          on: function(types2, selector, data, fn) {
-            return on(this, types2, selector, data, fn);
+          on: function(types, selector, data, fn) {
+            return on(this, types, selector, data, fn);
           },
-          one: function(types2, selector, data, fn) {
-            return on(this, types2, selector, data, fn, 1);
+          one: function(types, selector, data, fn) {
+            return on(this, types, selector, data, fn, 1);
           },
-          off: function(types2, selector, fn) {
+          off: function(types, selector, fn) {
             var handleObj, type;
-            if (types2 && types2.preventDefault && types2.handleObj) {
-              handleObj = types2.handleObj;
-              jQuery(types2.delegateTarget).off(
+            if (types && types.preventDefault && types.handleObj) {
+              handleObj = types.handleObj;
+              jQuery(types.delegateTarget).off(
                 handleObj.namespace ? handleObj.origType + "." + handleObj.namespace : handleObj.origType,
                 handleObj.selector,
                 handleObj.handler
               );
               return this;
             }
-            if (typeof types2 === "object") {
-              for (type in types2) {
-                this.off(type, selector, types2[type]);
+            if (typeof types === "object") {
+              for (type in types) {
+                this.off(type, selector, types[type]);
               }
               return this;
             }
@@ -3221,7 +3221,7 @@
               fn = returnFalse;
             }
             return this.each(function() {
-              jQuery.event.remove(this, types2, fn, selector);
+              jQuery.event.remove(this, types, fn, selector);
             });
           }
         });
@@ -3503,8 +3503,8 @@
           insertBefore: "before",
           insertAfter: "after",
           replaceAll: "replaceWith"
-        }, function(name2, original) {
-          jQuery.fn[name2] = function(selector) {
+        }, function(name, original) {
+          jQuery.fn[name] = function(selector) {
             var elems, ret = [], insert = jQuery(selector), last = insert.length - 1, i = 0;
             for (; i <= last; i++) {
               elems = i === last ? this : this.clone(true);
@@ -3524,14 +3524,14 @@
           return view.getComputedStyle(elem);
         };
         var swap = function(elem, options, callback) {
-          var ret, name2, old = {};
-          for (name2 in options) {
-            old[name2] = elem.style[name2];
-            elem.style[name2] = options[name2];
+          var ret, name, old = {};
+          for (name in options) {
+            old[name] = elem.style[name];
+            elem.style[name] = options[name];
           }
           ret = callback.call(elem);
-          for (name2 in options) {
-            elem.style[name2] = old[name2];
+          for (name in options) {
+            elem.style[name] = old[name];
           }
           return ret;
         };
@@ -3606,18 +3606,18 @@
             }
           });
         })();
-        function curCSS(elem, name2, computed) {
-          var width, minWidth, maxWidth, ret, isCustomProp = rcustomProp.test(name2), style = elem.style;
+        function curCSS(elem, name, computed) {
+          var width, minWidth, maxWidth, ret, isCustomProp = rcustomProp.test(name), style = elem.style;
           computed = computed || getStyles(elem);
           if (computed) {
-            ret = computed.getPropertyValue(name2) || computed[name2];
+            ret = computed.getPropertyValue(name) || computed[name];
             if (isCustomProp && ret) {
               ret = ret.replace(rtrimCSS, "$1") || void 0;
             }
             if (ret === "" && !isAttached(elem)) {
-              ret = jQuery.style(elem, name2);
+              ret = jQuery.style(elem, name);
             }
-            if (!support.pixelBoxStyles() && rnumnonpx.test(ret) && rboxStyle.test(name2)) {
+            if (!support.pixelBoxStyles() && rnumnonpx.test(ret) && rboxStyle.test(name)) {
               width = style.width;
               minWidth = style.minWidth;
               maxWidth = style.maxWidth;
@@ -3642,24 +3642,24 @@
           };
         }
         var cssPrefixes = ["Webkit", "Moz", "ms"], emptyStyle = document2.createElement("div").style, vendorProps = {};
-        function vendorPropName(name2) {
-          var capName = name2[0].toUpperCase() + name2.slice(1), i = cssPrefixes.length;
+        function vendorPropName(name) {
+          var capName = name[0].toUpperCase() + name.slice(1), i = cssPrefixes.length;
           while (i--) {
-            name2 = cssPrefixes[i] + capName;
-            if (name2 in emptyStyle) {
-              return name2;
+            name = cssPrefixes[i] + capName;
+            if (name in emptyStyle) {
+              return name;
             }
           }
         }
-        function finalPropName(name2) {
-          var final = jQuery.cssProps[name2] || vendorProps[name2];
+        function finalPropName(name) {
+          var final = jQuery.cssProps[name] || vendorProps[name];
           if (final) {
             return final;
           }
-          if (name2 in emptyStyle) {
-            return name2;
+          if (name in emptyStyle) {
+            return name;
           }
-          return vendorProps[name2] = vendorPropName(name2) || name2;
+          return vendorProps[name] = vendorPropName(name) || name;
         }
         var rdisplayswap = /^(none|table(?!-c[ea]).+)/, cssShow = { position: "absolute", visibility: "hidden", display: "block" }, cssNormalTransform = {
           letterSpacing: "0",
@@ -3767,19 +3767,19 @@
             strokeOpacity: true
           },
           cssProps: {},
-          style: function(elem, name2, value, extra) {
+          style: function(elem, name, value, extra) {
             if (!elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style) {
               return;
             }
-            var ret, type, hooks, origName = camelCase(name2), isCustomProp = rcustomProp.test(name2), style = elem.style;
+            var ret, type, hooks, origName = camelCase(name), isCustomProp = rcustomProp.test(name), style = elem.style;
             if (!isCustomProp) {
-              name2 = finalPropName(origName);
+              name = finalPropName(origName);
             }
-            hooks = jQuery.cssHooks[name2] || jQuery.cssHooks[origName];
+            hooks = jQuery.cssHooks[name] || jQuery.cssHooks[origName];
             if (value !== void 0) {
               type = typeof value;
               if (type === "string" && (ret = rcssNum.exec(value)) && ret[1]) {
-                value = adjustCSS(elem, name2, ret);
+                value = adjustCSS(elem, name, ret);
                 type = "number";
               }
               if (value == null || value !== value) {
@@ -3788,37 +3788,37 @@
               if (type === "number" && !isCustomProp) {
                 value += ret && ret[3] || (jQuery.cssNumber[origName] ? "" : "px");
               }
-              if (!support.clearCloneStyle && value === "" && name2.indexOf("background") === 0) {
-                style[name2] = "inherit";
+              if (!support.clearCloneStyle && value === "" && name.indexOf("background") === 0) {
+                style[name] = "inherit";
               }
               if (!hooks || !("set" in hooks) || (value = hooks.set(elem, value, extra)) !== void 0) {
                 if (isCustomProp) {
-                  style.setProperty(name2, value);
+                  style.setProperty(name, value);
                 } else {
-                  style[name2] = value;
+                  style[name] = value;
                 }
               }
             } else {
               if (hooks && "get" in hooks && (ret = hooks.get(elem, false, extra)) !== void 0) {
                 return ret;
               }
-              return style[name2];
+              return style[name];
             }
           },
-          css: function(elem, name2, extra, styles) {
-            var val, num, hooks, origName = camelCase(name2), isCustomProp = rcustomProp.test(name2);
+          css: function(elem, name, extra, styles) {
+            var val, num, hooks, origName = camelCase(name), isCustomProp = rcustomProp.test(name);
             if (!isCustomProp) {
-              name2 = finalPropName(origName);
+              name = finalPropName(origName);
             }
-            hooks = jQuery.cssHooks[name2] || jQuery.cssHooks[origName];
+            hooks = jQuery.cssHooks[name] || jQuery.cssHooks[origName];
             if (hooks && "get" in hooks) {
               val = hooks.get(elem, true, extra);
             }
             if (val === void 0) {
-              val = curCSS(elem, name2, styles);
+              val = curCSS(elem, name, styles);
             }
-            if (val === "normal" && name2 in cssNormalTransform) {
-              val = cssNormalTransform[name2];
+            if (val === "normal" && name in cssNormalTransform) {
+              val = cssNormalTransform[name];
             }
             if (extra === "" || extra) {
               num = parseFloat(val);
@@ -3886,19 +3886,19 @@
           }
         });
         jQuery.fn.extend({
-          css: function(name2, value) {
-            return access(this, function(elem, name3, value2) {
+          css: function(name, value) {
+            return access(this, function(elem, name2, value2) {
               var styles, len, map2 = {}, i = 0;
-              if (Array.isArray(name3)) {
+              if (Array.isArray(name2)) {
                 styles = getStyles(elem);
-                len = name3.length;
+                len = name2.length;
                 for (; i < len; i++) {
-                  map2[name3[i]] = jQuery.css(elem, name3[i], false, styles);
+                  map2[name2[i]] = jQuery.css(elem, name2[i], false, styles);
                 }
                 return map2;
               }
-              return value2 !== void 0 ? jQuery.style(elem, name3, value2) : jQuery.css(elem, name3);
-            }, name2, value, arguments.length > 1);
+              return value2 !== void 0 ? jQuery.style(elem, name2, value2) : jQuery.css(elem, name2);
+            }, name, value, arguments.length > 1);
           }
         });
         function Tween2(elem, options, prop, end, easing) {
@@ -4014,10 +4014,10 @@
           }
           return attrs;
         }
-        function createTween(value, prop, animation4) {
+        function createTween(value, prop, animation) {
           var tween2, collection = (Animation.tweeners[prop] || []).concat(Animation.tweeners["*"]), index = 0, length = collection.length;
           for (; index < length; index++) {
-            if (tween2 = collection[index].call(animation4, prop, value)) {
+            if (tween2 = collection[index].call(animation, prop, value)) {
               return tween2;
             }
           }
@@ -4141,23 +4141,23 @@
           }
         }
         function propFilter(props, specialEasing) {
-          var index, name2, easing, value, hooks;
+          var index, name, easing, value, hooks;
           for (index in props) {
-            name2 = camelCase(index);
-            easing = specialEasing[name2];
+            name = camelCase(index);
+            easing = specialEasing[name];
             value = props[index];
             if (Array.isArray(value)) {
               easing = value[1];
               value = props[index] = value[0];
             }
-            if (index !== name2) {
-              props[name2] = value;
+            if (index !== name) {
+              props[name] = value;
               delete props[index];
             }
-            hooks = jQuery.cssHooks[name2];
+            hooks = jQuery.cssHooks[name];
             if (hooks && "expand" in hooks) {
               value = hooks.expand(value);
-              delete props[name2];
+              delete props[name];
               for (index in value) {
                 if (!(index in props)) {
                   props[index] = value[index];
@@ -4165,7 +4165,7 @@
                 }
               }
             } else {
-              specialEasing[name2] = easing;
+              specialEasing[name] = easing;
             }
           }
         }
@@ -4176,20 +4176,20 @@
             if (stopped) {
               return false;
             }
-            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation4.startTime + animation4.duration - currentTime), temp2 = remaining / animation4.duration || 0, percent = 1 - temp2, index2 = 0, length2 = animation4.tweens.length;
+            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation.startTime + animation.duration - currentTime), temp2 = remaining / animation.duration || 0, percent = 1 - temp2, index2 = 0, length2 = animation.tweens.length;
             for (; index2 < length2; index2++) {
-              animation4.tweens[index2].run(percent);
+              animation.tweens[index2].run(percent);
             }
-            deferred.notifyWith(elem, [animation4, percent, remaining]);
+            deferred.notifyWith(elem, [animation, percent, remaining]);
             if (percent < 1 && length2) {
               return remaining;
             }
             if (!length2) {
-              deferred.notifyWith(elem, [animation4, 1, 0]);
+              deferred.notifyWith(elem, [animation, 1, 0]);
             }
-            deferred.resolveWith(elem, [animation4]);
+            deferred.resolveWith(elem, [animation]);
             return false;
-          }, animation4 = deferred.promise({
+          }, animation = deferred.promise({
             elem,
             props: jQuery.extend({}, properties),
             opts: jQuery.extend(true, {
@@ -4204,55 +4204,55 @@
             createTween: function(prop, end) {
               var tween2 = jQuery.Tween(
                 elem,
-                animation4.opts,
+                animation.opts,
                 prop,
                 end,
-                animation4.opts.specialEasing[prop] || animation4.opts.easing
+                animation.opts.specialEasing[prop] || animation.opts.easing
               );
-              animation4.tweens.push(tween2);
+              animation.tweens.push(tween2);
               return tween2;
             },
             stop: function(gotoEnd) {
-              var index2 = 0, length2 = gotoEnd ? animation4.tweens.length : 0;
+              var index2 = 0, length2 = gotoEnd ? animation.tweens.length : 0;
               if (stopped) {
                 return this;
               }
               stopped = true;
               for (; index2 < length2; index2++) {
-                animation4.tweens[index2].run(1);
+                animation.tweens[index2].run(1);
               }
               if (gotoEnd) {
-                deferred.notifyWith(elem, [animation4, 1, 0]);
-                deferred.resolveWith(elem, [animation4, gotoEnd]);
+                deferred.notifyWith(elem, [animation, 1, 0]);
+                deferred.resolveWith(elem, [animation, gotoEnd]);
               } else {
-                deferred.rejectWith(elem, [animation4, gotoEnd]);
+                deferred.rejectWith(elem, [animation, gotoEnd]);
               }
               return this;
             }
-          }), props = animation4.props;
-          propFilter(props, animation4.opts.specialEasing);
+          }), props = animation.props;
+          propFilter(props, animation.opts.specialEasing);
           for (; index < length; index++) {
-            result = Animation.prefilters[index].call(animation4, elem, props, animation4.opts);
+            result = Animation.prefilters[index].call(animation, elem, props, animation.opts);
             if (result) {
               if (isFunction(result.stop)) {
-                jQuery._queueHooks(animation4.elem, animation4.opts.queue).stop = result.stop.bind(result);
+                jQuery._queueHooks(animation.elem, animation.opts.queue).stop = result.stop.bind(result);
               }
               return result;
             }
           }
-          jQuery.map(props, createTween, animation4);
-          if (isFunction(animation4.opts.start)) {
-            animation4.opts.start.call(elem, animation4);
+          jQuery.map(props, createTween, animation);
+          if (isFunction(animation.opts.start)) {
+            animation.opts.start.call(elem, animation);
           }
-          animation4.progress(animation4.opts.progress).done(animation4.opts.done, animation4.opts.complete).fail(animation4.opts.fail).always(animation4.opts.always);
+          animation.progress(animation.opts.progress).done(animation.opts.done, animation.opts.complete).fail(animation.opts.fail).always(animation.opts.always);
           jQuery.fx.timer(
             jQuery.extend(tick, {
               elem,
-              anim: animation4,
-              queue: animation4.opts.queue
+              anim: animation,
+              queue: animation.opts.queue
             })
           );
-          return animation4;
+          return animation;
         }
         jQuery.Animation = jQuery.extend(Animation, {
           tweeners: {
@@ -4395,10 +4395,10 @@
             });
           }
         });
-        jQuery.each(["toggle", "show", "hide"], function(_i, name2) {
-          var cssFn = jQuery.fn[name2];
-          jQuery.fn[name2] = function(speed, easing, callback) {
-            return speed == null || typeof speed === "boolean" ? cssFn.apply(this, arguments) : this.animate(genFx(name2, true), speed, easing, callback);
+        jQuery.each(["toggle", "show", "hide"], function(_i, name) {
+          var cssFn = jQuery.fn[name];
+          jQuery.fn[name] = function(speed, easing, callback) {
+            return speed == null || typeof speed === "boolean" ? cssFn.apply(this, arguments) : this.animate(genFx(name, true), speed, easing, callback);
           };
         });
         jQuery.each({
@@ -4408,8 +4408,8 @@
           fadeIn: { opacity: "show" },
           fadeOut: { opacity: "hide" },
           fadeToggle: { opacity: "toggle" }
-        }, function(name2, props) {
-          jQuery.fn[name2] = function(speed, easing, callback) {
+        }, function(name, props) {
+          jQuery.fn[name] = function(speed, easing, callback) {
             return this.animate(props, speed, easing, callback);
           };
         });
@@ -4470,42 +4470,42 @@
         })();
         var boolHook, attrHandle = jQuery.expr.attrHandle;
         jQuery.fn.extend({
-          attr: function(name2, value) {
-            return access(this, jQuery.attr, name2, value, arguments.length > 1);
+          attr: function(name, value) {
+            return access(this, jQuery.attr, name, value, arguments.length > 1);
           },
-          removeAttr: function(name2) {
+          removeAttr: function(name) {
             return this.each(function() {
-              jQuery.removeAttr(this, name2);
+              jQuery.removeAttr(this, name);
             });
           }
         });
         jQuery.extend({
-          attr: function(elem, name2, value) {
+          attr: function(elem, name, value) {
             var ret, hooks, nType = elem.nodeType;
             if (nType === 3 || nType === 8 || nType === 2) {
               return;
             }
             if (typeof elem.getAttribute === "undefined") {
-              return jQuery.prop(elem, name2, value);
+              return jQuery.prop(elem, name, value);
             }
             if (nType !== 1 || !jQuery.isXMLDoc(elem)) {
-              hooks = jQuery.attrHooks[name2.toLowerCase()] || (jQuery.expr.match.bool.test(name2) ? boolHook : void 0);
+              hooks = jQuery.attrHooks[name.toLowerCase()] || (jQuery.expr.match.bool.test(name) ? boolHook : void 0);
             }
             if (value !== void 0) {
               if (value === null) {
-                jQuery.removeAttr(elem, name2);
+                jQuery.removeAttr(elem, name);
                 return;
               }
-              if (hooks && "set" in hooks && (ret = hooks.set(elem, value, name2)) !== void 0) {
+              if (hooks && "set" in hooks && (ret = hooks.set(elem, value, name)) !== void 0) {
                 return ret;
               }
-              elem.setAttribute(name2, value + "");
+              elem.setAttribute(name, value + "");
               return value;
             }
-            if (hooks && "get" in hooks && (ret = hooks.get(elem, name2)) !== null) {
+            if (hooks && "get" in hooks && (ret = hooks.get(elem, name)) !== null) {
               return ret;
             }
-            ret = jQuery.find.attr(elem, name2);
+            ret = jQuery.find.attr(elem, name);
             return ret == null ? void 0 : ret;
           },
           attrHooks: {
@@ -4523,32 +4523,32 @@
             }
           },
           removeAttr: function(elem, value) {
-            var name2, i = 0, attrNames = value && value.match(rnothtmlwhite);
+            var name, i = 0, attrNames = value && value.match(rnothtmlwhite);
             if (attrNames && elem.nodeType === 1) {
-              while (name2 = attrNames[i++]) {
-                elem.removeAttribute(name2);
+              while (name = attrNames[i++]) {
+                elem.removeAttribute(name);
               }
             }
           }
         });
         boolHook = {
-          set: function(elem, value, name2) {
+          set: function(elem, value, name) {
             if (value === false) {
-              jQuery.removeAttr(elem, name2);
+              jQuery.removeAttr(elem, name);
             } else {
-              elem.setAttribute(name2, name2);
+              elem.setAttribute(name, name);
             }
-            return name2;
+            return name;
           }
         };
-        jQuery.each(jQuery.expr.match.bool.source.match(/\w+/g), function(_i, name2) {
-          var getter = attrHandle[name2] || jQuery.find.attr;
-          attrHandle[name2] = function(elem, name3, isXML) {
-            var ret, handle, lowercaseName = name3.toLowerCase();
+        jQuery.each(jQuery.expr.match.bool.source.match(/\w+/g), function(_i, name) {
+          var getter = attrHandle[name] || jQuery.find.attr;
+          attrHandle[name] = function(elem, name2, isXML) {
+            var ret, handle, lowercaseName = name2.toLowerCase();
             if (!isXML) {
               handle = attrHandle[lowercaseName];
               attrHandle[lowercaseName] = ret;
-              ret = getter(elem, name3, isXML) != null ? lowercaseName : null;
+              ret = getter(elem, name2, isXML) != null ? lowercaseName : null;
               attrHandle[lowercaseName] = handle;
             }
             return ret;
@@ -4556,35 +4556,35 @@
         });
         var rfocusable = /^(?:input|select|textarea|button)$/i, rclickable = /^(?:a|area)$/i;
         jQuery.fn.extend({
-          prop: function(name2, value) {
-            return access(this, jQuery.prop, name2, value, arguments.length > 1);
+          prop: function(name, value) {
+            return access(this, jQuery.prop, name, value, arguments.length > 1);
           },
-          removeProp: function(name2) {
+          removeProp: function(name) {
             return this.each(function() {
-              delete this[jQuery.propFix[name2] || name2];
+              delete this[jQuery.propFix[name] || name];
             });
           }
         });
         jQuery.extend({
-          prop: function(elem, name2, value) {
+          prop: function(elem, name, value) {
             var ret, hooks, nType = elem.nodeType;
             if (nType === 3 || nType === 8 || nType === 2) {
               return;
             }
             if (nType !== 1 || !jQuery.isXMLDoc(elem)) {
-              name2 = jQuery.propFix[name2] || name2;
-              hooks = jQuery.propHooks[name2];
+              name = jQuery.propFix[name] || name;
+              hooks = jQuery.propHooks[name];
             }
             if (value !== void 0) {
-              if (hooks && "set" in hooks && (ret = hooks.set(elem, value, name2)) !== void 0) {
+              if (hooks && "set" in hooks && (ret = hooks.set(elem, value, name)) !== void 0) {
                 return ret;
               }
-              return elem[name2] = value;
+              return elem[name] = value;
             }
-            if (hooks && "get" in hooks && (ret = hooks.get(elem, name2)) !== null) {
+            if (hooks && "get" in hooks && (ret = hooks.get(elem, name)) !== null) {
               return ret;
             }
-            return elem[name2];
+            return elem[name];
           },
           propHooks: {
             tabIndex: {
@@ -5001,7 +5001,7 @@
         });
         var rbracket = /\[\]$/, rCRLF = /\r?\n/g, rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i, rsubmittable = /^(?:input|select|textarea|keygen)/i;
         function buildParams(prefix, obj, traditional, add2) {
-          var name2;
+          var name;
           if (Array.isArray(obj)) {
             jQuery.each(obj, function(i, v) {
               if (traditional || rbracket.test(prefix)) {
@@ -5016,8 +5016,8 @@
               }
             });
           } else if (!traditional && toType(obj) === "object") {
-            for (name2 in obj) {
-              buildParams(prefix + "[" + name2 + "]", obj[name2], traditional, add2);
+            for (name in obj) {
+              buildParams(prefix + "[" + name + "]", obj[name], traditional, add2);
             }
           } else {
             add2(prefix, obj);
@@ -5283,10 +5283,10 @@
               getAllResponseHeaders: function() {
                 return completed2 ? responseHeadersString : null;
               },
-              setRequestHeader: function(name2, value) {
+              setRequestHeader: function(name, value) {
                 if (completed2 == null) {
-                  name2 = requestHeadersNames[name2.toLowerCase()] = requestHeadersNames[name2.toLowerCase()] || name2;
-                  requestHeaders[name2] = value;
+                  name = requestHeadersNames[name.toLowerCase()] = requestHeadersNames[name.toLowerCase()] || name;
+                  requestHeaders[name] = value;
                 }
                 return this;
               },
@@ -5977,27 +5977,27 @@
             }
           );
         });
-        jQuery.each({ Height: "height", Width: "width" }, function(name2, type) {
+        jQuery.each({ Height: "height", Width: "width" }, function(name, type) {
           jQuery.each({
-            padding: "inner" + name2,
+            padding: "inner" + name,
             content: type,
-            "": "outer" + name2
+            "": "outer" + name
           }, function(defaultExtra, funcName) {
             jQuery.fn[funcName] = function(margin, value) {
               var chainable = arguments.length && (defaultExtra || typeof margin !== "boolean"), extra = defaultExtra || (margin === true || value === true ? "margin" : "border");
               return access(this, function(elem, type2, value2) {
                 var doc;
                 if (isWindow(elem)) {
-                  return funcName.indexOf("outer") === 0 ? elem["inner" + name2] : elem.document.documentElement["client" + name2];
+                  return funcName.indexOf("outer") === 0 ? elem["inner" + name] : elem.document.documentElement["client" + name];
                 }
                 if (elem.nodeType === 9) {
                   doc = elem.documentElement;
                   return Math.max(
-                    elem.body["scroll" + name2],
-                    doc["scroll" + name2],
-                    elem.body["offset" + name2],
-                    doc["offset" + name2],
-                    doc["client" + name2]
+                    elem.body["scroll" + name],
+                    doc["scroll" + name],
+                    elem.body["offset" + name],
+                    doc["offset" + name],
+                    doc["client" + name]
                   );
                 }
                 return value2 === void 0 ? jQuery.css(elem, type2, extra) : jQuery.style(elem, type2, value2, extra);
@@ -6018,17 +6018,17 @@
           };
         });
         jQuery.fn.extend({
-          bind: function(types2, data, fn) {
-            return this.on(types2, null, data, fn);
+          bind: function(types, data, fn) {
+            return this.on(types, null, data, fn);
           },
-          unbind: function(types2, fn) {
-            return this.off(types2, null, fn);
+          unbind: function(types, fn) {
+            return this.off(types, null, fn);
           },
-          delegate: function(selector, types2, data, fn) {
-            return this.on(types2, selector, data, fn);
+          delegate: function(selector, types, data, fn) {
+            return this.on(types, selector, data, fn);
           },
-          undelegate: function(selector, types2, fn) {
-            return arguments.length === 1 ? this.off(selector, "**") : this.off(types2, selector || "**", fn);
+          undelegate: function(selector, types, fn) {
+            return arguments.length === 1 ? this.off(selector, "**") : this.off(types, selector || "**", fn);
           },
           hover: function(fnOver, fnOut) {
             return this.mouseenter(fnOver).mouseleave(fnOut || fnOver);
@@ -6036,9 +6036,9 @@
         });
         jQuery.each(
           "blur focus focusin focusout resize scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup contextmenu".split(" "),
-          function(_i, name2) {
-            jQuery.fn[name2] = function(data, fn) {
-              return arguments.length > 0 ? this.on(name2, null, data, fn) : this.trigger(name2);
+          function(_i, name) {
+            jQuery.fn[name] = function(data, fn) {
+              return arguments.length > 0 ? this.on(name, null, data, fn) : this.trigger(name);
             };
           }
         );
@@ -6168,8 +6168,8 @@
   var __defProp2 = Object.defineProperty;
   var __defNormalProp2 = (obj, key, value) => key in obj ? __defProp2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __export = (target, all) => {
-    for (var name2 in all)
-      __defProp2(target, name2, { get: all[name2], enumerable: true });
+    for (var name in all)
+      __defProp2(target, name, { get: all[name], enumerable: true });
   };
   var __publicField2 = (obj, key, value) => {
     __defNormalProp2(obj, typeof key !== "symbol" ? key + "" : key, value);
@@ -6296,8 +6296,8 @@
       __publicField2(this, "_events", {});
       __publicField2(this, "_bound", false);
     }
-    addEventListener(name2, handler) {
-      const list2 = this._events[name2] || (this._events[name2] = []);
+    addEventListener(name, handler) {
+      const list2 = this._events[name] || (this._events[name] = []);
       list2.push(handler);
       this._bound = true;
       return this;
@@ -6308,19 +6308,19 @@
     bind() {
       return this.addEventListener.apply(this, arguments);
     }
-    removeEventListener(name2, handler) {
+    removeEventListener(name, handler) {
       if (!this._events) {
         return this;
       }
-      if (!name2 && !handler) {
+      if (!name && !handler) {
         this._events = {};
         this._bound = false;
         return this;
       }
-      const names = name2 ? [name2] : Object.keys(this._events);
+      const names = name ? [name] : Object.keys(this._events);
       for (let i = 0, l = names.length; i < l; i++) {
-        name2 = names[i];
-        let list2 = this._events[name2];
+        name = names[i];
+        let list2 = this._events[name];
         if (list2) {
           let events = [];
           if (handler) {
@@ -6332,7 +6332,7 @@
               }
             }
           }
-          this._events[name2] = events;
+          this._events[name] = events;
         }
       }
       return this;
@@ -6343,12 +6343,12 @@
     unbind() {
       return this.removeEventListener.apply(this, arguments);
     }
-    dispatchEvent(name2) {
+    dispatchEvent(name) {
       if (!this._events) {
         return this;
       }
       const args = Array.prototype.slice.call(arguments, 1);
-      const events = this._events[name2];
+      const events = this._events[name];
       if (events) {
         for (let i = 0; i < events.length; i++) {
           events[i].call(this, ...args);
@@ -6359,21 +6359,21 @@
     trigger() {
       return this.dispatchEvent.apply(this, arguments);
     }
-    listen(obj, name2, handler) {
+    listen(obj, name, handler) {
       const scope = this;
       if (obj) {
         e.obj = obj;
-        e.name = name2;
+        e.name = name;
         e.handler = handler;
-        obj.on(name2, e);
+        obj.on(name, e);
       }
       function e() {
         handler.apply(scope, arguments);
       }
       return scope;
     }
-    ignore(obj, name2, handler) {
-      obj.off(name2, handler);
+    ignore(obj, name, handler) {
+      obj.off(name, handler);
       return this;
     }
   };
@@ -7000,15 +7000,15 @@
     }
     return A * sum;
   }
-  function getCurveFromPoints(points3, closed2) {
-    const l = points3.length, last = l - 1;
+  function getCurveFromPoints(points, closed2) {
+    const l = points.length, last = l - 1;
     for (let i = 0; i < l; i++) {
-      const point = points3[i];
+      const point = points[i];
       const prev = closed2 ? mod(i - 1, l) : Math.max(i - 1, 0);
       const next = closed2 ? mod(i + 1, l) : Math.min(i + 1, last);
-      const a = points3[prev];
+      const a = points[prev];
       const b = point;
-      const c = points3[next];
+      const c = points[next];
       getControlPoints(a, b, c);
       b.command = i === 0 ? Commands.move : Commands.curve;
     }
@@ -8428,8 +8428,8 @@
       middle: "center",
       right: "end"
     },
-    shim: function(elem, name2) {
-      elem.tagName = elem.nodeName = name2 || "canvas";
+    shim: function(elem, name) {
+      elem.tagName = elem.nodeName = name || "canvas";
       elem.nodeType = 1;
       elem.getAttribute = function(prop) {
         return this[prop];
@@ -10497,22 +10497,22 @@
       const last = this.vertices.length - 1;
       const closed2 = this._closed || this.vertices[last]._command === Commands.close;
       let b = this.vertices[last];
-      let points3 = [], verts;
+      let points = [], verts;
       _.each(this.vertices, function(a, i) {
         if (i <= 0 && !closed2) {
           b = a;
           return;
         }
         if (a.command === Commands.move) {
-          points3.push(new Anchor(b.x, b.y));
+          points.push(new Anchor(b.x, b.y));
           if (i > 0) {
-            points3[points3.length - 1].command = Commands.line;
+            points[points.length - 1].command = Commands.line;
           }
           b = a;
           return;
         }
         verts = getSubdivisions(a, b, limit);
-        points3 = points3.concat(verts);
+        points = points.concat(verts);
         _.each(verts, function(v, i2) {
           if (i2 <= 0 && b.command === Commands.move) {
             v.command = Commands.move;
@@ -10524,7 +10524,7 @@
           if (this._closed && this._automatic) {
             b = a;
             verts = getSubdivisions(a, b, limit);
-            points3 = points3.concat(verts);
+            points = points.concat(verts);
             _.each(verts, function(v, i2) {
               if (i2 <= 0 && b.command === Commands.move) {
                 v.command = Commands.move;
@@ -10533,15 +10533,15 @@
               }
             });
           } else if (closed2) {
-            points3.push(new Anchor(a.x, a.y));
+            points.push(new Anchor(a.x, a.y));
           }
-          points3[points3.length - 1].command = closed2 ? Commands.close : Commands.line;
+          points[points.length - 1].command = closed2 ? Commands.close : Commands.line;
         }
         b = a;
       }, this);
       this._automatic = false;
       this._curved = false;
-      this.vertices = points3;
+      this.vertices = points;
       return this;
     }
     _updateLength(limit, silent) {
@@ -10929,13 +10929,13 @@
   }
   var _Rectangle = class extends Path {
     constructor(x, y, width, height) {
-      const points3 = [
+      const points = [
         new Anchor(),
         new Anchor(),
         new Anchor(),
         new Anchor()
       ];
-      super(points3, true, false, true);
+      super(points, true, false, true);
       __publicField2(this, "_flagWidth", 0);
       __publicField2(this, "_flagHeight", 0);
       __publicField2(this, "_width", 0);
@@ -11151,7 +11151,7 @@
       const effect = this._texture;
       const cols = this._columns;
       const rows = this._rows;
-      let width, height, elapsed, amount2, duration2;
+      let width, height, elapsed, amount2, duration;
       let index, iw, ih, frames;
       if (effect) {
         if (this._flagColumns || this._flagRows) {
@@ -11181,13 +11181,13 @@
             }
             elapsed = _.performance.now() - this._startTime;
             frames = this._lastFrame + 1;
-            duration2 = 1e3 * (frames - this._firstFrame) / this._frameRate;
+            duration = 1e3 * (frames - this._firstFrame) / this._frameRate;
             if (this._loop) {
-              elapsed = elapsed % duration2;
+              elapsed = elapsed % duration;
             } else {
-              elapsed = Math.min(elapsed, duration2);
+              elapsed = Math.min(elapsed, duration);
             }
-            index = lerp(this._firstFrame, frames, elapsed / duration2);
+            index = lerp(this._firstFrame, frames, elapsed / duration);
             index = Math.floor(index);
             if (index !== this._index) {
               this._index = index;
@@ -11282,11 +11282,11 @@
   var _Circle = class extends Path {
     constructor(ox, oy, r, resolution) {
       const amount2 = resolution ? Math.max(resolution, 2) : 4;
-      const points3 = [];
+      const points = [];
       for (let i = 0; i < amount2; i++) {
-        points3.push(new Anchor(0, 0, 0, 0, 0, 0));
+        points.push(new Anchor(0, 0, 0, 0, 0, 0));
       }
-      super(points3, true, true, true);
+      super(points, true, true, true);
       __publicField2(this, "_flagRadius", false);
       __publicField2(this, "_radius", 0);
       for (let prop in proto14) {
@@ -11386,11 +11386,11 @@
         ry = rx;
       }
       const amount2 = resolution ? Math.max(resolution, 2) : 4;
-      const points3 = [];
+      const points = [];
       for (let i = 0; i < amount2; i++) {
-        points3.push(new Anchor());
+        points.push(new Anchor());
       }
-      super(points3, true, true, true);
+      super(points, true, true, true);
       __publicField2(this, "_flagWidth", false);
       __publicField2(this, "_flagHeight", false);
       __publicField2(this, "_width", 0);
@@ -11502,11 +11502,11 @@
   };
   var Line = class extends Path {
     constructor(x1, y1, x2, y2) {
-      const points3 = [
+      const points = [
         new Anchor(x1, y1),
         new Anchor(x2, y2)
       ];
-      super(points3);
+      super(points);
       for (let prop in proto16) {
         Object.defineProperty(this, prop, proto16[prop]);
       }
@@ -11550,9 +11550,9 @@
       if (typeof radius === "undefined" && typeof width === "number" && typeof height === "number") {
         radius = Math.floor(Math.min(width, height) / 12);
       }
-      const points3 = [];
+      const points = [];
       for (let i = 0; i < 10; i++) {
-        points3.push(
+        points.push(
           new Anchor(
             0,
             0,
@@ -11564,7 +11564,7 @@
           )
         );
       }
-      super(points3);
+      super(points);
       __publicField2(this, "_flagWidth", false);
       __publicField2(this, "_flagHeight", false);
       __publicField2(this, "_flagRadius", false);
@@ -12181,12 +12181,12 @@
     const commands = text.split(";");
     for (let i = 0; i < commands.length; i++) {
       const command = commands[i].split(":");
-      const name2 = command[0];
+      const name = command[0];
       const value = command[1];
-      if (typeof name2 === "undefined" || typeof value === "undefined") {
+      if (typeof name === "undefined" || typeof value === "undefined") {
         continue;
       }
-      styles[name2] = value.replace(/\s/, "");
+      styles[name] = value.replace(/\s/, "");
     }
     return styles;
   }
@@ -12597,14 +12597,14 @@
       return group;
     },
     polygon: function(node, parentStyles) {
-      let points3;
+      let points;
       if (typeof node === "string") {
-        points3 = node;
+        points = node;
       } else {
-        points3 = node.getAttribute("points");
+        points = node.getAttribute("points");
       }
       const verts = [];
-      points3.replace(/(-?[\d.eE-]+)[,|\s](-?[\d.eE-]+)/g, function(match, p1, p2) {
+      points.replace(/(-?[\d.eE-]+)[,|\s](-?[\d.eE-]+)/g, function(match, p1, p2) {
         verts.push(new Anchor(parseFloat(p1), parseFloat(p2)));
       });
       const poly = new Path(verts, true).noStroke();
@@ -12625,7 +12625,7 @@
       } else {
         path2 = node.getAttribute("d");
       }
-      let points3 = [];
+      let points = [];
       let closed2 = false, relative = false;
       if (path2) {
         let coord = new Anchor();
@@ -12718,8 +12718,8 @@
                   void 0,
                   Commands.close
                 );
-                for (let j = points3.length - 1; j >= 0; j--) {
-                  const point = points3[j];
+                for (let j = points.length - 1; j >= 0; j--) {
+                  const point = points[j];
                   if (/m/i.test(point.command)) {
                     coord = point;
                     break;
@@ -12885,14 +12885,14 @@
           }
           if (result) {
             if (Array.isArray(result)) {
-              points3 = points3.concat(result);
+              points = points.concat(result);
             } else {
-              points3.push(result);
+              points.push(result);
             }
           }
         });
       }
-      path2 = new Path(points3, closed2, void 0, true).noStroke();
+      path2 = new Path(points, closed2, void 0, true).noStroke();
       path2.fill = "black";
       const rect = path2.getBoundingClientRect(true);
       rect.centroid = {
@@ -13228,7 +13228,7 @@
     }
     _update() {
       const effect = this._textures;
-      let width, height, elapsed, amount2, duration2, texture;
+      let width, height, elapsed, amount2, duration, texture;
       let index, frames;
       if (effect) {
         if (this._flagTextures) {
@@ -13244,13 +13244,13 @@
           }
           elapsed = _.performance.now() - this._startTime;
           frames = this._lastFrame + 1;
-          duration2 = 1e3 * (frames - this._firstFrame) / this._frameRate;
+          duration = 1e3 * (frames - this._firstFrame) / this._frameRate;
           if (this._loop) {
-            elapsed = elapsed % duration2;
+            elapsed = elapsed % duration;
           } else {
-            elapsed = Math.min(elapsed, duration2);
+            elapsed = Math.min(elapsed, duration);
           }
-          index = lerp(this._firstFrame, frames, elapsed / duration2);
+          index = lerp(this._firstFrame, frames, elapsed / duration);
           index = Math.floor(index);
           if (index !== this._index) {
             this._index = index;
@@ -13366,11 +13366,11 @@
   var _ArcSegment = class extends Path {
     constructor(x, y, ir, or, sa, ea, res) {
       const amount2 = res || Constants.Resolution * 3;
-      const points3 = [];
+      const points = [];
       for (let i = 0; i < amount2; i++) {
-        points3.push(new Anchor());
+        points.push(new Anchor());
       }
-      super(points3, true, false, true);
+      super(points, true, false, true);
       __publicField2(this, "_flagStartAngle", false);
       __publicField2(this, "_flagEndAngle", false);
       __publicField2(this, "_flagInnerRadius", false);
@@ -13686,7 +13686,7 @@
     }
     subdivide(limit) {
       this._update();
-      let points3 = [];
+      let points = [];
       for (let i = 0; i < this.vertices.length; i++) {
         const a = this.vertices[i];
         const b = this.vertices[i - 1];
@@ -13698,9 +13698,9 @@
         const x2 = b.x;
         const y2 = b.y;
         const subdivisions = subdivide(x1, y1, x1, y1, x2, y2, x2, y2, limit);
-        points3 = points3.concat(subdivisions);
+        points = points.concat(subdivisions);
       }
-      this.vertices = points3;
+      this.vertices = points;
       return this;
     }
     _update() {
@@ -14176,8 +14176,8 @@
       center: "middle",
       right: "end"
     },
-    createElement: function(name2, attrs) {
-      const tag = name2;
+    createElement: function(name, attrs) {
+      const tag = name;
       const elem = document.createElementNS(svg.ns, tag);
       if (tag === "svg") {
         attrs = _.defaults(attrs || {}, {
@@ -14206,12 +14206,12 @@
       }
       return this;
     },
-    toString: function(points3, closed2) {
-      let l = points3.length, last = l - 1, d, string = "";
+    toString: function(points, closed2) {
+      let l = points.length, last = l - 1, d, string = "";
       for (let i = 0; i < l; i++) {
-        const b = points3[i];
+        const b = points[i];
         const prev = closed2 ? mod(i - 1, l) : Math.max(i - 1, 0);
-        const a = points3[prev];
+        const a = points[prev];
         let command, c;
         let vx, vy, ux, uy, ar, bl, br, cl;
         let rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
@@ -14286,21 +14286,21 @@
       }
       return string;
     },
-    pointsToString: function(points3, size) {
+    pointsToString: function(points, size) {
       let string = "";
       const r = size * 0.5;
-      for (let i = 0; i < points3.length; i++) {
-        const x = points3[i].x;
-        const y = points3[i].y - r;
+      for (let i = 0; i < points.length; i++) {
+        const x = points[i].x;
+        const y = points[i].y - r;
         string += Commands.move + " " + x + " " + y + " ";
         string += "a " + r + " " + r + " 0 1 0 0.001 0 Z";
       }
       return string;
     },
-    getClip: function(shape3, domElement2) {
-      let clip = shape3._renderer.clip;
+    getClip: function(shape, domElement2) {
+      let clip = shape._renderer.clip;
       if (!clip) {
-        clip = shape3._renderer.clip = svg.createElement("clipPath", {
+        clip = shape._renderer.clip = svg.createElement("clipPath", {
           "clip-rule": "nonzero"
         });
       }
@@ -16455,21 +16455,21 @@
       this.scene.add(star);
       return star;
     }
-    makeCurve(points3) {
+    makeCurve(points) {
       const l = arguments.length;
-      if (!Array.isArray(points3)) {
-        points3 = [];
+      if (!Array.isArray(points)) {
+        points = [];
         for (let i = 0; i < l; i += 2) {
           const x = arguments[i];
           if (typeof x !== "number") {
             break;
           }
           const y = arguments[i + 1];
-          points3.push(new Anchor(x, y));
+          points.push(new Anchor(x, y));
         }
       }
       const last = arguments[l - 1];
-      const curve = new Path(points3, !(typeof last === "boolean" ? last : void 0), true);
+      const curve = new Path(points, !(typeof last === "boolean" ? last : void 0), true);
       const rect = curve.getBoundingClientRect();
       curve.center().translation.set(rect.left + rect.width / 2, rect.top + rect.height / 2);
       this.scene.add(curve);
@@ -16507,26 +16507,26 @@
           vertices.push(new Vector(x, y));
         }
       }
-      const points3 = new Points(vertices);
-      this.scene.add(points3);
-      return points3;
+      const points = new Points(vertices);
+      this.scene.add(points);
+      return points;
     }
     makePath(p) {
       const l = arguments.length;
-      let points3 = p;
+      let points = p;
       if (!Array.isArray(p)) {
-        points3 = [];
+        points = [];
         for (let i = 0; i < l; i += 2) {
           const x = arguments[i];
           if (typeof x !== "number") {
             break;
           }
           const y = arguments[i + 1];
-          points3.push(new Anchor(x, y));
+          points.push(new Anchor(x, y));
         }
       }
       const last = arguments[l - 1];
-      const path2 = new Path(points3, !(typeof last === "boolean" ? last : void 0));
+      const path2 = new Path(points, !(typeof last === "boolean" ? last : void 0));
       const rect = path2.getBoundingClientRect();
       if (typeof rect.top === "number" && typeof rect.left === "number" && typeof rect.right === "number" && typeof rect.bottom === "number") {
         path2.center().translation.set(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -17085,22 +17085,22 @@
     Tween2.prototype.isPaused = function() {
       return this._isPaused;
     };
-    Tween2.prototype.to = function(target, duration2) {
-      if (duration2 === void 0) {
-        duration2 = 1e3;
+    Tween2.prototype.to = function(target, duration) {
+      if (duration === void 0) {
+        duration = 1e3;
       }
       if (this._isPlaying)
         throw new Error("Can not call Tween.to() while Tween is already started or paused. Stop the Tween first.");
       this._valuesEnd = target;
       this._propertiesAreSetUp = false;
-      this._duration = duration2;
+      this._duration = duration;
       return this;
     };
-    Tween2.prototype.duration = function(duration2) {
-      if (duration2 === void 0) {
-        duration2 = 1e3;
+    Tween2.prototype.duration = function(duration) {
+      if (duration === void 0) {
+        duration = 1e3;
       }
-      this._duration = duration2;
+      this._duration = duration;
       return this;
     };
     Tween2.prototype.dynamic = function(dynamic) {
@@ -17426,7 +17426,7 @@
         if (_valuesStart[property] === void 0) {
           continue;
         }
-        var start4 = _valuesStart[property] || 0;
+        var start = _valuesStart[property] || 0;
         var end = _valuesEnd[property];
         var startIsArray = Array.isArray(_object[property]);
         var endIsArray = Array.isArray(end);
@@ -17434,21 +17434,21 @@
         if (isInterpolationList) {
           _object[property] = this._interpolationFunction(end, value);
         } else if (typeof end === "object" && end) {
-          this._updateProperties(_object[property], start4, end, value);
+          this._updateProperties(_object[property], start, end, value);
         } else {
-          end = this._handleRelativeValue(start4, end);
+          end = this._handleRelativeValue(start, end);
           if (typeof end === "number") {
-            _object[property] = start4 + (end - start4) * value;
+            _object[property] = start + (end - start) * value;
           }
         }
       }
     };
-    Tween2.prototype._handleRelativeValue = function(start4, end) {
+    Tween2.prototype._handleRelativeValue = function(start, end) {
       if (typeof end !== "string") {
         return end;
       }
       if (end.charAt(0) === "+" || end.charAt(0) === "-") {
-        return start4 + parseFloat(end);
+        return start + parseFloat(end);
       }
       return parseFloat(end);
     };
@@ -17479,7 +17479,6 @@
   });
   two.renderer.domElement.id = "stage";
   var TWO_PI2 = Math.PI * 2;
-  var duration = 1e3;
   var drag = 0.125;
   var mouse = new Two.Vector();
   var container = document.querySelector("#container");
@@ -17885,18 +17884,9 @@
   __publicField(Sound, "has", has);
 
   // src/animations/index.js
-  var ctx = new AudioContext();
+  var ctx;
   var map = {};
   var list = [];
-  var types = [
-    "start",
-    "update",
-    "clear",
-    "resize",
-    "playing",
-    "hash",
-    "name"
-  ];
   var center = new Two.Vector(two.width / 2, two.height / 2);
   var domElement = two.renderer.domElement;
   var min_dimension = Math.min(two.width, two.height);
@@ -17905,27 +17895,13 @@
     center.x = two.width / 2;
     center.y = two.height / 2;
     min_dimension = Math.min(two.width, two.height);
-    list.forEach((animation4) => animation4.resize());
+    list.forEach((animation) => animation.resize());
   });
+  palette_default.onStart(updateAudio);
   palette_default.onUpdate(() => {
-    list.forEach(({ update: update6 }) => update6());
+    list.forEach(({ update: update3 }) => update3());
     domElement.style.background = palette_default.colors.background;
   });
-  function register(hash2, animation4) {
-    const name2 = animation4.name || hash2;
-    if (hash2 in map) {
-      const message = `Animation ${name2} already exists.`;
-      throw new Error(message);
-    }
-    types.forEach((prop) => {
-      if (!(prop in animation4)) {
-        const message = `Animation ${name2}, does not have "${prop}"`;
-        throw new Error(message);
-      }
-    });
-    map[hash2] = animation4;
-    list.push(animation4);
-  }
   function updateAudio() {
     const current2 = palette_default.current;
     const letters = ["A", "B", "C", "D", "E", "F"];
@@ -17943,25 +17919,28 @@
     });
     return new Promise((resolve) => {
       const onLoad = () => {
-        update6();
+        update3();
         buffered();
       };
       const buffered = after(sounds.length, function() {
         resolve();
         $lobby.fadeOut();
       });
-      sounds.forEach((animation4) => {
-        let sound = animation4.sounds[current2];
+      sounds.forEach((animation) => {
+        if (!ctx) {
+          ctx = new AudioContext();
+        }
+        let sound = animation.sounds[current2];
         if (!sound) {
           show2();
-          const uri = `${path}${type}/${animation4.name}${filetype}`;
+          const uri = `${path}${type}/${animation.name}${filetype}`;
           sound = new Sound(ctx, uri, onLoad);
-          animation4.sounds.push(sound);
+          animation.sounds.push(sound);
         }
-        animation4.sound = sound;
+        animation.sound = sound;
       });
     });
-    function update6() {
+    function update3() {
       $loaded.index++;
       $loaded.html($loaded.index);
     }
@@ -17975,176 +17954,10 @@
     list
   };
 
-  // src/animations/change.js
-  var name = "change-colors";
-  var hash = "3,";
-  var playing = false;
-  function start() {
-    palette_default.current = palette_default.current + 1;
-    playing = true;
-  }
-  function update3() {
-  }
-  function resize() {
-  }
-  function clear() {
-  }
-  var animation = {
-    start,
-    update: update3,
-    clear,
-    resize,
-    get playing() {
-      return playing;
-    },
-    hash,
-    name
-  };
-  range(8).forEach((i) => {
-    register(`${hash}${i}`, animation);
-  });
-  register("2,7", animation);
-
-  // src/animations/wipe.js
-  var playing2 = false;
-  var animate_in;
-  var animate_out;
-  var points = [
-    new Two.Anchor(-center.x, -center.y),
-    new Two.Anchor(center.x, -center.y),
-    new Two.Anchor(center.x, center.y),
-    new Two.Anchor(-center.x, center.y)
-  ];
-  var shape = two.makePath(points);
-  shape.closed = true;
-  shape.fill = palette_default.colors.middleground;
-  shape.noStroke();
-  var dest_in = { x: center.x };
-  var dest_out = { x: two.width * 1.5 };
-  reset();
-  function start2(silent) {
-    playing2 = true;
-    shape.visible = true;
-    animate_in.start();
-    if (!silent && animation2.sound) {
-      animation2.sound.stop().play();
-    }
-  }
-  function update4() {
-    shape.fill = palette_default.colors.middleground;
-  }
-  function resize2() {
-    points[0].set(-center.x, -center.y);
-    points[1].set(center.x, -center.y);
-    points[2].set(center.x, center.y);
-    points[3].set(-center.x, center.y);
-  }
-  function reset() {
-    if (animate_in) {
-      animate_in.stop();
-    }
-    if (animate_out) {
-      animate_out.stop();
-    }
-    shape.visible = false;
-    playing2 = false;
-    if (Math.random() > 0.5) {
-      shape.translation.set(-center.x, center.y);
-      dest_out.x = two.width * 1.5;
-    } else {
-      shape.translation.set(two.width * 1.5, center.y);
-      dest_out.x = -center.x;
-    }
-    dest_in.x = center.x;
-    animate_in = new Tween(shape.translation).to(dest_in, duration * 0.5).easing(Easing.Exponential.Out).onComplete(() => animate_out.start());
-    animate_out = new Tween(shape.translation).to(dest_out, duration * 0.5).easing(Easing.Exponential.In).onComplete(reset);
-  }
-  var animation2 = {
-    start: start2,
-    update: update4,
-    resize: resize2,
-    clear: reset,
-    playing: function() {
-      return playing2;
-    },
-    hash: "2,1",
-    name: "wipe",
-    sounds: []
-  };
-  register(animation2.hash, animation2);
-
-  // src/animations/veil.js
-  var playing3 = false;
-  var animate_in2;
-  var animate_out2;
-  var points2 = [
-    new Two.Anchor(-center.x, -center.y),
-    new Two.Anchor(center.x, -center.y),
-    new Two.Anchor(center.x, center.y),
-    new Two.Anchor(-center.x, center.y)
-  ];
-  var shape2 = two.makePath(points2);
-  shape2.closed = true;
-  shape2.fill = palette_default.colors.highlight;
-  shape2.noStroke();
-  var dest_in2 = { y: center.y };
-  var dest_out2 = { y: 0 };
-  reset2();
-  function start3(silent) {
-    playing3 = true;
-    shape2.visible = true;
-    animate_in2.start();
-    if (!silent && animation3.sound) {
-      animation3.sound.stop().play();
-    }
-  }
-  function update5() {
-    shape2.fill = palette_default.colors.highlight;
-  }
-  function resize3() {
-    points2[0].set(-center.x, -center.y);
-    points2[1].set(center.x, -center.y);
-    points2[2].set(center.x, center.y);
-    points2[3].set(-center.x, center.y);
-  }
-  function reset2() {
-    if (animate_in2) {
-      animate_in2.stop();
-    }
-    if (animate_out2) {
-      animate_out2.stop();
-    }
-    shape2.visible = false;
-    playing3 = false;
-    if (Math.random() > 0.5) {
-      shape2.translation.set(center.x, -center.y);
-      dest_out2.y = two.height * 1.5;
-    } else {
-      shape2.translation.set(center.x, two.height * 1.5);
-      dest_out2.y = -center.y;
-    }
-    dest_in2.y = center.y;
-    animate_in2 = new Tween(shape2.translation).to(dest_in2, duration * 0.5).easing(Easing.Exponential.Out).onComplete(() => animate_out2.start());
-    animate_out2 = new Tween(shape2.translation).to(dest_out2, duration * 0.5).easing(Easing.Exponential.In);
-  }
-  var animation3 = {
-    start: start3,
-    update: update5,
-    resize: resize3,
-    clear: reset2,
-    playing: function() {
-      return playing3;
-    },
-    hash: "1,1",
-    name: "veil",
-    sounds: []
-  };
-  register(animation3.hash, animation3);
-
   // src/index.js
   (0, import_jquery2.default)(() => {
     const $container = (0, import_jquery2.default)("#content"), $hint = (0, import_jquery2.default)("#hint"), $credits = (0, import_jquery2.default)("#credits"), $embed = (0, import_jquery2.default)("#embed"), $merchandise = (0, import_jquery2.default)("#merchandise"), $window = (0, import_jquery2.default)(window);
-    let ui, buttons, width, height, landscape, embedding = false, playing4 = false, merchandising = false;
+    let ui, buttons, width, height, landscape, embedding = false, playing = false, merchandising = false;
     const showHint = debounce(function() {
       if (embedding) {
         showHint();
@@ -18170,18 +17983,19 @@
       initialize();
     }
     function enableAudio(e) {
-      playing4 = true;
+      playing = true;
       silent.play();
       $window.unbind("click", enableAudio);
     }
     function listenToEnableAudio() {
-      if (/hidden/i.test(document.visibilityState) && playing4) {
-        playing4 = false;
+      if (/hidden/i.test(document.visibilityState) && playing) {
+        playing = false;
         $window.unbind("click", enableAudio).bind("click", enableAudio);
       }
     }
     function initialize() {
       two.appendTo($container[0]);
+      animations_default.updateAudio();
       (0, import_jquery2.default)("#embed-button").click((e) => {
         e.preventDefault();
         $hint.fadeOut();
@@ -18493,7 +18307,7 @@
       midi.addEventListener("statechange", init);
       init({ target: midi });
       onMIDISuccess.dispatch = function(index) {
-        const duration2 = 100;
+        const duration = 100;
         const note = indicesToNotes[index];
         const velocity = 100;
         if (!note) {
@@ -18504,13 +18318,13 @@
         for (let i = 0; i < outputs.length; i++) {
           const output = outputs[i];
           output.send(on);
-          output.send(off, Date.now() + duration2);
+          output.send(off, Date.now() + duration);
         }
         if (window.webkit) {
           window.webkit.messageHandlers.midi.postMessage(on);
           setTimeout(function() {
             window.webkit.messageHandlers.midi.postMessage(off);
-          }, duration2);
+          }, duration);
         }
       };
       function init(e) {
@@ -18604,7 +18418,7 @@
         e = event.originalEvent;
         each(e.touches, updateTouchEnter);
       }).bind("touchstart touchmove touchend touchcancel", function(e2) {
-        if (playing4 && !(merchandising || (0, import_jquery2.default)(e2.target).hasClass("ios-app-store"))) {
+        if (playing && !(merchandising || (0, import_jquery2.default)(e2.target).hasClass("ios-app-store"))) {
           e2.preventDefault();
           return false;
         }
@@ -18623,11 +18437,11 @@
         });
       });
       function createButton() {
-        const shape3 = ui.makeRectangle(0, 0, buttons.width, buttons.height);
-        shape3.noFill().noStroke();
-        shape3.opacity = 0;
-        shape3.visible = false;
-        return shape3;
+        const shape = ui.makeRectangle(0, 0, buttons.width, buttons.height);
+        shape.noFill().noStroke();
+        shape.opacity = 0;
+        shape.visible = false;
+        return shape;
       }
       function getIndex(x2, y2) {
         l = buttons.length;
@@ -18674,21 +18488,21 @@
         buttons.needsUpdate[button.id] = button;
       }
     }
-    function trigger(hash2, silent2) {
-      const animation4 = animations_default.map[hash2];
-      if (animation4) {
-        if (animation4.playing) {
-          animation4.clear();
+    function trigger(hash, silent2) {
+      const animation = animations_default.map[hash];
+      if (animation) {
+        if (animation.playing) {
+          animation.clear();
         }
-        animation4.start(silent2);
+        animation.start(silent2);
         if (window.gtag) {
           window.gtag("event", "animation", {
-            trigger: hash2
+            trigger: hash
           });
         }
       }
       if (!onMIDISuccess.receiving && onMIDISuccess.dispatch) {
-        onMIDISuccess.dispatch(hash2);
+        onMIDISuccess.dispatch(hash);
       }
     }
     function triggered() {

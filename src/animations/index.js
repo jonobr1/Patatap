@@ -8,7 +8,7 @@ import {
 import palette from "./palette.js";
 import { Sound } from "../sound.js";
 
-const ctx = new AudioContext();
+let ctx;
 const map = {};
 const list = [];
 const types = [
@@ -91,6 +91,9 @@ function updateAudio() {
     });
 
     sounds.forEach((animation) => {
+      if (!ctx) {
+        ctx = new AudioContext();
+      }
       let sound = animation.sounds[current];
       if (!sound) {
         show();
