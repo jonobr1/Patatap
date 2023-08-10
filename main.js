@@ -6109,6 +6109,9 @@
   var import_jquery2 = __toESM(require_jquery());
 
   // src/underscore.js
+  function each(list2, func) {
+    return Array.prototype.forEach.call(list2, func);
+  }
   function clamp(v, a, b) {
     return Math.min(Math.max(v, a), b);
   }
@@ -6160,780 +6163,6 @@
       }
     };
   }
-
-  // node_modules/@tweenjs/tween.js/dist/tween.esm.js
-  var Easing = Object.freeze({
-    Linear: Object.freeze({
-      None: function(amount2) {
-        return amount2;
-      },
-      In: function(amount2) {
-        return this.None(amount2);
-      },
-      Out: function(amount2) {
-        return this.None(amount2);
-      },
-      InOut: function(amount2) {
-        return this.None(amount2);
-      }
-    }),
-    Quadratic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2;
-      },
-      Out: function(amount2) {
-        return amount2 * (2 - amount2);
-      },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2;
-        }
-        return -0.5 * (--amount2 * (amount2 - 2) - 1);
-      }
-    }),
-    Cubic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2 * amount2;
-      },
-      Out: function(amount2) {
-        return --amount2 * amount2 * amount2 + 1;
-      },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2 * amount2;
-        }
-        return 0.5 * ((amount2 -= 2) * amount2 * amount2 + 2);
-      }
-    }),
-    Quartic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2 * amount2 * amount2;
-      },
-      Out: function(amount2) {
-        return 1 - --amount2 * amount2 * amount2 * amount2;
-      },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2 * amount2 * amount2;
-        }
-        return -0.5 * ((amount2 -= 2) * amount2 * amount2 * amount2 - 2);
-      }
-    }),
-    Quintic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2 * amount2 * amount2 * amount2;
-      },
-      Out: function(amount2) {
-        return --amount2 * amount2 * amount2 * amount2 * amount2 + 1;
-      },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2 * amount2 * amount2 * amount2;
-        }
-        return 0.5 * ((amount2 -= 2) * amount2 * amount2 * amount2 * amount2 + 2);
-      }
-    }),
-    Sinusoidal: Object.freeze({
-      In: function(amount2) {
-        return 1 - Math.sin((1 - amount2) * Math.PI / 2);
-      },
-      Out: function(amount2) {
-        return Math.sin(amount2 * Math.PI / 2);
-      },
-      InOut: function(amount2) {
-        return 0.5 * (1 - Math.sin(Math.PI * (0.5 - amount2)));
-      }
-    }),
-    Exponential: Object.freeze({
-      In: function(amount2) {
-        return amount2 === 0 ? 0 : Math.pow(1024, amount2 - 1);
-      },
-      Out: function(amount2) {
-        return amount2 === 1 ? 1 : 1 - Math.pow(2, -10 * amount2);
-      },
-      InOut: function(amount2) {
-        if (amount2 === 0) {
-          return 0;
-        }
-        if (amount2 === 1) {
-          return 1;
-        }
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * Math.pow(1024, amount2 - 1);
-        }
-        return 0.5 * (-Math.pow(2, -10 * (amount2 - 1)) + 2);
-      }
-    }),
-    Circular: Object.freeze({
-      In: function(amount2) {
-        return 1 - Math.sqrt(1 - amount2 * amount2);
-      },
-      Out: function(amount2) {
-        return Math.sqrt(1 - --amount2 * amount2);
-      },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return -0.5 * (Math.sqrt(1 - amount2 * amount2) - 1);
-        }
-        return 0.5 * (Math.sqrt(1 - (amount2 -= 2) * amount2) + 1);
-      }
-    }),
-    Elastic: Object.freeze({
-      In: function(amount2) {
-        if (amount2 === 0) {
-          return 0;
-        }
-        if (amount2 === 1) {
-          return 1;
-        }
-        return -Math.pow(2, 10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI);
-      },
-      Out: function(amount2) {
-        if (amount2 === 0) {
-          return 0;
-        }
-        if (amount2 === 1) {
-          return 1;
-        }
-        return Math.pow(2, -10 * amount2) * Math.sin((amount2 - 0.1) * 5 * Math.PI) + 1;
-      },
-      InOut: function(amount2) {
-        if (amount2 === 0) {
-          return 0;
-        }
-        if (amount2 === 1) {
-          return 1;
-        }
-        amount2 *= 2;
-        if (amount2 < 1) {
-          return -0.5 * Math.pow(2, 10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI);
-        }
-        return 0.5 * Math.pow(2, -10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI) + 1;
-      }
-    }),
-    Back: Object.freeze({
-      In: function(amount2) {
-        var s = 1.70158;
-        return amount2 === 1 ? 1 : amount2 * amount2 * ((s + 1) * amount2 - s);
-      },
-      Out: function(amount2) {
-        var s = 1.70158;
-        return amount2 === 0 ? 0 : --amount2 * amount2 * ((s + 1) * amount2 + s) + 1;
-      },
-      InOut: function(amount2) {
-        var s = 1.70158 * 1.525;
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * (amount2 * amount2 * ((s + 1) * amount2 - s));
-        }
-        return 0.5 * ((amount2 -= 2) * amount2 * ((s + 1) * amount2 + s) + 2);
-      }
-    }),
-    Bounce: Object.freeze({
-      In: function(amount2) {
-        return 1 - Easing.Bounce.Out(1 - amount2);
-      },
-      Out: function(amount2) {
-        if (amount2 < 1 / 2.75) {
-          return 7.5625 * amount2 * amount2;
-        } else if (amount2 < 2 / 2.75) {
-          return 7.5625 * (amount2 -= 1.5 / 2.75) * amount2 + 0.75;
-        } else if (amount2 < 2.5 / 2.75) {
-          return 7.5625 * (amount2 -= 2.25 / 2.75) * amount2 + 0.9375;
-        } else {
-          return 7.5625 * (amount2 -= 2.625 / 2.75) * amount2 + 0.984375;
-        }
-      },
-      InOut: function(amount2) {
-        if (amount2 < 0.5) {
-          return Easing.Bounce.In(amount2 * 2) * 0.5;
-        }
-        return Easing.Bounce.Out(amount2 * 2 - 1) * 0.5 + 0.5;
-      }
-    }),
-    generatePow: function(power) {
-      if (power === void 0) {
-        power = 4;
-      }
-      power = power < Number.EPSILON ? Number.EPSILON : power;
-      power = power > 1e4 ? 1e4 : power;
-      return {
-        In: function(amount2) {
-          return Math.pow(amount2, power);
-        },
-        Out: function(amount2) {
-          return 1 - Math.pow(1 - amount2, power);
-        },
-        InOut: function(amount2) {
-          if (amount2 < 0.5) {
-            return Math.pow(amount2 * 2, power) / 2;
-          }
-          return (1 - Math.pow(2 - amount2 * 2, power)) / 2 + 0.5;
-        }
-      };
-    }
-  });
-  var now = function() {
-    return performance.now();
-  };
-  var Group = function() {
-    function Group3() {
-      this._tweens = {};
-      this._tweensAddedDuringUpdate = {};
-    }
-    Group3.prototype.getAll = function() {
-      var _this = this;
-      return Object.keys(this._tweens).map(function(tweenId) {
-        return _this._tweens[tweenId];
-      });
-    };
-    Group3.prototype.removeAll = function() {
-      this._tweens = {};
-    };
-    Group3.prototype.add = function(tween2) {
-      this._tweens[tween2.getId()] = tween2;
-      this._tweensAddedDuringUpdate[tween2.getId()] = tween2;
-    };
-    Group3.prototype.remove = function(tween2) {
-      delete this._tweens[tween2.getId()];
-      delete this._tweensAddedDuringUpdate[tween2.getId()];
-    };
-    Group3.prototype.update = function(time, preserve) {
-      if (time === void 0) {
-        time = now();
-      }
-      if (preserve === void 0) {
-        preserve = false;
-      }
-      var tweenIds = Object.keys(this._tweens);
-      if (tweenIds.length === 0) {
-        return false;
-      }
-      while (tweenIds.length > 0) {
-        this._tweensAddedDuringUpdate = {};
-        for (var i = 0; i < tweenIds.length; i++) {
-          var tween2 = this._tweens[tweenIds[i]];
-          var autoStart = !preserve;
-          if (tween2 && tween2.update(time, autoStart) === false && !preserve) {
-            delete this._tweens[tweenIds[i]];
-          }
-        }
-        tweenIds = Object.keys(this._tweensAddedDuringUpdate);
-      }
-      return true;
-    };
-    return Group3;
-  }();
-  var Interpolation = {
-    Linear: function(v, k) {
-      var m = v.length - 1;
-      var f = m * k;
-      var i = Math.floor(f);
-      var fn = Interpolation.Utils.Linear;
-      if (k < 0) {
-        return fn(v[0], v[1], f);
-      }
-      if (k > 1) {
-        return fn(v[m], v[m - 1], m - f);
-      }
-      return fn(v[i], v[i + 1 > m ? m : i + 1], f - i);
-    },
-    Bezier: function(v, k) {
-      var b = 0;
-      var n = v.length - 1;
-      var pw = Math.pow;
-      var bn = Interpolation.Utils.Bernstein;
-      for (var i = 0; i <= n; i++) {
-        b += pw(1 - k, n - i) * pw(k, i) * v[i] * bn(n, i);
-      }
-      return b;
-    },
-    CatmullRom: function(v, k) {
-      var m = v.length - 1;
-      var f = m * k;
-      var i = Math.floor(f);
-      var fn = Interpolation.Utils.CatmullRom;
-      if (v[0] === v[m]) {
-        if (k < 0) {
-          i = Math.floor(f = m * (1 + k));
-        }
-        return fn(v[(i - 1 + m) % m], v[i], v[(i + 1) % m], v[(i + 2) % m], f - i);
-      } else {
-        if (k < 0) {
-          return v[0] - (fn(v[0], v[0], v[1], v[1], -f) - v[0]);
-        }
-        if (k > 1) {
-          return v[m] - (fn(v[m], v[m], v[m - 1], v[m - 1], f - m) - v[m]);
-        }
-        return fn(v[i ? i - 1 : 0], v[i], v[m < i + 1 ? m : i + 1], v[m < i + 2 ? m : i + 2], f - i);
-      }
-    },
-    Utils: {
-      Linear: function(p0, p1, t) {
-        return (p1 - p0) * t + p0;
-      },
-      Bernstein: function(n, i) {
-        var fc = Interpolation.Utils.Factorial;
-        return fc(n) / fc(i) / fc(n - i);
-      },
-      Factorial: function() {
-        var a = [1];
-        return function(n) {
-          var s = 1;
-          if (a[n]) {
-            return a[n];
-          }
-          for (var i = n; i > 1; i--) {
-            s *= i;
-          }
-          a[n] = s;
-          return s;
-        };
-      }(),
-      CatmullRom: function(p0, p1, p2, p3, t) {
-        var v0 = (p2 - p0) * 0.5;
-        var v1 = (p3 - p1) * 0.5;
-        var t2 = t * t;
-        var t3 = t * t2;
-        return (2 * p1 - 2 * p2 + v0 + v1) * t3 + (-3 * p1 + 3 * p2 - 2 * v0 - v1) * t2 + v0 * t + p1;
-      }
-    }
-  };
-  var Sequence = function() {
-    function Sequence2() {
-    }
-    Sequence2.nextId = function() {
-      return Sequence2._nextId++;
-    };
-    Sequence2._nextId = 0;
-    return Sequence2;
-  }();
-  var mainGroup = new Group();
-  var Tween = function() {
-    function Tween2(_object, _group) {
-      if (_group === void 0) {
-        _group = mainGroup;
-      }
-      this._object = _object;
-      this._group = _group;
-      this._isPaused = false;
-      this._pauseStart = 0;
-      this._valuesStart = {};
-      this._valuesEnd = {};
-      this._valuesStartRepeat = {};
-      this._duration = 1e3;
-      this._isDynamic = false;
-      this._initialRepeat = 0;
-      this._repeat = 0;
-      this._yoyo = false;
-      this._isPlaying = false;
-      this._reversed = false;
-      this._delayTime = 0;
-      this._startTime = 0;
-      this._easingFunction = Easing.Linear.None;
-      this._interpolationFunction = Interpolation.Linear;
-      this._chainedTweens = [];
-      this._onStartCallbackFired = false;
-      this._onEveryStartCallbackFired = false;
-      this._id = Sequence.nextId();
-      this._isChainStopped = false;
-      this._propertiesAreSetUp = false;
-      this._goToEnd = false;
-    }
-    Tween2.prototype.getId = function() {
-      return this._id;
-    };
-    Tween2.prototype.isPlaying = function() {
-      return this._isPlaying;
-    };
-    Tween2.prototype.isPaused = function() {
-      return this._isPaused;
-    };
-    Tween2.prototype.to = function(target, duration2) {
-      if (duration2 === void 0) {
-        duration2 = 1e3;
-      }
-      if (this._isPlaying)
-        throw new Error("Can not call Tween.to() while Tween is already started or paused. Stop the Tween first.");
-      this._valuesEnd = target;
-      this._propertiesAreSetUp = false;
-      this._duration = duration2;
-      return this;
-    };
-    Tween2.prototype.duration = function(duration2) {
-      if (duration2 === void 0) {
-        duration2 = 1e3;
-      }
-      this._duration = duration2;
-      return this;
-    };
-    Tween2.prototype.dynamic = function(dynamic) {
-      if (dynamic === void 0) {
-        dynamic = false;
-      }
-      this._isDynamic = dynamic;
-      return this;
-    };
-    Tween2.prototype.start = function(time, overrideStartingValues) {
-      if (time === void 0) {
-        time = now();
-      }
-      if (overrideStartingValues === void 0) {
-        overrideStartingValues = false;
-      }
-      if (this._isPlaying) {
-        return this;
-      }
-      this._group && this._group.add(this);
-      this._repeat = this._initialRepeat;
-      if (this._reversed) {
-        this._reversed = false;
-        for (var property in this._valuesStartRepeat) {
-          this._swapEndStartRepeatValues(property);
-          this._valuesStart[property] = this._valuesStartRepeat[property];
-        }
-      }
-      this._isPlaying = true;
-      this._isPaused = false;
-      this._onStartCallbackFired = false;
-      this._onEveryStartCallbackFired = false;
-      this._isChainStopped = false;
-      this._startTime = time;
-      this._startTime += this._delayTime;
-      if (!this._propertiesAreSetUp || overrideStartingValues) {
-        this._propertiesAreSetUp = true;
-        if (!this._isDynamic) {
-          var tmp = {};
-          for (var prop in this._valuesEnd)
-            tmp[prop] = this._valuesEnd[prop];
-          this._valuesEnd = tmp;
-        }
-        this._setupProperties(this._object, this._valuesStart, this._valuesEnd, this._valuesStartRepeat, overrideStartingValues);
-      }
-      return this;
-    };
-    Tween2.prototype.startFromCurrentValues = function(time) {
-      return this.start(time, true);
-    };
-    Tween2.prototype._setupProperties = function(_object, _valuesStart, _valuesEnd, _valuesStartRepeat, overrideStartingValues) {
-      for (var property in _valuesEnd) {
-        var startValue = _object[property];
-        var startValueIsArray = Array.isArray(startValue);
-        var propType = startValueIsArray ? "array" : typeof startValue;
-        var isInterpolationList = !startValueIsArray && Array.isArray(_valuesEnd[property]);
-        if (propType === "undefined" || propType === "function") {
-          continue;
-        }
-        if (isInterpolationList) {
-          var endValues = _valuesEnd[property];
-          if (endValues.length === 0) {
-            continue;
-          }
-          var temp2 = [startValue];
-          for (var i = 0, l = endValues.length; i < l; i += 1) {
-            var value = this._handleRelativeValue(startValue, endValues[i]);
-            if (isNaN(value)) {
-              isInterpolationList = false;
-              console.warn("Found invalid interpolation list. Skipping.");
-              break;
-            }
-            temp2.push(value);
-          }
-          if (isInterpolationList) {
-            _valuesEnd[property] = temp2;
-          }
-        }
-        if ((propType === "object" || startValueIsArray) && startValue && !isInterpolationList) {
-          _valuesStart[property] = startValueIsArray ? [] : {};
-          var nestedObject = startValue;
-          for (var prop in nestedObject) {
-            _valuesStart[property][prop] = nestedObject[prop];
-          }
-          _valuesStartRepeat[property] = startValueIsArray ? [] : {};
-          var endValues = _valuesEnd[property];
-          if (!this._isDynamic) {
-            var tmp = {};
-            for (var prop in endValues)
-              tmp[prop] = endValues[prop];
-            _valuesEnd[property] = endValues = tmp;
-          }
-          this._setupProperties(nestedObject, _valuesStart[property], endValues, _valuesStartRepeat[property], overrideStartingValues);
-        } else {
-          if (typeof _valuesStart[property] === "undefined" || overrideStartingValues) {
-            _valuesStart[property] = startValue;
-          }
-          if (!startValueIsArray) {
-            _valuesStart[property] *= 1;
-          }
-          if (isInterpolationList) {
-            _valuesStartRepeat[property] = _valuesEnd[property].slice().reverse();
-          } else {
-            _valuesStartRepeat[property] = _valuesStart[property] || 0;
-          }
-        }
-      }
-    };
-    Tween2.prototype.stop = function() {
-      if (!this._isChainStopped) {
-        this._isChainStopped = true;
-        this.stopChainedTweens();
-      }
-      if (!this._isPlaying) {
-        return this;
-      }
-      this._group && this._group.remove(this);
-      this._isPlaying = false;
-      this._isPaused = false;
-      if (this._onStopCallback) {
-        this._onStopCallback(this._object);
-      }
-      return this;
-    };
-    Tween2.prototype.end = function() {
-      this._goToEnd = true;
-      this.update(Infinity);
-      return this;
-    };
-    Tween2.prototype.pause = function(time) {
-      if (time === void 0) {
-        time = now();
-      }
-      if (this._isPaused || !this._isPlaying) {
-        return this;
-      }
-      this._isPaused = true;
-      this._pauseStart = time;
-      this._group && this._group.remove(this);
-      return this;
-    };
-    Tween2.prototype.resume = function(time) {
-      if (time === void 0) {
-        time = now();
-      }
-      if (!this._isPaused || !this._isPlaying) {
-        return this;
-      }
-      this._isPaused = false;
-      this._startTime += time - this._pauseStart;
-      this._pauseStart = 0;
-      this._group && this._group.add(this);
-      return this;
-    };
-    Tween2.prototype.stopChainedTweens = function() {
-      for (var i = 0, numChainedTweens = this._chainedTweens.length; i < numChainedTweens; i++) {
-        this._chainedTweens[i].stop();
-      }
-      return this;
-    };
-    Tween2.prototype.group = function(group) {
-      if (group === void 0) {
-        group = mainGroup;
-      }
-      this._group = group;
-      return this;
-    };
-    Tween2.prototype.delay = function(amount2) {
-      if (amount2 === void 0) {
-        amount2 = 0;
-      }
-      this._delayTime = amount2;
-      return this;
-    };
-    Tween2.prototype.repeat = function(times) {
-      if (times === void 0) {
-        times = 0;
-      }
-      this._initialRepeat = times;
-      this._repeat = times;
-      return this;
-    };
-    Tween2.prototype.repeatDelay = function(amount2) {
-      this._repeatDelayTime = amount2;
-      return this;
-    };
-    Tween2.prototype.yoyo = function(yoyo) {
-      if (yoyo === void 0) {
-        yoyo = false;
-      }
-      this._yoyo = yoyo;
-      return this;
-    };
-    Tween2.prototype.easing = function(easingFunction) {
-      if (easingFunction === void 0) {
-        easingFunction = Easing.Linear.None;
-      }
-      this._easingFunction = easingFunction;
-      return this;
-    };
-    Tween2.prototype.interpolation = function(interpolationFunction) {
-      if (interpolationFunction === void 0) {
-        interpolationFunction = Interpolation.Linear;
-      }
-      this._interpolationFunction = interpolationFunction;
-      return this;
-    };
-    Tween2.prototype.chain = function() {
-      var tweens = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        tweens[_i] = arguments[_i];
-      }
-      this._chainedTweens = tweens;
-      return this;
-    };
-    Tween2.prototype.onStart = function(callback) {
-      this._onStartCallback = callback;
-      return this;
-    };
-    Tween2.prototype.onEveryStart = function(callback) {
-      this._onEveryStartCallback = callback;
-      return this;
-    };
-    Tween2.prototype.onUpdate = function(callback) {
-      this._onUpdateCallback = callback;
-      return this;
-    };
-    Tween2.prototype.onRepeat = function(callback) {
-      this._onRepeatCallback = callback;
-      return this;
-    };
-    Tween2.prototype.onComplete = function(callback) {
-      this._onCompleteCallback = callback;
-      return this;
-    };
-    Tween2.prototype.onStop = function(callback) {
-      this._onStopCallback = callback;
-      return this;
-    };
-    Tween2.prototype.update = function(time, autoStart) {
-      if (time === void 0) {
-        time = now();
-      }
-      if (autoStart === void 0) {
-        autoStart = true;
-      }
-      if (this._isPaused)
-        return true;
-      var property;
-      var elapsed;
-      var endTime = this._startTime + this._duration;
-      if (!this._goToEnd && !this._isPlaying) {
-        if (time > endTime)
-          return false;
-        if (autoStart)
-          this.start(time, true);
-      }
-      this._goToEnd = false;
-      if (time < this._startTime) {
-        return true;
-      }
-      if (this._onStartCallbackFired === false) {
-        if (this._onStartCallback) {
-          this._onStartCallback(this._object);
-        }
-        this._onStartCallbackFired = true;
-      }
-      if (this._onEveryStartCallbackFired === false) {
-        if (this._onEveryStartCallback) {
-          this._onEveryStartCallback(this._object);
-        }
-        this._onEveryStartCallbackFired = true;
-      }
-      elapsed = (time - this._startTime) / this._duration;
-      elapsed = this._duration === 0 || elapsed > 1 ? 1 : elapsed;
-      var value = this._easingFunction(elapsed);
-      this._updateProperties(this._object, this._valuesStart, this._valuesEnd, value);
-      if (this._onUpdateCallback) {
-        this._onUpdateCallback(this._object, elapsed);
-      }
-      if (elapsed === 1) {
-        if (this._repeat > 0) {
-          if (isFinite(this._repeat)) {
-            this._repeat--;
-          }
-          for (property in this._valuesStartRepeat) {
-            if (!this._yoyo && typeof this._valuesEnd[property] === "string") {
-              this._valuesStartRepeat[property] = this._valuesStartRepeat[property] + parseFloat(this._valuesEnd[property]);
-            }
-            if (this._yoyo) {
-              this._swapEndStartRepeatValues(property);
-            }
-            this._valuesStart[property] = this._valuesStartRepeat[property];
-          }
-          if (this._yoyo) {
-            this._reversed = !this._reversed;
-          }
-          if (this._repeatDelayTime !== void 0) {
-            this._startTime = time + this._repeatDelayTime;
-          } else {
-            this._startTime = time + this._delayTime;
-          }
-          if (this._onRepeatCallback) {
-            this._onRepeatCallback(this._object);
-          }
-          this._onEveryStartCallbackFired = false;
-          return true;
-        } else {
-          if (this._onCompleteCallback) {
-            this._onCompleteCallback(this._object);
-          }
-          for (var i = 0, numChainedTweens = this._chainedTweens.length; i < numChainedTweens; i++) {
-            this._chainedTweens[i].start(this._startTime + this._duration, false);
-          }
-          this._isPlaying = false;
-          return false;
-        }
-      }
-      return true;
-    };
-    Tween2.prototype._updateProperties = function(_object, _valuesStart, _valuesEnd, value) {
-      for (var property in _valuesEnd) {
-        if (_valuesStart[property] === void 0) {
-          continue;
-        }
-        var start4 = _valuesStart[property] || 0;
-        var end = _valuesEnd[property];
-        var startIsArray = Array.isArray(_object[property]);
-        var endIsArray = Array.isArray(end);
-        var isInterpolationList = !startIsArray && endIsArray;
-        if (isInterpolationList) {
-          _object[property] = this._interpolationFunction(end, value);
-        } else if (typeof end === "object" && end) {
-          this._updateProperties(_object[property], start4, end, value);
-        } else {
-          end = this._handleRelativeValue(start4, end);
-          if (typeof end === "number") {
-            _object[property] = start4 + (end - start4) * value;
-          }
-        }
-      }
-    };
-    Tween2.prototype._handleRelativeValue = function(start4, end) {
-      if (typeof end !== "string") {
-        return end;
-      }
-      if (end.charAt(0) === "+" || end.charAt(0) === "-") {
-        return start4 + parseFloat(end);
-      }
-      return parseFloat(end);
-    };
-    Tween2.prototype._swapEndStartRepeatValues = function(property) {
-      var tmp = this._valuesStartRepeat[property];
-      var endValue = this._valuesEnd[property];
-      if (typeof endValue === "string") {
-        this._valuesStartRepeat[property] = this._valuesStartRepeat[property] + parseFloat(endValue);
-      } else {
-        this._valuesStartRepeat[property] = this._valuesEnd[property];
-      }
-      this._valuesEnd[property] = tmp;
-    };
-    return Tween2;
-  }();
-  var nextId = Sequence.nextId;
-  var TWEEN = mainGroup;
-  var getAll = TWEEN.getAll.bind(TWEEN);
-  var removeAll = TWEEN.removeAll.bind(TWEEN);
-  var add = TWEEN.add.bind(TWEEN);
-  var remove = TWEEN.remove.bind(TWEEN);
-  var update = TWEEN.update.bind(TWEEN);
 
   // node_modules/two.js/build/two.module.js
   var __defProp2 = Object.defineProperty;
@@ -8906,9 +8135,9 @@
       return this;
     }
   };
-  var Group2 = _Group;
-  __publicField2(Group2, "Children", Children);
-  __publicField2(Group2, "Properties", [
+  var Group = _Group;
+  __publicField2(Group, "Children", Children);
+  __publicField2(Group, "Properties", [
     "fill",
     "stroke",
     "linewidth",
@@ -9099,9 +8328,9 @@
         return this._children;
       },
       set: function(children) {
-        const insertChildren = Group2.InsertChildren.bind(this);
-        const removeChildren = Group2.RemoveChildren.bind(this);
-        const orderChildren = Group2.OrderChildren.bind(this);
+        const insertChildren = Group.InsertChildren.bind(this);
+        const removeChildren = Group.RemoveChildren.bind(this);
+        const orderChildren = Group.OrderChildren.bind(this);
         if (this._children) {
           this._children.unbind();
           if (this._children.length > 0) {
@@ -9904,7 +9133,7 @@
       if (typeof this.ctx.imageSmoothingEnabled !== "undefined") {
         this.ctx.imageSmoothingEnabled = smoothing;
       }
-      this.scene = new Group2();
+      this.scene = new Group();
       this.scene.parent = this;
     }
     setSize(width, height, ratio) {
@@ -13117,35 +12346,35 @@
           }
           break;
         case "visible":
-          if (elem instanceof Group2) {
+          if (elem instanceof Group) {
             elem._visible = value;
             break;
           }
           elem.visible = value;
           break;
         case "stroke-linecap":
-          if (elem instanceof Group2) {
+          if (elem instanceof Group) {
             elem._cap = value;
             break;
           }
           elem.cap = value;
           break;
         case "stroke-linejoin":
-          if (elem instanceof Group2) {
+          if (elem instanceof Group) {
             elem._join = value;
             break;
           }
           elem.join = value;
           break;
         case "stroke-miterlimit":
-          if (elem instanceof Group2) {
+          if (elem instanceof Group) {
             elem._miter = value;
             break;
           }
           elem.miter = value;
           break;
         case "stroke-width":
-          if (elem instanceof Group2) {
+          if (elem instanceof Group) {
             elem._linewidth = parseFloat(value);
             break;
           }
@@ -13154,7 +12383,7 @@
         case "opacity":
         case "stroke-opacity":
         case "fill-opacity":
-          if (elem instanceof Group2) {
+          if (elem instanceof Group) {
             elem._opacity = parseFloat(value);
             break;
           }
@@ -13182,7 +12411,7 @@
           break;
         case "fill":
         case "stroke":
-          prop = (elem instanceof Group2 ? "_" : "") + key;
+          prop = (elem instanceof Group ? "_" : "") + key;
           if (regex2.cssBackgroundImage.test(value)) {
             id = value.replace(regex2.cssBackgroundImage, "$1");
             if (read.defs.current && read.defs.current.contains(id)) {
@@ -13348,7 +12577,7 @@
       return read[tagName].call(this, fullNode, styles);
     },
     g: function(node, parentStyles) {
-      const group = new Group2();
+      const group = new Group();
       applySvgAttributes.call(this, node, group, parentStyles);
       this.add(group);
       const styles = getSvgStyles.call(this, node);
@@ -15698,7 +14927,7 @@
     constructor(params) {
       super();
       this.domElement = params.domElement || svg.createElement("svg");
-      this.scene = new Group2();
+      this.scene = new Group();
       this.scene.parent = this;
       this.defs = svg.createElement("defs");
       this.defs._flagUpdate = false;
@@ -16846,7 +16075,7 @@
         webgl.canvas = params.offscreenElement;
         webgl.ctx = webgl.canvas.getContext("2d");
       }
-      this.scene = new Group2();
+      this.scene = new Group();
       this.scene.parent = this;
       this._renderer = {
         type: "renderer",
@@ -17346,7 +16575,7 @@
       if (!(objects instanceof Array)) {
         objects = Array.prototype.slice.call(arguments);
       }
-      const group = new Group2();
+      const group = new Group();
       this.scene.add(group);
       group.add(objects);
       return group;
@@ -17359,14 +16588,14 @@
       }
       const node = read[tag].call(this, svg2);
       if (add2) {
-        this.add(shallow && node instanceof Group2 ? node.children : node);
+        this.add(shallow && node instanceof Group ? node.children : node);
       } else if (node.parent) {
         node.remove();
       }
       return node;
     }
     load(pathOrSVGContent, callback) {
-      const group = new Group2();
+      const group = new Group();
       let elem, i, child;
       const attach = function(data) {
         dom.temp.innerHTML = data;
@@ -17390,47 +16619,47 @@
       return group;
     }
   };
-  var Two2 = _Two;
-  __publicField2(Two2, "nextFrameID", Constants.nextFrameID);
-  __publicField2(Two2, "Types", Constants.Types);
-  __publicField2(Two2, "Version", Constants.Version);
-  __publicField2(Two2, "PublishDate", Constants.PublishDate);
-  __publicField2(Two2, "Identifier", Constants.Identifier);
-  __publicField2(Two2, "Resolution", Constants.Resolution);
-  __publicField2(Two2, "AutoCalculateImportedMatrices", Constants.AutoCalculateImportedMatrices);
-  __publicField2(Two2, "Instances", Constants.Instances);
-  __publicField2(Two2, "uniqueId", Constants.uniqueId);
-  __publicField2(Two2, "Anchor", Anchor);
-  __publicField2(Two2, "Collection", Collection);
-  __publicField2(Two2, "Events", Events);
-  __publicField2(Two2, "Group", Group2);
-  __publicField2(Two2, "Matrix", Matrix2);
-  __publicField2(Two2, "Path", Path);
-  __publicField2(Two2, "Registry", Registry);
-  __publicField2(Two2, "Shape", Shape);
-  __publicField2(Two2, "Text", Text);
-  __publicField2(Two2, "Vector", Vector);
-  __publicField2(Two2, "Gradient", Gradient);
-  __publicField2(Two2, "ImageSequence", ImageSequence);
-  __publicField2(Two2, "LinearGradient", LinearGradient);
-  __publicField2(Two2, "RadialGradient", RadialGradient);
-  __publicField2(Two2, "Sprite", Sprite);
-  __publicField2(Two2, "Stop", Stop);
-  __publicField2(Two2, "Texture", Texture);
-  __publicField2(Two2, "ArcSegment", ArcSegment);
-  __publicField2(Two2, "Circle", Circle);
-  __publicField2(Two2, "Ellipse", Ellipse);
-  __publicField2(Two2, "Line", Line);
-  __publicField2(Two2, "Points", Points);
-  __publicField2(Two2, "Polygon", Polygon);
-  __publicField2(Two2, "Rectangle", Rectangle);
-  __publicField2(Two2, "RoundedRectangle", RoundedRectangle);
-  __publicField2(Two2, "Star", Star);
-  __publicField2(Two2, "CanvasRenderer", Renderer);
-  __publicField2(Two2, "SVGRenderer", Renderer2);
-  __publicField2(Two2, "WebGLRenderer", Renderer3);
-  __publicField2(Two2, "Commands", Commands);
-  __publicField2(Two2, "Utils", Utils);
+  var Two = _Two;
+  __publicField2(Two, "nextFrameID", Constants.nextFrameID);
+  __publicField2(Two, "Types", Constants.Types);
+  __publicField2(Two, "Version", Constants.Version);
+  __publicField2(Two, "PublishDate", Constants.PublishDate);
+  __publicField2(Two, "Identifier", Constants.Identifier);
+  __publicField2(Two, "Resolution", Constants.Resolution);
+  __publicField2(Two, "AutoCalculateImportedMatrices", Constants.AutoCalculateImportedMatrices);
+  __publicField2(Two, "Instances", Constants.Instances);
+  __publicField2(Two, "uniqueId", Constants.uniqueId);
+  __publicField2(Two, "Anchor", Anchor);
+  __publicField2(Two, "Collection", Collection);
+  __publicField2(Two, "Events", Events);
+  __publicField2(Two, "Group", Group);
+  __publicField2(Two, "Matrix", Matrix2);
+  __publicField2(Two, "Path", Path);
+  __publicField2(Two, "Registry", Registry);
+  __publicField2(Two, "Shape", Shape);
+  __publicField2(Two, "Text", Text);
+  __publicField2(Two, "Vector", Vector);
+  __publicField2(Two, "Gradient", Gradient);
+  __publicField2(Two, "ImageSequence", ImageSequence);
+  __publicField2(Two, "LinearGradient", LinearGradient);
+  __publicField2(Two, "RadialGradient", RadialGradient);
+  __publicField2(Two, "Sprite", Sprite);
+  __publicField2(Two, "Stop", Stop);
+  __publicField2(Two, "Texture", Texture);
+  __publicField2(Two, "ArcSegment", ArcSegment);
+  __publicField2(Two, "Circle", Circle);
+  __publicField2(Two, "Ellipse", Ellipse);
+  __publicField2(Two, "Line", Line);
+  __publicField2(Two, "Points", Points);
+  __publicField2(Two, "Polygon", Polygon);
+  __publicField2(Two, "Rectangle", Rectangle);
+  __publicField2(Two, "RoundedRectangle", RoundedRectangle);
+  __publicField2(Two, "Star", Star);
+  __publicField2(Two, "CanvasRenderer", Renderer);
+  __publicField2(Two, "SVGRenderer", Renderer2);
+  __publicField2(Two, "WebGLRenderer", Renderer3);
+  __publicField2(Two, "Commands", Commands);
+  __publicField2(Two, "Utils", Utils);
   function fitToWindow() {
     const wr = document.body.getBoundingClientRect();
     const width = this.width = wr.width;
@@ -17455,13 +16684,13 @@
   }
   var raf = dom.getRequestAnimationFrame();
   function loop() {
-    for (let i = 0; i < Two2.Instances.length; i++) {
-      const t = Two2.Instances[i];
+    for (let i = 0; i < Two.Instances.length; i++) {
+      const t = Two.Instances[i];
       if (t.playing) {
         t.update();
       }
     }
-    Two2.nextFrameID = raf(loop);
+    Two.nextFrameID = raf(loop);
   }
   raf.init = function() {
     loop();
@@ -17469,16 +16698,790 @@
     };
   };
 
+  // node_modules/@tweenjs/tween.js/dist/tween.esm.js
+  var Easing = Object.freeze({
+    Linear: Object.freeze({
+      None: function(amount2) {
+        return amount2;
+      },
+      In: function(amount2) {
+        return this.None(amount2);
+      },
+      Out: function(amount2) {
+        return this.None(amount2);
+      },
+      InOut: function(amount2) {
+        return this.None(amount2);
+      }
+    }),
+    Quadratic: Object.freeze({
+      In: function(amount2) {
+        return amount2 * amount2;
+      },
+      Out: function(amount2) {
+        return amount2 * (2 - amount2);
+      },
+      InOut: function(amount2) {
+        if ((amount2 *= 2) < 1) {
+          return 0.5 * amount2 * amount2;
+        }
+        return -0.5 * (--amount2 * (amount2 - 2) - 1);
+      }
+    }),
+    Cubic: Object.freeze({
+      In: function(amount2) {
+        return amount2 * amount2 * amount2;
+      },
+      Out: function(amount2) {
+        return --amount2 * amount2 * amount2 + 1;
+      },
+      InOut: function(amount2) {
+        if ((amount2 *= 2) < 1) {
+          return 0.5 * amount2 * amount2 * amount2;
+        }
+        return 0.5 * ((amount2 -= 2) * amount2 * amount2 + 2);
+      }
+    }),
+    Quartic: Object.freeze({
+      In: function(amount2) {
+        return amount2 * amount2 * amount2 * amount2;
+      },
+      Out: function(amount2) {
+        return 1 - --amount2 * amount2 * amount2 * amount2;
+      },
+      InOut: function(amount2) {
+        if ((amount2 *= 2) < 1) {
+          return 0.5 * amount2 * amount2 * amount2 * amount2;
+        }
+        return -0.5 * ((amount2 -= 2) * amount2 * amount2 * amount2 - 2);
+      }
+    }),
+    Quintic: Object.freeze({
+      In: function(amount2) {
+        return amount2 * amount2 * amount2 * amount2 * amount2;
+      },
+      Out: function(amount2) {
+        return --amount2 * amount2 * amount2 * amount2 * amount2 + 1;
+      },
+      InOut: function(amount2) {
+        if ((amount2 *= 2) < 1) {
+          return 0.5 * amount2 * amount2 * amount2 * amount2 * amount2;
+        }
+        return 0.5 * ((amount2 -= 2) * amount2 * amount2 * amount2 * amount2 + 2);
+      }
+    }),
+    Sinusoidal: Object.freeze({
+      In: function(amount2) {
+        return 1 - Math.sin((1 - amount2) * Math.PI / 2);
+      },
+      Out: function(amount2) {
+        return Math.sin(amount2 * Math.PI / 2);
+      },
+      InOut: function(amount2) {
+        return 0.5 * (1 - Math.sin(Math.PI * (0.5 - amount2)));
+      }
+    }),
+    Exponential: Object.freeze({
+      In: function(amount2) {
+        return amount2 === 0 ? 0 : Math.pow(1024, amount2 - 1);
+      },
+      Out: function(amount2) {
+        return amount2 === 1 ? 1 : 1 - Math.pow(2, -10 * amount2);
+      },
+      InOut: function(amount2) {
+        if (amount2 === 0) {
+          return 0;
+        }
+        if (amount2 === 1) {
+          return 1;
+        }
+        if ((amount2 *= 2) < 1) {
+          return 0.5 * Math.pow(1024, amount2 - 1);
+        }
+        return 0.5 * (-Math.pow(2, -10 * (amount2 - 1)) + 2);
+      }
+    }),
+    Circular: Object.freeze({
+      In: function(amount2) {
+        return 1 - Math.sqrt(1 - amount2 * amount2);
+      },
+      Out: function(amount2) {
+        return Math.sqrt(1 - --amount2 * amount2);
+      },
+      InOut: function(amount2) {
+        if ((amount2 *= 2) < 1) {
+          return -0.5 * (Math.sqrt(1 - amount2 * amount2) - 1);
+        }
+        return 0.5 * (Math.sqrt(1 - (amount2 -= 2) * amount2) + 1);
+      }
+    }),
+    Elastic: Object.freeze({
+      In: function(amount2) {
+        if (amount2 === 0) {
+          return 0;
+        }
+        if (amount2 === 1) {
+          return 1;
+        }
+        return -Math.pow(2, 10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI);
+      },
+      Out: function(amount2) {
+        if (amount2 === 0) {
+          return 0;
+        }
+        if (amount2 === 1) {
+          return 1;
+        }
+        return Math.pow(2, -10 * amount2) * Math.sin((amount2 - 0.1) * 5 * Math.PI) + 1;
+      },
+      InOut: function(amount2) {
+        if (amount2 === 0) {
+          return 0;
+        }
+        if (amount2 === 1) {
+          return 1;
+        }
+        amount2 *= 2;
+        if (amount2 < 1) {
+          return -0.5 * Math.pow(2, 10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI);
+        }
+        return 0.5 * Math.pow(2, -10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI) + 1;
+      }
+    }),
+    Back: Object.freeze({
+      In: function(amount2) {
+        var s = 1.70158;
+        return amount2 === 1 ? 1 : amount2 * amount2 * ((s + 1) * amount2 - s);
+      },
+      Out: function(amount2) {
+        var s = 1.70158;
+        return amount2 === 0 ? 0 : --amount2 * amount2 * ((s + 1) * amount2 + s) + 1;
+      },
+      InOut: function(amount2) {
+        var s = 1.70158 * 1.525;
+        if ((amount2 *= 2) < 1) {
+          return 0.5 * (amount2 * amount2 * ((s + 1) * amount2 - s));
+        }
+        return 0.5 * ((amount2 -= 2) * amount2 * ((s + 1) * amount2 + s) + 2);
+      }
+    }),
+    Bounce: Object.freeze({
+      In: function(amount2) {
+        return 1 - Easing.Bounce.Out(1 - amount2);
+      },
+      Out: function(amount2) {
+        if (amount2 < 1 / 2.75) {
+          return 7.5625 * amount2 * amount2;
+        } else if (amount2 < 2 / 2.75) {
+          return 7.5625 * (amount2 -= 1.5 / 2.75) * amount2 + 0.75;
+        } else if (amount2 < 2.5 / 2.75) {
+          return 7.5625 * (amount2 -= 2.25 / 2.75) * amount2 + 0.9375;
+        } else {
+          return 7.5625 * (amount2 -= 2.625 / 2.75) * amount2 + 0.984375;
+        }
+      },
+      InOut: function(amount2) {
+        if (amount2 < 0.5) {
+          return Easing.Bounce.In(amount2 * 2) * 0.5;
+        }
+        return Easing.Bounce.Out(amount2 * 2 - 1) * 0.5 + 0.5;
+      }
+    }),
+    generatePow: function(power) {
+      if (power === void 0) {
+        power = 4;
+      }
+      power = power < Number.EPSILON ? Number.EPSILON : power;
+      power = power > 1e4 ? 1e4 : power;
+      return {
+        In: function(amount2) {
+          return Math.pow(amount2, power);
+        },
+        Out: function(amount2) {
+          return 1 - Math.pow(1 - amount2, power);
+        },
+        InOut: function(amount2) {
+          if (amount2 < 0.5) {
+            return Math.pow(amount2 * 2, power) / 2;
+          }
+          return (1 - Math.pow(2 - amount2 * 2, power)) / 2 + 0.5;
+        }
+      };
+    }
+  });
+  var now = function() {
+    return performance.now();
+  };
+  var Group2 = function() {
+    function Group3() {
+      this._tweens = {};
+      this._tweensAddedDuringUpdate = {};
+    }
+    Group3.prototype.getAll = function() {
+      var _this = this;
+      return Object.keys(this._tweens).map(function(tweenId) {
+        return _this._tweens[tweenId];
+      });
+    };
+    Group3.prototype.removeAll = function() {
+      this._tweens = {};
+    };
+    Group3.prototype.add = function(tween2) {
+      this._tweens[tween2.getId()] = tween2;
+      this._tweensAddedDuringUpdate[tween2.getId()] = tween2;
+    };
+    Group3.prototype.remove = function(tween2) {
+      delete this._tweens[tween2.getId()];
+      delete this._tweensAddedDuringUpdate[tween2.getId()];
+    };
+    Group3.prototype.update = function(time, preserve) {
+      if (time === void 0) {
+        time = now();
+      }
+      if (preserve === void 0) {
+        preserve = false;
+      }
+      var tweenIds = Object.keys(this._tweens);
+      if (tweenIds.length === 0) {
+        return false;
+      }
+      while (tweenIds.length > 0) {
+        this._tweensAddedDuringUpdate = {};
+        for (var i = 0; i < tweenIds.length; i++) {
+          var tween2 = this._tweens[tweenIds[i]];
+          var autoStart = !preserve;
+          if (tween2 && tween2.update(time, autoStart) === false && !preserve) {
+            delete this._tweens[tweenIds[i]];
+          }
+        }
+        tweenIds = Object.keys(this._tweensAddedDuringUpdate);
+      }
+      return true;
+    };
+    return Group3;
+  }();
+  var Interpolation = {
+    Linear: function(v, k) {
+      var m = v.length - 1;
+      var f = m * k;
+      var i = Math.floor(f);
+      var fn = Interpolation.Utils.Linear;
+      if (k < 0) {
+        return fn(v[0], v[1], f);
+      }
+      if (k > 1) {
+        return fn(v[m], v[m - 1], m - f);
+      }
+      return fn(v[i], v[i + 1 > m ? m : i + 1], f - i);
+    },
+    Bezier: function(v, k) {
+      var b = 0;
+      var n = v.length - 1;
+      var pw = Math.pow;
+      var bn = Interpolation.Utils.Bernstein;
+      for (var i = 0; i <= n; i++) {
+        b += pw(1 - k, n - i) * pw(k, i) * v[i] * bn(n, i);
+      }
+      return b;
+    },
+    CatmullRom: function(v, k) {
+      var m = v.length - 1;
+      var f = m * k;
+      var i = Math.floor(f);
+      var fn = Interpolation.Utils.CatmullRom;
+      if (v[0] === v[m]) {
+        if (k < 0) {
+          i = Math.floor(f = m * (1 + k));
+        }
+        return fn(v[(i - 1 + m) % m], v[i], v[(i + 1) % m], v[(i + 2) % m], f - i);
+      } else {
+        if (k < 0) {
+          return v[0] - (fn(v[0], v[0], v[1], v[1], -f) - v[0]);
+        }
+        if (k > 1) {
+          return v[m] - (fn(v[m], v[m], v[m - 1], v[m - 1], f - m) - v[m]);
+        }
+        return fn(v[i ? i - 1 : 0], v[i], v[m < i + 1 ? m : i + 1], v[m < i + 2 ? m : i + 2], f - i);
+      }
+    },
+    Utils: {
+      Linear: function(p0, p1, t) {
+        return (p1 - p0) * t + p0;
+      },
+      Bernstein: function(n, i) {
+        var fc = Interpolation.Utils.Factorial;
+        return fc(n) / fc(i) / fc(n - i);
+      },
+      Factorial: function() {
+        var a = [1];
+        return function(n) {
+          var s = 1;
+          if (a[n]) {
+            return a[n];
+          }
+          for (var i = n; i > 1; i--) {
+            s *= i;
+          }
+          a[n] = s;
+          return s;
+        };
+      }(),
+      CatmullRom: function(p0, p1, p2, p3, t) {
+        var v0 = (p2 - p0) * 0.5;
+        var v1 = (p3 - p1) * 0.5;
+        var t2 = t * t;
+        var t3 = t * t2;
+        return (2 * p1 - 2 * p2 + v0 + v1) * t3 + (-3 * p1 + 3 * p2 - 2 * v0 - v1) * t2 + v0 * t + p1;
+      }
+    }
+  };
+  var Sequence = function() {
+    function Sequence2() {
+    }
+    Sequence2.nextId = function() {
+      return Sequence2._nextId++;
+    };
+    Sequence2._nextId = 0;
+    return Sequence2;
+  }();
+  var mainGroup = new Group2();
+  var Tween = function() {
+    function Tween2(_object, _group) {
+      if (_group === void 0) {
+        _group = mainGroup;
+      }
+      this._object = _object;
+      this._group = _group;
+      this._isPaused = false;
+      this._pauseStart = 0;
+      this._valuesStart = {};
+      this._valuesEnd = {};
+      this._valuesStartRepeat = {};
+      this._duration = 1e3;
+      this._isDynamic = false;
+      this._initialRepeat = 0;
+      this._repeat = 0;
+      this._yoyo = false;
+      this._isPlaying = false;
+      this._reversed = false;
+      this._delayTime = 0;
+      this._startTime = 0;
+      this._easingFunction = Easing.Linear.None;
+      this._interpolationFunction = Interpolation.Linear;
+      this._chainedTweens = [];
+      this._onStartCallbackFired = false;
+      this._onEveryStartCallbackFired = false;
+      this._id = Sequence.nextId();
+      this._isChainStopped = false;
+      this._propertiesAreSetUp = false;
+      this._goToEnd = false;
+    }
+    Tween2.prototype.getId = function() {
+      return this._id;
+    };
+    Tween2.prototype.isPlaying = function() {
+      return this._isPlaying;
+    };
+    Tween2.prototype.isPaused = function() {
+      return this._isPaused;
+    };
+    Tween2.prototype.to = function(target, duration2) {
+      if (duration2 === void 0) {
+        duration2 = 1e3;
+      }
+      if (this._isPlaying)
+        throw new Error("Can not call Tween.to() while Tween is already started or paused. Stop the Tween first.");
+      this._valuesEnd = target;
+      this._propertiesAreSetUp = false;
+      this._duration = duration2;
+      return this;
+    };
+    Tween2.prototype.duration = function(duration2) {
+      if (duration2 === void 0) {
+        duration2 = 1e3;
+      }
+      this._duration = duration2;
+      return this;
+    };
+    Tween2.prototype.dynamic = function(dynamic) {
+      if (dynamic === void 0) {
+        dynamic = false;
+      }
+      this._isDynamic = dynamic;
+      return this;
+    };
+    Tween2.prototype.start = function(time, overrideStartingValues) {
+      if (time === void 0) {
+        time = now();
+      }
+      if (overrideStartingValues === void 0) {
+        overrideStartingValues = false;
+      }
+      if (this._isPlaying) {
+        return this;
+      }
+      this._group && this._group.add(this);
+      this._repeat = this._initialRepeat;
+      if (this._reversed) {
+        this._reversed = false;
+        for (var property in this._valuesStartRepeat) {
+          this._swapEndStartRepeatValues(property);
+          this._valuesStart[property] = this._valuesStartRepeat[property];
+        }
+      }
+      this._isPlaying = true;
+      this._isPaused = false;
+      this._onStartCallbackFired = false;
+      this._onEveryStartCallbackFired = false;
+      this._isChainStopped = false;
+      this._startTime = time;
+      this._startTime += this._delayTime;
+      if (!this._propertiesAreSetUp || overrideStartingValues) {
+        this._propertiesAreSetUp = true;
+        if (!this._isDynamic) {
+          var tmp = {};
+          for (var prop in this._valuesEnd)
+            tmp[prop] = this._valuesEnd[prop];
+          this._valuesEnd = tmp;
+        }
+        this._setupProperties(this._object, this._valuesStart, this._valuesEnd, this._valuesStartRepeat, overrideStartingValues);
+      }
+      return this;
+    };
+    Tween2.prototype.startFromCurrentValues = function(time) {
+      return this.start(time, true);
+    };
+    Tween2.prototype._setupProperties = function(_object, _valuesStart, _valuesEnd, _valuesStartRepeat, overrideStartingValues) {
+      for (var property in _valuesEnd) {
+        var startValue = _object[property];
+        var startValueIsArray = Array.isArray(startValue);
+        var propType = startValueIsArray ? "array" : typeof startValue;
+        var isInterpolationList = !startValueIsArray && Array.isArray(_valuesEnd[property]);
+        if (propType === "undefined" || propType === "function") {
+          continue;
+        }
+        if (isInterpolationList) {
+          var endValues = _valuesEnd[property];
+          if (endValues.length === 0) {
+            continue;
+          }
+          var temp2 = [startValue];
+          for (var i = 0, l = endValues.length; i < l; i += 1) {
+            var value = this._handleRelativeValue(startValue, endValues[i]);
+            if (isNaN(value)) {
+              isInterpolationList = false;
+              console.warn("Found invalid interpolation list. Skipping.");
+              break;
+            }
+            temp2.push(value);
+          }
+          if (isInterpolationList) {
+            _valuesEnd[property] = temp2;
+          }
+        }
+        if ((propType === "object" || startValueIsArray) && startValue && !isInterpolationList) {
+          _valuesStart[property] = startValueIsArray ? [] : {};
+          var nestedObject = startValue;
+          for (var prop in nestedObject) {
+            _valuesStart[property][prop] = nestedObject[prop];
+          }
+          _valuesStartRepeat[property] = startValueIsArray ? [] : {};
+          var endValues = _valuesEnd[property];
+          if (!this._isDynamic) {
+            var tmp = {};
+            for (var prop in endValues)
+              tmp[prop] = endValues[prop];
+            _valuesEnd[property] = endValues = tmp;
+          }
+          this._setupProperties(nestedObject, _valuesStart[property], endValues, _valuesStartRepeat[property], overrideStartingValues);
+        } else {
+          if (typeof _valuesStart[property] === "undefined" || overrideStartingValues) {
+            _valuesStart[property] = startValue;
+          }
+          if (!startValueIsArray) {
+            _valuesStart[property] *= 1;
+          }
+          if (isInterpolationList) {
+            _valuesStartRepeat[property] = _valuesEnd[property].slice().reverse();
+          } else {
+            _valuesStartRepeat[property] = _valuesStart[property] || 0;
+          }
+        }
+      }
+    };
+    Tween2.prototype.stop = function() {
+      if (!this._isChainStopped) {
+        this._isChainStopped = true;
+        this.stopChainedTweens();
+      }
+      if (!this._isPlaying) {
+        return this;
+      }
+      this._group && this._group.remove(this);
+      this._isPlaying = false;
+      this._isPaused = false;
+      if (this._onStopCallback) {
+        this._onStopCallback(this._object);
+      }
+      return this;
+    };
+    Tween2.prototype.end = function() {
+      this._goToEnd = true;
+      this.update(Infinity);
+      return this;
+    };
+    Tween2.prototype.pause = function(time) {
+      if (time === void 0) {
+        time = now();
+      }
+      if (this._isPaused || !this._isPlaying) {
+        return this;
+      }
+      this._isPaused = true;
+      this._pauseStart = time;
+      this._group && this._group.remove(this);
+      return this;
+    };
+    Tween2.prototype.resume = function(time) {
+      if (time === void 0) {
+        time = now();
+      }
+      if (!this._isPaused || !this._isPlaying) {
+        return this;
+      }
+      this._isPaused = false;
+      this._startTime += time - this._pauseStart;
+      this._pauseStart = 0;
+      this._group && this._group.add(this);
+      return this;
+    };
+    Tween2.prototype.stopChainedTweens = function() {
+      for (var i = 0, numChainedTweens = this._chainedTweens.length; i < numChainedTweens; i++) {
+        this._chainedTweens[i].stop();
+      }
+      return this;
+    };
+    Tween2.prototype.group = function(group) {
+      if (group === void 0) {
+        group = mainGroup;
+      }
+      this._group = group;
+      return this;
+    };
+    Tween2.prototype.delay = function(amount2) {
+      if (amount2 === void 0) {
+        amount2 = 0;
+      }
+      this._delayTime = amount2;
+      return this;
+    };
+    Tween2.prototype.repeat = function(times) {
+      if (times === void 0) {
+        times = 0;
+      }
+      this._initialRepeat = times;
+      this._repeat = times;
+      return this;
+    };
+    Tween2.prototype.repeatDelay = function(amount2) {
+      this._repeatDelayTime = amount2;
+      return this;
+    };
+    Tween2.prototype.yoyo = function(yoyo) {
+      if (yoyo === void 0) {
+        yoyo = false;
+      }
+      this._yoyo = yoyo;
+      return this;
+    };
+    Tween2.prototype.easing = function(easingFunction) {
+      if (easingFunction === void 0) {
+        easingFunction = Easing.Linear.None;
+      }
+      this._easingFunction = easingFunction;
+      return this;
+    };
+    Tween2.prototype.interpolation = function(interpolationFunction) {
+      if (interpolationFunction === void 0) {
+        interpolationFunction = Interpolation.Linear;
+      }
+      this._interpolationFunction = interpolationFunction;
+      return this;
+    };
+    Tween2.prototype.chain = function() {
+      var tweens = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        tweens[_i] = arguments[_i];
+      }
+      this._chainedTweens = tweens;
+      return this;
+    };
+    Tween2.prototype.onStart = function(callback) {
+      this._onStartCallback = callback;
+      return this;
+    };
+    Tween2.prototype.onEveryStart = function(callback) {
+      this._onEveryStartCallback = callback;
+      return this;
+    };
+    Tween2.prototype.onUpdate = function(callback) {
+      this._onUpdateCallback = callback;
+      return this;
+    };
+    Tween2.prototype.onRepeat = function(callback) {
+      this._onRepeatCallback = callback;
+      return this;
+    };
+    Tween2.prototype.onComplete = function(callback) {
+      this._onCompleteCallback = callback;
+      return this;
+    };
+    Tween2.prototype.onStop = function(callback) {
+      this._onStopCallback = callback;
+      return this;
+    };
+    Tween2.prototype.update = function(time, autoStart) {
+      if (time === void 0) {
+        time = now();
+      }
+      if (autoStart === void 0) {
+        autoStart = true;
+      }
+      if (this._isPaused)
+        return true;
+      var property;
+      var elapsed;
+      var endTime = this._startTime + this._duration;
+      if (!this._goToEnd && !this._isPlaying) {
+        if (time > endTime)
+          return false;
+        if (autoStart)
+          this.start(time, true);
+      }
+      this._goToEnd = false;
+      if (time < this._startTime) {
+        return true;
+      }
+      if (this._onStartCallbackFired === false) {
+        if (this._onStartCallback) {
+          this._onStartCallback(this._object);
+        }
+        this._onStartCallbackFired = true;
+      }
+      if (this._onEveryStartCallbackFired === false) {
+        if (this._onEveryStartCallback) {
+          this._onEveryStartCallback(this._object);
+        }
+        this._onEveryStartCallbackFired = true;
+      }
+      elapsed = (time - this._startTime) / this._duration;
+      elapsed = this._duration === 0 || elapsed > 1 ? 1 : elapsed;
+      var value = this._easingFunction(elapsed);
+      this._updateProperties(this._object, this._valuesStart, this._valuesEnd, value);
+      if (this._onUpdateCallback) {
+        this._onUpdateCallback(this._object, elapsed);
+      }
+      if (elapsed === 1) {
+        if (this._repeat > 0) {
+          if (isFinite(this._repeat)) {
+            this._repeat--;
+          }
+          for (property in this._valuesStartRepeat) {
+            if (!this._yoyo && typeof this._valuesEnd[property] === "string") {
+              this._valuesStartRepeat[property] = this._valuesStartRepeat[property] + parseFloat(this._valuesEnd[property]);
+            }
+            if (this._yoyo) {
+              this._swapEndStartRepeatValues(property);
+            }
+            this._valuesStart[property] = this._valuesStartRepeat[property];
+          }
+          if (this._yoyo) {
+            this._reversed = !this._reversed;
+          }
+          if (this._repeatDelayTime !== void 0) {
+            this._startTime = time + this._repeatDelayTime;
+          } else {
+            this._startTime = time + this._delayTime;
+          }
+          if (this._onRepeatCallback) {
+            this._onRepeatCallback(this._object);
+          }
+          this._onEveryStartCallbackFired = false;
+          return true;
+        } else {
+          if (this._onCompleteCallback) {
+            this._onCompleteCallback(this._object);
+          }
+          for (var i = 0, numChainedTweens = this._chainedTweens.length; i < numChainedTweens; i++) {
+            this._chainedTweens[i].start(this._startTime + this._duration, false);
+          }
+          this._isPlaying = false;
+          return false;
+        }
+      }
+      return true;
+    };
+    Tween2.prototype._updateProperties = function(_object, _valuesStart, _valuesEnd, value) {
+      for (var property in _valuesEnd) {
+        if (_valuesStart[property] === void 0) {
+          continue;
+        }
+        var start4 = _valuesStart[property] || 0;
+        var end = _valuesEnd[property];
+        var startIsArray = Array.isArray(_object[property]);
+        var endIsArray = Array.isArray(end);
+        var isInterpolationList = !startIsArray && endIsArray;
+        if (isInterpolationList) {
+          _object[property] = this._interpolationFunction(end, value);
+        } else if (typeof end === "object" && end) {
+          this._updateProperties(_object[property], start4, end, value);
+        } else {
+          end = this._handleRelativeValue(start4, end);
+          if (typeof end === "number") {
+            _object[property] = start4 + (end - start4) * value;
+          }
+        }
+      }
+    };
+    Tween2.prototype._handleRelativeValue = function(start4, end) {
+      if (typeof end !== "string") {
+        return end;
+      }
+      if (end.charAt(0) === "+" || end.charAt(0) === "-") {
+        return start4 + parseFloat(end);
+      }
+      return parseFloat(end);
+    };
+    Tween2.prototype._swapEndStartRepeatValues = function(property) {
+      var tmp = this._valuesStartRepeat[property];
+      var endValue = this._valuesEnd[property];
+      if (typeof endValue === "string") {
+        this._valuesStartRepeat[property] = this._valuesStartRepeat[property] + parseFloat(endValue);
+      } else {
+        this._valuesStartRepeat[property] = this._valuesEnd[property];
+      }
+      this._valuesEnd[property] = tmp;
+    };
+    return Tween2;
+  }();
+  var nextId = Sequence.nextId;
+  var TWEEN = mainGroup;
+  var getAll = TWEEN.getAll.bind(TWEEN);
+  var removeAll = TWEEN.removeAll.bind(TWEEN);
+  var add = TWEEN.add.bind(TWEEN);
+  var remove = TWEEN.remove.bind(TWEEN);
+  var update = TWEEN.update.bind(TWEEN);
+
   // src/common.js
-  var two = new Two2({
-    type: Two2.Types.canvas,
+  var two = new Two({
+    type: Two.Types.canvas,
     fullscreen: true
   });
   two.renderer.domElement.id = "stage";
   var TWO_PI2 = Math.PI * 2;
   var duration = 1e3;
   var drag = 0.125;
-  var mouse = new Two2.Vector();
+  var mouse = new Two.Vector();
   var container = document.querySelector("#container");
   var isLocal = url.boolean("local") || window.location.href.match(/localhost/i);
   var path = isLocal ? "assets/" : "//storage.googleapis.com/cdn.patatap.com/";
@@ -17894,7 +17897,7 @@
     "hash",
     "name"
   ];
-  var center = new Two2.Vector(two.width / 2, two.height / 2);
+  var center = new Two.Vector(two.width / 2, two.height / 2);
   var domElement = two.renderer.domElement;
   var min_dimension = Math.min(two.width, two.height);
   domElement.style.background = palette_default.colors.background;
@@ -17904,7 +17907,6 @@
     min_dimension = Math.min(two.width, two.height);
     list.forEach((animation4) => animation4.resize());
   });
-  palette_default.onStart(updateAudio);
   palette_default.onUpdate(() => {
     list.forEach(({ update: update6 }) => update6());
     domElement.style.background = palette_default.colors.background;
@@ -18008,10 +18010,10 @@
   var animate_in;
   var animate_out;
   var points = [
-    new Two2.Anchor(-center.x, -center.y),
-    new Two2.Anchor(center.x, -center.y),
-    new Two2.Anchor(center.x, center.y),
-    new Two2.Anchor(-center.x, center.y)
+    new Two.Anchor(-center.x, -center.y),
+    new Two.Anchor(center.x, -center.y),
+    new Two.Anchor(center.x, center.y),
+    new Two.Anchor(-center.x, center.y)
   ];
   var shape = two.makePath(points);
   shape.closed = true;
@@ -18076,10 +18078,10 @@
   var animate_in2;
   var animate_out2;
   var points2 = [
-    new Two2.Anchor(-center.x, -center.y),
-    new Two2.Anchor(center.x, -center.y),
-    new Two2.Anchor(center.x, center.y),
-    new Two2.Anchor(-center.x, center.y)
+    new Two.Anchor(-center.x, -center.y),
+    new Two.Anchor(center.x, -center.y),
+    new Two.Anchor(center.x, center.y),
+    new Two.Anchor(-center.x, center.y)
   ];
   var shape2 = two.makePath(points2);
   shape2.closed = true;
@@ -18180,7 +18182,6 @@
     }
     function initialize() {
       two.appendTo($container[0]);
-      animations_default.updateAudio();
       (0, import_jquery2.default)("#embed-button").click((e) => {
         e.preventDefault();
         $hint.fadeOut();
@@ -18214,7 +18215,6 @@
       $window.bind("resize", function(e) {
         width = $window.width();
         height = $window.height();
-        orientUserInterface(e);
       }).bind("mousemove", function(e) {
         if (embedding || url.boolean("kiosk")) {
           return;
@@ -18314,9 +18314,10 @@
         trigger(index);
         triggered();
       });
-      if (navigator.maxTouchPoints > 1) {
+      if (navigator.maxTouchPoints > 0) {
         $hint.find(".message").html("Press anywhere on the screen and turn up speakers");
         createMobileUI();
+        orientUserInterface();
       } else {
         $credits.css("display", "block");
         $hint.find(".message").html("Press any key, A to Z or spacebar, and turn up speakers");
@@ -18327,7 +18328,12 @@
         if (!ui) {
           return;
         }
-        buttons.needsUpdate.forEach(updateButtons);
+        for (let k in buttons.needsUpdate) {
+          const button = buttons.needsUpdate[k];
+          if (button) {
+            updateButton(button);
+          }
+        }
         ui.update();
       }).play();
       $window.trigger("resize");
@@ -18382,10 +18388,7 @@
         }
         group.width = w;
         group.height = h;
-        w /= 2;
-        h /= 2;
         group.forEach((button, j) => {
-          const vertices = button.vertices;
           if (landscape) {
             x = width * (j + 0.5) / length;
             y = height * (i + 0.5) / size;
@@ -18393,16 +18396,14 @@
             x = width * (i + 0.5) / size;
             y = height * (j + 0.5) / length;
           }
-          vertices[0].set(-w, -h);
-          vertices[1].set(w, -h);
-          vertices[2].set(w, h);
-          vertices[3].set(-w, h);
+          button.width = w;
+          button.height = h;
           button.translation.set(x, y);
           button.visible = true;
         });
       });
     }
-    function updateButtons(button) {
+    function updateButton(button) {
       button.opacity += -button.opacity * 0.2;
       if (button.opacity <= 0.1) {
         button.opacity = 0;

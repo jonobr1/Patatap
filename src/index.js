@@ -75,7 +75,7 @@ $(() => {
   function initialize() {
 
     two.appendTo($container[0]);
-    animations.updateAudio();
+    // animations.updateAudio();
 
     $('#embed-button').click((e) => {
       e.preventDefault();

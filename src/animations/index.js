@@ -35,7 +35,7 @@ two.bind('resize', () => {
 
 });
 
-palette.onStart(updateAudio);
+// palette.onStart(updateAudio);
 palette.onUpdate(() => {
   list.forEach(({ update }) => update());
   domElement.style.background = palette.colors.background;
