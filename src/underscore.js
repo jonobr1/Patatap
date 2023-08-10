@@ -74,3 +74,22 @@ export function debounce(func, timeout) {
   };
 
 }
+
+export function once(func) {
+  let fired = false;
+  return function() {
+    if (!fired) {
+      func.apply(this, arguments);
+      fired = true;
+    }
+  };
+}
+
+export function after(times, func) {
+  let invocations = 0;
+  return function() {
+    if (invocations++ <= times - 1) {
+      func.apply(this, arguments);
+    }
+  }
+}

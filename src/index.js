@@ -1,8 +1,11 @@
 import $ from "jquery";
 import { clamp, debounce, range } from "./underscore.js";
 import * as TWEEN from "@tweenjs/tween.js";
-import { mouse, two } from "./common.js";
-import url from "./url.js";
+import { mouse, path, two } from "./common.js";
+import palette from "./animations/palette.js";
+import animations from "./animations/index.js";
+
+import "./animations/change.js";
 
 $(() => {
 
@@ -20,18 +23,6 @@ $(() => {
   /**
    * Append Sound Generation to Animations
    */
-
-  const isLocal = url.boolean('local')
-    || window.location.href.match(/localhost/i);
-  const path = isLocal ? 'assets/'
-    : '//storage.googleapis.com/cdn.patatap.com/';
-
-  // TODO: import animations
-  // animations.list.forEach((a) => {
-  //   if (a.filename) {
-  //     a.sounds = [];
-  //   }
-  // });
 
   const showHint = debounce(function() {
     if (embedding) {
@@ -80,8 +71,8 @@ $(() => {
 
   function initialize() {
 
-    // TODO: import animations
-    // animations.initializeSound();
+    two.appendTo($container[0]);
+    animations.updateAudio();
 
     $('#embed-button').click((e) => {
       e.preventDefault();
@@ -259,8 +250,7 @@ $(() => {
       .bind('update', function() {
 
         TWEEN.update();
-        // TODO: import animations
-        // animations.update();
+        palette.update();
 
         if (!ui) {
           return;
@@ -284,6 +274,7 @@ $(() => {
       if (url.boolean('kiosk')) {
         $(document.body).addClass('kiosk');
         triggered();
+        $hint.fadeIn();
         return;
       } else if (/merchandise/ig.test(url.hash)) {
         $('#merchandise-button').trigger('click');
@@ -319,12 +310,12 @@ $(() => {
     width = $window.width();
     height = $window.height();
     landscape = width >= height;
-    var size = buttons.length;
+    const size = buttons.length;
 
     buttons.forEach((group, i) => {
 
-      var length = group.length;
-      var w, h,  x, y;
+      const length = group.length;
+      let w, h,  x, y;
 
       if (landscape) {
         w = width / length;
@@ -342,7 +333,7 @@ $(() => {
 
       group.forEach((button, j) => {
 
-        var vertices = button.vertices;
+        const vertices = button.vertices;
 
         if (landscape) {
           x = width * (j + 0.5) / length;
@@ -536,8 +527,8 @@ $(() => {
   }
 
   function containsById(list, elem) {
-    for (var i = 0; i < list.length; i++) {
-      var item = list[i];
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
       if (item.id === elem.id) {
         return true;
       }
@@ -592,8 +583,8 @@ $(() => {
 
       group.forEach(function(button, j) {
 
-        var elem = button._renderer.elem;
-        var index = `${i},${j}`;
+        const elem = button._renderer.elem;
+        const index = `${i},${j}`;
 
         buttons.map[index] = button;
 
@@ -614,7 +605,7 @@ $(() => {
 
     function createButton() {
 
-      var shape = ui.makeRectangle(0, 0, buttons.width, buttons.height);
+      const shape = ui.makeRectangle(0, 0, buttons.width, buttons.height);
       shape.noFill().noStroke();
       shape.opacity = 0;
       shape.visible = false;
@@ -667,12 +658,11 @@ $(() => {
       trigger(index);
       triggered();
 
-      // TODO: import animations
-      // if (animations.getColorPalette().isDark) {
-      //   button.fill = 'rgba(255, 255, 255, 0.3)';
-      // } else {
+      if (palette.get().isDark) {
+        button.fill = 'rgba(255, 255, 255, 0.3)';
+      } else {
         button.fill = 'rgba(0, 0, 0, 0.3)';
-      // }
+      }
 
       button.opacity = 1.0;
       buttons.needsUpdate[button.id] = button;
@@ -683,20 +673,19 @@ $(() => {
 
   function trigger(hash, silent) {
 
-    // TODO: import animations
-    // var animation = animations.map[hash];
+    const animation = animations.map[hash];
 
-    // if (animation) {
-    //   if (animation.playing()) {
-    //     animation.clear();
-    //   }
-    //   animation.start(undefined, silent);
-    //   if (window.gtag) {
-    //     window.gtag('event', 'animation', {
-    //       trigger: hash
-    //     });
-    //   }
-    // }
+    if (animation) {
+      if (animation.playing) {
+        animation.clear();
+      }
+      animation.start(undefined, silent);
+      if (window.gtag) {
+        window.gtag('event', 'animation', {
+          trigger: hash
+        });
+      }
+    }
 
     if (!onMIDISuccess.receiving && onMIDISuccess.dispatch) {
       onMIDISuccess.dispatch(hash);
