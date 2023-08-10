@@ -1,5 +1,6 @@
 import $ from "jquery";
-import { clamp, debounce, range } from "./underscore.js";
+import { clamp, debounce, each, range } from "./underscore.js";
+import Two from "two.js";
 import * as TWEEN from "@tweenjs/tween.js";
 import { mouse, path, two } from "./common.js";
 import palette from "./animations/palette.js";
@@ -115,8 +116,6 @@ $(() => {
 
         width = $window.width();
         height = $window.height();
-
-        orientUserInterface(e);
 
       })
       .bind('mousemove', function(e) {
@@ -240,9 +239,10 @@ $(() => {
 
       });
 
-    if (navigator.maxTouchPoints > 1) {
+    if (navigator.maxTouchPoints > 0) {
       $hint.find('.message').html('Press anywhere on the screen and turn up speakers');
       createMobileUI();
+      orientUserInterface();
     } else {
       $credits.css('display', 'block');
       $hint.find('.message').html('Press any key, A to Z or spacebar, and turn up speakers');
@@ -258,7 +258,12 @@ $(() => {
           return;
         }
 
-        buttons.needsUpdate.forEach(updateButtons);
+        for (let k in buttons.needsUpdate) {
+          const button = buttons.needsUpdate[k];
+          if (button) {
+            updateButton(button);
+          }
+        }
 
         ui.update();
 
@@ -330,12 +335,7 @@ $(() => {
       group.width = w;
       group.height = h;
 
-      w /= 2;
-      h /= 2;
-
       group.forEach((button, j) => {
-
-        const vertices = button.vertices;
 
         if (landscape) {
           x = width * (j + 0.5) / length;
@@ -345,10 +345,8 @@ $(() => {
           y = height * (j + 0.5) / length;
         }
 
-        vertices[0].set(- w, - h);
-        vertices[1].set(w, - h);
-        vertices[2].set(w, h);
-        vertices[3].set(- w, h);
+        button.width = w;
+        button.height = h;
 
         button.translation.set(x, y);
         button.visible = true;
@@ -359,7 +357,7 @@ $(() => {
 
   }
 
-  function updateButtons(button,) {
+  function updateButton(button) {
 
     button.opacity += (- button.opacity) * 0.2;
 

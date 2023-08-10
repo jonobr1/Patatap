@@ -1,5 +1,5 @@
 export function each(list, func) {
-  return Array.forEach.call(list, func);
+  return Array.prototype.forEach.call(list, func);
 }
 
 export function clamp(v, a, b) {
