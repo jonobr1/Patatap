@@ -6,9 +6,9 @@ import { mouse, path, two } from "./common.js";
 import palette from "./animations/palette.js";
 import animations from "./animations/index.js";
 
-import "./animations/change.js";
-import "./animations/wipe.js";
-import "./animations/veil.js";
+// import "./animations/change.js";
+// import "./animations/wipe.js";
+// import "./animations/veil.js";
 
 $(() => {
 
@@ -75,7 +75,7 @@ $(() => {
   function initialize() {
 
     two.appendTo($container[0]);
-    // animations.updateAudio();
+    animations.updateAudio();
 
     $('#embed-button').click((e) => {
       e.preventDefault();
