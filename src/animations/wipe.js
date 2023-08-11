@@ -82,7 +82,7 @@ const animation = {
   update: update,
   resize: resize,
   clear: reset,
-  playing: function() { return playing; },
+  get playing() { return playing; },
   hash: '2,1',
   name: 'wipe',
   sounds: []

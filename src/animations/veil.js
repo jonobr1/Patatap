@@ -79,7 +79,7 @@ const animation = {
   update: update,
   resize: resize,
   clear: reset,
-  playing: function() { return playing; },
+  get playing() { return playing; },
   hash: '1,1',
   name: 'veil',
   sounds: []
