@@ -6,10 +6,14 @@ import { mouse, path, two } from "./common.js";
 import palette from "./animations/palette.js";
 import animations from "./animations/index.js";
 
+// Background
 import "./animations/change.js";
 import "./animations/wipe.js";
 import "./animations/veil.js";
 import "./animations/prisms.js";
+
+// Middleground
+import "./animations/clay.js";
 
 $(() => {
 
