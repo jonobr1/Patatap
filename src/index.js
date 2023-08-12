@@ -15,6 +15,7 @@ import "./animations/prisms.js";
 // Middleground
 import "./animations/clay.js";
 import "./animations/pistons.js";
+import "./animations/flashes.js";
 
 $(() => {
 
