@@ -174,7 +174,7 @@
           splice: arr.splice
         };
         jQuery.extend = jQuery.fn.extend = function() {
-          var options, name2, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1, length = arguments.length, deep = false;
+          var options2, name2, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1, length = arguments.length, deep = false;
           if (typeof target === "boolean") {
             deep = target;
             target = arguments[i] || {};
@@ -188,9 +188,9 @@
             i--;
           }
           for (; i < length; i++) {
-            if ((options = arguments[i]) != null) {
-              for (name2 in options) {
-                copy = options[name2];
+            if ((options2 = arguments[i]) != null) {
+              for (name2 in options2) {
+                copy = options2[name2];
                 if (name2 === "__proto__" || target === copy) {
                   continue;
                 }
@@ -240,8 +240,8 @@
             }
             return true;
           },
-          globalEval: function(code, options, doc) {
-            DOMEval(code, { nonce: options && options.nonce }, doc);
+          globalEval: function(code, options2, doc) {
+            DOMEval(code, { nonce: options2 && options2.nonce }, doc);
           },
           each: function(obj, callback) {
             var length, i = 0;
@@ -882,7 +882,7 @@
                 return first === 1 && last === 0 ? function(elem) {
                   return !!elem.parentNode;
                 } : function(elem, _context, xml) {
-                  var cache, outerCache, node, nodeIndex, start4, dir2 = simple !== forward ? "nextSibling" : "previousSibling", parent = elem.parentNode, name2 = ofType && elem.nodeName.toLowerCase(), useCache = !xml && !ofType, diff = false;
+                  var cache, outerCache, node, nodeIndex, start5, dir2 = simple !== forward ? "nextSibling" : "previousSibling", parent = elem.parentNode, name2 = ofType && elem.nodeName.toLowerCase(), useCache = !xml && !ofType, diff = false;
                   if (parent) {
                     if (simple) {
                       while (dir2) {
@@ -892,18 +892,18 @@
                             return false;
                           }
                         }
-                        start4 = dir2 = type === "only" && !start4 && "nextSibling";
+                        start5 = dir2 = type === "only" && !start5 && "nextSibling";
                       }
                       return true;
                     }
-                    start4 = [forward ? parent.firstChild : parent.lastChild];
+                    start5 = [forward ? parent.firstChild : parent.lastChild];
                     if (forward && useCache) {
                       outerCache = parent[expando] || (parent[expando] = {});
                       cache = outerCache[type] || [];
                       nodeIndex = cache[0] === dirruns && cache[1];
                       diff = nodeIndex && cache[2];
                       node = nodeIndex && parent.childNodes[nodeIndex];
-                      while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start4.pop()) {
+                      while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start5.pop()) {
                         if (node.nodeType === 1 && ++diff && node === elem) {
                           outerCache[type] = [dirruns, nodeIndex, diff];
                           break;
@@ -917,7 +917,7 @@
                         diff = nodeIndex;
                       }
                       if (diff === false) {
-                        while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start4.pop()) {
+                        while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start5.pop()) {
                           if ((ofType ? nodeName(node, name2) : node.nodeType === 1) && ++diff) {
                             if (useCache) {
                               outerCache = node[expando] || (node[expando] = {});
@@ -1737,28 +1737,28 @@
           };
         });
         var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
-        function createOptions(options) {
+        function createOptions(options2) {
           var object = {};
-          jQuery.each(options.match(rnothtmlwhite) || [], function(_2, flag) {
+          jQuery.each(options2.match(rnothtmlwhite) || [], function(_2, flag) {
             object[flag] = true;
           });
           return object;
         }
-        jQuery.Callbacks = function(options) {
-          options = typeof options === "string" ? createOptions(options) : jQuery.extend({}, options);
+        jQuery.Callbacks = function(options2) {
+          options2 = typeof options2 === "string" ? createOptions(options2) : jQuery.extend({}, options2);
           var firing, memory, fired, locked, list2 = [], queue = [], firingIndex = -1, fire = function() {
-            locked = locked || options.once;
+            locked = locked || options2.once;
             fired = firing = true;
             for (; queue.length; firingIndex = -1) {
               memory = queue.shift();
               while (++firingIndex < list2.length) {
-                if (list2[firingIndex].apply(memory[0], memory[1]) === false && options.stopOnFalse) {
+                if (list2[firingIndex].apply(memory[0], memory[1]) === false && options2.stopOnFalse) {
                   firingIndex = list2.length;
                   memory = false;
                 }
               }
             }
-            if (!options.memory) {
+            if (!options2.memory) {
               memory = false;
             }
             firing = false;
@@ -1779,7 +1779,7 @@
                 (function add2(args) {
                   jQuery.each(args, function(_2, arg) {
                     if (isFunction(arg)) {
-                      if (!options.unique || !self2.has(arg)) {
+                      if (!options2.unique || !self2.has(arg)) {
                         list2.push(arg);
                       }
                     } else if (arg && arg.length && toType(arg) !== "string") {
@@ -3523,14 +3523,14 @@
           }
           return view.getComputedStyle(elem);
         };
-        var swap = function(elem, options, callback) {
+        var swap = function(elem, options2, callback) {
           var ret, name2, old = {};
-          for (name2 in options) {
+          for (name2 in options2) {
             old[name2] = elem.style[name2];
-            elem.style[name2] = options[name2];
+            elem.style[name2] = options2[name2];
           }
           ret = callback.call(elem);
-          for (name2 in options) {
+          for (name2 in options2) {
             elem.style[name2] = old[name2];
           }
           return ret;
@@ -3901,17 +3901,17 @@
             }, name2, value, arguments.length > 1);
           }
         });
-        function Tween2(elem, options, prop, end, easing) {
-          return new Tween2.prototype.init(elem, options, prop, end, easing);
+        function Tween2(elem, options2, prop, end, easing) {
+          return new Tween2.prototype.init(elem, options2, prop, end, easing);
         }
         jQuery.Tween = Tween2;
         Tween2.prototype = {
           constructor: Tween2,
-          init: function(elem, options, prop, end, easing, unit) {
+          init: function(elem, options2, prop, end, easing, unit) {
             this.elem = elem;
             this.prop = prop;
             this.easing = easing || jQuery.easing._default;
-            this.options = options;
+            this.options = options2;
             this.start = this.now = this.cur();
             this.end = end;
             this.unit = unit || (jQuery.cssNumber[prop] ? "" : "px");
@@ -4014,10 +4014,10 @@
           }
           return attrs;
         }
-        function createTween(value, prop, animation4) {
+        function createTween(value, prop, animation5) {
           var tween2, collection = (Animation.tweeners[prop] || []).concat(Animation.tweeners["*"]), index = 0, length = collection.length;
           for (; index < length; index++) {
-            if (tween2 = collection[index].call(animation4, prop, value)) {
+            if (tween2 = collection[index].call(animation5, prop, value)) {
               return tween2;
             }
           }
@@ -4169,90 +4169,90 @@
             }
           }
         }
-        function Animation(elem, properties, options) {
+        function Animation(elem, properties, options2) {
           var result, stopped, index = 0, length = Animation.prefilters.length, deferred = jQuery.Deferred().always(function() {
             delete tick.elem;
           }), tick = function() {
             if (stopped) {
               return false;
             }
-            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation4.startTime + animation4.duration - currentTime), temp2 = remaining / animation4.duration || 0, percent = 1 - temp2, index2 = 0, length2 = animation4.tweens.length;
+            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation5.startTime + animation5.duration - currentTime), temp2 = remaining / animation5.duration || 0, percent = 1 - temp2, index2 = 0, length2 = animation5.tweens.length;
             for (; index2 < length2; index2++) {
-              animation4.tweens[index2].run(percent);
+              animation5.tweens[index2].run(percent);
             }
-            deferred.notifyWith(elem, [animation4, percent, remaining]);
+            deferred.notifyWith(elem, [animation5, percent, remaining]);
             if (percent < 1 && length2) {
               return remaining;
             }
             if (!length2) {
-              deferred.notifyWith(elem, [animation4, 1, 0]);
+              deferred.notifyWith(elem, [animation5, 1, 0]);
             }
-            deferred.resolveWith(elem, [animation4]);
+            deferred.resolveWith(elem, [animation5]);
             return false;
-          }, animation4 = deferred.promise({
+          }, animation5 = deferred.promise({
             elem,
             props: jQuery.extend({}, properties),
             opts: jQuery.extend(true, {
               specialEasing: {},
               easing: jQuery.easing._default
-            }, options),
+            }, options2),
             originalProperties: properties,
-            originalOptions: options,
+            originalOptions: options2,
             startTime: fxNow || createFxNow(),
-            duration: options.duration,
+            duration: options2.duration,
             tweens: [],
             createTween: function(prop, end) {
               var tween2 = jQuery.Tween(
                 elem,
-                animation4.opts,
+                animation5.opts,
                 prop,
                 end,
-                animation4.opts.specialEasing[prop] || animation4.opts.easing
+                animation5.opts.specialEasing[prop] || animation5.opts.easing
               );
-              animation4.tweens.push(tween2);
+              animation5.tweens.push(tween2);
               return tween2;
             },
             stop: function(gotoEnd) {
-              var index2 = 0, length2 = gotoEnd ? animation4.tweens.length : 0;
+              var index2 = 0, length2 = gotoEnd ? animation5.tweens.length : 0;
               if (stopped) {
                 return this;
               }
               stopped = true;
               for (; index2 < length2; index2++) {
-                animation4.tweens[index2].run(1);
+                animation5.tweens[index2].run(1);
               }
               if (gotoEnd) {
-                deferred.notifyWith(elem, [animation4, 1, 0]);
-                deferred.resolveWith(elem, [animation4, gotoEnd]);
+                deferred.notifyWith(elem, [animation5, 1, 0]);
+                deferred.resolveWith(elem, [animation5, gotoEnd]);
               } else {
-                deferred.rejectWith(elem, [animation4, gotoEnd]);
+                deferred.rejectWith(elem, [animation5, gotoEnd]);
               }
               return this;
             }
-          }), props = animation4.props;
-          propFilter(props, animation4.opts.specialEasing);
+          }), props = animation5.props;
+          propFilter(props, animation5.opts.specialEasing);
           for (; index < length; index++) {
-            result = Animation.prefilters[index].call(animation4, elem, props, animation4.opts);
+            result = Animation.prefilters[index].call(animation5, elem, props, animation5.opts);
             if (result) {
               if (isFunction(result.stop)) {
-                jQuery._queueHooks(animation4.elem, animation4.opts.queue).stop = result.stop.bind(result);
+                jQuery._queueHooks(animation5.elem, animation5.opts.queue).stop = result.stop.bind(result);
               }
               return result;
             }
           }
-          jQuery.map(props, createTween, animation4);
-          if (isFunction(animation4.opts.start)) {
-            animation4.opts.start.call(elem, animation4);
+          jQuery.map(props, createTween, animation5);
+          if (isFunction(animation5.opts.start)) {
+            animation5.opts.start.call(elem, animation5);
           }
-          animation4.progress(animation4.opts.progress).done(animation4.opts.done, animation4.opts.complete).fail(animation4.opts.fail).always(animation4.opts.always);
+          animation5.progress(animation5.opts.progress).done(animation5.opts.done, animation5.opts.complete).fail(animation5.opts.fail).always(animation5.opts.always);
           jQuery.fx.timer(
             jQuery.extend(tick, {
               elem,
-              anim: animation4,
-              queue: animation4.opts.queue
+              anim: animation5,
+              queue: animation5.opts.queue
             })
           );
-          return animation4;
+          return animation5;
         }
         jQuery.Animation = jQuery.extend(Animation, {
           tweeners: {
@@ -4820,14 +4820,14 @@
             },
             select: {
               get: function(elem) {
-                var value, option, i, options = elem.options, index = elem.selectedIndex, one = elem.type === "select-one", values = one ? null : [], max5 = one ? index + 1 : options.length;
+                var value, option, i, options2 = elem.options, index = elem.selectedIndex, one = elem.type === "select-one", values = one ? null : [], max5 = one ? index + 1 : options2.length;
                 if (index < 0) {
                   i = max5;
                 } else {
                   i = one ? index : 0;
                 }
                 for (; i < max5; i++) {
-                  option = options[i];
+                  option = options2[i];
                   if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || !nodeName(option.parentNode, "optgroup"))) {
                     value = jQuery(option).val();
                     if (one) {
@@ -4839,9 +4839,9 @@
                 return values;
               },
               set: function(elem, value) {
-                var optionSet, option, options = elem.options, values = jQuery.makeArray(value), i = options.length;
+                var optionSet, option, options2 = elem.options, values = jQuery.makeArray(value), i = options2.length;
                 while (i--) {
-                  option = options[i];
+                  option = options2[i];
                   if (option.selected = jQuery.inArray(jQuery.valHooks.option.get(option), values) > -1) {
                     optionSet = true;
                   }
@@ -5088,15 +5088,15 @@
             }
           };
         }
-        function inspectPrefiltersOrTransports(structure, options, originalOptions, jqXHR) {
+        function inspectPrefiltersOrTransports(structure, options2, originalOptions, jqXHR) {
           var inspected = {}, seekingTransport = structure === transports;
           function inspect(dataType) {
             var selected;
             inspected[dataType] = true;
             jQuery.each(structure[dataType] || [], function(_2, prefilterOrFactory) {
-              var dataTypeOrTransport = prefilterOrFactory(options, originalOptions, jqXHR);
+              var dataTypeOrTransport = prefilterOrFactory(options2, originalOptions, jqXHR);
               if (typeof dataTypeOrTransport === "string" && !seekingTransport && !inspected[dataTypeOrTransport]) {
-                options.dataTypes.unshift(dataTypeOrTransport);
+                options2.dataTypes.unshift(dataTypeOrTransport);
                 inspect(dataTypeOrTransport);
                 return false;
               } else if (seekingTransport) {
@@ -5105,7 +5105,7 @@
             });
             return selected;
           }
-          return inspect(options.dataTypes[0]) || !inspected["*"] && inspect("*");
+          return inspect(options2.dataTypes[0]) || !inspected["*"] && inspect("*");
         }
         function ajaxExtend(target, src) {
           var key, deep, flatOptions = jQuery.ajaxSettings.flatOptions || {};
@@ -5259,13 +5259,13 @@
           },
           ajaxPrefilter: addToPrefiltersOrTransports(prefilters),
           ajaxTransport: addToPrefiltersOrTransports(transports),
-          ajax: function(url2, options) {
+          ajax: function(url2, options2) {
             if (typeof url2 === "object") {
-              options = url2;
+              options2 = url2;
               url2 = void 0;
             }
-            options = options || {};
-            var transport, cacheURL, responseHeadersString, responseHeaders, timeoutTimer, urlAnchor, completed2, fireGlobals, i, uncached, s = jQuery.ajaxSetup({}, options), callbackContext = s.context || s, globalEventContext = s.context && (callbackContext.nodeType || callbackContext.jquery) ? jQuery(callbackContext) : jQuery.event, deferred = jQuery.Deferred(), completeDeferred = jQuery.Callbacks("once memory"), statusCode = s.statusCode || {}, requestHeaders = {}, requestHeadersNames = {}, strAbort = "canceled", jqXHR = {
+            options2 = options2 || {};
+            var transport, cacheURL, responseHeadersString, responseHeaders, timeoutTimer, urlAnchor, completed2, fireGlobals, i, uncached, s = jQuery.ajaxSetup({}, options2), callbackContext = s.context || s, globalEventContext = s.context && (callbackContext.nodeType || callbackContext.jquery) ? jQuery(callbackContext) : jQuery.event, deferred = jQuery.Deferred(), completeDeferred = jQuery.Callbacks("once memory"), statusCode = s.statusCode || {}, requestHeaders = {}, requestHeadersNames = {}, strAbort = "canceled", jqXHR = {
               readyState: 0,
               getResponseHeader: function(key) {
                 var match;
@@ -5320,7 +5320,7 @@
             };
             deferred.promise(jqXHR);
             s.url = ((url2 || s.url || location.href) + "").replace(rprotocol, location.protocol + "//");
-            s.type = options.method || options.type || s.method || s.type;
+            s.type = options2.method || options2.type || s.method || s.type;
             s.dataTypes = (s.dataType || "*").toLowerCase().match(rnothtmlwhite) || [""];
             if (s.crossDomain == null) {
               urlAnchor = document2.createElement("a");
@@ -5335,7 +5335,7 @@
             if (s.data && s.processData && typeof s.data !== "string") {
               s.data = jQuery.param(s.data, s.traditional);
             }
-            inspectPrefiltersOrTransports(prefilters, s, options, jqXHR);
+            inspectPrefiltersOrTransports(prefilters, s, options2, jqXHR);
             if (completed2) {
               return jqXHR;
             }
@@ -5368,7 +5368,7 @@
                 jqXHR.setRequestHeader("If-None-Match", jQuery.etag[cacheURL]);
               }
             }
-            if (s.data && s.hasContent && s.contentType !== false || options.contentType) {
+            if (s.data && s.hasContent && s.contentType !== false || options2.contentType) {
               jqXHR.setRequestHeader("Content-Type", s.contentType);
             }
             jqXHR.setRequestHeader(
@@ -5385,7 +5385,7 @@
             completeDeferred.add(s.complete);
             jqXHR.done(s.success);
             jqXHR.fail(s.error);
-            transport = inspectPrefiltersOrTransports(transports, s, options, jqXHR);
+            transport = inspectPrefiltersOrTransports(transports, s, options2, jqXHR);
             if (!transport) {
               done(-1, "No Transport");
             } else {
@@ -5518,7 +5518,7 @@
             }
           }
         });
-        jQuery._evalUrl = function(url2, options, doc) {
+        jQuery._evalUrl = function(url2, options2, doc) {
           return jQuery.ajax({
             url: url2,
             type: "GET",
@@ -5531,7 +5531,7 @@
               }
             },
             dataFilter: function(response) {
-              jQuery.globalEval(response, options, doc);
+              jQuery.globalEval(response, options2, doc);
             }
           });
         };
@@ -5602,28 +5602,28 @@
         }, xhrSupported = jQuery.ajaxSettings.xhr();
         support.cors = !!xhrSupported && "withCredentials" in xhrSupported;
         support.ajax = xhrSupported = !!xhrSupported;
-        jQuery.ajaxTransport(function(options) {
+        jQuery.ajaxTransport(function(options2) {
           var callback, errorCallback;
-          if (support.cors || xhrSupported && !options.crossDomain) {
+          if (support.cors || xhrSupported && !options2.crossDomain) {
             return {
               send: function(headers, complete) {
-                var i, xhr2 = options.xhr();
+                var i, xhr2 = options2.xhr();
                 xhr2.open(
-                  options.type,
-                  options.url,
-                  options.async,
-                  options.username,
-                  options.password
+                  options2.type,
+                  options2.url,
+                  options2.async,
+                  options2.username,
+                  options2.password
                 );
-                if (options.xhrFields) {
-                  for (i in options.xhrFields) {
-                    xhr2[i] = options.xhrFields[i];
+                if (options2.xhrFields) {
+                  for (i in options2.xhrFields) {
+                    xhr2[i] = options2.xhrFields[i];
                   }
                 }
-                if (options.mimeType && xhr2.overrideMimeType) {
-                  xhr2.overrideMimeType(options.mimeType);
+                if (options2.mimeType && xhr2.overrideMimeType) {
+                  xhr2.overrideMimeType(options2.mimeType);
                 }
-                if (!options.crossDomain && !headers["X-Requested-With"]) {
+                if (!options2.crossDomain && !headers["X-Requested-With"]) {
                   headers["X-Requested-With"] = "XMLHttpRequest";
                 }
                 for (i in headers) {
@@ -5672,7 +5672,7 @@
                 }
                 callback = callback("abort");
                 try {
-                  xhr2.send(options.hasContent && options.data || null);
+                  xhr2.send(options2.hasContent && options2.data || null);
                 } catch (e) {
                   if (callback) {
                     throw e;
@@ -5853,7 +5853,7 @@
           }).length;
         };
         jQuery.offset = {
-          setOffset: function(elem, options, i) {
+          setOffset: function(elem, options2, i) {
             var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition, position = jQuery.css(elem, "position"), curElem = jQuery(elem), props = {};
             if (position === "static") {
               elem.style.position = "relative";
@@ -5870,27 +5870,27 @@
               curTop = parseFloat(curCSSTop) || 0;
               curLeft = parseFloat(curCSSLeft) || 0;
             }
-            if (isFunction(options)) {
-              options = options.call(elem, i, jQuery.extend({}, curOffset));
+            if (isFunction(options2)) {
+              options2 = options2.call(elem, i, jQuery.extend({}, curOffset));
             }
-            if (options.top != null) {
-              props.top = options.top - curOffset.top + curTop;
+            if (options2.top != null) {
+              props.top = options2.top - curOffset.top + curTop;
             }
-            if (options.left != null) {
-              props.left = options.left - curOffset.left + curLeft;
+            if (options2.left != null) {
+              props.left = options2.left - curOffset.left + curLeft;
             }
-            if ("using" in options) {
-              options.using.call(elem, props);
+            if ("using" in options2) {
+              options2.using.call(elem, props);
             } else {
               curElem.css(props);
             }
           }
         };
         jQuery.fn.extend({
-          offset: function(options) {
+          offset: function(options2) {
             if (arguments.length) {
-              return options === void 0 ? this : this.each(function(i) {
-                jQuery.offset.setOffset(this, options, i);
+              return options2 === void 0 ? this : this.each(function(i) {
+                jQuery.offset.setOffset(this, options2, i);
               });
             }
             var rect, win, elem = this[0];
@@ -6904,13 +6904,13 @@
   }
   function subdivide(x1, y1, x2, y2, x3, y3, x4, y4, limit) {
     limit = limit || Curve.RecursionLimit;
-    const amount2 = limit + 1;
+    const amount3 = limit + 1;
     if (Math.abs(x1 - x4) < 1e-3 && Math.abs(y1 - y4) < 1e-3) {
       return [new Anchor(x4, y4)];
     }
     const result = [];
-    for (let i = 0; i < amount2; i++) {
-      const t = i / amount2;
+    for (let i = 0; i < amount3; i++) {
+      const t = i / amount3;
       const x = getComponentOnCubicBezier(t, x1, x2, x3, x4);
       const y = getComponentOnCubicBezier(t, y1, y2, y3, y4);
       result.push(new Anchor(x, y));
@@ -7000,15 +7000,15 @@
     }
     return A * sum;
   }
-  function getCurveFromPoints(points3, closed2) {
-    const l = points3.length, last = l - 1;
+  function getCurveFromPoints(points4, closed2) {
+    const l = points4.length, last = l - 1;
     for (let i = 0; i < l; i++) {
-      const point = points3[i];
+      const point = points4[i];
       const prev = closed2 ? mod(i - 1, l) : Math.max(i - 1, 0);
       const next = closed2 ? mod(i + 1, l) : Math.min(i + 1, last);
-      const a = points3[prev];
+      const a = points4[prev];
       const b = point;
-      const c = points3[next];
+      const c = points4[next];
       getControlPoints(a, b, c);
       b.command = i === 0 ? Commands.move : Commands.curve;
     }
@@ -8092,11 +8092,11 @@
       let i, l, child;
       if (this._flagBeginning || this._flagEnding) {
         const beginning = Math.min(this._beginning, this._ending);
-        const ending = Math.max(this._beginning, this._ending);
+        const ending2 = Math.max(this._beginning, this._ending);
         const length = this.length;
         let sum = 0;
         const bd = beginning * length;
-        const ed = ending * length;
+        const ed = ending2 * length;
         for (i = 0; i < this.children.length; i++) {
           child = this.children[i];
           l = child.length;
@@ -10497,22 +10497,22 @@
       const last = this.vertices.length - 1;
       const closed2 = this._closed || this.vertices[last]._command === Commands.close;
       let b = this.vertices[last];
-      let points3 = [], verts;
+      let points4 = [], verts;
       _.each(this.vertices, function(a, i) {
         if (i <= 0 && !closed2) {
           b = a;
           return;
         }
         if (a.command === Commands.move) {
-          points3.push(new Anchor(b.x, b.y));
+          points4.push(new Anchor(b.x, b.y));
           if (i > 0) {
-            points3[points3.length - 1].command = Commands.line;
+            points4[points4.length - 1].command = Commands.line;
           }
           b = a;
           return;
         }
         verts = getSubdivisions(a, b, limit);
-        points3 = points3.concat(verts);
+        points4 = points4.concat(verts);
         _.each(verts, function(v, i2) {
           if (i2 <= 0 && b.command === Commands.move) {
             v.command = Commands.move;
@@ -10524,7 +10524,7 @@
           if (this._closed && this._automatic) {
             b = a;
             verts = getSubdivisions(a, b, limit);
-            points3 = points3.concat(verts);
+            points4 = points4.concat(verts);
             _.each(verts, function(v, i2) {
               if (i2 <= 0 && b.command === Commands.move) {
                 v.command = Commands.move;
@@ -10533,15 +10533,15 @@
               }
             });
           } else if (closed2) {
-            points3.push(new Anchor(a.x, a.y));
+            points4.push(new Anchor(a.x, a.y));
           }
-          points3[points3.length - 1].command = closed2 ? Commands.close : Commands.line;
+          points4[points4.length - 1].command = closed2 ? Commands.close : Commands.line;
         }
         b = a;
       }, this);
       this._automatic = false;
       this._curved = false;
-      this.vertices = points3;
+      this.vertices = points4;
       return this;
     }
     _updateLength(limit, silent) {
@@ -10586,9 +10586,9 @@
         const l = this._collection.length;
         const closed2 = this._closed;
         const beginning = Math.min(this._beginning, this._ending);
-        const ending = Math.max(this._beginning, this._ending);
+        const ending2 = Math.max(this._beginning, this._ending);
         const bid = getIdByLength(this, beginning * this._length);
-        const eid = getIdByLength(this, ending * this._length);
+        const eid = getIdByLength(this, ending2 * this._length);
         const low = ceil(bid);
         const high = floor2(eid);
         let left, right, prev, next, v, i;
@@ -10599,7 +10599,7 @@
           }
           if (i > high && !right) {
             v = this._renderer.collection[i].copy(this._collection[i]);
-            this.getPointAt(ending, v);
+            this.getPointAt(ending2, v);
             v.command = this._renderer.collection[i].command;
             this._renderer.vertices.push(v);
             right = v;
@@ -10619,7 +10619,7 @@
           } else if (i >= low && i <= high) {
             v = this._renderer.collection[i].copy(this._collection[i]);
             this._renderer.vertices.push(v);
-            if (i === high && contains(this, ending)) {
+            if (i === high && contains(this, ending2)) {
               right = v;
               if (!closed2 && right.controls) {
                 if (right.relative) {
@@ -10929,13 +10929,13 @@
   }
   var _Rectangle = class extends Path {
     constructor(x, y, width, height) {
-      const points3 = [
+      const points4 = [
         new Anchor(),
         new Anchor(),
         new Anchor(),
         new Anchor()
       ];
-      super(points3, true, false, true);
+      super(points4, true, false, true);
       __publicField2(this, "_flagWidth", 0);
       __publicField2(this, "_flagHeight", 0);
       __publicField2(this, "_width", 0);
@@ -11151,7 +11151,7 @@
       const effect = this._texture;
       const cols = this._columns;
       const rows = this._rows;
-      let width, height, elapsed, amount2, duration2;
+      let width, height, elapsed, amount3, duration2;
       let index, iw, ih, frames;
       if (effect) {
         if (this._flagColumns || this._flagRows) {
@@ -11168,7 +11168,7 @@
           ih = effect.image.height;
           width = iw / cols;
           height = ih / rows;
-          amount2 = this._amount;
+          amount3 = this._amount;
           if (this.width !== width) {
             this.width = width;
           }
@@ -11177,7 +11177,7 @@
           }
           if (this._playing && this._frameRate > 0) {
             if (_.isNaN(this._lastFrame)) {
-              this._lastFrame = amount2 - 1;
+              this._lastFrame = amount3 - 1;
             }
             elapsed = _.performance.now() - this._startTime;
             frames = this._lastFrame + 1;
@@ -11281,12 +11281,12 @@
   var sin3 = Math.sin;
   var _Circle = class extends Path {
     constructor(ox, oy, r, resolution) {
-      const amount2 = resolution ? Math.max(resolution, 2) : 4;
-      const points3 = [];
-      for (let i = 0; i < amount2; i++) {
-        points3.push(new Anchor(0, 0, 0, 0, 0, 0));
+      const amount3 = resolution ? Math.max(resolution, 2) : 4;
+      const points4 = [];
+      for (let i = 0; i < amount3; i++) {
+        points4.push(new Anchor(0, 0, 0, 0, 0, 0));
       }
-      super(points3, true, true, true);
+      super(points4, true, true, true);
       __publicField2(this, "_flagRadius", false);
       __publicField2(this, "_radius", 0);
       for (let prop in proto14) {
@@ -11385,12 +11385,12 @@
       if (typeof ry !== "number" && typeof rx === "number") {
         ry = rx;
       }
-      const amount2 = resolution ? Math.max(resolution, 2) : 4;
-      const points3 = [];
-      for (let i = 0; i < amount2; i++) {
-        points3.push(new Anchor());
+      const amount3 = resolution ? Math.max(resolution, 2) : 4;
+      const points4 = [];
+      for (let i = 0; i < amount3; i++) {
+        points4.push(new Anchor());
       }
-      super(points3, true, true, true);
+      super(points4, true, true, true);
       __publicField2(this, "_flagWidth", false);
       __publicField2(this, "_flagHeight", false);
       __publicField2(this, "_width", 0);
@@ -11502,11 +11502,11 @@
   };
   var Line = class extends Path {
     constructor(x1, y1, x2, y2) {
-      const points3 = [
+      const points4 = [
         new Anchor(x1, y1),
         new Anchor(x2, y2)
       ];
-      super(points3);
+      super(points4);
       for (let prop in proto16) {
         Object.defineProperty(this, prop, proto16[prop]);
       }
@@ -11550,9 +11550,9 @@
       if (typeof radius === "undefined" && typeof width === "number" && typeof height === "number") {
         radius = Math.floor(Math.min(width, height) / 12);
       }
-      const points3 = [];
+      const points4 = [];
       for (let i = 0; i < 10; i++) {
-        points3.push(
+        points4.push(
           new Anchor(
             0,
             0,
@@ -11564,7 +11564,7 @@
           )
         );
       }
-      super(points3);
+      super(points4);
       __publicField2(this, "_flagWidth", false);
       __publicField2(this, "_flagHeight", false);
       __publicField2(this, "_flagRadius", false);
@@ -12597,14 +12597,14 @@
       return group;
     },
     polygon: function(node, parentStyles) {
-      let points3;
+      let points4;
       if (typeof node === "string") {
-        points3 = node;
+        points4 = node;
       } else {
-        points3 = node.getAttribute("points");
+        points4 = node.getAttribute("points");
       }
       const verts = [];
-      points3.replace(/(-?[\d.eE-]+)[,|\s](-?[\d.eE-]+)/g, function(match, p1, p2) {
+      points4.replace(/(-?[\d.eE-]+)[,|\s](-?[\d.eE-]+)/g, function(match, p1, p2) {
         verts.push(new Anchor(parseFloat(p1), parseFloat(p2)));
       });
       const poly = new Path(verts, true).noStroke();
@@ -12625,7 +12625,7 @@
       } else {
         path2 = node.getAttribute("d");
       }
-      let points3 = [];
+      let points4 = [];
       let closed2 = false, relative = false;
       if (path2) {
         let coord = new Anchor();
@@ -12718,8 +12718,8 @@
                   void 0,
                   Commands.close
                 );
-                for (let j = points3.length - 1; j >= 0; j--) {
-                  const point = points3[j];
+                for (let j = points4.length - 1; j >= 0; j--) {
+                  const point = points4[j];
                   if (/m/i.test(point.command)) {
                     coord = point;
                     break;
@@ -12885,14 +12885,14 @@
           }
           if (result) {
             if (Array.isArray(result)) {
-              points3 = points3.concat(result);
+              points4 = points4.concat(result);
             } else {
-              points3.push(result);
+              points4.push(result);
             }
           }
         });
       }
-      path2 = new Path(points3, closed2, void 0, true).noStroke();
+      path2 = new Path(points4, closed2, void 0, true).noStroke();
       path2.fill = "black";
       const rect = path2.getBoundingClientRect(true);
       rect.centroid = {
@@ -13228,7 +13228,7 @@
     }
     _update() {
       const effect = this._textures;
-      let width, height, elapsed, amount2, duration2, texture;
+      let width, height, elapsed, amount3, duration2, texture;
       let index, frames;
       if (effect) {
         if (this._flagTextures) {
@@ -13238,9 +13238,9 @@
           this._duration = 1e3 * this._amount / this._frameRate;
         }
         if (this._playing && this._frameRate > 0) {
-          amount2 = this._amount;
+          amount3 = this._amount;
           if (_.isNaN(this._lastFrame)) {
-            this._lastFrame = amount2 - 1;
+            this._lastFrame = amount3 - 1;
           }
           elapsed = _.performance.now() - this._startTime;
           frames = this._lastFrame + 1;
@@ -13365,12 +13365,12 @@
   }
   var _ArcSegment = class extends Path {
     constructor(x, y, ir, or, sa, ea, res) {
-      const amount2 = res || Constants.Resolution * 3;
-      const points3 = [];
-      for (let i = 0; i < amount2; i++) {
-        points3.push(new Anchor());
+      const amount3 = res || Constants.Resolution * 3;
+      const points4 = [];
+      for (let i = 0; i < amount3; i++) {
+        points4.push(new Anchor());
       }
-      super(points3, true, false, true);
+      super(points4, true, false, true);
       __publicField2(this, "_flagStartAngle", false);
       __publicField2(this, "_flagEndAngle", false);
       __publicField2(this, "_flagInnerRadius", false);
@@ -13686,7 +13686,7 @@
     }
     subdivide(limit) {
       this._update();
-      let points3 = [];
+      let points4 = [];
       for (let i = 0; i < this.vertices.length; i++) {
         const a = this.vertices[i];
         const b = this.vertices[i - 1];
@@ -13698,9 +13698,9 @@
         const x2 = b.x;
         const y2 = b.y;
         const subdivisions = subdivide(x1, y1, x1, y1, x2, y2, x2, y2, limit);
-        points3 = points3.concat(subdivisions);
+        points4 = points4.concat(subdivisions);
       }
-      this.vertices = points3;
+      this.vertices = points4;
       return this;
     }
     _update() {
@@ -13709,9 +13709,9 @@
           this._updateLength(void 0, true);
         }
         const beginning = Math.min(this._beginning, this._ending);
-        const ending = Math.max(this._beginning, this._ending);
+        const ending2 = Math.max(this._beginning, this._ending);
         const bid = getIdByLength(this, beginning * this._length);
-        const eid = getIdByLength(this, ending * this._length);
+        const eid = getIdByLength(this, ending2 * this._length);
         const low = ceil2(bid);
         const high = floor3(eid);
         let j = 0, v;
@@ -13927,13 +13927,13 @@
     _update() {
       if (this._flagVertices || this._flagWidth || this._flagHeight || this._flagSides) {
         const sides = this._sides;
-        const amount2 = sides + 1;
+        const amount3 = sides + 1;
         let length = this.vertices.length;
         if (length > sides) {
           this.vertices.splice(sides - 1, length - sides);
           length = sides;
         }
-        for (let i = 0; i < amount2; i++) {
+        for (let i = 0; i < amount3; i++) {
           const pct = (i + 0.5) / sides;
           const theta = TWO_PI * pct + Math.PI / 2;
           const x = this._width * cos5(theta) / 2;
@@ -14074,13 +14074,13 @@
     _update() {
       if (this._flagVertices || this._flagInnerRadius || this._flagOuterRadius || this._flagSides) {
         const sides = this._sides * 2;
-        const amount2 = sides + 1;
+        const amount3 = sides + 1;
         let length = this.vertices.length;
         if (length > sides) {
           this.vertices.splice(sides - 1, length - sides);
           length = sides;
         }
-        for (let i = 0; i < amount2; i++) {
+        for (let i = 0; i < amount3; i++) {
           const pct = (i + 0.5) / sides;
           const theta = TWO_PI * pct;
           const r = (!(i % 2) ? this._innerRadius : this._outerRadius) / 2;
@@ -14206,12 +14206,12 @@
       }
       return this;
     },
-    toString: function(points3, closed2) {
-      let l = points3.length, last = l - 1, d, string = "";
+    toString: function(points4, closed2) {
+      let l = points4.length, last = l - 1, d, string = "";
       for (let i = 0; i < l; i++) {
-        const b = points3[i];
+        const b = points4[i];
         const prev = closed2 ? mod(i - 1, l) : Math.max(i - 1, 0);
-        const a = points3[prev];
+        const a = points4[prev];
         let command, c;
         let vx, vy, ux, uy, ar, bl, br, cl;
         let rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
@@ -14286,12 +14286,12 @@
       }
       return string;
     },
-    pointsToString: function(points3, size) {
+    pointsToString: function(points4, size) {
       let string = "";
       const r = size * 0.5;
-      for (let i = 0; i < points3.length; i++) {
-        const x = points3[i].x;
-        const y = points3[i].y - r;
+      for (let i = 0; i < points4.length; i++) {
+        const x = points4[i].x;
+        const y = points4[i].y - r;
         string += Commands.move + " " + x + " " + y + " ";
         string += "a " + r + " " + r + " 0 1 0 0.001 0 Z";
       }
@@ -16178,7 +16178,7 @@
     xhr
   }, _, CanvasShim, curves_exports, math_exports);
   var _Two = class {
-    constructor(options) {
+    constructor(options2) {
       __publicField2(this, "_events", new Events());
       __publicField2(this, "type", "");
       __publicField2(this, "renderer", null);
@@ -16188,7 +16188,7 @@
       __publicField2(this, "frameCount", 0);
       __publicField2(this, "timeDelta", 0);
       __publicField2(this, "playing", false);
-      const params = _.defaults(options || {}, {
+      const params = _.defaults(options2 || {}, {
         fullscreen: false,
         fitted: false,
         width: 640,
@@ -16455,21 +16455,21 @@
       this.scene.add(star);
       return star;
     }
-    makeCurve(points3) {
+    makeCurve(points4) {
       const l = arguments.length;
-      if (!Array.isArray(points3)) {
-        points3 = [];
+      if (!Array.isArray(points4)) {
+        points4 = [];
         for (let i = 0; i < l; i += 2) {
           const x = arguments[i];
           if (typeof x !== "number") {
             break;
           }
           const y = arguments[i + 1];
-          points3.push(new Anchor(x, y));
+          points4.push(new Anchor(x, y));
         }
       }
       const last = arguments[l - 1];
-      const curve = new Path(points3, !(typeof last === "boolean" ? last : void 0), true);
+      const curve = new Path(points4, !(typeof last === "boolean" ? last : void 0), true);
       const rect = curve.getBoundingClientRect();
       curve.center().translation.set(rect.left + rect.width / 2, rect.top + rect.height / 2);
       this.scene.add(curve);
@@ -16507,26 +16507,26 @@
           vertices.push(new Vector(x, y));
         }
       }
-      const points3 = new Points(vertices);
-      this.scene.add(points3);
-      return points3;
+      const points4 = new Points(vertices);
+      this.scene.add(points4);
+      return points4;
     }
     makePath(p) {
       const l = arguments.length;
-      let points3 = p;
+      let points4 = p;
       if (!Array.isArray(p)) {
-        points3 = [];
+        points4 = [];
         for (let i = 0; i < l; i += 2) {
           const x = arguments[i];
           if (typeof x !== "number") {
             break;
           }
           const y = arguments[i + 1];
-          points3.push(new Anchor(x, y));
+          points4.push(new Anchor(x, y));
         }
       }
       const last = arguments[l - 1];
-      const path2 = new Path(points3, !(typeof last === "boolean" ? last : void 0));
+      const path2 = new Path(points4, !(typeof last === "boolean" ? last : void 0));
       const rect = path2.getBoundingClientRect();
       if (typeof rect.top === "number" && typeof rect.left === "number" && typeof rect.right === "number" && typeof rect.bottom === "number") {
         path2.center().translation.set(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -16701,190 +16701,190 @@
   // node_modules/@tweenjs/tween.js/dist/tween.esm.js
   var Easing = Object.freeze({
     Linear: Object.freeze({
-      None: function(amount2) {
-        return amount2;
+      None: function(amount3) {
+        return amount3;
       },
-      In: function(amount2) {
-        return this.None(amount2);
+      In: function(amount3) {
+        return this.None(amount3);
       },
-      Out: function(amount2) {
-        return this.None(amount2);
+      Out: function(amount3) {
+        return this.None(amount3);
       },
-      InOut: function(amount2) {
-        return this.None(amount2);
+      InOut: function(amount3) {
+        return this.None(amount3);
       }
     }),
     Quadratic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2;
+      In: function(amount3) {
+        return amount3 * amount3;
       },
-      Out: function(amount2) {
-        return amount2 * (2 - amount2);
+      Out: function(amount3) {
+        return amount3 * (2 - amount3);
       },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2;
+      InOut: function(amount3) {
+        if ((amount3 *= 2) < 1) {
+          return 0.5 * amount3 * amount3;
         }
-        return -0.5 * (--amount2 * (amount2 - 2) - 1);
+        return -0.5 * (--amount3 * (amount3 - 2) - 1);
       }
     }),
     Cubic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2 * amount2;
+      In: function(amount3) {
+        return amount3 * amount3 * amount3;
       },
-      Out: function(amount2) {
-        return --amount2 * amount2 * amount2 + 1;
+      Out: function(amount3) {
+        return --amount3 * amount3 * amount3 + 1;
       },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2 * amount2;
+      InOut: function(amount3) {
+        if ((amount3 *= 2) < 1) {
+          return 0.5 * amount3 * amount3 * amount3;
         }
-        return 0.5 * ((amount2 -= 2) * amount2 * amount2 + 2);
+        return 0.5 * ((amount3 -= 2) * amount3 * amount3 + 2);
       }
     }),
     Quartic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2 * amount2 * amount2;
+      In: function(amount3) {
+        return amount3 * amount3 * amount3 * amount3;
       },
-      Out: function(amount2) {
-        return 1 - --amount2 * amount2 * amount2 * amount2;
+      Out: function(amount3) {
+        return 1 - --amount3 * amount3 * amount3 * amount3;
       },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2 * amount2 * amount2;
+      InOut: function(amount3) {
+        if ((amount3 *= 2) < 1) {
+          return 0.5 * amount3 * amount3 * amount3 * amount3;
         }
-        return -0.5 * ((amount2 -= 2) * amount2 * amount2 * amount2 - 2);
+        return -0.5 * ((amount3 -= 2) * amount3 * amount3 * amount3 - 2);
       }
     }),
     Quintic: Object.freeze({
-      In: function(amount2) {
-        return amount2 * amount2 * amount2 * amount2 * amount2;
+      In: function(amount3) {
+        return amount3 * amount3 * amount3 * amount3 * amount3;
       },
-      Out: function(amount2) {
-        return --amount2 * amount2 * amount2 * amount2 * amount2 + 1;
+      Out: function(amount3) {
+        return --amount3 * amount3 * amount3 * amount3 * amount3 + 1;
       },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * amount2 * amount2 * amount2 * amount2 * amount2;
+      InOut: function(amount3) {
+        if ((amount3 *= 2) < 1) {
+          return 0.5 * amount3 * amount3 * amount3 * amount3 * amount3;
         }
-        return 0.5 * ((amount2 -= 2) * amount2 * amount2 * amount2 * amount2 + 2);
+        return 0.5 * ((amount3 -= 2) * amount3 * amount3 * amount3 * amount3 + 2);
       }
     }),
     Sinusoidal: Object.freeze({
-      In: function(amount2) {
-        return 1 - Math.sin((1 - amount2) * Math.PI / 2);
+      In: function(amount3) {
+        return 1 - Math.sin((1 - amount3) * Math.PI / 2);
       },
-      Out: function(amount2) {
-        return Math.sin(amount2 * Math.PI / 2);
+      Out: function(amount3) {
+        return Math.sin(amount3 * Math.PI / 2);
       },
-      InOut: function(amount2) {
-        return 0.5 * (1 - Math.sin(Math.PI * (0.5 - amount2)));
+      InOut: function(amount3) {
+        return 0.5 * (1 - Math.sin(Math.PI * (0.5 - amount3)));
       }
     }),
     Exponential: Object.freeze({
-      In: function(amount2) {
-        return amount2 === 0 ? 0 : Math.pow(1024, amount2 - 1);
+      In: function(amount3) {
+        return amount3 === 0 ? 0 : Math.pow(1024, amount3 - 1);
       },
-      Out: function(amount2) {
-        return amount2 === 1 ? 1 : 1 - Math.pow(2, -10 * amount2);
+      Out: function(amount3) {
+        return amount3 === 1 ? 1 : 1 - Math.pow(2, -10 * amount3);
       },
-      InOut: function(amount2) {
-        if (amount2 === 0) {
+      InOut: function(amount3) {
+        if (amount3 === 0) {
           return 0;
         }
-        if (amount2 === 1) {
+        if (amount3 === 1) {
           return 1;
         }
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * Math.pow(1024, amount2 - 1);
+        if ((amount3 *= 2) < 1) {
+          return 0.5 * Math.pow(1024, amount3 - 1);
         }
-        return 0.5 * (-Math.pow(2, -10 * (amount2 - 1)) + 2);
+        return 0.5 * (-Math.pow(2, -10 * (amount3 - 1)) + 2);
       }
     }),
     Circular: Object.freeze({
-      In: function(amount2) {
-        return 1 - Math.sqrt(1 - amount2 * amount2);
+      In: function(amount3) {
+        return 1 - Math.sqrt(1 - amount3 * amount3);
       },
-      Out: function(amount2) {
-        return Math.sqrt(1 - --amount2 * amount2);
+      Out: function(amount3) {
+        return Math.sqrt(1 - --amount3 * amount3);
       },
-      InOut: function(amount2) {
-        if ((amount2 *= 2) < 1) {
-          return -0.5 * (Math.sqrt(1 - amount2 * amount2) - 1);
+      InOut: function(amount3) {
+        if ((amount3 *= 2) < 1) {
+          return -0.5 * (Math.sqrt(1 - amount3 * amount3) - 1);
         }
-        return 0.5 * (Math.sqrt(1 - (amount2 -= 2) * amount2) + 1);
+        return 0.5 * (Math.sqrt(1 - (amount3 -= 2) * amount3) + 1);
       }
     }),
     Elastic: Object.freeze({
-      In: function(amount2) {
-        if (amount2 === 0) {
+      In: function(amount3) {
+        if (amount3 === 0) {
           return 0;
         }
-        if (amount2 === 1) {
+        if (amount3 === 1) {
           return 1;
         }
-        return -Math.pow(2, 10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI);
+        return -Math.pow(2, 10 * (amount3 - 1)) * Math.sin((amount3 - 1.1) * 5 * Math.PI);
       },
-      Out: function(amount2) {
-        if (amount2 === 0) {
+      Out: function(amount3) {
+        if (amount3 === 0) {
           return 0;
         }
-        if (amount2 === 1) {
+        if (amount3 === 1) {
           return 1;
         }
-        return Math.pow(2, -10 * amount2) * Math.sin((amount2 - 0.1) * 5 * Math.PI) + 1;
+        return Math.pow(2, -10 * amount3) * Math.sin((amount3 - 0.1) * 5 * Math.PI) + 1;
       },
-      InOut: function(amount2) {
-        if (amount2 === 0) {
+      InOut: function(amount3) {
+        if (amount3 === 0) {
           return 0;
         }
-        if (amount2 === 1) {
+        if (amount3 === 1) {
           return 1;
         }
-        amount2 *= 2;
-        if (amount2 < 1) {
-          return -0.5 * Math.pow(2, 10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI);
+        amount3 *= 2;
+        if (amount3 < 1) {
+          return -0.5 * Math.pow(2, 10 * (amount3 - 1)) * Math.sin((amount3 - 1.1) * 5 * Math.PI);
         }
-        return 0.5 * Math.pow(2, -10 * (amount2 - 1)) * Math.sin((amount2 - 1.1) * 5 * Math.PI) + 1;
+        return 0.5 * Math.pow(2, -10 * (amount3 - 1)) * Math.sin((amount3 - 1.1) * 5 * Math.PI) + 1;
       }
     }),
     Back: Object.freeze({
-      In: function(amount2) {
+      In: function(amount3) {
         var s = 1.70158;
-        return amount2 === 1 ? 1 : amount2 * amount2 * ((s + 1) * amount2 - s);
+        return amount3 === 1 ? 1 : amount3 * amount3 * ((s + 1) * amount3 - s);
       },
-      Out: function(amount2) {
+      Out: function(amount3) {
         var s = 1.70158;
-        return amount2 === 0 ? 0 : --amount2 * amount2 * ((s + 1) * amount2 + s) + 1;
+        return amount3 === 0 ? 0 : --amount3 * amount3 * ((s + 1) * amount3 + s) + 1;
       },
-      InOut: function(amount2) {
+      InOut: function(amount3) {
         var s = 1.70158 * 1.525;
-        if ((amount2 *= 2) < 1) {
-          return 0.5 * (amount2 * amount2 * ((s + 1) * amount2 - s));
+        if ((amount3 *= 2) < 1) {
+          return 0.5 * (amount3 * amount3 * ((s + 1) * amount3 - s));
         }
-        return 0.5 * ((amount2 -= 2) * amount2 * ((s + 1) * amount2 + s) + 2);
+        return 0.5 * ((amount3 -= 2) * amount3 * ((s + 1) * amount3 + s) + 2);
       }
     }),
     Bounce: Object.freeze({
-      In: function(amount2) {
-        return 1 - Easing.Bounce.Out(1 - amount2);
+      In: function(amount3) {
+        return 1 - Easing.Bounce.Out(1 - amount3);
       },
-      Out: function(amount2) {
-        if (amount2 < 1 / 2.75) {
-          return 7.5625 * amount2 * amount2;
-        } else if (amount2 < 2 / 2.75) {
-          return 7.5625 * (amount2 -= 1.5 / 2.75) * amount2 + 0.75;
-        } else if (amount2 < 2.5 / 2.75) {
-          return 7.5625 * (amount2 -= 2.25 / 2.75) * amount2 + 0.9375;
+      Out: function(amount3) {
+        if (amount3 < 1 / 2.75) {
+          return 7.5625 * amount3 * amount3;
+        } else if (amount3 < 2 / 2.75) {
+          return 7.5625 * (amount3 -= 1.5 / 2.75) * amount3 + 0.75;
+        } else if (amount3 < 2.5 / 2.75) {
+          return 7.5625 * (amount3 -= 2.25 / 2.75) * amount3 + 0.9375;
         } else {
-          return 7.5625 * (amount2 -= 2.625 / 2.75) * amount2 + 0.984375;
+          return 7.5625 * (amount3 -= 2.625 / 2.75) * amount3 + 0.984375;
         }
       },
-      InOut: function(amount2) {
-        if (amount2 < 0.5) {
-          return Easing.Bounce.In(amount2 * 2) * 0.5;
+      InOut: function(amount3) {
+        if (amount3 < 0.5) {
+          return Easing.Bounce.In(amount3 * 2) * 0.5;
         }
-        return Easing.Bounce.Out(amount2 * 2 - 1) * 0.5 + 0.5;
+        return Easing.Bounce.Out(amount3 * 2 - 1) * 0.5 + 0.5;
       }
     }),
     generatePow: function(power) {
@@ -16894,17 +16894,17 @@
       power = power < Number.EPSILON ? Number.EPSILON : power;
       power = power > 1e4 ? 1e4 : power;
       return {
-        In: function(amount2) {
-          return Math.pow(amount2, power);
+        In: function(amount3) {
+          return Math.pow(amount3, power);
         },
-        Out: function(amount2) {
-          return 1 - Math.pow(1 - amount2, power);
+        Out: function(amount3) {
+          return 1 - Math.pow(1 - amount3, power);
         },
-        InOut: function(amount2) {
-          if (amount2 < 0.5) {
-            return Math.pow(amount2 * 2, power) / 2;
+        InOut: function(amount3) {
+          if (amount3 < 0.5) {
+            return Math.pow(amount3 * 2, power) / 2;
           }
-          return (1 - Math.pow(2 - amount2 * 2, power)) / 2 + 0.5;
+          return (1 - Math.pow(2 - amount3 * 2, power)) / 2 + 0.5;
         }
       };
     }
@@ -17268,11 +17268,11 @@
       this._group = group;
       return this;
     };
-    Tween2.prototype.delay = function(amount2) {
-      if (amount2 === void 0) {
-        amount2 = 0;
+    Tween2.prototype.delay = function(amount3) {
+      if (amount3 === void 0) {
+        amount3 = 0;
       }
-      this._delayTime = amount2;
+      this._delayTime = amount3;
       return this;
     };
     Tween2.prototype.repeat = function(times) {
@@ -17283,8 +17283,8 @@
       this._repeat = times;
       return this;
     };
-    Tween2.prototype.repeatDelay = function(amount2) {
-      this._repeatDelayTime = amount2;
+    Tween2.prototype.repeatDelay = function(amount3) {
+      this._repeatDelayTime = amount3;
       return this;
     };
     Tween2.prototype.yoyo = function(yoyo) {
@@ -17426,7 +17426,7 @@
         if (_valuesStart[property] === void 0) {
           continue;
         }
-        var start4 = _valuesStart[property] || 0;
+        var start5 = _valuesStart[property] || 0;
         var end = _valuesEnd[property];
         var startIsArray = Array.isArray(_object[property]);
         var endIsArray = Array.isArray(end);
@@ -17434,21 +17434,21 @@
         if (isInterpolationList) {
           _object[property] = this._interpolationFunction(end, value);
         } else if (typeof end === "object" && end) {
-          this._updateProperties(_object[property], start4, end, value);
+          this._updateProperties(_object[property], start5, end, value);
         } else {
-          end = this._handleRelativeValue(start4, end);
+          end = this._handleRelativeValue(start5, end);
           if (typeof end === "number") {
-            _object[property] = start4 + (end - start4) * value;
+            _object[property] = start5 + (end - start5) * value;
           }
         }
       }
     };
-    Tween2.prototype._handleRelativeValue = function(start4, end) {
+    Tween2.prototype._handleRelativeValue = function(start5, end) {
       if (typeof end !== "string") {
         return end;
       }
       if (end.charAt(0) === "+" || end.charAt(0) === "-") {
-        return start4 + parseFloat(end);
+        return start5 + parseFloat(end);
       }
       return parseFloat(end);
     };
@@ -17475,7 +17475,8 @@
   // src/common.js
   var two = new Two({
     type: Two.Types.canvas,
-    fullscreen: true
+    fullscreen: true,
+    ratio: 1
   });
   two.renderer.domElement.id = "stage";
   var TWO_PI2 = Math.PI * 2;
@@ -17582,19 +17583,19 @@
     return amount;
   }
   function tween(palette2) {
-    let amount2 = 0;
+    let amount3 = 0;
     for (let k in _colors) {
       const prev = _colors[k];
       const dest = palette2[k];
       if (equals(prev, dest)) {
-        amount2++;
+        amount3++;
       }
       prev.r = ease(prev.r, dest.r, drag);
       prev.g = ease(prev.g, dest.g, drag);
       prev.b = ease(prev.b, dest.b, drag);
       colors[k] = toRGB(prev);
     }
-    return amount2;
+    return amount3;
   }
   function ease(cur, dest, t) {
     const d = dest - cur;
@@ -17624,11 +17625,11 @@
     if (!changing) {
       return;
     }
-    const amount2 = tween(palette[current]);
+    const amount3 = tween(palette[current]);
     if (_onUpdate) {
       _onUpdate();
     }
-    if (amount2 >= keys.length) {
+    if (amount3 >= keys.length) {
       if (changing) {
         changing = false;
         if (_onComplete) {
@@ -17755,8 +17756,8 @@
       this.filter.connect(this.gain);
       return this;
     }
-    play(options) {
-      var params = defaults(options || {}, {
+    play(options2) {
+      var params = defaults(options2 || {}, {
         time: this.ctx.currentTime,
         loop: this._loop,
         offset: this._offset,
@@ -17784,11 +17785,11 @@
       }
       return this;
     }
-    pause(options) {
+    pause(options2) {
       if (!this.source || !this.playing) {
         return this;
       }
-      var params = defaults(options || {}, {
+      var params = defaults(options2 || {}, {
         time: this.ctx.currentTime
       });
       this.source.onended = identity2;
@@ -17810,11 +17811,11 @@
       }
       return this;
     }
-    stop(options) {
+    stop(options2) {
       if (!this.source || !this.playing) {
         return this;
       }
-      var params = defaults(options || {}, {
+      var params = defaults(options2 || {}, {
         time: this.ctx.currentTime
       });
       this.source.onended = identity2;
@@ -17905,27 +17906,27 @@
     center.x = two.width / 2;
     center.y = two.height / 2;
     min_dimension = Math.min(two.width, two.height);
-    list.forEach((animation4) => animation4.resize());
+    list.forEach((animation5) => animation5.resize());
   });
   palette_default.onStart(updateAudio);
   palette_default.onUpdate(() => {
-    list.forEach(({ update: update6 }) => update6());
+    list.forEach(({ update: update7 }) => update7());
     domElement.style.background = palette_default.colors.background;
   });
-  function register(hash2, animation4) {
-    const name2 = animation4.name || hash2;
+  function register(hash2, animation5) {
+    const name2 = animation5.name || hash2;
     if (hash2 in map) {
       const message = `Animation ${name2} already exists.`;
       throw new Error(message);
     }
     types.forEach((prop) => {
-      if (!(prop in animation4)) {
+      if (!(prop in animation5)) {
         const message = `Animation ${name2}, does not have "${prop}"`;
         throw new Error(message);
       }
     });
-    map[hash2] = animation4;
-    list.push(animation4);
+    map[hash2] = animation5;
+    list.push(animation5);
   }
   function updateAudio() {
     const current2 = palette_default.current;
@@ -17944,28 +17945,28 @@
     });
     return new Promise((resolve) => {
       const onLoad = () => {
-        update6();
+        update7();
         buffered();
       };
       const buffered = after(sounds.length, function() {
         resolve();
         $lobby.fadeOut();
       });
-      sounds.forEach((animation4) => {
+      sounds.forEach((animation5) => {
         if (!ctx) {
           ctx = new AudioContext();
         }
-        let sound = animation4.sounds[current2];
+        let sound = animation5.sounds[current2];
         if (!sound) {
           show2();
-          const uri = `${path}${type}/${animation4.name}${filetype}`;
+          const uri = `${path}${type}/${animation5.name}${filetype}`;
           sound = new Sound(ctx, uri, onLoad);
-          animation4.sounds.push(sound);
+          animation5.sounds.push(sound);
         }
-        animation4.sound = sound;
+        animation5.sound = sound;
       });
     });
-    function update6() {
+    function update7() {
       $loaded.index++;
       $loaded.html($loaded.index);
     }
@@ -18068,7 +18069,7 @@
     update: update4,
     resize: resize2,
     clear: reset,
-    playing: function() {
+    get playing() {
       return playing2;
     },
     hash: "2,1",
@@ -18136,7 +18137,7 @@
     update: update5,
     resize: resize3,
     clear: reset2,
-    playing: function() {
+    get playing() {
       return playing3;
     },
     hash: "1,1",
@@ -18145,10 +18146,366 @@
   };
   register(animation3.hash, animation3);
 
+  // src/animations/prisms.js
+  var animations = range(3).map((i) => {
+    const amount3 = Math.floor(i * 1.5) + 3;
+    const scale = 10;
+    let animation_in;
+    let r1 = 100;
+    let r2 = 2;
+    let playing5 = false;
+    const circles = [];
+    const points4 = range(amount3).map((i2) => {
+      var pct = i2 / amount3;
+      var theta = TWO_PI2 * pct;
+      var x = r1 * Math.cos(theta);
+      var y = r1 * Math.sin(theta);
+      var circle = two.makeCircle(x, y, r2);
+      circle.fill = palette_default.colors.black;
+      circle.noStroke();
+      circles.push(circle);
+      return new Two.Anchor(x, y);
+    });
+    const prism = two.makePath(points4);
+    prism.closed = true;
+    prism.stroke = palette_default.colors.black;
+    prism.noFill();
+    prism.linewidth = 0.5;
+    const group = two.makeGroup(prism).add(circles);
+    group.translation.copy(center);
+    const options2 = { ending: 0 };
+    reset4();
+    function start5(silent) {
+      playing5 = true;
+      group.visible = true;
+      animation_in.start();
+      if (!silent && animation5.sound) {
+        animation5.sound.stop().play();
+      }
+    }
+    function update7() {
+      prism.stroke = palette_default.colors.black;
+      for (let i2 = 0; i2 < circles.length; i2++) {
+        const circle = circles[i2];
+        circle.fill = palette_default.colors.black;
+      }
+    }
+    function resize5() {
+      group.translation.copy(center);
+    }
+    function reset4() {
+      if (animation_in) {
+        animation_in.stop();
+      }
+      group.visible = false;
+      options2.ending = group.scale = 0;
+      playing5 = false;
+      animation_in = new Tween(group).to({ scale }, duration * 0.75).easing(Easing.Circular.In).onComplete(reset4);
+    }
+    const animation5 = {
+      start: start5,
+      update: update7,
+      clear: reset4,
+      resize: resize5,
+      get playing() {
+        return playing5;
+      },
+      hash: `${i},6`,
+      name: `prism-${i + 1}`,
+      sounds: []
+    };
+    register(animation5.hash, animation5);
+    return animation5;
+  });
+
+  // src/animations/clay.js
+  var animate_in3;
+  var playing4 = false;
+  var amount2 = Math.floor(Math.random()) * 8 + 8;
+  var impact = new Two.Vector();
+  var distance = two.height;
+  var destinations = [];
+  var points3 = range(amount2).map((i) => {
+    const pct = i / amount2;
+    const theta = TWO_PI2 * pct;
+    const x = distance * Math.sin(theta);
+    const y = distance * Math.cos(theta);
+    destinations.push(new Two.Vector(x, y));
+    return new Two.Anchor(x, y);
+  });
+  var clay = two.makeCurve(points3);
+  clay.fill = palette_default.colors.middleground;
+  clay.closed = true;
+  clay.noStroke();
+  var options = { ending: 0 };
+  var ending = { ending: 1 };
+  reset3();
+  function start4(silent) {
+    clay.visible = true;
+    playing4 = true;
+    animate_in3.start();
+    if (!silent && animation4.sound) {
+      animation4.sound.stop().play();
+    }
+  }
+  function update6() {
+    clay.fill = palette_default.colors.middleground;
+  }
+  function resize4() {
+  }
+  function reset3() {
+    if (animate_in3) {
+      animate_in3.stop();
+    }
+    const pos = Math.floor(Math.random() * 8);
+    let x, y;
+    clay.visible = false;
+    impact.set(Math.random() * two.width, Math.random() * two.height);
+    switch (pos) {
+      case 7:
+        x = center.x;
+        y = 0;
+        break;
+      case 6:
+        x = 0;
+        y = 0;
+        break;
+      case 5:
+        x = 0;
+        y = center.y;
+        break;
+      case 4:
+        x = 0;
+        y = two.height;
+        break;
+      case 3:
+        x = center.x;
+        y = two.height;
+        break;
+      case 2:
+        x = two.width;
+        y = two.height;
+        break;
+      case 1:
+        x = two.width;
+        y = center.y;
+        break;
+      default:
+        x = two.width;
+        y = 0;
+    }
+    clay.position.set(x, y);
+    options.ending = 0;
+    distance = two.height;
+    for (let i = 0; i < amount2; i++) {
+      const v = points3[i];
+      const pct = i / amount2;
+      const ptheta = pct * TWO_PI2;
+      v.set(
+        distance * Math.cos(ptheta),
+        distance * Math.sin(ptheta)
+      );
+      const theta = Two.Vector.angleBetween(v, impact) - ptheta;
+      const d = v.distanceTo(impact);
+      const a = 10 * distance / Math.sqrt(d);
+      const x2 = a * Math.cos(theta) + v.x;
+      const y2 = a * Math.sin(theta) + v.y;
+      destinations[i].set(x2, y2);
+    }
+    playing4 = false;
+    animate_in3 = new Tween(options).to(ending, duration * 0.75).easing(Easing.Circular.In).onUpdate(onUpdate2).onComplete(reset3);
+  }
+  function onUpdate2() {
+    const t = options.ending;
+    for (let i = 0; i < amount2; i++) {
+      const v = points3[i];
+      const d = destinations[i];
+      v.lerp(d, t);
+    }
+  }
+  var animation4 = {
+    start: start4,
+    update: update6,
+    clear: reset3,
+    resize: resize4,
+    get playing() {
+      return playing4;
+    },
+    hash: "0,1",
+    name: "clay",
+    sounds: []
+  };
+  register(animation4.hash, animation4);
+
+  // src/animations/pistons.js
+  var animations2 = range(3).map((i) => {
+    let playing5 = false;
+    let animate_in4, animate_out3;
+    const amount3 = i * 4 + 1;
+    const w = two.width * 0.75, h = center.y;
+    let begin, end;
+    const group = two.makeGroup();
+    group.translation.copy(center);
+    const shapes = range(amount3).map((i2) => {
+      const d = h / amount3 - h / (amount3 * 3);
+      const x = 0;
+      const y = -h / 2 + (i2 + 1) * (h / (amount3 + 1));
+      const shape3 = create(x, y, w, d);
+      shape3.fill = palette_default.colors.white;
+      shape3.noStroke();
+      group.add(shape3);
+      return shape3;
+    });
+    const options2 = { ending: 0, beginning: 0 };
+    const ending2 = { ending: 1 };
+    const beginning = { beginning: 1 };
+    reset4();
+    function create(x, y, width, height) {
+      const points4 = [
+        new Two.Anchor(-width / 2, -height / 2),
+        new Two.Anchor(width / 2, -height / 2),
+        new Two.Anchor(width / 2, height / 2),
+        new Two.Anchor(-width / 2, height / 2)
+      ];
+      const path2 = new Two.Path(points4, true);
+      path2.position.set(x, y);
+      return path2;
+    }
+    function show2(shape3) {
+      shape3.visible = true;
+    }
+    function start5(silent) {
+      playing5 = true;
+      shapes.forEach(show2);
+      animate_in4.start();
+      if (!silent && animation5.sound) {
+        animation5.sound.stop().play();
+      }
+    }
+    function update7() {
+      group.fill = palette_default.colors.white;
+    }
+    function resize5() {
+      group.translation.copy(center);
+    }
+    function reset4() {
+      const w2 = two.width * 0.75;
+      if (animate_in4) {
+        animate_in4.stop();
+      }
+      if (animate_out3) {
+        animate_out3.stop();
+      }
+      options2.beginning = options2.ending = 0;
+      const rotated = Math.random() > 0.5;
+      if (rotated) {
+        begin = -w2 / 2;
+        end = w2 / 2;
+      } else {
+        begin = w2 / 2;
+        end = -w2 / 2;
+      }
+      for (let i2 = 0; i2 < amount3; i2++) {
+        const shape3 = shapes[i2];
+        shape3.visible = false;
+        for (let j = 0; j < shape3.vertices.length; j++) {
+          const v = shape3.vertices[j];
+          v.x = begin;
+        }
+      }
+      animate_in4 = new Tween(options2).to(ending2, duration * 0.125).easing(Easing.Sinusoidal.Out).onUpdate(onUpdateIn).onComplete(() => animate_out3.start());
+      animate_out3 = new Tween(options2).to(beginning, duration * 0.125).easing(Easing.Sinusoidal.Out).onUpdate(onUpdateOut).onComplete(reset4);
+      playing5 = false;
+    }
+    function onUpdateIn() {
+      for (let i2 = 0; i2 < amount3; i2++) {
+        const shape3 = shapes[i2];
+        const points4 = shape3.vertices;
+        points4[0].x = points4[3].x = end * options2.ending;
+      }
+    }
+    function onUpdateOut() {
+      for (let i2 = 0; i2 < amount3; i2++) {
+        const shape3 = shapes[i2];
+        const points4 = shape3.vertices;
+        points4[1].x = points4[2].x = end * options2.beginning;
+      }
+    }
+    const animation5 = {
+      start: start5,
+      update: update7,
+      clear: reset4,
+      resize: resize5,
+      get playing() {
+        return playing5;
+      },
+      hash: `${i},3`,
+      name: `piston-${i + 1}`,
+      sounds: []
+    };
+    register(animation5.hash, animation5);
+    return animation5;
+  });
+
+  // src/animations/flashes.js
+  var animations3 = range(3).map((i) => {
+    let playing5 = false;
+    let timeout;
+    const shape3 = two.makeRectangle(center.x, center.y, two.width, two.height);
+    shape3.noStroke();
+    shape3.visible = false;
+    update7();
+    reset4();
+    function start5(silent) {
+      if (typeof timeout !== "undefined") {
+        clearTimeout(timeout);
+      }
+      playing5 = true;
+      if (!silent && animation5.sound) {
+        animation5.sound.stop().play();
+      }
+      two.bind("update", onUpdate3);
+      setTimeout(reset4, duration * 0.25);
+    }
+    function update7() {
+      const index = palette_default.keys.length - 1 - i % palette_default.keys.length;
+      const key = palette_default.keys[index];
+      shape3.fill = palette_default.colors[key];
+    }
+    function resize5() {
+      shape3.width = two.width;
+      shape3.height = two.height;
+      shape3.translation.copy(center);
+    }
+    function reset4() {
+      playing5 = false;
+      shape3.visible = false;
+      two.unbind("update", onUpdate3);
+    }
+    function onUpdate3() {
+      if (playing5) {
+        shape3.visible = Math.random() > 0.5;
+      }
+    }
+    const animation5 = {
+      start: start5,
+      update: update7,
+      clear: reset4,
+      resize: resize5,
+      get playing() {
+        return playing5;
+      },
+      hash: `${i},0`,
+      name: `flash-${i + 1}`,
+      sounds: []
+    };
+    register(animation5.hash, animation5);
+  });
+
   // src/index.js
   (0, import_jquery2.default)(() => {
     const $container = (0, import_jquery2.default)("#content"), $hint = (0, import_jquery2.default)("#hint"), $credits = (0, import_jquery2.default)("#credits"), $embed = (0, import_jquery2.default)("#embed"), $merchandise = (0, import_jquery2.default)("#merchandise"), $window = (0, import_jquery2.default)(window);
-    let ui, buttons, width, height, landscape, embedding = false, playing4 = false, merchandising = false;
+    let ui, buttons, width, height, landscape, embedding = false, playing5 = false, merchandising = false;
     const showHint = debounce(function() {
       if (embedding) {
         showHint();
@@ -18169,19 +18526,18 @@
     silent.preload = "auto";
     silent.load();
     function loaded() {
-      console.log("loaded", animations_default);
       $window.bind("click", enableAudio).bind("visibilitychange", listenToEnableAudio);
       silent.removeEventListener("canplay", loaded, false);
       initialize();
     }
     function enableAudio() {
-      playing4 = true;
+      playing5 = true;
       silent.play();
       $window.unbind("click", enableAudio);
     }
     function listenToEnableAudio() {
-      if (/hidden/i.test(document.visibilityState) && playing4) {
-        playing4 = false;
+      if (/hidden/i.test(document.visibilityState) && playing5) {
+        playing5 = false;
         $window.unbind("click", enableAudio).bind("click", enableAudio);
       }
     }
@@ -18340,7 +18696,6 @@
             updateButton(button);
           }
         }
-        ui.update();
       }).play();
       $window.trigger("resize");
       if (navigator.requestMIDIAccess) {
@@ -18589,10 +18944,7 @@
       return false;
     }
     function createMobileUI() {
-      ui = new Two({
-        fullscreen: true
-      }).appendTo($container[0]);
-      ui.renderer.domElement.id = "ui";
+      ui = two.makeGroup();
       buttons = new Array(3);
       buttons.width = buttons.height = 32;
       buttons.needsUpdate = {};
@@ -18600,7 +18952,6 @@
       buttons[0] = range(10).map(createButton);
       buttons[1] = range(9).map(createButton);
       buttons[2] = range(8).map(createButton);
-      ui.update();
       const touches = [];
       let e, x, y, l, row, col, index;
       $container.bind("touchstart", function(event) {
@@ -18609,30 +18960,24 @@
       }).bind("touchmove", function(event) {
         e = event.originalEvent;
         each(e.touches, updateTouchEnter);
-      }).bind("touchstart touchmove touchend touchcancel", function(e2) {
-        if (playing4 && !(merchandising || (0, import_jquery2.default)(e2.target).hasClass("ios-app-store"))) {
-          e2.preventDefault();
+      }).bind("touchstart touchmove touchend touchcancel", function(event) {
+        if (playing5 && !(merchandising || $container.hasClass("ios-app-store"))) {
+          event.preventDefault();
           return false;
         }
       });
       buttons.forEach((group, i) => {
         group.forEach(function(button, j) {
-          const elem = button._renderer.elem;
           const index2 = `${i},${j}`;
           buttons.map[index2] = button;
-          (0, import_jquery2.default)(elem).css({
-            cursor: "pointer"
-          }).bind("mousedown touchstart", function(event) {
-            e = event.originalEvent;
-            triggerButton(index2, button);
-          });
         });
       });
       function createButton() {
-        const shape3 = ui.makeRectangle(0, 0, buttons.width, buttons.height);
+        const shape3 = new Two.Rectangle(0, 0, buttons.width, buttons.height);
         shape3.noFill().noStroke();
         shape3.opacity = 0;
         shape3.visible = false;
+        ui.add(shape3);
         return shape3;
       }
       function getIndex(x2, y2) {
@@ -18651,11 +18996,13 @@
       function startTouchEnter(touch) {
         x = touch.clientX;
         y = touch.clientY;
+        index = getIndex(x, y, x, y);
         touches[touch.identifier] = {
-          id: getIndex(x, y, x, y),
+          id: index,
           x,
           y
         };
+        triggerButton(index, buttons.map[index]);
       }
       function updateTouchEnter(touch) {
         x = touch.clientX;
@@ -18681,12 +19028,12 @@
       }
     }
     function trigger(hash2, silent2) {
-      const animation4 = animations_default.map[hash2];
-      if (animation4) {
-        if (animation4.playing) {
-          animation4.clear();
+      const animation5 = animations_default.map[hash2];
+      if (animation5) {
+        if (animation5.playing) {
+          animation5.clear();
         }
-        animation4.start(silent2);
+        animation5.start(silent2);
         if (window.gtag) {
           window.gtag("event", "animation", {
             trigger: hash2
