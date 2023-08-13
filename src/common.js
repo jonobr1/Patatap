@@ -2,7 +2,8 @@ import Two from "two.js";
 
 export const two = new Two({
   type: Two.Types.canvas,
-  fullscreen: true
+  fullscreen: true,
+  ratio: 1
 });
 
 two.renderer.domElement.id = 'stage';
