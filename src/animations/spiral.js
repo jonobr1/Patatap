@@ -14,7 +14,7 @@ const group = two.makeGroup();
 const lines = range(amount).map(() => {
 
   const line = new Two.Line();
-  line.stroke = palette.colors.black;
+  line.noFill();
   line.cap = line.join = 'round';
 
   group.add(line);
@@ -40,7 +40,7 @@ function update() {
 }
 
 function resize() {
-  group.translation.set(center.x, center.y);
+  group.translation.copy(center);
   magnitude = animations.min_dimension / 2;
   linewidth = magnitude / amount;
   lines.forEach(updateLine);
