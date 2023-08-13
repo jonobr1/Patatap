@@ -882,7 +882,7 @@
                 return first === 1 && last === 0 ? function(elem) {
                   return !!elem.parentNode;
                 } : function(elem, _context, xml) {
-                  var cache, outerCache, node, nodeIndex, start5, dir2 = simple !== forward ? "nextSibling" : "previousSibling", parent = elem.parentNode, name2 = ofType && elem.nodeName.toLowerCase(), useCache = !xml && !ofType, diff = false;
+                  var cache, outerCache, node, nodeIndex, start7, dir2 = simple !== forward ? "nextSibling" : "previousSibling", parent = elem.parentNode, name2 = ofType && elem.nodeName.toLowerCase(), useCache = !xml && !ofType, diff = false;
                   if (parent) {
                     if (simple) {
                       while (dir2) {
@@ -892,18 +892,18 @@
                             return false;
                           }
                         }
-                        start5 = dir2 = type === "only" && !start5 && "nextSibling";
+                        start7 = dir2 = type === "only" && !start7 && "nextSibling";
                       }
                       return true;
                     }
-                    start5 = [forward ? parent.firstChild : parent.lastChild];
+                    start7 = [forward ? parent.firstChild : parent.lastChild];
                     if (forward && useCache) {
                       outerCache = parent[expando] || (parent[expando] = {});
                       cache = outerCache[type] || [];
                       nodeIndex = cache[0] === dirruns && cache[1];
                       diff = nodeIndex && cache[2];
                       node = nodeIndex && parent.childNodes[nodeIndex];
-                      while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start5.pop()) {
+                      while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start7.pop()) {
                         if (node.nodeType === 1 && ++diff && node === elem) {
                           outerCache[type] = [dirruns, nodeIndex, diff];
                           break;
@@ -917,7 +917,7 @@
                         diff = nodeIndex;
                       }
                       if (diff === false) {
-                        while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start5.pop()) {
+                        while (node = ++nodeIndex && node && node[dir2] || (diff = nodeIndex = 0) || start7.pop()) {
                           if ((ofType ? nodeName(node, name2) : node.nodeType === 1) && ++diff) {
                             if (useCache) {
                               outerCache = node[expando] || (node[expando] = {});
@@ -1209,14 +1209,14 @@
             }
             return results;
           }
-          function condense(unmatched, map2, filter, context, xml) {
-            var elem, newUnmatched = [], i2 = 0, len = unmatched.length, mapped = map2 != null;
+          function condense(unmatched, map3, filter, context, xml) {
+            var elem, newUnmatched = [], i2 = 0, len = unmatched.length, mapped = map3 != null;
             for (; i2 < len; i2++) {
               if (elem = unmatched[i2]) {
                 if (!filter || filter(elem, context, xml)) {
                   newUnmatched.push(elem);
                   if (mapped) {
-                    map2.push(i2);
+                    map3.push(i2);
                   }
                 }
               }
@@ -3888,14 +3888,14 @@
         jQuery.fn.extend({
           css: function(name2, value) {
             return access(this, function(elem, name3, value2) {
-              var styles, len, map2 = {}, i = 0;
+              var styles, len, map3 = {}, i = 0;
               if (Array.isArray(name3)) {
                 styles = getStyles(elem);
                 len = name3.length;
                 for (; i < len; i++) {
-                  map2[name3[i]] = jQuery.css(elem, name3[i], false, styles);
+                  map3[name3[i]] = jQuery.css(elem, name3[i], false, styles);
                 }
-                return map2;
+                return map3;
               }
               return value2 !== void 0 ? jQuery.style(elem, name3, value2) : jQuery.css(elem, name3);
             }, name2, value, arguments.length > 1);
@@ -4014,10 +4014,10 @@
           }
           return attrs;
         }
-        function createTween(value, prop, animation5) {
+        function createTween(value, prop, animation7) {
           var tween2, collection = (Animation.tweeners[prop] || []).concat(Animation.tweeners["*"]), index = 0, length = collection.length;
           for (; index < length; index++) {
-            if (tween2 = collection[index].call(animation5, prop, value)) {
+            if (tween2 = collection[index].call(animation7, prop, value)) {
               return tween2;
             }
           }
@@ -4176,20 +4176,20 @@
             if (stopped) {
               return false;
             }
-            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation5.startTime + animation5.duration - currentTime), temp2 = remaining / animation5.duration || 0, percent = 1 - temp2, index2 = 0, length2 = animation5.tweens.length;
+            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation7.startTime + animation7.duration - currentTime), temp2 = remaining / animation7.duration || 0, percent = 1 - temp2, index2 = 0, length2 = animation7.tweens.length;
             for (; index2 < length2; index2++) {
-              animation5.tweens[index2].run(percent);
+              animation7.tweens[index2].run(percent);
             }
-            deferred.notifyWith(elem, [animation5, percent, remaining]);
+            deferred.notifyWith(elem, [animation7, percent, remaining]);
             if (percent < 1 && length2) {
               return remaining;
             }
             if (!length2) {
-              deferred.notifyWith(elem, [animation5, 1, 0]);
+              deferred.notifyWith(elem, [animation7, 1, 0]);
             }
-            deferred.resolveWith(elem, [animation5]);
+            deferred.resolveWith(elem, [animation7]);
             return false;
-          }, animation5 = deferred.promise({
+          }, animation7 = deferred.promise({
             elem,
             props: jQuery.extend({}, properties),
             opts: jQuery.extend(true, {
@@ -4204,55 +4204,55 @@
             createTween: function(prop, end) {
               var tween2 = jQuery.Tween(
                 elem,
-                animation5.opts,
+                animation7.opts,
                 prop,
                 end,
-                animation5.opts.specialEasing[prop] || animation5.opts.easing
+                animation7.opts.specialEasing[prop] || animation7.opts.easing
               );
-              animation5.tweens.push(tween2);
+              animation7.tweens.push(tween2);
               return tween2;
             },
             stop: function(gotoEnd) {
-              var index2 = 0, length2 = gotoEnd ? animation5.tweens.length : 0;
+              var index2 = 0, length2 = gotoEnd ? animation7.tweens.length : 0;
               if (stopped) {
                 return this;
               }
               stopped = true;
               for (; index2 < length2; index2++) {
-                animation5.tweens[index2].run(1);
+                animation7.tweens[index2].run(1);
               }
               if (gotoEnd) {
-                deferred.notifyWith(elem, [animation5, 1, 0]);
-                deferred.resolveWith(elem, [animation5, gotoEnd]);
+                deferred.notifyWith(elem, [animation7, 1, 0]);
+                deferred.resolveWith(elem, [animation7, gotoEnd]);
               } else {
-                deferred.rejectWith(elem, [animation5, gotoEnd]);
+                deferred.rejectWith(elem, [animation7, gotoEnd]);
               }
               return this;
             }
-          }), props = animation5.props;
-          propFilter(props, animation5.opts.specialEasing);
+          }), props = animation7.props;
+          propFilter(props, animation7.opts.specialEasing);
           for (; index < length; index++) {
-            result = Animation.prefilters[index].call(animation5, elem, props, animation5.opts);
+            result = Animation.prefilters[index].call(animation7, elem, props, animation7.opts);
             if (result) {
               if (isFunction(result.stop)) {
-                jQuery._queueHooks(animation5.elem, animation5.opts.queue).stop = result.stop.bind(result);
+                jQuery._queueHooks(animation7.elem, animation7.opts.queue).stop = result.stop.bind(result);
               }
               return result;
             }
           }
-          jQuery.map(props, createTween, animation5);
-          if (isFunction(animation5.opts.start)) {
-            animation5.opts.start.call(elem, animation5);
+          jQuery.map(props, createTween, animation7);
+          if (isFunction(animation7.opts.start)) {
+            animation7.opts.start.call(elem, animation7);
           }
-          animation5.progress(animation5.opts.progress).done(animation5.opts.done, animation5.opts.complete).fail(animation5.opts.fail).always(animation5.opts.always);
+          animation7.progress(animation7.opts.progress).done(animation7.opts.done, animation7.opts.complete).fail(animation7.opts.fail).always(animation7.opts.always);
           jQuery.fx.timer(
             jQuery.extend(tick, {
               elem,
-              anim: animation5,
-              queue: animation5.opts.queue
+              anim: animation7,
+              queue: animation7.opts.queue
             })
           );
-          return animation5;
+          return animation7;
         }
         jQuery.Animation = jQuery.extend(Animation, {
           tweeners: {
@@ -5296,14 +5296,14 @@
                 }
                 return this;
               },
-              statusCode: function(map2) {
+              statusCode: function(map3) {
                 var code;
-                if (map2) {
+                if (map3) {
                   if (completed2) {
-                    jqXHR.always(map2[jqXHR.status]);
+                    jqXHR.always(map3[jqXHR.status]);
                   } else {
-                    for (code in map2) {
-                      statusCode[code] = [statusCode[code], map2[code]];
+                    for (code in map3) {
+                      statusCode[code] = [statusCode[code], map3[code]];
                     }
                   }
                 }
@@ -6115,6 +6115,10 @@
   function clamp(v, a, b) {
     return Math.min(Math.max(v, a), b);
   }
+  function map(v, a, b, c, d) {
+    const pct = (v - a) / (b - a);
+    return pct * (d - c) + c;
+  }
   function range(n) {
     return [...Array(n).keys()];
   }
@@ -6904,13 +6908,13 @@
   }
   function subdivide(x1, y1, x2, y2, x3, y3, x4, y4, limit) {
     limit = limit || Curve.RecursionLimit;
-    const amount3 = limit + 1;
+    const amount4 = limit + 1;
     if (Math.abs(x1 - x4) < 1e-3 && Math.abs(y1 - y4) < 1e-3) {
       return [new Anchor(x4, y4)];
     }
     const result = [];
-    for (let i = 0; i < amount3; i++) {
-      const t = i / amount3;
+    for (let i = 0; i < amount4; i++) {
+      const t = i / amount4;
       const x = getComponentOnCubicBezier(t, x1, x2, x3, x4);
       const y = getComponentOnCubicBezier(t, y1, y2, y3, y4);
       result.push(new Anchor(x, y));
@@ -7053,16 +7057,16 @@
     );
   }
   function getAnchorsFromArcData(center2, xAxisRotation, rx, ry, ts, td, ccw) {
-    const resolution = Constants.Resolution;
+    const resolution2 = Constants.Resolution;
     const anchors = [];
-    for (let i = 0; i < resolution; i++) {
-      let pct = (i + 1) / resolution;
+    for (let i = 0; i < resolution2; i++) {
+      let pct = (i + 1) / resolution2;
       if (ccw) {
         pct = 1 - pct;
       }
-      const theta = pct * td + ts;
-      const x = rx * Math.cos(theta);
-      const y = ry * Math.sin(theta);
+      const theta2 = pct * td + ts;
+      const x = rx * Math.cos(theta2);
+      const y = ry * Math.sin(theta2);
       const anchor2 = new Anchor(x, y);
       anchor2.command = Commands.line;
       anchors.push(anchor2);
@@ -7547,8 +7551,8 @@
     set translation(v) {
       proto4.position.set.apply(this, arguments);
     }
-    addTo(group) {
-      group.add(this);
+    addTo(group3) {
+      group3.add(this);
       return this;
     }
     remove() {
@@ -8489,7 +8493,7 @@
     },
     path: {
       render: function(ctx2, forced, parentClipped) {
-        let matrix, stroke, linewidth, fill, opacity, visible, cap, join, miter, closed2, commands, length, last, prev, a, b, c, d, ux, uy, vx, vy, ar, bl, br, cl, x, y, mask, clip, defaultMatrix, isOffset, dashes, po;
+        let matrix, stroke, linewidth2, fill, opacity, visible, cap, join, miter, closed2, commands, length, last, prev, a, b, c, d, ux, uy, vx, vy, ar, bl, br, cl, x, y, mask, clip, defaultMatrix, isOffset, dashes, po;
         po = this.parent && this.parent._renderer ? this.parent._renderer.opacity : 1;
         mask = this._mask;
         clip = this._clip;
@@ -8501,7 +8505,7 @@
         this._update();
         matrix = this._matrix.elements;
         stroke = this._stroke;
-        linewidth = this._linewidth;
+        linewidth2 = this._linewidth;
         fill = this._fill;
         cap = this._cap;
         join = this._join;
@@ -8534,8 +8538,8 @@
             canvas[stroke._renderer.type].render.call(stroke, ctx2, this);
             ctx2.strokeStyle = stroke._renderer.effect;
           }
-          if (linewidth) {
-            ctx2.lineWidth = linewidth;
+          if (linewidth2) {
+            ctx2.lineWidth = linewidth2;
           }
           if (miter) {
             ctx2.miterLimit = miter;
@@ -8667,7 +8671,7 @@
                 -stroke._renderer.offset.y
               );
               ctx2.scale(stroke._renderer.scale.x, stroke._renderer.scale.y);
-              ctx2.lineWidth = linewidth / stroke._renderer.scale.x;
+              ctx2.lineWidth = linewidth2 / stroke._renderer.scale.x;
             }
             ctx2.stroke();
             if (isOffset) {
@@ -8689,7 +8693,7 @@
     },
     points: {
       render: function(ctx2, forced, parentClipped) {
-        let me, stroke, linewidth, fill, opacity, visible, size, commands, length, b, x, y, defaultMatrix, isOffset, dashes, po;
+        let me, stroke, linewidth2, fill, opacity, visible, size, commands, length, b, x, y, defaultMatrix, isOffset, dashes, po;
         po = this.parent && this.parent._renderer ? this.parent._renderer.opacity : 1;
         opacity = this._opacity * (po || 1);
         visible = this._visible;
@@ -8699,7 +8703,7 @@
         this._update();
         me = this._matrix.elements;
         stroke = this._stroke;
-        linewidth = this._linewidth;
+        linewidth2 = this._linewidth;
         fill = this._fill;
         commands = this._renderer.collection;
         length = commands.length;
@@ -8725,8 +8729,8 @@
             canvas[stroke._renderer.type].render.call(stroke, ctx2, this);
             ctx2.strokeStyle = stroke._renderer.effect;
           }
-          if (linewidth) {
-            ctx2.lineWidth = linewidth;
+          if (linewidth2) {
+            ctx2.lineWidth = linewidth2;
           }
         }
         if (typeof opacity === "number") {
@@ -8775,7 +8779,7 @@
                 -stroke._renderer.offset.y
               );
               ctx2.scale(stroke._renderer.scale.x, stroke._renderer.scale.y);
-              ctx2.lineWidth = linewidth / stroke._renderer.scale.x;
+              ctx2.lineWidth = linewidth2 / stroke._renderer.scale.x;
             }
             ctx2.stroke();
             if (isOffset) {
@@ -8805,7 +8809,7 @@
         this._update();
         const matrix = this._matrix.elements;
         const stroke = this._stroke;
-        const linewidth = this._linewidth;
+        const linewidth2 = this._linewidth;
         const fill = this._fill;
         const decoration = this._decoration;
         const defaultMatrix = isDefaultMatrix(matrix);
@@ -8841,8 +8845,8 @@
             canvas[stroke._renderer.type].render.call(stroke, ctx2, this);
             ctx2.strokeStyle = stroke._renderer.effect;
           }
-          if (linewidth) {
-            ctx2.lineWidth = linewidth;
+          if (linewidth2) {
+            ctx2.lineWidth = linewidth2;
           }
         }
         if (typeof opacity === "number") {
@@ -8901,7 +8905,7 @@
               ].join(" ");
               c = stroke._renderer.offset.x / stroke._renderer.scale.x;
               d = stroke._renderer.offset.y / stroke._renderer.scale.y;
-              e = linewidth / stroke._renderer.scale.x;
+              e = linewidth2 / stroke._renderer.scale.x;
               ctx2.lineWidth = e;
               ctx2.strokeText(this.value, c, d);
               ctx2.restore();
@@ -11151,7 +11155,7 @@
       const effect = this._texture;
       const cols = this._columns;
       const rows = this._rows;
-      let width, height, elapsed, amount3, duration2;
+      let width, height, elapsed, amount4, duration2;
       let index, iw, ih, frames;
       if (effect) {
         if (this._flagColumns || this._flagRows) {
@@ -11168,7 +11172,7 @@
           ih = effect.image.height;
           width = iw / cols;
           height = ih / rows;
-          amount3 = this._amount;
+          amount4 = this._amount;
           if (this.width !== width) {
             this.width = width;
           }
@@ -11177,7 +11181,7 @@
           }
           if (this._playing && this._frameRate > 0) {
             if (_.isNaN(this._lastFrame)) {
-              this._lastFrame = amount3 - 1;
+              this._lastFrame = amount4 - 1;
             }
             elapsed = _.performance.now() - this._startTime;
             frames = this._lastFrame + 1;
@@ -11280,10 +11284,10 @@
   var cos3 = Math.cos;
   var sin3 = Math.sin;
   var _Circle = class extends Path {
-    constructor(ox, oy, r, resolution) {
-      const amount3 = resolution ? Math.max(resolution, 2) : 4;
+    constructor(ox, oy, r, resolution2) {
+      const amount4 = resolution2 ? Math.max(resolution2, 2) : 4;
       const points4 = [];
-      for (let i = 0; i < amount3; i++) {
+      for (let i = 0; i < amount4; i++) {
         points4.push(new Anchor(0, 0, 0, 0, 0, 0));
       }
       super(points4, true, true, true);
@@ -11314,13 +11318,13 @@
         const rc = radius * c;
         for (let i = 0; i < this.vertices.length; i++) {
           const pct = i / length;
-          const theta = pct * TWO_PI;
-          const x = radius * cos3(theta);
-          const y = radius * sin3(theta);
-          const lx = rc * cos3(theta - HALF_PI);
-          const ly = rc * sin3(theta - HALF_PI);
-          const rx = rc * cos3(theta + HALF_PI);
-          const ry = rc * sin3(theta + HALF_PI);
+          const theta2 = pct * TWO_PI;
+          const x = radius * cos3(theta2);
+          const y = radius * sin3(theta2);
+          const lx = rc * cos3(theta2 - HALF_PI);
+          const ly = rc * sin3(theta2 - HALF_PI);
+          const rx = rc * cos3(theta2 + HALF_PI);
+          const ry = rc * sin3(theta2 + HALF_PI);
           const v = this.vertices[i];
           v.command = i === 0 ? Commands.move : Commands.curve;
           v.set(x, y);
@@ -11381,13 +11385,13 @@
   var cos4 = Math.cos;
   var sin4 = Math.sin;
   var _Ellipse = class extends Path {
-    constructor(x, y, rx, ry, resolution) {
+    constructor(x, y, rx, ry, resolution2) {
       if (typeof ry !== "number" && typeof rx === "number") {
         ry = rx;
       }
-      const amount3 = resolution ? Math.max(resolution, 2) : 4;
+      const amount4 = resolution2 ? Math.max(resolution2, 2) : 4;
       const points4 = [];
-      for (let i = 0; i < amount3; i++) {
+      for (let i = 0; i < amount4; i++) {
         points4.push(new Anchor());
       }
       super(points4, true, true, true);
@@ -11423,13 +11427,13 @@
         const radiusY = this._height / 2;
         for (let i = 0; i < this.vertices.length; i++) {
           const pct = i / length;
-          const theta = pct * TWO_PI;
-          const x = radiusX * cos4(theta);
-          const y = radiusY * sin4(theta);
-          const lx = radiusX * c * cos4(theta - HALF_PI);
-          const ly = radiusY * c * sin4(theta - HALF_PI);
-          const rx = radiusX * c * cos4(theta + HALF_PI);
-          const ry = radiusY * c * sin4(theta + HALF_PI);
+          const theta2 = pct * TWO_PI;
+          const x = radiusX * cos4(theta2);
+          const y = radiusY * sin4(theta2);
+          const lx = radiusX * c * cos4(theta2 - HALF_PI);
+          const ly = radiusY * c * sin4(theta2 - HALF_PI);
+          const rx = radiusX * c * cos4(theta2 + HALF_PI);
+          const ry = radiusY * c * sin4(theta2 + HALF_PI);
           const v = this.vertices[i];
           v.command = i === 0 ? Commands.move : Commands.curve;
           v.set(x, y);
@@ -11448,8 +11452,8 @@
     clone(parent) {
       const rx = this.width / 2;
       const ry = this.height / 2;
-      const resolution = this.vertices.length;
-      const clone = new _Ellipse(0, 0, rx, ry, resolution);
+      const resolution2 = this.vertices.length;
+      const clone = new _Ellipse(0, 0, rx, ry, resolution2);
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
@@ -12577,9 +12581,9 @@
       return read[tagName].call(this, fullNode, styles);
     },
     g: function(node, parentStyles) {
-      const group = new Group();
-      applySvgAttributes.call(this, node, group, parentStyles);
-      this.add(group);
+      const group3 = new Group();
+      applySvgAttributes.call(this, node, group3, parentStyles);
+      this.add(group3);
       const styles = getSvgStyles.call(this, node);
       for (let i = 0, l = node.childNodes.length; i < l; i++) {
         const n = node.childNodes[i];
@@ -12588,13 +12592,13 @@
           return;
         const tagName = getTagName(tag);
         if (tagName in read) {
-          const o = read[tagName].call(group, n, styles);
+          const o = read[tagName].call(group3, n, styles);
           if (!!o && !o.parent) {
-            group.add(o);
+            group3.add(o);
           }
         }
       }
-      return group;
+      return group3;
     },
     polygon: function(node, parentStyles) {
       let points4;
@@ -13228,7 +13232,7 @@
     }
     _update() {
       const effect = this._textures;
-      let width, height, elapsed, amount3, duration2, texture;
+      let width, height, elapsed, amount4, duration2, texture;
       let index, frames;
       if (effect) {
         if (this._flagTextures) {
@@ -13238,9 +13242,9 @@
           this._duration = 1e3 * this._amount / this._frameRate;
         }
         if (this._playing && this._frameRate > 0) {
-          amount3 = this._amount;
+          amount4 = this._amount;
           if (_.isNaN(this._lastFrame)) {
-            this._lastFrame = amount3 - 1;
+            this._lastFrame = amount4 - 1;
           }
           elapsed = _.performance.now() - this._startTime;
           frames = this._lastFrame + 1;
@@ -13365,9 +13369,9 @@
   }
   var _ArcSegment = class extends Path {
     constructor(x, y, ir, or, sa, ea, res) {
-      const amount3 = res || Constants.Resolution * 3;
+      const amount4 = res || Constants.Resolution * 3;
       const points4 = [];
-      for (let i = 0; i < amount3; i++) {
+      for (let i = 0; i < amount4; i++) {
         points4.push(new Anchor());
       }
       super(points4, true, false, true);
@@ -13413,7 +13417,7 @@
         const vertices = this.vertices;
         let length = punctured ? vertices.length / 2 : vertices.length;
         let command, id = 0;
-        let i, last, pct, v, theta, step, x, y, amp;
+        let i, last, pct, v, theta2, step, x, y, amp;
         if (connected) {
           length--;
         } else if (!punctured) {
@@ -13422,10 +13426,10 @@
         for (i = 0, last = length - 1; i < length; i++) {
           pct = i / last;
           v = vertices[id];
-          theta = pct * (ea - sa) + sa;
+          theta2 = pct * (ea - sa) + sa;
           step = (ea - sa) / length;
-          x = or * Math.cos(theta);
-          y = or * Math.sin(theta);
+          x = or * Math.cos(theta2);
+          y = or * Math.sin(theta2);
           switch (i) {
             case 0:
               command = Commands.move;
@@ -13440,10 +13444,10 @@
           v.controls.right.clear();
           if (v.command === Commands.curve) {
             amp = or * step / Math.PI;
-            v.controls.left.x = amp * Math.cos(theta - HALF_PI);
-            v.controls.left.y = amp * Math.sin(theta - HALF_PI);
-            v.controls.right.x = amp * Math.cos(theta + HALF_PI);
-            v.controls.right.y = amp * Math.sin(theta + HALF_PI);
+            v.controls.left.x = amp * Math.cos(theta2 - HALF_PI);
+            v.controls.left.y = amp * Math.sin(theta2 - HALF_PI);
+            v.controls.right.x = amp * Math.cos(theta2 + HALF_PI);
+            v.controls.right.y = amp * Math.sin(theta2 + HALF_PI);
             if (i === 1) {
               v.controls.left.multiplyScalar(2);
             }
@@ -13464,10 +13468,10 @@
           for (i = 0; i < length; i++) {
             pct = i / last;
             v = vertices[id];
-            theta = (1 - pct) * (ea - sa) + sa;
+            theta2 = (1 - pct) * (ea - sa) + sa;
             step = (ea - sa) / length;
-            x = ir * Math.cos(theta);
-            y = ir * Math.sin(theta);
+            x = ir * Math.cos(theta2);
+            y = ir * Math.sin(theta2);
             command = Commands.curve;
             if (i <= 0) {
               command = connected ? Commands.move : Commands.line;
@@ -13479,10 +13483,10 @@
             v.controls.right.clear();
             if (v.command === Commands.curve) {
               amp = ir * step / Math.PI;
-              v.controls.left.x = amp * Math.cos(theta + HALF_PI);
-              v.controls.left.y = amp * Math.sin(theta + HALF_PI);
-              v.controls.right.x = amp * Math.cos(theta - HALF_PI);
-              v.controls.right.y = amp * Math.sin(theta - HALF_PI);
+              v.controls.left.x = amp * Math.cos(theta2 + HALF_PI);
+              v.controls.left.y = amp * Math.sin(theta2 + HALF_PI);
+              v.controls.right.x = amp * Math.cos(theta2 - HALF_PI);
+              v.controls.right.y = amp * Math.sin(theta2 - HALF_PI);
               if (i === 1) {
                 v.controls.left.multiplyScalar(2);
               }
@@ -13516,8 +13520,8 @@
       const or = this.outerRadius;
       const sa = this.startAngle;
       const ea = this.endAngle;
-      const resolution = this.vertices.length;
-      const clone = new _ArcSegment(0, 0, ir, or, sa, ea, resolution);
+      const resolution2 = this.vertices.length;
+      const clone = new _ArcSegment(0, 0, ir, or, sa, ea, resolution2);
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
@@ -13927,17 +13931,17 @@
     _update() {
       if (this._flagVertices || this._flagWidth || this._flagHeight || this._flagSides) {
         const sides = this._sides;
-        const amount3 = sides + 1;
+        const amount4 = sides + 1;
         let length = this.vertices.length;
         if (length > sides) {
           this.vertices.splice(sides - 1, length - sides);
           length = sides;
         }
-        for (let i = 0; i < amount3; i++) {
+        for (let i = 0; i < amount4; i++) {
           const pct = (i + 0.5) / sides;
-          const theta = TWO_PI * pct + Math.PI / 2;
-          const x = this._width * cos5(theta) / 2;
-          const y = this._height * sin5(theta) / 2;
+          const theta2 = TWO_PI * pct + Math.PI / 2;
+          const x = this._width * cos5(theta2) / 2;
+          const y = this._height * sin5(theta2) / 2;
           if (i >= length) {
             this.vertices.push(new Anchor(x, y));
           } else {
@@ -14074,18 +14078,18 @@
     _update() {
       if (this._flagVertices || this._flagInnerRadius || this._flagOuterRadius || this._flagSides) {
         const sides = this._sides * 2;
-        const amount3 = sides + 1;
+        const amount4 = sides + 1;
         let length = this.vertices.length;
         if (length > sides) {
           this.vertices.splice(sides - 1, length - sides);
           length = sides;
         }
-        for (let i = 0; i < amount3; i++) {
+        for (let i = 0; i < amount4; i++) {
           const pct = (i + 0.5) / sides;
-          const theta = TWO_PI * pct;
+          const theta2 = TWO_PI * pct;
           const r = (!(i % 2) ? this._innerRadius : this._outerRadius) / 2;
-          const x = r * cos6(theta);
-          const y = r * sin6(theta);
+          const x = r * cos6(theta2);
+          const y = r * sin6(theta2);
           if (i >= length) {
             this.vertices.push(new Anchor(x, y));
           } else {
@@ -15155,7 +15159,7 @@
         const ctx2 = this.ctx;
         const scale = elem._renderer.scale;
         const stroke = elem._stroke;
-        const linewidth = elem._linewidth;
+        const linewidth2 = elem._linewidth;
         const fill = elem._fill;
         const opacity = elem._renderer.opacity || elem._opacity;
         const cap = elem._cap;
@@ -15186,8 +15190,8 @@
             webgl[stroke._renderer.type].render.call(stroke, ctx2, elem);
             ctx2.strokeStyle = stroke._renderer.effect;
           }
-          if (linewidth) {
-            ctx2.lineWidth = linewidth;
+          if (linewidth2) {
+            ctx2.lineWidth = linewidth2;
           }
           if (miter) {
             ctx2.miterLimit = miter;
@@ -15310,7 +15314,7 @@
               -stroke._renderer.offset.y
             );
             ctx2.scale(stroke._renderer.scale.x, stroke._renderer.scale.y);
-            ctx2.lineWidth = linewidth / stroke._renderer.scale.x;
+            ctx2.lineWidth = linewidth2 / stroke._renderer.scale.x;
           }
           ctx2.stroke();
           if (isOffset) {
@@ -15471,14 +15475,14 @@
         const canvas3 = this.canvas;
         const ctx2 = this.ctx;
         const stroke = elem._stroke;
-        const linewidth = elem._linewidth;
+        const linewidth2 = elem._linewidth;
         const fill = elem._fill;
         const opacity = elem._renderer.opacity || elem._opacity;
         const dashes = elem.dashes;
         const size = elem._size;
         let dimension = size;
         if (!webgl.isHidden.test(stroke)) {
-          dimension += linewidth;
+          dimension += linewidth2;
         }
         canvas3.width = getPoT(dimension);
         canvas3.height = canvas3.width;
@@ -15501,8 +15505,8 @@
             webgl[stroke._renderer.type].render.call(stroke, ctx2, elem);
             ctx2.strokeStyle = stroke._renderer.effect;
           }
-          if (linewidth) {
-            ctx2.lineWidth = linewidth / aspect;
+          if (linewidth2) {
+            ctx2.lineWidth = linewidth2 / aspect;
           }
         }
         if (typeof opacity === "number") {
@@ -15545,7 +15549,7 @@
               -stroke._renderer.offset.y
             );
             ctx2.scale(stroke._renderer.scale.x, stroke._renderer.scale.y);
-            ctx2.lineWidth = linewidth / stroke._renderer.scale.x;
+            ctx2.lineWidth = linewidth2 / stroke._renderer.scale.x;
           }
           ctx2.stroke();
           if (isOffset) {
@@ -15563,7 +15567,7 @@
         const program = programs[this._renderer.type];
         const sizeAttenuation = this._sizeAttenuation;
         const stroke = this._stroke;
-        const linewidth = this._linewidth;
+        const linewidth2 = this._linewidth;
         const flagParentMatrix = parent._matrix.manual || parent._flagMatrix;
         const flagMatrix = this._matrix.manual || this._flagMatrix;
         const parentChanged = this._renderer.parent !== parent;
@@ -15617,7 +15621,7 @@
           return this;
         }
         if (!webgl.isHidden.test(stroke)) {
-          size += linewidth;
+          size += linewidth2;
         }
         size /= webgl.precision;
         if (sizeAttenuation) {
@@ -15654,7 +15658,7 @@
         const ctx2 = this.ctx;
         const scale = elem._renderer.scale;
         const stroke = elem._stroke;
-        const linewidth = elem._linewidth * scale;
+        const linewidth2 = elem._linewidth * scale;
         const fill = elem._fill;
         const opacity = elem._renderer.opacity || elem._opacity;
         const dashes = elem.dashes;
@@ -15687,8 +15691,8 @@
             webgl[stroke._renderer.type].render.call(stroke, ctx2, elem);
             ctx2.strokeStyle = stroke._renderer.effect;
           }
-          if (linewidth) {
-            ctx2.lineWidth = linewidth;
+          if (linewidth2) {
+            ctx2.lineWidth = linewidth2;
           }
         }
         if (typeof opacity === "number") {
@@ -15749,7 +15753,7 @@
             ].join(" ");
             c = stroke._renderer.offset.x / stroke._renderer.scale.x;
             d = stroke._renderer.offset.y / stroke._renderer.scale.y;
-            e = linewidth / stroke._renderer.scale.x;
+            e = linewidth2 / stroke._renderer.scale.x;
             ctx2.lineWidth = e;
             ctx2.strokeText(elem.value, c, d);
             ctx2.restore();
@@ -16440,13 +16444,13 @@
       this.scene.add(rect);
       return rect;
     }
-    makeCircle(x, y, radius, resolution) {
-      const circle = new Circle(x, y, radius, resolution);
+    makeCircle(x, y, radius, resolution2) {
+      const circle = new Circle(x, y, radius, resolution2);
       this.scene.add(circle);
       return circle;
     }
-    makeEllipse(x, y, rx, ry, resolution) {
-      const ellipse = new Ellipse(x, y, rx, ry, resolution);
+    makeEllipse(x, y, rx, ry, resolution2) {
+      const ellipse = new Ellipse(x, y, rx, ry, resolution2);
       this.scene.add(ellipse);
       return ellipse;
     }
@@ -16480,7 +16484,7 @@
       this.scene.add(poly);
       return poly;
     }
-    makeArcSegment(x, y, innerRadius, outerRadius, startAngle, endAngle, resolution) {
+    makeArcSegment(x, y, innerRadius, outerRadius, startAngle, endAngle, resolution2) {
       const arcSegment = new ArcSegment(
         x,
         y,
@@ -16488,7 +16492,7 @@
         outerRadius,
         startAngle,
         endAngle,
-        resolution
+        resolution2
       );
       this.scene.add(arcSegment);
       return arcSegment;
@@ -16575,10 +16579,10 @@
       if (!(objects instanceof Array)) {
         objects = Array.prototype.slice.call(arguments);
       }
-      const group = new Group();
-      this.scene.add(group);
-      group.add(objects);
-      return group;
+      const group3 = new Group();
+      this.scene.add(group3);
+      group3.add(objects);
+      return group3;
     }
     interpret(svg2, shallow, add2) {
       const tag = svg2.tagName.toLowerCase();
@@ -16595,7 +16599,7 @@
       return node;
     }
     load(pathOrSVGContent, callback) {
-      const group = new Group();
+      const group3 = new Group();
       let elem, i, child;
       const attach = function(data) {
         dom.temp.innerHTML = data;
@@ -16603,20 +16607,20 @@
           elem = dom.temp.children[i];
           child = this.interpret(elem, false, false);
           if (child !== null) {
-            group.add(child);
+            group3.add(child);
           }
         }
         if (typeof callback === "function") {
           const svg2 = dom.temp.children.length <= 1 ? dom.temp.children[0] : dom.temp.children;
-          callback(group, svg2);
+          callback(group3, svg2);
         }
       }.bind(this);
       if (/\.svg$/i.test(pathOrSVGContent)) {
         xhr(pathOrSVGContent, attach);
-        return group;
+        return group3;
       }
       attach(pathOrSVGContent);
-      return group;
+      return group3;
     }
   };
   var Two = _Two;
@@ -16701,190 +16705,190 @@
   // node_modules/@tweenjs/tween.js/dist/tween.esm.js
   var Easing = Object.freeze({
     Linear: Object.freeze({
-      None: function(amount3) {
-        return amount3;
+      None: function(amount4) {
+        return amount4;
       },
-      In: function(amount3) {
-        return this.None(amount3);
+      In: function(amount4) {
+        return this.None(amount4);
       },
-      Out: function(amount3) {
-        return this.None(amount3);
+      Out: function(amount4) {
+        return this.None(amount4);
       },
-      InOut: function(amount3) {
-        return this.None(amount3);
+      InOut: function(amount4) {
+        return this.None(amount4);
       }
     }),
     Quadratic: Object.freeze({
-      In: function(amount3) {
-        return amount3 * amount3;
+      In: function(amount4) {
+        return amount4 * amount4;
       },
-      Out: function(amount3) {
-        return amount3 * (2 - amount3);
+      Out: function(amount4) {
+        return amount4 * (2 - amount4);
       },
-      InOut: function(amount3) {
-        if ((amount3 *= 2) < 1) {
-          return 0.5 * amount3 * amount3;
+      InOut: function(amount4) {
+        if ((amount4 *= 2) < 1) {
+          return 0.5 * amount4 * amount4;
         }
-        return -0.5 * (--amount3 * (amount3 - 2) - 1);
+        return -0.5 * (--amount4 * (amount4 - 2) - 1);
       }
     }),
     Cubic: Object.freeze({
-      In: function(amount3) {
-        return amount3 * amount3 * amount3;
+      In: function(amount4) {
+        return amount4 * amount4 * amount4;
       },
-      Out: function(amount3) {
-        return --amount3 * amount3 * amount3 + 1;
+      Out: function(amount4) {
+        return --amount4 * amount4 * amount4 + 1;
       },
-      InOut: function(amount3) {
-        if ((amount3 *= 2) < 1) {
-          return 0.5 * amount3 * amount3 * amount3;
+      InOut: function(amount4) {
+        if ((amount4 *= 2) < 1) {
+          return 0.5 * amount4 * amount4 * amount4;
         }
-        return 0.5 * ((amount3 -= 2) * amount3 * amount3 + 2);
+        return 0.5 * ((amount4 -= 2) * amount4 * amount4 + 2);
       }
     }),
     Quartic: Object.freeze({
-      In: function(amount3) {
-        return amount3 * amount3 * amount3 * amount3;
+      In: function(amount4) {
+        return amount4 * amount4 * amount4 * amount4;
       },
-      Out: function(amount3) {
-        return 1 - --amount3 * amount3 * amount3 * amount3;
+      Out: function(amount4) {
+        return 1 - --amount4 * amount4 * amount4 * amount4;
       },
-      InOut: function(amount3) {
-        if ((amount3 *= 2) < 1) {
-          return 0.5 * amount3 * amount3 * amount3 * amount3;
+      InOut: function(amount4) {
+        if ((amount4 *= 2) < 1) {
+          return 0.5 * amount4 * amount4 * amount4 * amount4;
         }
-        return -0.5 * ((amount3 -= 2) * amount3 * amount3 * amount3 - 2);
+        return -0.5 * ((amount4 -= 2) * amount4 * amount4 * amount4 - 2);
       }
     }),
     Quintic: Object.freeze({
-      In: function(amount3) {
-        return amount3 * amount3 * amount3 * amount3 * amount3;
+      In: function(amount4) {
+        return amount4 * amount4 * amount4 * amount4 * amount4;
       },
-      Out: function(amount3) {
-        return --amount3 * amount3 * amount3 * amount3 * amount3 + 1;
+      Out: function(amount4) {
+        return --amount4 * amount4 * amount4 * amount4 * amount4 + 1;
       },
-      InOut: function(amount3) {
-        if ((amount3 *= 2) < 1) {
-          return 0.5 * amount3 * amount3 * amount3 * amount3 * amount3;
+      InOut: function(amount4) {
+        if ((amount4 *= 2) < 1) {
+          return 0.5 * amount4 * amount4 * amount4 * amount4 * amount4;
         }
-        return 0.5 * ((amount3 -= 2) * amount3 * amount3 * amount3 * amount3 + 2);
+        return 0.5 * ((amount4 -= 2) * amount4 * amount4 * amount4 * amount4 + 2);
       }
     }),
     Sinusoidal: Object.freeze({
-      In: function(amount3) {
-        return 1 - Math.sin((1 - amount3) * Math.PI / 2);
+      In: function(amount4) {
+        return 1 - Math.sin((1 - amount4) * Math.PI / 2);
       },
-      Out: function(amount3) {
-        return Math.sin(amount3 * Math.PI / 2);
+      Out: function(amount4) {
+        return Math.sin(amount4 * Math.PI / 2);
       },
-      InOut: function(amount3) {
-        return 0.5 * (1 - Math.sin(Math.PI * (0.5 - amount3)));
+      InOut: function(amount4) {
+        return 0.5 * (1 - Math.sin(Math.PI * (0.5 - amount4)));
       }
     }),
     Exponential: Object.freeze({
-      In: function(amount3) {
-        return amount3 === 0 ? 0 : Math.pow(1024, amount3 - 1);
+      In: function(amount4) {
+        return amount4 === 0 ? 0 : Math.pow(1024, amount4 - 1);
       },
-      Out: function(amount3) {
-        return amount3 === 1 ? 1 : 1 - Math.pow(2, -10 * amount3);
+      Out: function(amount4) {
+        return amount4 === 1 ? 1 : 1 - Math.pow(2, -10 * amount4);
       },
-      InOut: function(amount3) {
-        if (amount3 === 0) {
+      InOut: function(amount4) {
+        if (amount4 === 0) {
           return 0;
         }
-        if (amount3 === 1) {
+        if (amount4 === 1) {
           return 1;
         }
-        if ((amount3 *= 2) < 1) {
-          return 0.5 * Math.pow(1024, amount3 - 1);
+        if ((amount4 *= 2) < 1) {
+          return 0.5 * Math.pow(1024, amount4 - 1);
         }
-        return 0.5 * (-Math.pow(2, -10 * (amount3 - 1)) + 2);
+        return 0.5 * (-Math.pow(2, -10 * (amount4 - 1)) + 2);
       }
     }),
     Circular: Object.freeze({
-      In: function(amount3) {
-        return 1 - Math.sqrt(1 - amount3 * amount3);
+      In: function(amount4) {
+        return 1 - Math.sqrt(1 - amount4 * amount4);
       },
-      Out: function(amount3) {
-        return Math.sqrt(1 - --amount3 * amount3);
+      Out: function(amount4) {
+        return Math.sqrt(1 - --amount4 * amount4);
       },
-      InOut: function(amount3) {
-        if ((amount3 *= 2) < 1) {
-          return -0.5 * (Math.sqrt(1 - amount3 * amount3) - 1);
+      InOut: function(amount4) {
+        if ((amount4 *= 2) < 1) {
+          return -0.5 * (Math.sqrt(1 - amount4 * amount4) - 1);
         }
-        return 0.5 * (Math.sqrt(1 - (amount3 -= 2) * amount3) + 1);
+        return 0.5 * (Math.sqrt(1 - (amount4 -= 2) * amount4) + 1);
       }
     }),
     Elastic: Object.freeze({
-      In: function(amount3) {
-        if (amount3 === 0) {
+      In: function(amount4) {
+        if (amount4 === 0) {
           return 0;
         }
-        if (amount3 === 1) {
+        if (amount4 === 1) {
           return 1;
         }
-        return -Math.pow(2, 10 * (amount3 - 1)) * Math.sin((amount3 - 1.1) * 5 * Math.PI);
+        return -Math.pow(2, 10 * (amount4 - 1)) * Math.sin((amount4 - 1.1) * 5 * Math.PI);
       },
-      Out: function(amount3) {
-        if (amount3 === 0) {
+      Out: function(amount4) {
+        if (amount4 === 0) {
           return 0;
         }
-        if (amount3 === 1) {
+        if (amount4 === 1) {
           return 1;
         }
-        return Math.pow(2, -10 * amount3) * Math.sin((amount3 - 0.1) * 5 * Math.PI) + 1;
+        return Math.pow(2, -10 * amount4) * Math.sin((amount4 - 0.1) * 5 * Math.PI) + 1;
       },
-      InOut: function(amount3) {
-        if (amount3 === 0) {
+      InOut: function(amount4) {
+        if (amount4 === 0) {
           return 0;
         }
-        if (amount3 === 1) {
+        if (amount4 === 1) {
           return 1;
         }
-        amount3 *= 2;
-        if (amount3 < 1) {
-          return -0.5 * Math.pow(2, 10 * (amount3 - 1)) * Math.sin((amount3 - 1.1) * 5 * Math.PI);
+        amount4 *= 2;
+        if (amount4 < 1) {
+          return -0.5 * Math.pow(2, 10 * (amount4 - 1)) * Math.sin((amount4 - 1.1) * 5 * Math.PI);
         }
-        return 0.5 * Math.pow(2, -10 * (amount3 - 1)) * Math.sin((amount3 - 1.1) * 5 * Math.PI) + 1;
+        return 0.5 * Math.pow(2, -10 * (amount4 - 1)) * Math.sin((amount4 - 1.1) * 5 * Math.PI) + 1;
       }
     }),
     Back: Object.freeze({
-      In: function(amount3) {
+      In: function(amount4) {
         var s = 1.70158;
-        return amount3 === 1 ? 1 : amount3 * amount3 * ((s + 1) * amount3 - s);
+        return amount4 === 1 ? 1 : amount4 * amount4 * ((s + 1) * amount4 - s);
       },
-      Out: function(amount3) {
+      Out: function(amount4) {
         var s = 1.70158;
-        return amount3 === 0 ? 0 : --amount3 * amount3 * ((s + 1) * amount3 + s) + 1;
+        return amount4 === 0 ? 0 : --amount4 * amount4 * ((s + 1) * amount4 + s) + 1;
       },
-      InOut: function(amount3) {
+      InOut: function(amount4) {
         var s = 1.70158 * 1.525;
-        if ((amount3 *= 2) < 1) {
-          return 0.5 * (amount3 * amount3 * ((s + 1) * amount3 - s));
+        if ((amount4 *= 2) < 1) {
+          return 0.5 * (amount4 * amount4 * ((s + 1) * amount4 - s));
         }
-        return 0.5 * ((amount3 -= 2) * amount3 * ((s + 1) * amount3 + s) + 2);
+        return 0.5 * ((amount4 -= 2) * amount4 * ((s + 1) * amount4 + s) + 2);
       }
     }),
     Bounce: Object.freeze({
-      In: function(amount3) {
-        return 1 - Easing.Bounce.Out(1 - amount3);
+      In: function(amount4) {
+        return 1 - Easing.Bounce.Out(1 - amount4);
       },
-      Out: function(amount3) {
-        if (amount3 < 1 / 2.75) {
-          return 7.5625 * amount3 * amount3;
-        } else if (amount3 < 2 / 2.75) {
-          return 7.5625 * (amount3 -= 1.5 / 2.75) * amount3 + 0.75;
-        } else if (amount3 < 2.5 / 2.75) {
-          return 7.5625 * (amount3 -= 2.25 / 2.75) * amount3 + 0.9375;
+      Out: function(amount4) {
+        if (amount4 < 1 / 2.75) {
+          return 7.5625 * amount4 * amount4;
+        } else if (amount4 < 2 / 2.75) {
+          return 7.5625 * (amount4 -= 1.5 / 2.75) * amount4 + 0.75;
+        } else if (amount4 < 2.5 / 2.75) {
+          return 7.5625 * (amount4 -= 2.25 / 2.75) * amount4 + 0.9375;
         } else {
-          return 7.5625 * (amount3 -= 2.625 / 2.75) * amount3 + 0.984375;
+          return 7.5625 * (amount4 -= 2.625 / 2.75) * amount4 + 0.984375;
         }
       },
-      InOut: function(amount3) {
-        if (amount3 < 0.5) {
-          return Easing.Bounce.In(amount3 * 2) * 0.5;
+      InOut: function(amount4) {
+        if (amount4 < 0.5) {
+          return Easing.Bounce.In(amount4 * 2) * 0.5;
         }
-        return Easing.Bounce.Out(amount3 * 2 - 1) * 0.5 + 0.5;
+        return Easing.Bounce.Out(amount4 * 2 - 1) * 0.5 + 0.5;
       }
     }),
     generatePow: function(power) {
@@ -16894,17 +16898,17 @@
       power = power < Number.EPSILON ? Number.EPSILON : power;
       power = power > 1e4 ? 1e4 : power;
       return {
-        In: function(amount3) {
-          return Math.pow(amount3, power);
+        In: function(amount4) {
+          return Math.pow(amount4, power);
         },
-        Out: function(amount3) {
-          return 1 - Math.pow(1 - amount3, power);
+        Out: function(amount4) {
+          return 1 - Math.pow(1 - amount4, power);
         },
-        InOut: function(amount3) {
-          if (amount3 < 0.5) {
-            return Math.pow(amount3 * 2, power) / 2;
+        InOut: function(amount4) {
+          if (amount4 < 0.5) {
+            return Math.pow(amount4 * 2, power) / 2;
           }
-          return (1 - Math.pow(2 - amount3 * 2, power)) / 2 + 0.5;
+          return (1 - Math.pow(2 - amount4 * 2, power)) / 2 + 0.5;
         }
       };
     }
@@ -17261,18 +17265,18 @@
       }
       return this;
     };
-    Tween2.prototype.group = function(group) {
-      if (group === void 0) {
-        group = mainGroup;
+    Tween2.prototype.group = function(group3) {
+      if (group3 === void 0) {
+        group3 = mainGroup;
       }
-      this._group = group;
+      this._group = group3;
       return this;
     };
-    Tween2.prototype.delay = function(amount3) {
-      if (amount3 === void 0) {
-        amount3 = 0;
+    Tween2.prototype.delay = function(amount4) {
+      if (amount4 === void 0) {
+        amount4 = 0;
       }
-      this._delayTime = amount3;
+      this._delayTime = amount4;
       return this;
     };
     Tween2.prototype.repeat = function(times) {
@@ -17283,8 +17287,8 @@
       this._repeat = times;
       return this;
     };
-    Tween2.prototype.repeatDelay = function(amount3) {
-      this._repeatDelayTime = amount3;
+    Tween2.prototype.repeatDelay = function(amount4) {
+      this._repeatDelayTime = amount4;
       return this;
     };
     Tween2.prototype.yoyo = function(yoyo) {
@@ -17426,7 +17430,7 @@
         if (_valuesStart[property] === void 0) {
           continue;
         }
-        var start5 = _valuesStart[property] || 0;
+        var start7 = _valuesStart[property] || 0;
         var end = _valuesEnd[property];
         var startIsArray = Array.isArray(_object[property]);
         var endIsArray = Array.isArray(end);
@@ -17434,21 +17438,21 @@
         if (isInterpolationList) {
           _object[property] = this._interpolationFunction(end, value);
         } else if (typeof end === "object" && end) {
-          this._updateProperties(_object[property], start5, end, value);
+          this._updateProperties(_object[property], start7, end, value);
         } else {
-          end = this._handleRelativeValue(start5, end);
+          end = this._handleRelativeValue(start7, end);
           if (typeof end === "number") {
-            _object[property] = start5 + (end - start5) * value;
+            _object[property] = start7 + (end - start7) * value;
           }
         }
       }
     };
-    Tween2.prototype._handleRelativeValue = function(start5, end) {
+    Tween2.prototype._handleRelativeValue = function(start7, end) {
       if (typeof end !== "string") {
         return end;
       }
       if (end.charAt(0) === "+" || end.charAt(0) === "-") {
-        return start5 + parseFloat(end);
+        return start7 + parseFloat(end);
       }
       return parseFloat(end);
     };
@@ -17583,19 +17587,19 @@
     return amount;
   }
   function tween(palette2) {
-    let amount3 = 0;
+    let amount4 = 0;
     for (let k in _colors) {
       const prev = _colors[k];
       const dest = palette2[k];
       if (equals(prev, dest)) {
-        amount3++;
+        amount4++;
       }
       prev.r = ease(prev.r, dest.r, drag);
       prev.g = ease(prev.g, dest.g, drag);
       prev.b = ease(prev.b, dest.b, drag);
       colors[k] = toRGB(prev);
     }
-    return amount3;
+    return amount4;
   }
   function ease(cur, dest, t) {
     const d = dest - cur;
@@ -17625,11 +17629,11 @@
     if (!changing) {
       return;
     }
-    const amount3 = tween(palette[current]);
+    const amount4 = tween(palette[current]);
     if (_onUpdate) {
       _onUpdate();
     }
-    if (amount3 >= keys.length) {
+    if (amount4 >= keys.length) {
       if (changing) {
         changing = false;
         if (_onComplete) {
@@ -17887,7 +17891,7 @@
 
   // src/animations/index.js
   var ctx;
-  var map = {};
+  var map2 = {};
   var list = [];
   var types = [
     "start",
@@ -17906,27 +17910,27 @@
     center.x = two.width / 2;
     center.y = two.height / 2;
     min_dimension = Math.min(two.width, two.height);
-    list.forEach((animation5) => animation5.resize());
+    list.forEach((animation7) => animation7.resize());
   });
   palette_default.onStart(updateAudio);
   palette_default.onUpdate(() => {
-    list.forEach(({ update: update7 }) => update7());
+    list.forEach(({ update: update9 }) => update9());
     domElement.style.background = palette_default.colors.background;
   });
-  function register(hash2, animation5) {
-    const name2 = animation5.name || hash2;
-    if (hash2 in map) {
+  function register(hash2, animation7) {
+    const name2 = animation7.name || hash2;
+    if (hash2 in map2) {
       const message = `Animation ${name2} already exists.`;
       throw new Error(message);
     }
     types.forEach((prop) => {
-      if (!(prop in animation5)) {
+      if (!(prop in animation7)) {
         const message = `Animation ${name2}, does not have "${prop}"`;
         throw new Error(message);
       }
     });
-    map[hash2] = animation5;
-    list.push(animation5);
+    map2[hash2] = animation7;
+    list.push(animation7);
   }
   function updateAudio() {
     const current2 = palette_default.current;
@@ -17945,35 +17949,35 @@
     });
     return new Promise((resolve) => {
       const onLoad = () => {
-        update7();
+        update9();
         buffered();
       };
       const buffered = after(sounds.length, function() {
         resolve();
         $lobby.fadeOut();
       });
-      sounds.forEach((animation5) => {
+      sounds.forEach((animation7) => {
         if (!ctx) {
           ctx = new AudioContext();
         }
-        let sound = animation5.sounds[current2];
+        let sound = animation7.sounds[current2];
         if (!sound) {
           show2();
-          const uri = `${path}${type}/${animation5.name}${filetype}`;
+          const uri = `${path}${type}/${animation7.name}${filetype}`;
           sound = new Sound(ctx, uri, onLoad);
-          animation5.sounds.push(sound);
+          animation7.sounds.push(sound);
         }
-        animation5.sound = sound;
+        animation7.sound = sound;
       });
     });
-    function update7() {
+    function update9() {
       $loaded.index++;
       $loaded.html($loaded.index);
     }
   }
   var animations_default = {
     updateAudio,
-    map,
+    map: map2,
     get min_dimension() {
       return min_dimension;
     },
@@ -18148,22 +18152,22 @@
 
   // src/animations/prisms.js
   var animations = range(3).map((i) => {
-    const amount3 = Math.floor(i * 1.5) + 3;
+    const amount4 = Math.floor(i * 1.5) + 3;
     const scale = 10;
     let animation_in;
-    let r1 = 100;
-    let r2 = 2;
-    let playing5 = false;
-    const circles = [];
-    const points4 = range(amount3).map((i2) => {
-      var pct = i2 / amount3;
-      var theta = TWO_PI2 * pct;
-      var x = r1 * Math.cos(theta);
-      var y = r1 * Math.sin(theta);
-      var circle = two.makeCircle(x, y, r2);
+    let r12 = 100;
+    let r22 = 2;
+    let playing7 = false;
+    const circles2 = [];
+    const points4 = range(amount4).map((i2) => {
+      var pct = i2 / amount4;
+      var theta2 = TWO_PI2 * pct;
+      var x = r12 * Math.cos(theta2);
+      var y = r12 * Math.sin(theta2);
+      var circle = two.makeCircle(x, y, r22);
       circle.fill = palette_default.colors.black;
       circle.noStroke();
-      circles.push(circle);
+      circles2.push(circle);
       return new Two.Anchor(x, y);
     });
     const prism = two.makePath(points4);
@@ -18171,51 +18175,51 @@
     prism.stroke = palette_default.colors.black;
     prism.noFill();
     prism.linewidth = 0.5;
-    const group = two.makeGroup(prism).add(circles);
-    group.translation.copy(center);
+    const group3 = two.makeGroup(prism).add(circles2);
+    group3.translation.copy(center);
     const options2 = { ending: 0 };
-    reset4();
-    function start5(silent) {
-      playing5 = true;
-      group.visible = true;
+    reset6();
+    function start7(silent) {
+      playing7 = true;
+      group3.visible = true;
       animation_in.start();
-      if (!silent && animation5.sound) {
-        animation5.sound.stop().play();
+      if (!silent && animation7.sound) {
+        animation7.sound.stop().play();
       }
     }
-    function update7() {
+    function update9() {
       prism.stroke = palette_default.colors.black;
-      for (let i2 = 0; i2 < circles.length; i2++) {
-        const circle = circles[i2];
+      for (let i2 = 0; i2 < circles2.length; i2++) {
+        const circle = circles2[i2];
         circle.fill = palette_default.colors.black;
       }
     }
-    function resize5() {
-      group.translation.copy(center);
+    function resize7() {
+      group3.translation.copy(center);
     }
-    function reset4() {
+    function reset6() {
       if (animation_in) {
         animation_in.stop();
       }
-      group.visible = false;
-      options2.ending = group.scale = 0;
-      playing5 = false;
-      animation_in = new Tween(group).to({ scale }, duration * 0.75).easing(Easing.Circular.In).onComplete(reset4);
+      group3.visible = false;
+      options2.ending = group3.scale = 0;
+      playing7 = false;
+      animation_in = new Tween(group3).to({ scale }, duration * 0.75).easing(Easing.Circular.In).onComplete(reset6);
     }
-    const animation5 = {
-      start: start5,
-      update: update7,
-      clear: reset4,
-      resize: resize5,
+    const animation7 = {
+      start: start7,
+      update: update9,
+      clear: reset6,
+      resize: resize7,
       get playing() {
-        return playing5;
+        return playing7;
       },
       hash: `${i},6`,
       name: `prism-${i + 1}`,
       sounds: []
     };
-    register(animation5.hash, animation5);
-    return animation5;
+    register(animation7.hash, animation7);
+    return animation7;
   });
 
   // src/animations/clay.js
@@ -18227,9 +18231,9 @@
   var destinations = [];
   var points3 = range(amount2).map((i) => {
     const pct = i / amount2;
-    const theta = TWO_PI2 * pct;
-    const x = distance * Math.sin(theta);
-    const y = distance * Math.cos(theta);
+    const theta2 = TWO_PI2 * pct;
+    const x = distance * Math.sin(theta2);
+    const y = distance * Math.cos(theta2);
     destinations.push(new Two.Vector(x, y));
     return new Two.Anchor(x, y);
   });
@@ -18305,11 +18309,11 @@
         distance * Math.cos(ptheta),
         distance * Math.sin(ptheta)
       );
-      const theta = Two.Vector.angleBetween(v, impact) - ptheta;
+      const theta2 = Two.Vector.angleBetween(v, impact) - ptheta;
       const d = v.distanceTo(impact);
       const a = 10 * distance / Math.sqrt(d);
-      const x2 = a * Math.cos(theta) + v.x;
-      const y2 = a * Math.sin(theta) + v.y;
+      const x2 = a * Math.cos(theta2) + v.x;
+      const y2 = a * Math.sin(theta2) + v.y;
       destinations[i].set(x2, y2);
     }
     playing4 = false;
@@ -18339,27 +18343,27 @@
 
   // src/animations/pistons.js
   var animations2 = range(3).map((i) => {
-    let playing5 = false;
-    let animate_in4, animate_out3;
-    const amount3 = i * 4 + 1;
+    let playing7 = false;
+    let animate_in6, animate_out3;
+    const amount4 = i * 4 + 1;
     const w = two.width * 0.75, h = center.y;
     let begin, end;
-    const group = two.makeGroup();
-    group.translation.copy(center);
-    const shapes = range(amount3).map((i2) => {
-      const d = h / amount3 - h / (amount3 * 3);
+    const group3 = two.makeGroup();
+    group3.translation.copy(center);
+    const shapes = range(amount4).map((i2) => {
+      const d = h / amount4 - h / (amount4 * 3);
       const x = 0;
-      const y = -h / 2 + (i2 + 1) * (h / (amount3 + 1));
+      const y = -h / 2 + (i2 + 1) * (h / (amount4 + 1));
       const shape3 = create(x, y, w, d);
       shape3.fill = palette_default.colors.white;
       shape3.noStroke();
-      group.add(shape3);
+      group3.add(shape3);
       return shape3;
     });
     const options2 = { ending: 0, beginning: 0 };
     const ending2 = { ending: 1 };
     const beginning = { beginning: 1 };
-    reset4();
+    reset6();
     function create(x, y, width, height) {
       const points4 = [
         new Two.Anchor(-width / 2, -height / 2),
@@ -18374,24 +18378,24 @@
     function show2(shape3) {
       shape3.visible = true;
     }
-    function start5(silent) {
-      playing5 = true;
+    function start7(silent) {
+      playing7 = true;
       shapes.forEach(show2);
-      animate_in4.start();
-      if (!silent && animation5.sound) {
-        animation5.sound.stop().play();
+      animate_in6.start();
+      if (!silent && animation7.sound) {
+        animation7.sound.stop().play();
       }
     }
-    function update7() {
-      group.fill = palette_default.colors.white;
+    function update9() {
+      group3.fill = palette_default.colors.white;
     }
-    function resize5() {
-      group.translation.copy(center);
+    function resize7() {
+      group3.translation.copy(center);
     }
-    function reset4() {
+    function reset6() {
       const w2 = two.width * 0.75;
-      if (animate_in4) {
-        animate_in4.stop();
+      if (animate_in6) {
+        animate_in6.stop();
       }
       if (animate_out3) {
         animate_out3.stop();
@@ -18405,7 +18409,7 @@
         begin = w2 / 2;
         end = -w2 / 2;
       }
-      for (let i2 = 0; i2 < amount3; i2++) {
+      for (let i2 = 0; i2 < amount4; i2++) {
         const shape3 = shapes[i2];
         shape3.visible = false;
         for (let j = 0; j < shape3.vertices.length; j++) {
@@ -18413,99 +18417,257 @@
           v.x = begin;
         }
       }
-      animate_in4 = new Tween(options2).to(ending2, duration * 0.125).easing(Easing.Sinusoidal.Out).onUpdate(onUpdateIn).onComplete(() => animate_out3.start());
-      animate_out3 = new Tween(options2).to(beginning, duration * 0.125).easing(Easing.Sinusoidal.Out).onUpdate(onUpdateOut).onComplete(reset4);
-      playing5 = false;
+      animate_in6 = new Tween(options2).to(ending2, duration * 0.125).easing(Easing.Sinusoidal.Out).onUpdate(onUpdateIn).onComplete(() => animate_out3.start());
+      animate_out3 = new Tween(options2).to(beginning, duration * 0.125).easing(Easing.Sinusoidal.Out).onUpdate(onUpdateOut).onComplete(reset6);
+      playing7 = false;
     }
     function onUpdateIn() {
-      for (let i2 = 0; i2 < amount3; i2++) {
+      for (let i2 = 0; i2 < amount4; i2++) {
         const shape3 = shapes[i2];
         const points4 = shape3.vertices;
         points4[0].x = points4[3].x = end * options2.ending;
       }
     }
     function onUpdateOut() {
-      for (let i2 = 0; i2 < amount3; i2++) {
+      for (let i2 = 0; i2 < amount4; i2++) {
         const shape3 = shapes[i2];
         const points4 = shape3.vertices;
         points4[1].x = points4[2].x = end * options2.beginning;
       }
     }
-    const animation5 = {
-      start: start5,
-      update: update7,
-      clear: reset4,
-      resize: resize5,
+    const animation7 = {
+      start: start7,
+      update: update9,
+      clear: reset6,
+      resize: resize7,
       get playing() {
-        return playing5;
+        return playing7;
       },
       hash: `${i},3`,
       name: `piston-${i + 1}`,
       sounds: []
     };
-    register(animation5.hash, animation5);
-    return animation5;
+    register(animation7.hash, animation7);
+    return animation7;
   });
 
   // src/animations/flashes.js
   var animations3 = range(3).map((i) => {
-    let playing5 = false;
+    let playing7 = false;
     let timeout;
     const shape3 = two.makeRectangle(center.x, center.y, two.width, two.height);
     shape3.noStroke();
     shape3.visible = false;
-    update7();
-    reset4();
-    function start5(silent) {
+    update9();
+    reset6();
+    function start7(silent) {
       if (typeof timeout !== "undefined") {
         clearTimeout(timeout);
       }
-      playing5 = true;
-      if (!silent && animation5.sound) {
-        animation5.sound.stop().play();
+      playing7 = true;
+      if (!silent && animation7.sound) {
+        animation7.sound.stop().play();
       }
-      two.bind("update", onUpdate3);
-      setTimeout(reset4, duration * 0.25);
+      two.bind("update", onUpdate5);
+      setTimeout(reset6, duration * 0.25);
     }
-    function update7() {
+    function update9() {
       const index = palette_default.keys.length - 1 - i % palette_default.keys.length;
       const key = palette_default.keys[index];
       shape3.fill = palette_default.colors[key];
     }
-    function resize5() {
+    function resize7() {
       shape3.width = two.width;
       shape3.height = two.height;
       shape3.translation.copy(center);
     }
-    function reset4() {
-      playing5 = false;
+    function reset6() {
+      playing7 = false;
       shape3.visible = false;
-      two.unbind("update", onUpdate3);
+      two.unbind("update", onUpdate5);
     }
-    function onUpdate3() {
-      if (playing5) {
+    function onUpdate5() {
+      if (playing7) {
         shape3.visible = Math.random() > 0.5;
       }
     }
-    const animation5 = {
-      start: start5,
-      update: update7,
-      clear: reset4,
-      resize: resize5,
+    const animation7 = {
+      start: start7,
+      update: update9,
+      clear: reset6,
+      resize: resize7,
       get playing() {
-        return playing5;
+        return playing7;
       },
       hash: `${i},0`,
       name: `flash-${i + 1}`,
       sounds: []
     };
-    register(animation5.hash, animation5);
+    register(animation7.hash, animation7);
   });
+
+  // src/animations/spiral.js
+  var playing5 = false;
+  var amount3 = 120;
+  var resolution = 4;
+  var magnitude;
+  var linewidth;
+  var animate_in4;
+  var group = two.makeGroup();
+  var lines = range(amount3).map(() => {
+    const line = new Two.Line();
+    line.noFill();
+    line.cap = line.join = "round";
+    group.add(line);
+    return line;
+  });
+  resize5();
+  reset4();
+  function start5(silent) {
+    group.visible = true;
+    playing5 = true;
+    animate_in4.start();
+    if (!silent && animation5.sound) {
+      animation5.sound.stop().play();
+    }
+  }
+  function update7() {
+    group.stroke = palette_default.colors.black;
+  }
+  function resize5() {
+    group.translation.copy(center);
+    magnitude = animations_default.min_dimension / 2;
+    linewidth = magnitude / amount3;
+    lines.forEach(updateLine);
+    lines.reverse();
+  }
+  function reset4() {
+    group.visible = false;
+    group.rotation = Math.PI - Math.random() * TWO_PI2;
+    group.scale = 1;
+    if (animate_in4) {
+      animate_in4.stop();
+    }
+    animate_in4 = new Tween(group).easing(Easing.Circular.In).to({ rotation: Math.PI / 8, scale: 8 }, duration * 2).onUpdate(onUpdate3).onComplete(reset4);
+    playing5 = false;
+  }
+  function onUpdate3(group3, u) {
+    const t = clamp(map(u, 0, 0.25, 0, 1), 0, 1);
+    const index = Math.floor(t * amount3);
+    for (let i = 0; i < lines.length; i++) {
+      lines[i].visible = i <= index;
+    }
+  }
+  function updateLine(line, i) {
+    let pct = i / amount3;
+    let r = magnitude * pct;
+    let theta2 = pct * Math.PI * resolution;
+    const x1 = r * Math.cos(theta2);
+    const y1 = r * Math.sin(theta2);
+    pct = (i + 0.25) / amount3;
+    r = magnitude * pct;
+    theta2 = pct * Math.PI * resolution;
+    const x2 = r * Math.cos(theta2);
+    const y2 = r * Math.sin(theta2);
+    line.vertices[0].set(x1, y1);
+    line.vertices[1].set(x2, y2);
+    line.linewidth = (1 - Math.sqrt(1 - pct)) * linewidth;
+  }
+  var animation5 = {
+    start: start5,
+    update: update7,
+    clear: reset4,
+    resize: resize5,
+    get playing() {
+      return playing5;
+    },
+    hash: "0,9",
+    name: "dotted-spiral",
+    sounds: []
+  };
+  register(animation5.hash, animation5);
+
+  // src/animations/suspension.js
+  var playing6 = false;
+  var r1 = animations_default.min_dimension * 12 / 900;
+  var r2 = animations_default.min_dimension * 20 / 900;
+  var animate_in5;
+  var theta;
+  var deviation;
+  var distance2 = two.height;
+  var destinations2 = [];
+  var circles = range(16).map(() => {
+    const r = Math.round(map(Math.random(), 0, 1, r1, r2));
+    const circle = new Two.Circle(0, 0, r);
+    circle.fill = palette_default.colors.white;
+    circle.noStroke();
+    destinations2.push(new Two.Vector());
+    return circle;
+  });
+  var group2 = two.makeGroup(circles);
+  group2.visible = false;
+  group2.translation.copy(center);
+  resize6();
+  reset5();
+  function start6(silent) {
+    playing6 = true;
+    group2.visible = true;
+    animate_in5.start();
+    if (!silent && animation6.sound) {
+      animation6.sound.stop().play();
+    }
+  }
+  function update8() {
+    group2.fill = palette_default.colors.white;
+  }
+  function resize6() {
+    group2.translation.copy(center);
+  }
+  function reset5() {
+    if (animate_in5) {
+      animate_in5.stop();
+    }
+    theta = Math.random() * TWO_PI2;
+    deviation = map(Math.random(), 0, 1, Math.PI / 4, Math.PI / 2);
+    const options2 = { ending: 0 };
+    for (let i = 0; i < circles.length; i++) {
+      const circle = circles[i];
+      const t = theta + Math.random() * deviation * 2 - deviation;
+      const a = Math.random() * distance2;
+      const x = a * Math.cos(t);
+      const y = a * Math.sin(t);
+      destinations2[i].set(x, y);
+      circle.translation.clear();
+    }
+    animate_in5 = new Tween(options2).to({ ending: 1 }, duration * 0.5).easing(Easing.Sinusoidal.Out).onUpdate(onUpdate4).onComplete(reset5);
+    playing6 = false;
+    group2.visible = false;
+  }
+  function onUpdate4({ ending: ending2 }) {
+    for (let i = 0; i < circles.length; i++) {
+      const circle = circles[i];
+      const dest = destinations2[i];
+      circle.translation.lerp(dest, ending2);
+    }
+  }
+  var animation6 = {
+    start: start6,
+    update: update8,
+    clear: reset5,
+    resize: resize6,
+    get playing() {
+      return playing6;
+    },
+    hash: "0,5",
+    name: "suspension",
+    sounds: []
+  };
+  register(animation6.hash, animation6);
 
   // src/index.js
   (0, import_jquery2.default)(() => {
     const $container = (0, import_jquery2.default)("#content"), $hint = (0, import_jquery2.default)("#hint"), $credits = (0, import_jquery2.default)("#credits"), $embed = (0, import_jquery2.default)("#embed"), $merchandise = (0, import_jquery2.default)("#merchandise"), $window = (0, import_jquery2.default)(window);
-    let ui, buttons, width, height, landscape, embedding = false, playing5 = false, merchandising = false;
+    let ui, buttons, width, height, landscape, embedding = false, playing7 = false, merchandising = false;
     const showHint = debounce(function() {
       if (embedding) {
         showHint();
@@ -18531,13 +18693,13 @@
       initialize();
     }
     function enableAudio() {
-      playing5 = true;
+      playing7 = true;
       silent.play();
       $container.unbind("click", enableAudio);
     }
     function listenToEnableAudio() {
-      if (/hidden/i.test(document.visibilityState) && playing5) {
-        playing5 = false;
+      if (/hidden/i.test(document.visibilityState) && playing7) {
+        playing7 = false;
         $container.unbind("click", enableAudio).bind("click", enableAudio);
       }
     }
@@ -18737,8 +18899,8 @@
       height = $window.height();
       landscape = width >= height;
       const size = buttons.length;
-      buttons.forEach((group, i) => {
-        const length = group.length;
+      buttons.forEach((group3, i) => {
+        const length = group3.length;
         let w, h, x, y;
         if (landscape) {
           w = width / length;
@@ -18747,9 +18909,9 @@
           w = width / size;
           h = height / length;
         }
-        group.width = w;
-        group.height = h;
-        group.forEach((button, j) => {
+        group3.width = w;
+        group3.height = h;
+        group3.forEach((button, j) => {
           if (landscape) {
             x = width * (j + 0.5) / length;
             y = height * (i + 0.5) / size;
@@ -18961,14 +19123,13 @@
         e = event.originalEvent;
         each(e.touches, updateTouchEnter);
       }).bind("touchstart touchmove touchend touchcancel", (event) => {
-        console.log(playing5, merchandising, $container.hasClass("ios-app-store"));
-        if (playing5 && !(merchandising || $container.hasClass("ios-app-store"))) {
+        if (playing7 && !(merchandising || $container.hasClass("ios-app-store"))) {
           event.preventDefault();
           return false;
         }
       });
-      buttons.forEach((group, i) => {
-        group.forEach(function(button, j) {
+      buttons.forEach((group3, i) => {
+        group3.forEach(function(button, j) {
           const index2 = `${i},${j}`;
           buttons.map[index2] = button;
         });
@@ -19029,12 +19190,12 @@
       }
     }
     function trigger(hash2, silent2) {
-      const animation5 = animations_default.map[hash2];
-      if (animation5) {
-        if (animation5.playing) {
-          animation5.clear();
+      const animation7 = animations_default.map[hash2];
+      if (animation7) {
+        if (animation7.playing) {
+          animation7.clear();
         }
-        animation5.start(silent2);
+        animation7.start(silent2);
         if (window.gtag) {
           window.gtag("event", "animation", {
             trigger: hash2
