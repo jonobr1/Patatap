@@ -57,7 +57,7 @@ $(() => {
   silent.load();
 
   function loaded() {
-    $window
+    $container
       .bind('click', enableAudio)
       .bind('visibilitychange', listenToEnableAudio);
     silent.removeEventListener('canplay', loaded, false);
@@ -67,13 +67,13 @@ $(() => {
   function enableAudio() {
     playing = true;
     silent.play();
-    $window.unbind('click', enableAudio);
+    $container.unbind('click', enableAudio);
   }
 
   function listenToEnableAudio() {
     if (/hidden/i.test(document.visibilityState) && playing) {
       playing = false;
-      $window
+      $container
         .unbind('click', enableAudio)
         .bind('click', enableAudio);
     }
@@ -558,20 +558,20 @@ $(() => {
     let e, x, y, l, row, col, index;
 
     $container
-      .bind('touchstart', function(event) {
+      .bind('touchstart', (event) => {
 
         e = event.originalEvent;
         each(e.touches, startTouchEnter);
 
       })
-      .bind('touchmove', function(event) {
+      .bind('touchmove', (event) => {
 
         e = event.originalEvent;
         each(e.touches, updateTouchEnter);
 
       })
       // Disable scrolling on mobile
-      .bind('touchstart touchmove touchend touchcancel', function(event) {
+      .bind('touchstart touchmove touchend touchcancel', (event) => {
         if (playing && !(merchandising || $container.hasClass('ios-app-store'))) {
           event.preventDefault();
           return false;
@@ -582,21 +582,8 @@ $(() => {
 
       group.forEach(function(button, j) {
 
-        // const elem = button._renderer.elem;
         const index = `${i},${j}`;
-
         buttons.map[index] = button;
-
-        // $(elem)
-        //   .css({
-        //     cursor: 'pointer'
-        //   })
-        //   .bind('mousedown touchstart', (event) => {
-
-        //     e = event.originalEvent;
-        //     triggerButton(index, button);
-
-        //   });
 
       });
 
