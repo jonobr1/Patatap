@@ -41,6 +41,7 @@ const animations = range(3).map((i) => {
 
   function reset() {
     playing = false;
+    shape.visible = false;
     two.unbind('update', onUpdate);
   }
 
