@@ -6,6 +6,11 @@ export function clamp(v, a, b) {
   return Math.min(Math.max(v, a), b);
 }
 
+export function map(v, a, b, c, d) {
+  const pct = (v - a) / (b - a);
+  return pct * (d - c) + c;
+}
+
 export function range(n) {
   return [...Array(n).keys()]
 }
