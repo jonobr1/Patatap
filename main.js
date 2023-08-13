@@ -18526,19 +18526,19 @@
     silent.preload = "auto";
     silent.load();
     function loaded() {
-      $window.bind("click", enableAudio).bind("visibilitychange", listenToEnableAudio);
+      $container.bind("click", enableAudio).bind("visibilitychange", listenToEnableAudio);
       silent.removeEventListener("canplay", loaded, false);
       initialize();
     }
     function enableAudio() {
       playing5 = true;
       silent.play();
-      $window.unbind("click", enableAudio);
+      $container.unbind("click", enableAudio);
     }
     function listenToEnableAudio() {
       if (/hidden/i.test(document.visibilityState) && playing5) {
         playing5 = false;
-        $window.unbind("click", enableAudio).bind("click", enableAudio);
+        $container.unbind("click", enableAudio).bind("click", enableAudio);
       }
     }
     function initialize() {
@@ -18954,13 +18954,14 @@
       buttons[2] = range(8).map(createButton);
       const touches = [];
       let e, x, y, l, row, col, index;
-      $container.bind("touchstart", function(event) {
+      $container.bind("touchstart", (event) => {
         e = event.originalEvent;
         each(e.touches, startTouchEnter);
-      }).bind("touchmove", function(event) {
+      }).bind("touchmove", (event) => {
         e = event.originalEvent;
         each(e.touches, updateTouchEnter);
-      }).bind("touchstart touchmove touchend touchcancel", function(event) {
+      }).bind("touchstart touchmove touchend touchcancel", (event) => {
+        console.log(playing5, merchandising, $container.hasClass("ios-app-store"));
         if (playing5 && !(merchandising || $container.hasClass("ios-app-store"))) {
           event.preventDefault();
           return false;
