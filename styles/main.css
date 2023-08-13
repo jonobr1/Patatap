@@ -9,6 +9,7 @@ body {
   right: 0;
   bottom: 0;
   overflow: hidden;
+  user-select: none;
 }
 #credits {
   position: absolute;
