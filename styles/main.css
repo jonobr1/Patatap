@@ -98,6 +98,7 @@ body {
   top: 15%;
   text-align: center;
   user-select: none;
+  pointer-events: none;
 }
 #hint .message,
 #hint .midi-connections {
