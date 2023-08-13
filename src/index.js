@@ -571,9 +571,9 @@ $(() => {
 
       })
       // Disable scrolling on mobile
-      .bind('touchstart touchmove touchend touchcancel', function(e) {
-        if (playing && !(merchandising || $(e.target).hasClass('ios-app-store'))) {
-          e.preventDefault();
+      .bind('touchstart touchmove touchend touchcancel', function(event) {
+        if (playing && !(merchandising || $container.hasClass('ios-app-store'))) {
+          event.preventDefault();
           return false;
         }
       });
@@ -582,21 +582,21 @@ $(() => {
 
       group.forEach(function(button, j) {
 
-        const elem = button._renderer.elem;
+        // const elem = button._renderer.elem;
         const index = `${i},${j}`;
 
         buttons.map[index] = button;
 
-        $(elem)
-          .css({
-            cursor: 'pointer'
-          })
-          .bind('mousedown touchstart', function(event) {
+        // $(elem)
+        //   .css({
+        //     cursor: 'pointer'
+        //   })
+        //   .bind('mousedown touchstart', (event) => {
 
-            e = event.originalEvent;
-            triggerButton(index, button);
+        //     e = event.originalEvent;
+        //     triggerButton(index, button);
 
-          });
+        //   });
 
       });
 
@@ -634,11 +634,13 @@ $(() => {
     function startTouchEnter(touch) {
       x = touch.clientX;
       y = touch.clientY;
+      index = getIndex(x, y, x, y);
       touches[touch.identifier] = {
-        id: getIndex(x, y, x, y),
+        id: index,
         x: x,
         y: y
       };
+      triggerButton(index, buttons.map[index]);
     }
 
     function updateTouchEnter(touch) {
