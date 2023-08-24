@@ -20,6 +20,7 @@ import "./animations/spiral.js";
 import "./animations/suspension.js";
 import "./animations/confetti.js";
 import "./animations/timer.js";
+import "./animations/ufo.js";
 
 $(() => {
 
