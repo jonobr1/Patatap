@@ -2,7 +2,7 @@ import { map, range } from "../underscore.js";
 import Two from "two.js";
 import * as TWEEN from "@tweenjs/tween.js";
 import animations, { register, center } from "./index.js";
-import { duration, two, TWO_PI } from "../common.js";
+import { duration, two } from "../common.js";
 import palette from "./palette.js";
 
 let playing = false;
