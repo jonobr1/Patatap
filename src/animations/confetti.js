@@ -6,28 +6,24 @@ import { duration, two, TWO_PI } from "../common.js";
 import palette from "./palette.js";
 
 let playing = false;
-let r1 = animations.min_dimension * 12 / 900;
-let r2 = animations.min_dimension * 20 / 900;
 let animate_in;
 
 const destinations = [];
-const circles = range(16).map(() => {
-  const r = Math.round(map(Math.random(), 0, 1, r1, r2));
-  const circle = new Two.Circle(0, 0, r);
-  circle.fill = palette.colors.white;
+
+const circles = range(32).map((i) => {
+  const circle = new Two.Circle();
+  const kid = Math.floor(Math.random() * palette.keys.length);
+  circle.property = palette.keys[kid];
+  circle.fill = palette.colors[circle.property];
   circle.noStroke();
   destinations.push(new Two.Vector());
   return circle;
 });
 
-const group = two.makeGroup(circles);
-group.visible = false;
-group.translation.copy(center);
-
 const options = { ending: 0 };
 const ending = { ending: 1 };
+const group = two.makeGroup(circles);
 
-resize();
 reset();
 
 function start(silent) {
@@ -39,25 +35,53 @@ function start(silent) {
   }
 }
 
-function update() {
-  group.fill = palette.colors.white;
-}
+function resize() {}
 
-function resize() {
-  group.translation.copy(center);
+function update() {
+  for (let i = 0; i < circles.length; i++) {
+    const circle = circles[i];
+    circle.fill = palette.colors[circle.property];
+  }
 }
 
 function reset() {
+
+  let ox, oy,
+    pos = Math.floor(Math.random() * 4);
 
   if (animate_in) {
     animate_in.stop();
   }
 
-  const distance = two.height;
-  const theta = Math.random() * TWO_PI;
-  const deviation = map(Math.random(), 0, 1, Math.PI / 4, Math.PI / 2);
-  
-  options.ending = 0;
+  switch (pos) {
+    // west
+    case 3:
+      ox = - two.width / 8;
+      oy = center.y;
+      break;
+    // east
+    case 2:
+      ox = two.width * 1.125;
+      oy = center.y;
+      break;
+    // north
+    case 1:
+      ox = center.x;
+      oy = - two.height / 8;
+      break;
+    // south
+    default:
+      ox = center.x;
+      oy = two.height * 1.125;
+  }
+
+  group.position.set(ox, oy);
+
+  const theta = Math.atan2(center.y - oy, center.x - ox);
+  const deviation = Math.PI / 2;
+  const distance = two.width;
+  const r1 = animations.min_dimension * 12 / 900;
+  const r2 = animations.min_dimension * 20 / 900;
 
   for (let i = 0; i < circles.length; i++) {
 
@@ -68,9 +92,13 @@ function reset() {
     const y = a * Math.sin(t);
 
     destinations[i].set(x, y);
-    circle.translation.clear();
+
+    circle.position.clear();
+    circle.radius = Math.round(map(Math.random(), 0, 1, r1, r2));
 
   }
+
+  options.ending = 0;
 
   animate_in = new TWEEN.Tween(options)
     .to(ending, duration * 0.5)
@@ -78,9 +106,8 @@ function reset() {
     .onUpdate(onUpdate)
     .onComplete(reset);
 
-
-  playing = false;
   group.visible = false;
+  playing = false;
 
 }
 
@@ -88,7 +115,7 @@ function onUpdate({ ending }) {
   for (let i = 0; i < circles.length; i++) {
     const circle = circles[i];
     const dest = destinations[i];
-    circle.translation.lerp(dest, ending);
+    circle.position.lerp(dest, ending);
   }
 }
 
@@ -98,11 +125,10 @@ const animation = {
   clear: reset,
   resize: resize,
   get playing() { return playing; },
-  hash: '0,5',
-  name: 'suspension',
+  hash: '2,5',
+  name: 'confetti',
   sounds: []
 };
 
 register(animation.hash, animation);
 export default animation;
-

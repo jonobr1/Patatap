@@ -15,12 +15,8 @@ let distance = two.height
 
 const destinations = [];
 const points = range(amount).map((i) => {
-  const pct = i / amount;
-  const theta = TWO_PI * pct;
-  const x = distance * Math.sin(theta);
-  const y = distance * Math.cos(theta);
-  destinations.push(new Two.Vector(x, y));
-  return new Two.Anchor(x, y);
+  destinations.push(new Two.Vector());
+  return new Two.Anchor();
 });
 
 const clay = two.makeCurve(points);
@@ -137,12 +133,11 @@ function reset() {
 
 }
 
-function onUpdate() {
-  const t = options.ending;
+function onUpdate({ ending }) {
   for (let i = 0; i < amount; i++) {
     const v = points[i];
     const d = destinations[i];
-    v.lerp(d, t);
+    v.lerp(d, ending);
   }
 }
 

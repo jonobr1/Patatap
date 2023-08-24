@@ -18,6 +18,7 @@ import "./animations/pistons.js";
 import "./animations/flashes.js";
 import "./animations/spiral.js";
 import "./animations/suspension.js";
+import "./animations/confetti.js";
 
 $(() => {
 
