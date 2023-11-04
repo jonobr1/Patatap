@@ -67,6 +67,7 @@ const animations = range(3).map((i) => {
       animation_in.stop();
     }
     group.visible = false;
+    group.rotation = Math.floor(Math.random() * 4) * TWO_PI / 4;
     options.ending = group.scale = 0;
     playing = false;
 
