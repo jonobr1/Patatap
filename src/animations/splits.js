@@ -31,11 +31,12 @@ function start(silent) {
 
 function resize() {
   group.scale = animations.min_dimension * 0.33;
+  group.linewidth = 1 / group.scale;
   group.translation.copy(center);
 }
 
 function update() {
-  group.fill = palette.colors.foreground;
+  group.fill = group.stroke = palette.colors.foreground;
 }
 
 function reset() {
@@ -97,9 +98,8 @@ function makeSemiCircle() {
   });
 
   const path = new Two.Path(points);
-  path.fill = palette.colors.foreground;
+  path.fill = path.stroke = palette.colors.foreground;
   path.closed = true;
-  path.noStroke();
 
   return path;
 
