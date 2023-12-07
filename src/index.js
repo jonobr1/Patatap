@@ -25,6 +25,7 @@ import "./animations/ufo.js";
 // Foreground
 import "./animations/splits.js";
 import "./animations/moon.js";
+import "./animations/strike.js";
 
 $(() => {
 
