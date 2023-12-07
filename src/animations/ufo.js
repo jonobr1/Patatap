@@ -1,5 +1,4 @@
 import * as TWEEN from "@tweenjs/tween.js";
-import Two from "two.js";
 import animations, { register, center } from "./index.js";
 import { duration, two } from "../common.js";
 import palette from "./palette.js";
