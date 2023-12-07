@@ -19,4 +19,4 @@ export const container = document.querySelector('#container');
 export const isLocal = url.boolean('local')
   || window.location.href.match(/localhost/i);
 export const path = isLocal ? 'assets/'
-  : '//cdn.patatap.com/'; // TODO: Run CDN from Cloud Storage
+  : '//storage.googleapis.com/cdn.patatap.com/';
