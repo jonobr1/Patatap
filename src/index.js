@@ -21,6 +21,7 @@ import "./animations/suspension.js";
 import "./animations/confetti.js";
 import "./animations/timer.js";
 import "./animations/ufo.js";
+import "./animations/splits.js";
 
 $(() => {
 
