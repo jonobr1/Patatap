@@ -21,6 +21,8 @@ import "./animations/suspension.js";
 import "./animations/confetti.js";
 import "./animations/timer.js";
 import "./animations/ufo.js";
+
+// Foreground
 import "./animations/splits.js";
 import "./animations/moon.js";
 
