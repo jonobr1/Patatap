@@ -10,8 +10,6 @@ let animate_in, animate_out;
 const circle = two.makeCircle(0, 0, animations.min_dimension * 0.25);
 circle.noStroke().fill = palette.colors.accent;
 
-const destination = new Two.Vector();
-
 resize();
 reset();
 
@@ -46,14 +44,10 @@ function reset() {
 
   circle.translation.x = two.width * (isRight ? 0.75 : 0.25);
   circle.translation.y = two.height * (isTop ? - 0.5 : 1.5);
-
-  destination.x = circle.translation.x;
-  destination.y = center.y;
   circle.scale = 1;
 
-  // TODO: This tween is broken for some reason
   animate_in = new TWEEN.Tween(circle.translation)
-    .to(destination, duration / 2)
+    .to({ y: center.y }, duration / 2)
     .easing(TWEEN.Easing.Circular.Out)
     .onComplete(() => animate_out.start());
   
