@@ -27,6 +27,7 @@ import "./animations/splits.js";
 import "./animations/moon.js";
 import "./animations/strike.js";
 import "./animations/zigzag.js";
+import "./animations/squiggle.js";
 
 $(() => {
 
