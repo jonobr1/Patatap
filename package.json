@@ -24,8 +24,8 @@
   "homepage": "https://github.com/jonobr1/Patatap#readme",
   "dependencies": {
     "@tweenjs/tween.js": "^21.0.0",
-    "jquery": "^3.7.0",
-    "two.js": "^0.8.11"
+    "jquery": "^3.7.1",
+    "two.js": "^0.8.12"
   },
   "devDependencies": {
     "concurrently": "^6.4.0",

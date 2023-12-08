@@ -6,6 +6,7 @@ export const two = new Two({
   ratio: 1
 });
 
+two.renderer.domElement.style.position = 'absolute';
 two.renderer.domElement.id = 'stage';
 
 export const TWO_PI = Math.PI * 2;
