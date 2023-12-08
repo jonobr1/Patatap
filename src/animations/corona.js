@@ -10,11 +10,11 @@ let direction = true;
 let animate_ins = [], animate_outs = [];
 
 const options = { in: 0, out: 0 };
-const amount = 24;
+const amount = 32;
 const last = amount - 1;
 const circles = range(amount).map((i) => {
 
-  const circle = new Two.Circle();
+  const circle = new Two.Polygon(0, 0, 0, 3);
   circle.theta = 0;
   circle.destination = 0;
   return circle;
@@ -22,7 +22,8 @@ const circles = range(amount).map((i) => {
 });
 
 const group = two.makeGroup(circles);
-group.noStroke().fill = palette.colors.black;
+group.noStroke().fill = palette.colors.white;
+group.join = 'miter';
 
 resize();
 reset();
@@ -36,7 +37,7 @@ function start(silent) {
 }
 
 function update() {
-  group.fill = palette.colors.black;
+  group.fill = palette.colors.white;
 }
 
 function resize() {
@@ -57,8 +58,9 @@ function reset() {
   direction = Math.random() > 0.5;
   group.rotation = Math.random() * TWO_PI;
 
-  const radius = animations.min_dimension / 3;
-  const bubbleRadius = animations.min_dimension / 90;
+  const radius = animations.min_dimension * 0.45;
+  const bubbleRadius = two.height * 1.2 / 90;
+  const offset = - Math.PI / 6;
 
   for (let i = 0; i < circles.length; i++) {
 
@@ -73,7 +75,7 @@ function reset() {
     circle.translation.set(radius, 0);
 
     const ain = new TWEEN.Tween(circle)
-      .to({ theta: circle.destination }, 0.2 * duration / (i + 1))
+      .to({ theta: circle.destination }, 0.1 * duration / (i + 1))
       .onStart(() => (circle.visible = true))
       .onUpdate(() => {
 
@@ -82,6 +84,7 @@ function reset() {
         const y = radius * Math.sin(theta);
 
         circle.translation.set(x, y);
+        circle.rotation = theta + offset;
 
       })
       .onComplete(() => {
@@ -93,6 +96,7 @@ function reset() {
 
         const next = circles[i + 1];
         const tween = animate_ins[i + 1];
+
         next.theta = circle.theta;
         next.translation.copy(circle.translation);
         tween.start();
@@ -104,7 +108,7 @@ function reset() {
     const destination = Math.min(npt * TWO_PI, TWO_PI);
 
     const aout = new TWEEN.Tween(circle)
-      .to({ theta: destination }, 0.2 * duration / (amount - (i + 1)))
+      .to({ theta: destination }, 0.1 * duration / (amount - (i + 1)))
       .onUpdate(() => {
 
         const theta = circle.theta * (direction ? 1 : - 1);
@@ -112,6 +116,7 @@ function reset() {
         const y = radius * Math.sin(theta);
 
         circle.translation.set(x, y);
+        circle.rotation = theta + offset;
 
       })
       .onComplete(() => {
@@ -144,8 +149,8 @@ const animation = {
   clear: reset,
   resize: resize,
   get playing() { return playing; },
-  hash: '1,4',
-  name: 'bubbles',
+  hash: '2,4',
+  name: 'corona',
   sounds: []
 };
 

@@ -29,6 +29,7 @@ import "./animations/strike.js";
 import "./animations/zigzag.js";
 import "./animations/squiggle.js";
 import "./animations/bubbles.js";
+import "./animations/corona.js";
 
 $(() => {
 
