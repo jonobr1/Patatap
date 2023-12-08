@@ -4,50 +4,15 @@
     <meta charset="utf-8">
     <title>Patatap</title>
 
-    <meta name="keywords" content="patatap, neuronal synchrony, music, audio, visual, app, 2d, jonobr1, lullatone, synesthesia">
-    <meta name="author" content="jonobr1">
-
-    <!-- Sharing -->
-    <meta name="name" content="Patatap">
-    <meta name="image" content="http://www.patatap.com/images/thumbnail.png">
-    <meta name="description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
-
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Patatap">
-    <meta name="twitter:description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
-    <meta name="twitter:creator" content="@jonobr1">
-    <meta name="twitter:image:src" content="http://www.patatap.com/images/thumbnail.png">
-    <meta name="twitter:app:name:iphone" content="Patatap">
-    <meta name="twitter:app:name:ipad" content="Patatap">
-    <meta name="twitter:app:url:iphone" content="https://itunes.apple.com/us/app/patatap/id880626868?mt=8">
-    <meta name="twitter:app:url:ipad" content="https://itunes.apple.com/us/app/patatap/id880626868?mt=8">
-    <meta name="twitter:app:id:iphone" content="id880626868">
-    <meta name="twitter:app:id:ipad" content="id880626868">
-    <meta name="twitter:app:name:googleplay" content="Patatap">
-    <meta name="twitter:app:id:googleplay" content="com.jonobr1.Patatap">
-    <meta name="twitter:app:url:googleplay" content="https://play.google.com/store/apps/details?id=com.jonobr1.Patatap">
-
-    <meta itemprop="name" content="Patatap">
-    <meta itemprop="description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
-    <meta itemprop="image" src="http://www.patatap.com/images/thumbnail.png">
-
-    <meta property="og:title" content="Patatap">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="http://www.patatap.com/images/thumbnail.png"/>
-    <meta property="og:site_name" content="Patatap">
-    <meta property="og:description" content="Patatap is a portable animation and sound kit. With the touch of a finger create melodies charged with moving shapes. Warning: contains flashing images.">
+    <link rel="icon" href="./images/favicon.ico" />
 
     <!-- iOS specific catches -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
 
-    <!-- icons -->
-    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png"/>
-    <link rel="icon" href="/images/favicon.ico" />
-
     <!-- styles -->
-    <link rel="stylesheet" media="screen" type="text/css" href="/styles/main.css" />
+    <link rel="stylesheet" media="screen" type="text/css" href="./styles/main.css" />
 
   </head>
   <body style="background: rgb(181, 181, 181);">
@@ -56,12 +21,10 @@
       <p class="message"></p>
       <br /><br />
       <p class="midi-connections" style="display: none;"></p>
-      <a class="ios-app-store" href="https://itunes.apple.com/us/app/patatap/id880626868?ls=1&mt=8" target="_blank"></a>
+      <!-- <a class="ios-app-store" href="https://itunes.apple.com/us/app/patatap/id880626868?ls=1&mt=8" target="_blank"></a> -->
       <!-- <a class="play-store" href="https://play.google.com/store/apps/details?id=com.jonobr1.Patatap" target="_blank"></a> -->
     </div>
-    <div id="embed" style="display: none;">
-      <textarea><iframe src="//patatap.com/" style="border: 3px solid #ccc" width="640" height="480"></iframe></textarea>
-    </div>
+    <div id="embed" style="display: none;"></div>
     <div id="lobby">
       <div id="loader"></div>
       <div id="asset-info">
@@ -69,35 +32,12 @@
       </div>
     </div>
     <div class="scripts" style="display: none;">
-      <script src="/third-party/has.js"></script>
-      <script src="/third-party/url.js"></script>
-      <script src="/third-party/jquery.js"></script>
+      <script src="./third-party/url.js"></script>
       <script>
-
-        /**
-         * Check before loading JavaScript that we have the necessary features
-         * in order to run the project. If we don't throw an error and display
-         * the error page.
-         */
-        if (!Object.defineProperty || !(window.AudioContext || window.webkitAudioContext)) {
-          $(function() {
-            $('#lobby').fadeOut();
-            $('#merchandise').css({
-              opacity: 1.0,
-              display: 'none',
-              zIndex: 0
-            }).fadeIn();
-            $('#close-merchandise').css('display', 'none');
-          });
-          throw 'Oof, I cannot load this application because it will break...';
-        }
-
+        window.url.kiosk = true;
+        window.url.local = true;
       </script>
-      <script src="/third-party/tween.js"></script>
-      <script src="/third-party/two.js"></script>
-      <script src="/src/sound.js"></script>
-      <script src="/src/animations.js"></script>
-      <script src="/src/main.js"></script>
+      <script src="./main.js"></script>
       <!-- TODO: Add Analytics -->
     </div>
   </body>

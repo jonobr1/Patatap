@@ -142,35 +142,8 @@
       </div>
     </div>
     <div class="scripts" style="display: none;">
-      <script src="/third-party/has.js"></script>
-      <script src="/third-party/url.js"></script>
-      <script src="/third-party/jquery.js"></script>
-      <script>
-
-        /**
-         * Check before loading JavaScript that we have the necessary features
-         * in order to run the project. If we don't throw an error and display
-         * the error page.
-         */
-        if (!Object.defineProperty || !(window.AudioContext || window.webkitAudioContext)) {
-          $(function() {
-            $('#lobby').fadeOut();
-            $('#merchandise').css({
-              opacity: 1.0,
-              display: 'none',
-              zIndex: 0
-            }).fadeIn();
-            $('#close-merchandise').css('display', 'none');
-          });
-          throw 'Oof, I cannot load this application because it will break...';
-        }
-
-      </script>
-      <script src="/third-party/tween.js"></script>
-      <script src="/third-party/two.js"></script>
-      <script src="/src/sound.js"></script>
-      <script src="/src/animations.js"></script>
-      <script src="/src/main.js"></script>
+      <script src="./third-party/url.js"></script>
+      <script src="./main.js"></script>
       <!-- Google tag (gtag.js) -->
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-FW06G1ZDXV"></script>
       <script>
