@@ -31,6 +31,7 @@ import "./animations/squiggle.js";
 import "./animations/bubbles.js";
 import "./animations/corona.js";
 import "./animations/pinwheel.js";
+import "./animations/glimmer.js";
 
 $(() => {
 
