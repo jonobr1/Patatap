@@ -135,6 +135,8 @@ body {
   background: url(../images/app-store.svg) center center no-repeat;
   width: 135px;
   height: 40px;
+  user-select: auto;
+  pointer-events: all;
 }
 #hint .play-store {
   position: fixed;
@@ -145,6 +147,8 @@ body {
   background: url(../images/play-store.svg) center center no-repeat;
   width: 135px;
   height: 40px;
+  user-select: auto;
+  pointer-events: all;
 }
 body.kiosk .ios-app-store {
   display: none !important;
