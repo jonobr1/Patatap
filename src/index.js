@@ -319,7 +319,7 @@ $(() => {
         triggered();
         $hint.fadeIn();
         return;
-      } else if (/merchandise/ig.test(url.hash)) {
+      } else if (/merchandise/ig.test(window.location.pathname)) {
         $('#merchandise-button').trigger('click');
         return;
       }
