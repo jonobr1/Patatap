@@ -4,9 +4,21 @@
 
    <url>
 
-      <loc>http://www.patatap.com/</loc>
+      <loc>https://patatap.com/</loc>
 
-      <lastmod>2023-12-08</lastmod>
+      <lastmod>2024-03-05</lastmod>
+
+      <changefreq>never</changefreq>
+
+      <priority>1.0</priority>
+
+   </url>
+
+      <url>
+
+      <loc>https://patatap.com/merchandise/</loc>
+
+      <lastmod>2024-03-05</lastmod>
 
       <changefreq>never</changefreq>
 
@@ -16,7 +28,7 @@
 
    <url>
 
-      <loc>http://www.patatap.com/conversion-table.html</loc>
+      <loc>https://patatap.com/conversion-table.html</loc>
 
       <lastmod>2021-03-24</lastmod>
 
@@ -28,9 +40,9 @@
 
    <url>
 
-      <loc>http://www.patatap.com/privacy-policy.html</loc>
+      <loc>https://patatap.com/privacy-policy.html</loc>
 
-      <lastmod>2021-03-24</lastmod>
+      <lastmod>2024-03-05</lastmod>
 
       <changefreq>never</changefreq>
 
