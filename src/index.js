@@ -50,7 +50,7 @@ $(() => {
    * Append Sound Generation to Animations
    */
 
-  const showHint = debounce(function() {
+  const showHint = debounce(() => {
     if (embedding) {
       showHint();
       return;
@@ -58,7 +58,7 @@ $(() => {
     $hint.fadeIn();
   }, 20000);  // Twenty Second timeout
 
-  const hideCredits = debounce(function() {
+  const hideCredits = debounce(() => {
     if (mouse.y > height - 64) {
       hideCredits();
       return;
@@ -135,13 +135,14 @@ $(() => {
     });
 
     $window
-      .bind('resize', function(e) {
+      .bind('resize', () => {
 
         width = $window.width();
         height = $window.height();
+        orientUserInterface();
 
       })
-      .bind('mousemove', function(e) {
+      .bind('mousemove', (e) => {
 
         if (embedding || url.boolean('kiosk')) {
           return;
@@ -151,7 +152,7 @@ $(() => {
         showCredits();
 
       })
-      .bind('keydown', function(e, data) {
+      .bind('keydown', (e, data) => {
 
         if (e.metaKey || e.ctrlKey) {
           return;
@@ -262,17 +263,19 @@ $(() => {
 
       });
 
+    createMobileUI();
+
     if (navigator.maxTouchPoints > 0) {
       $hint.find('.message').html('Press anywhere on the screen and turn up speakers');
-      createMobileUI();
-      orientUserInterface();
     } else {
-      $credits.css('display', 'block');
+      if (!url.boolean('kiosk')) {
+        $credits.css('display', 'block');
+      }
       $hint.find('.message').html('Press any key, A to Z or spacebar, and turn up speakers');
     }
 
     two
-      .bind('update', function() {
+      .bind('update', () => {
 
         TWEEN.update();
         palette.update();
@@ -317,7 +320,7 @@ $(() => {
     if (!!$embed.has(e.target).length) {
       return;
     }
-    $embed.fadeOut(function() {
+    $embed.fadeOut(() => {
       embedding = false;
     });
     $window.unbind('click', hideEmbed);
@@ -412,6 +415,26 @@ $(() => {
     const outputs = [];
     const names = [];
     const $midi = $('.midi-connections');
+
+    const show = () => {
+      $hint.find('.message').animate({ opacity: 0 }, () => {
+        $hint.css({
+          display: 'block',
+          opacity: 1
+        });
+        $midi.fadeIn();
+      });
+      hide();
+    };
+    const hide = debounce(() => {
+      $midi.fadeOut(() => {
+        $hint.fadeOut(() => {
+          $hint.find('.message').css({ opacity: 1 });
+        });
+        showHint();
+      });
+    }, 5000);
+
     const notesToIndices = {
       21: '2,0', 23: '2,1', 24: '2,2', 26: '2,3', 28: '2,4', 29: '2,5',
       31: '2,6', 33: '1,0', 35: '1,1', 36: '1,2', 38: '1,3', 40: '1,4',
@@ -442,7 +465,7 @@ $(() => {
     midi.addEventListener('statechange', init);
     init({ target: midi });
 
-    onMIDISuccess.dispatch = function(index) {
+    onMIDISuccess.dispatch = (index) => {
 
       const duration = 100;
       const note = indicesToNotes[index];
@@ -464,7 +487,7 @@ $(() => {
       if (window.webkit) {
         // Dispatch to WKWebView
         window.webkit.messageHandlers.midi.postMessage(on);
-        setTimeout(function() {
+        setTimeout(() => {
           window.webkit.messageHandlers.midi.postMessage(off);
         }, duration);
       }
@@ -580,6 +603,12 @@ $(() => {
         each(e.touches, startTouchEnter);
 
       })
+      .bind('mousedown', (event) => {
+        startTouchEnter(event.originalEvent);
+        $(window)
+          .bind('mousemove', mousemove)
+          .bind('mouseup', mouseup);
+      })
       .bind('touchmove', (event) => {
 
         e = event.originalEvent;
@@ -596,7 +625,7 @@ $(() => {
 
     buttons.forEach((group, i) => {
 
-      group.forEach(function(button, j) {
+      group.forEach((button, j) => {
 
         const index = `${i},${j}`;
         buttons.map[index] = button;
@@ -672,6 +701,16 @@ $(() => {
       button.opacity = 1.0;
       buttons.needsUpdate[button.id] = button;
 
+    }
+
+    function mousemove(e) {
+      updateTouchEnter(e.originalEvent);
+    }
+
+    function mouseup(e) {
+      $(window)
+        .unbind('mousemove', mousemove)
+        .unbind('mouseup', mouseup);
     }
 
   }

@@ -19827,12 +19827,14 @@
         trigger(index);
         triggered();
       });
+      createMobileUI();
+      orientUserInterface();
       if (navigator.maxTouchPoints > 0) {
         $hint.find(".message").html("Press anywhere on the screen and turn up speakers");
-        createMobileUI();
-        orientUserInterface();
       } else {
-        $credits.css("display", "block");
+        if (!url.boolean("kiosk")) {
+          $credits.css("display", "block");
+        }
         $hint.find(".message").html("Press any key, A to Z or spacebar, and turn up speakers");
       }
       two.bind("update", function() {
