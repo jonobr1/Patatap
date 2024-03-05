@@ -19871,7 +19871,7 @@
           triggered();
           $hint.fadeIn();
           return;
-        } else if (/merchandise/ig.test(url.hash)) {
+        } else if (/merchandise/ig.test(window.location.pathname)) {
           (0, import_jquery2.default)("#merchandise-button").trigger("click");
           return;
         }
