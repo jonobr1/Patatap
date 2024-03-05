@@ -17,11 +17,11 @@ const animations = range(3).map((i) => {
 
   const circles = [];
   const points = range(amount).map((i) => {
-    var pct = i / amount;
-    var theta = TWO_PI * pct;
-    var x = r1 * Math.cos(theta);
-    var y = r1 * Math.sin(theta);
-    var circle = two.makeCircle(x, y, r2);
+    const pct = i / amount;
+    const theta = TWO_PI * pct;
+    const x = r1 * Math.cos(theta);
+    const y = r1 * Math.sin(theta);
+    const circle = two.makeCircle(x, y, r2);
     circle.fill = palette.colors.black;
     circle.noStroke();
     circles.push(circle);

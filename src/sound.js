@@ -1,8 +1,8 @@
 import { defaults } from './underscore.js';
 
-var identity = function(v) { return v; };
+const identity = (v) => v;
 
-var has;
+let has;
 
 try {
   has = !!AudioContext;
@@ -12,14 +12,14 @@ try {
 
 function load({ context, uri, callback }) {
 
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
 
-    var r = new XMLHttpRequest();
+    const r = new XMLHttpRequest();
     r.open('GET', uri, true);
     r.responseType = 'arraybuffer';
 
     r.onerror = reject;
-    r.onload = function() {
+    r.onload = () => {
       resolve({
         context,
         data: r.response,
@@ -35,9 +35,9 @@ function load({ context, uri, callback }) {
 
 function decode({ context, data, callback }) {
 
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
 
-    var success = function(buffer) {
+    const success = (buffer) => {
       resolve(buffer, data);
       if (callback) {
         callback(buffer, data);
@@ -71,7 +71,7 @@ export class Sound {
 
   constructor(context, uri, callback) {
 
-    var scope = this;
+    const scope = this;
 
     this.ctx = context;
 
@@ -128,7 +128,11 @@ export class Sound {
 
   play(options) {
 
-    var params = defaults(options || {}, {
+    if (!this.buffer) {
+      return this;
+    }
+
+    const params = defaults(options || {}, {
       time: this.ctx.currentTime,
       loop: this._loop,
       offset: this._offset,
@@ -171,7 +175,7 @@ export class Sound {
       return this;
     }
 
-    var params = defaults(options || {}, {
+    const params = defaults(options || {}, {
       time: this.ctx.currentTime
     });
 
@@ -185,7 +189,7 @@ export class Sound {
 
     this.playing = false;
 
-    var currentTime = this.ctx.currentTime;
+    let currentTime = this.ctx.currentTime;
     if (params.time != 'undefined') {
       currentTime = params.time;
     }
@@ -208,7 +212,7 @@ export class Sound {
       return this;
     }
 
-    var params = defaults(options || {}, {
+    const params = defaults(options || {}, {
       time: this.ctx.currentTime
     });
 
@@ -257,7 +261,7 @@ export class Sound {
 
   set currentTime(t) {
 
-    var time;
+    let time;
 
     if (!this.buffer) {
       return;

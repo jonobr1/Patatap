@@ -21,9 +21,9 @@ export function defaults(base) {
     return base;
   }
 
-  for (var i = 1; i < arguments.length; i++) {
-    var obj = arguments[i];
-    for (var k in obj) {
+  for (let i = 1; i < arguments.length; i++) {
+    const obj = arguments[i];
+    for (let k in obj) {
       if (typeof base[k] == 'undefined') {
         base[k] = obj[k];
       }
@@ -40,9 +40,9 @@ export function extend(base) {
     return base;
   }
 
-  for (var i = 1; i < arguments.length; i++) {
-    var obj = arguments[i];
-    for (var k in obj) {
+  for (let i = 1; i < arguments.length; i++) {
+    const obj = arguments[i];
+    for (let k in obj) {
       base[k] = obj[k];
     }
   }
@@ -60,18 +60,18 @@ export function mod(v, l) {
 
 export function debounce(func, timeout) {
 
-  var timer;
+  let timer;
 
-  return function() {
+  return () => {
 
     if (timer) {
       clearTimeout(timer);
     }
 
-    var scope = this;
-    var args = arguments;
+    const scope = this;
+    const args = arguments;
 
-    timer = setTimeout(function() {
+    timer = setTimeout(() => {
       timer = null;
       func.apply(scope, args);
     }, timeout);
@@ -82,7 +82,7 @@ export function debounce(func, timeout) {
 
 export function once(func) {
   let fired = false;
-  return function() {
+  return () => {
     if (!fired) {
       func.apply(this, arguments);
       fired = true;
@@ -92,7 +92,7 @@ export function once(func) {
 
 export function after(times, func) {
   let invocations = 0;
-  return function() {
+  return () => {
     if (invocations++ <= times - 1) {
       func.apply(this, arguments);
     }

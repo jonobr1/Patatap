@@ -66,12 +66,12 @@ function updateAudio() {
   const filetype = '.mp3';
   const sounds = list.filter(({ sounds }) => Array.isArray(sounds));
 
-  var type = letters[current];
-  var $lobby = $('#lobby');
-  var $loaded = $lobby.find('#loaded').html(0);
-  var $totalAssets = $lobby.find('#total-assets');
+  const type = letters[current];
+  const $lobby = $('#lobby');
+  const $loaded = $lobby.find('#loaded').html(0);
+  const $totalAssets = $lobby.find('#total-assets');
 
-  const show = once(function() {
+  const show = once(() => {
     $loaded.index = 0;
     $loaded.html($loaded.index);
     $totalAssets.html(sounds.length);
@@ -85,7 +85,7 @@ function updateAudio() {
       buffered();
     };
 
-    const buffered = after(sounds.length, function() {
+    const buffered = after(sounds.length, () => {
       resolve();
       $lobby.fadeOut();
     });
