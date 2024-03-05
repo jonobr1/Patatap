@@ -261,6 +261,18 @@ $(() => {
         trigger(index);
         triggered();
 
+      })
+      .bind('keyup', (e) => {
+
+        const code = e.which;
+        switch (code) {
+          case 27:
+            if (merchandising) {
+              $('#close-merchandise').click();
+            }
+            break;
+        }
+
       });
 
     createMobileUI();

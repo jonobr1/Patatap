@@ -2527,7 +2527,7 @@
           defaultDisplayMap[nodeName2] = display;
           return display;
         }
-        function showHide(elements, show2) {
+        function showHide(elements, show) {
           var display, elem, values = [], index = 0, length = elements.length;
           for (; index < length; index++) {
             elem = elements[index];
@@ -2535,7 +2535,7 @@
               continue;
             }
             display = elem.style.display;
-            if (show2) {
+            if (show) {
               if (display === "none") {
                 values[index] = dataPriv.get(elem, "display") || null;
                 if (!values[index]) {
@@ -6132,9 +6132,9 @@
     if (arguments.length < 2) {
       return base;
     }
-    for (var i = 1; i < arguments.length; i++) {
-      var obj = arguments[i];
-      for (var k in obj) {
+    for (let i = 1; i < arguments.length; i++) {
+      const obj = arguments[i];
+      for (let k in obj) {
         if (typeof base[k] == "undefined") {
           base[k] = obj[k];
         }
@@ -6143,14 +6143,14 @@
     return base;
   }
   function debounce(func, timeout) {
-    var timer2;
-    return function() {
+    let timer2;
+    return () => {
       if (timer2) {
         clearTimeout(timer2);
       }
-      var scope = this;
-      var args = arguments;
-      timer2 = setTimeout(function() {
+      const scope = this;
+      const args = arguments;
+      timer2 = setTimeout(() => {
         timer2 = null;
         func.apply(scope, args);
       }, timeout);
@@ -6158,7 +6158,7 @@
   }
   function once(func) {
     let fired = false;
-    return function() {
+    return () => {
       if (!fired) {
         func.apply(this, arguments);
         fired = true;
@@ -6167,7 +6167,7 @@
   }
   function after(times, func) {
     let invocations = 0;
-    return function() {
+    return () => {
       if (invocations++ <= times - 1) {
         func.apply(this, arguments);
       }
@@ -17682,9 +17682,7 @@
   var import_jquery = __toESM(require_jquery());
 
   // src/sound.js
-  var identity2 = function(v) {
-    return v;
-  };
+  var identity2 = (v) => v;
   var has;
   try {
     has = !!AudioContext;
@@ -17692,12 +17690,12 @@
     has = false;
   }
   function load({ context, uri, callback }) {
-    return new Promise(function(resolve, reject) {
-      var r = new XMLHttpRequest();
+    return new Promise((resolve, reject) => {
+      const r = new XMLHttpRequest();
       r.open("GET", uri, true);
       r.responseType = "arraybuffer";
       r.onerror = reject;
-      r.onload = function() {
+      r.onload = () => {
         resolve({
           context,
           data: r.response,
@@ -17708,8 +17706,8 @@
     });
   }
   function decode({ context, data, callback }) {
-    return new Promise(function(resolve, reject) {
-      var success = function(buffer) {
+    return new Promise((resolve, reject) => {
+      const success = (buffer) => {
         resolve(buffer, data);
         if (callback) {
           callback(buffer, data);
@@ -17734,7 +17732,7 @@
       __publicField(this, "gain", null);
       __publicField(this, "src", null);
       __publicField(this, "ctx", null);
-      var scope = this;
+      const scope = this;
       this.ctx = context;
       switch (typeof uri) {
         case "string":
@@ -17769,7 +17767,10 @@
       return this;
     }
     play(options6) {
-      var params = defaults(options6 || {}, {
+      if (!this.buffer) {
+        return this;
+      }
+      const params = defaults(options6 || {}, {
         time: this.ctx.currentTime,
         loop: this._loop,
         offset: this._offset,
@@ -17801,7 +17802,7 @@
       if (!this.source || !this.playing) {
         return this;
       }
-      var params = defaults(options6 || {}, {
+      const params = defaults(options6 || {}, {
         time: this.ctx.currentTime
       });
       this.source.onended = identity2;
@@ -17811,7 +17812,7 @@
         this.source.noteOff(params.time);
       }
       this.playing = false;
-      var currentTime = this.ctx.currentTime;
+      let currentTime = this.ctx.currentTime;
       if (params.time != "undefined") {
         currentTime = params.time;
       }
@@ -17827,7 +17828,7 @@
       if (!this.source || !this.playing) {
         return this;
       }
-      var params = defaults(options6 || {}, {
+      const params = defaults(options6 || {}, {
         time: this.ctx.currentTime
       });
       this.source.onended = identity2;
@@ -17862,7 +17863,7 @@
       return this.playing ? (this.ctx.currentTime - __privateGet(this, _startTime) + __privateGet(this, _offset)) * __privateGet(this, _speed) : __privateGet(this, _offset);
     }
     set currentTime(t) {
-      var time;
+      let time;
       if (!this.buffer) {
         return;
       }
@@ -17945,11 +17946,11 @@
     const letters = ["A", "B", "C", "D", "E", "F"];
     const filetype = ".mp3";
     const sounds = list.filter(({ sounds: sounds2 }) => Array.isArray(sounds2));
-    var type = letters[current2];
-    var $lobby = (0, import_jquery.default)("#lobby");
-    var $loaded = $lobby.find("#loaded").html(0);
-    var $totalAssets = $lobby.find("#total-assets");
-    const show2 = once(function() {
+    const type = letters[current2];
+    const $lobby = (0, import_jquery.default)("#lobby");
+    const $loaded = $lobby.find("#loaded").html(0);
+    const $totalAssets = $lobby.find("#total-assets");
+    const show = once(() => {
       $loaded.index = 0;
       $loaded.html($loaded.index);
       $totalAssets.html(sounds.length);
@@ -17960,7 +17961,7 @@
         update21();
         buffered();
       };
-      const buffered = after(sounds.length, function() {
+      const buffered = after(sounds.length, () => {
         resolve();
         $lobby.fadeOut();
       });
@@ -17970,7 +17971,7 @@
         }
         let sound = animation19.sounds[current2];
         if (!sound) {
-          show2();
+          show();
           const uri = `${path}${type}/${animation19.name}${filetype}`;
           sound = new Sound(ctx, uri, onLoad);
           animation19.sounds.push(sound);
@@ -18168,11 +18169,11 @@
     let playing19 = false;
     const circles6 = [];
     const points8 = range(amount12).map((i2) => {
-      var pct = i2 / amount12;
-      var theta = TWO_PI2 * pct;
-      var x = r12 * Math.cos(theta);
-      var y = r12 * Math.sin(theta);
-      var circle2 = two.makeCircle(x, y, r22);
+      const pct = i2 / amount12;
+      const theta = TWO_PI2 * pct;
+      const x = r12 * Math.cos(theta);
+      const y = r12 * Math.sin(theta);
+      const circle2 = two.makeCircle(x, y, r22);
       circle2.fill = palette_default.colors.black;
       circle2.noStroke();
       circles6.push(circle2);
@@ -18379,12 +18380,12 @@
       path2.position.set(x, y);
       return path2;
     }
-    function show2(shape4) {
+    function show(shape4) {
       shape4.visible = true;
     }
     function start19(silent) {
       playing19 = true;
-      shapes.forEach(show2);
+      shapes.forEach(show);
       animate_in14.start();
       if (!silent && animation19.sound) {
         animation19.sound.stop().play();
@@ -19657,14 +19658,14 @@
   (0, import_jquery2.default)(() => {
     const $container = (0, import_jquery2.default)("#content"), $hint = (0, import_jquery2.default)("#hint"), $credits = (0, import_jquery2.default)("#credits"), $embed = (0, import_jquery2.default)("#embed"), $merchandise = (0, import_jquery2.default)("#merchandise"), $window = (0, import_jquery2.default)(window);
     let ui, buttons, width, height, landscape, embedding = false, playing19 = false, merchandising = false;
-    const showHint = debounce(function() {
+    const showHint = debounce(() => {
       if (embedding) {
         showHint();
         return;
       }
       $hint.fadeIn();
     }, 2e4);
-    const hideCredits = debounce(function() {
+    const hideCredits = debounce(() => {
       if (mouse.y > height - 64) {
         hideCredits();
         return;
@@ -19725,16 +19726,17 @@
         merchandising = false;
         $merchandise.fadeOut();
       });
-      $window.bind("resize", function(e) {
+      $window.bind("resize", () => {
         width = $window.width();
         height = $window.height();
-      }).bind("mousemove", function(e) {
+        orientUserInterface();
+      }).bind("mousemove", (e) => {
         if (embedding || url.boolean("kiosk")) {
           return;
         }
         mouse.set(e.clientX, e.clientY);
         showCredits();
-      }).bind("keydown", function(e, data) {
+      }).bind("keydown", (e, data) => {
         if (e.metaKey || e.ctrlKey) {
           return;
         }
@@ -19826,9 +19828,17 @@
         }
         trigger(index);
         triggered();
+      }).bind("keyup", (e) => {
+        const code = e.which;
+        switch (code) {
+          case 27:
+            if (merchandising) {
+              (0, import_jquery2.default)("#close-merchandise").click();
+            }
+            break;
+        }
       });
       createMobileUI();
-      orientUserInterface();
       if (navigator.maxTouchPoints > 0) {
         $hint.find(".message").html("Press anywhere on the screen and turn up speakers");
       } else {
@@ -19837,7 +19847,7 @@
         }
         $hint.find(".message").html("Press any key, A to Z or spacebar, and turn up speakers");
       }
-      two.bind("update", function() {
+      two.bind("update", () => {
         update();
         palette_default.update();
         if (!ui) {
@@ -19872,7 +19882,7 @@
       if (!!$embed.has(e.target).length) {
         return;
       }
-      $embed.fadeOut(function() {
+      $embed.fadeOut(() => {
         embedding = false;
       });
       $window.unbind("click", hideEmbed);
@@ -19941,6 +19951,24 @@
       const outputs = [];
       const names = [];
       const $midi = (0, import_jquery2.default)(".midi-connections");
+      const show = () => {
+        $hint.find(".message").animate({ opacity: 0 }, () => {
+          $hint.css({
+            display: "block",
+            opacity: 1
+          });
+          $midi.fadeIn();
+        });
+        hide();
+      };
+      const hide = debounce(() => {
+        $midi.fadeOut(() => {
+          $hint.fadeOut(() => {
+            $hint.find(".message").css({ opacity: 1 });
+          });
+          showHint();
+        });
+      }, 5e3);
       const notesToIndices = {
         21: "2,0",
         23: "2,1",
@@ -20006,7 +20034,7 @@
       window.onmidimessage = messageReceived;
       midi.addEventListener("statechange", init);
       init({ target: midi });
-      onMIDISuccess.dispatch = function(index) {
+      onMIDISuccess.dispatch = (index) => {
         const duration2 = 100;
         const note = indicesToNotes[index];
         const velocity = 100;
@@ -20022,7 +20050,7 @@
         }
         if (window.webkit) {
           window.webkit.messageHandlers.midi.postMessage(on);
-          setTimeout(function() {
+          setTimeout(() => {
             window.webkit.messageHandlers.midi.postMessage(off);
           }, duration2);
         }
@@ -20110,6 +20138,9 @@
       $container.bind("touchstart", (event) => {
         e = event.originalEvent;
         each(e.touches, startTouchEnter);
+      }).bind("mousedown", (event) => {
+        startTouchEnter(event.originalEvent);
+        (0, import_jquery2.default)(window).bind("mousemove", mousemove).bind("mouseup", mouseup);
       }).bind("touchmove", (event) => {
         e = event.originalEvent;
         each(e.touches, updateTouchEnter);
@@ -20120,7 +20151,7 @@
         }
       });
       buttons.forEach((group8, i) => {
-        group8.forEach(function(button, j) {
+        group8.forEach((button, j) => {
           const index2 = `${i},${j}`;
           buttons.map[index2] = button;
         });
@@ -20178,6 +20209,12 @@
         }
         button.opacity = 1;
         buttons.needsUpdate[button.id] = button;
+      }
+      function mousemove(e2) {
+        updateTouchEnter(e2.originalEvent);
+      }
+      function mouseup(e2) {
+        (0, import_jquery2.default)(window).unbind("mousemove", mousemove).unbind("mouseup", mouseup);
       }
     }
     function trigger(hash2, silent2) {
