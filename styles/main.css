@@ -126,15 +126,29 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
+#hint .newsletter-signup {
+  position: fixed;
+  bottom: 96px;
+  left: 50%;
+  margin-left: -5px;
+  transform: translateX(-100%);
+  cursor: pointer;
+  background: url(../images/newsletter.svg) center center no-repeat;
+  width: 133px;
+  height: 40px;
+  user-select: auto;
+  pointer-events: all;
+}
 #hint .ios-app-store {
   position: fixed;
   bottom: 96px;
   left: 50%;
-  margin-left: -67.5px;
+  transform: translateX(0);
   cursor: pointer;
   background: url(../images/app-store.svg) center center no-repeat;
-  width: 135px;
+  width: 120px;
   height: 40px;
+  margin-left: 5px;
   user-select: auto;
   pointer-events: all;
 }
@@ -306,12 +320,21 @@ body.kiosk .ios-app-store {
   bottom: 16px;
   top: 16px;
 }
+#merchandise .newsletter-signup {
+  display: inline-block;
+  cursor: pointer;
+  background: url(../images/newsletter.svg) center center no-repeat;
+  width: 133px;
+  height: 40px;
+  margin: 0 5px;
+}
 #merchandise .ios-app-store {
   display: inline-block;
   cursor: pointer;
   background: url(../images/app-store.svg) center center no-repeat;
-  width: 135px;
+  width: 120px;
   height: 40px;
+  margin: 0 5px;
 }
 #merchandise .play-store {
   display: inline-block;
@@ -319,6 +342,7 @@ body.kiosk .ios-app-store {
   background: url(../images/play-store.svg) center center no-repeat;
   width: 135px;
   height: 40px;
+  margin: 0 5px;
 }
 #merchandise .attribution {
   text-align: center;

@@ -140,15 +140,29 @@ body {
 
   @width: 135px;
 
+  .newsletter-signup {
+    position: fixed;
+    bottom: @line-height * 3;
+    left: 50%;
+    margin-left: -5px;
+    transform: translateX(-100%);
+    cursor: pointer;
+    background: url(../images/newsletter.svg) center center no-repeat;
+    width: 133px;
+    height: 40px;
+    user-select: auto;
+    pointer-events: all;
+  }
   .ios-app-store {
     position: fixed;
     bottom: @line-height * 3;
     left: 50%;
-    margin-left: -(@width * 0.5);
+    transform: translateX(0);
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
-    width: 135px;
+    width: 120px;
     height: 40px;
+    margin-left: 5px;
     user-select: auto;
     pointer-events: all;
   }
@@ -396,21 +410,29 @@ body.kiosk .ios-app-store {
     top: @font-size;
   }
 
+  .newsletter-signup {
+    display: inline-block;
+    cursor: pointer;
+    background: url(../images/newsletter.svg) center center no-repeat;
+    width: 133px;
+    height: 40px;
+    margin: 0 5px;
+  }
   .ios-app-store {
-    // position: relative;
     display: inline-block;
     cursor: pointer;
     background: url(../images/app-store.svg) center center no-repeat;
-    width: 135px;
+    width: 120px;
     height: 40px;
+    margin: 0 5px;
   }
   .play-store {
-    // position: relative;
     display: inline-block;
     cursor: pointer;
     background: url(../images/play-store.svg) center center no-repeat;
     width: 135px;
     height: 40px;
+    margin: 0 5px;
   }
 
   .attribution {
