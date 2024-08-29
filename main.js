@@ -1801,10 +1801,10 @@
             },
             remove: function() {
               jQuery.each(arguments, function(_2, arg) {
-                var index;
-                while ((index = jQuery.inArray(arg, list2, index)) > -1) {
-                  list2.splice(index, 1);
-                  if (index <= firingIndex) {
+                var index2;
+                while ((index2 = jQuery.inArray(arg, list2, index2)) > -1) {
+                  list2.splice(index2, 1);
+                  if (index2 <= firingIndex) {
                     firingIndex--;
                   }
                 }
@@ -2528,33 +2528,33 @@
           return display;
         }
         function showHide(elements, show) {
-          var display, elem, values = [], index = 0, length = elements.length;
-          for (; index < length; index++) {
-            elem = elements[index];
+          var display, elem, values = [], index2 = 0, length = elements.length;
+          for (; index2 < length; index2++) {
+            elem = elements[index2];
             if (!elem.style) {
               continue;
             }
             display = elem.style.display;
             if (show) {
               if (display === "none") {
-                values[index] = dataPriv.get(elem, "display") || null;
-                if (!values[index]) {
+                values[index2] = dataPriv.get(elem, "display") || null;
+                if (!values[index2]) {
                   elem.style.display = "";
                 }
               }
               if (elem.style.display === "" && isHiddenWithinTree(elem)) {
-                values[index] = getDefaultDisplay(elem);
+                values[index2] = getDefaultDisplay(elem);
               }
             } else {
               if (display !== "none") {
-                values[index] = "none";
+                values[index2] = "none";
                 dataPriv.set(elem, "display", display);
               }
             }
           }
-          for (index = 0; index < length; index++) {
-            if (values[index] != null) {
-              elements[index].style.display = values[index];
+          for (index2 = 0; index2 < length; index2++) {
+            if (values[index2] != null) {
+              elements[index2].style.display = values[index2];
             }
           }
           return elements;
@@ -3285,10 +3285,10 @@
           args = flat(args);
           var fragment, first, scripts, hasScripts, node, doc, i = 0, l = collection.length, iNoClone = l - 1, value = args[0], valueIsFunction = isFunction(value);
           if (valueIsFunction || l > 1 && typeof value === "string" && !support.checkClone && rchecked.test(value)) {
-            return collection.each(function(index) {
-              var self2 = collection.eq(index);
+            return collection.each(function(index2) {
+              var self2 = collection.eq(index2);
               if (valueIsFunction) {
-                args[0] = value.call(this, index, self2.html());
+                args[0] = value.call(this, index2, self2.html());
               }
               domManip(self2, args, callback, ignored);
             });
@@ -4021,9 +4021,9 @@
           return attrs;
         }
         function createTween(value, prop, animation19) {
-          var tween2, collection = (Animation.tweeners[prop] || []).concat(Animation.tweeners["*"]), index = 0, length = collection.length;
-          for (; index < length; index++) {
-            if (tween2 = collection[index].call(animation19, prop, value)) {
+          var tween2, collection = (Animation.tweeners[prop] || []).concat(Animation.tweeners["*"]), index2 = 0, length = collection.length;
+          for (; index2 < length; index2++) {
+            if (tween2 = collection[index2].call(animation19, prop, value)) {
               return tween2;
             }
           }
@@ -4147,27 +4147,27 @@
           }
         }
         function propFilter(props, specialEasing) {
-          var index, name2, easing, value, hooks;
-          for (index in props) {
-            name2 = camelCase(index);
+          var index2, name2, easing, value, hooks;
+          for (index2 in props) {
+            name2 = camelCase(index2);
             easing = specialEasing[name2];
-            value = props[index];
+            value = props[index2];
             if (Array.isArray(value)) {
               easing = value[1];
-              value = props[index] = value[0];
+              value = props[index2] = value[0];
             }
-            if (index !== name2) {
+            if (index2 !== name2) {
               props[name2] = value;
-              delete props[index];
+              delete props[index2];
             }
             hooks = jQuery.cssHooks[name2];
             if (hooks && "expand" in hooks) {
               value = hooks.expand(value);
               delete props[name2];
-              for (index in value) {
-                if (!(index in props)) {
-                  props[index] = value[index];
-                  specialEasing[index] = easing;
+              for (index2 in value) {
+                if (!(index2 in props)) {
+                  props[index2] = value[index2];
+                  specialEasing[index2] = easing;
                 }
               }
             } else {
@@ -4176,15 +4176,15 @@
           }
         }
         function Animation(elem, properties, options6) {
-          var result, stopped, index = 0, length = Animation.prefilters.length, deferred = jQuery.Deferred().always(function() {
+          var result, stopped, index2 = 0, length = Animation.prefilters.length, deferred = jQuery.Deferred().always(function() {
             delete tick.elem;
           }), tick = function() {
             if (stopped) {
               return false;
             }
-            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation19.startTime + animation19.duration - currentTime), temp2 = remaining / animation19.duration || 0, percent = 1 - temp2, index2 = 0, length2 = animation19.tweens.length;
-            for (; index2 < length2; index2++) {
-              animation19.tweens[index2].run(percent);
+            var currentTime = fxNow || createFxNow(), remaining = Math.max(0, animation19.startTime + animation19.duration - currentTime), temp2 = remaining / animation19.duration || 0, percent = 1 - temp2, index3 = 0, length2 = animation19.tweens.length;
+            for (; index3 < length2; index3++) {
+              animation19.tweens[index3].run(percent);
             }
             deferred.notifyWith(elem, [animation19, percent, remaining]);
             if (percent < 1 && length2) {
@@ -4219,13 +4219,13 @@
               return tween2;
             },
             stop: function(gotoEnd) {
-              var index2 = 0, length2 = gotoEnd ? animation19.tweens.length : 0;
+              var index3 = 0, length2 = gotoEnd ? animation19.tweens.length : 0;
               if (stopped) {
                 return this;
               }
               stopped = true;
-              for (; index2 < length2; index2++) {
-                animation19.tweens[index2].run(1);
+              for (; index3 < length2; index3++) {
+                animation19.tweens[index3].run(1);
               }
               if (gotoEnd) {
                 deferred.notifyWith(elem, [animation19, 1, 0]);
@@ -4237,8 +4237,8 @@
             }
           }), props = animation19.props;
           propFilter(props, animation19.opts.specialEasing);
-          for (; index < length; index++) {
-            result = Animation.prefilters[index].call(animation19, elem, props, animation19.opts);
+          for (; index2 < length; index2++) {
+            result = Animation.prefilters[index2].call(animation19, elem, props, animation19.opts);
             if (result) {
               if (isFunction(result.stop)) {
                 jQuery._queueHooks(animation19.elem, animation19.opts.queue).stop = result.stop.bind(result);
@@ -4275,9 +4275,9 @@
             } else {
               props = props.match(rnothtmlwhite);
             }
-            var prop, index = 0, length = props.length;
-            for (; index < length; index++) {
-              prop = props[index];
+            var prop, index2 = 0, length = props.length;
+            for (; index2 < length; index2++) {
+              prop = props[index2];
               Animation.tweeners[prop] = Animation.tweeners[prop] || [];
               Animation.tweeners[prop].unshift(callback);
             }
@@ -4351,23 +4351,23 @@
               this.queue(type || "fx", []);
             }
             return this.each(function() {
-              var dequeue = true, index = type != null && type + "queueHooks", timers = jQuery.timers, data = dataPriv.get(this);
-              if (index) {
-                if (data[index] && data[index].stop) {
-                  stopQueue(data[index]);
+              var dequeue = true, index2 = type != null && type + "queueHooks", timers = jQuery.timers, data = dataPriv.get(this);
+              if (index2) {
+                if (data[index2] && data[index2].stop) {
+                  stopQueue(data[index2]);
                 }
               } else {
-                for (index in data) {
-                  if (data[index] && data[index].stop && rrun.test(index)) {
-                    stopQueue(data[index]);
+                for (index2 in data) {
+                  if (data[index2] && data[index2].stop && rrun.test(index2)) {
+                    stopQueue(data[index2]);
                   }
                 }
               }
-              for (index = timers.length; index--; ) {
-                if (timers[index].elem === this && (type == null || timers[index].queue === type)) {
-                  timers[index].anim.stop(gotoEnd);
+              for (index2 = timers.length; index2--; ) {
+                if (timers[index2].elem === this && (type == null || timers[index2].queue === type)) {
+                  timers[index2].anim.stop(gotoEnd);
                   dequeue = false;
-                  timers.splice(index, 1);
+                  timers.splice(index2, 1);
                 }
               }
               if (dequeue || !gotoEnd) {
@@ -4380,21 +4380,21 @@
               type = type || "fx";
             }
             return this.each(function() {
-              var index, data = dataPriv.get(this), queue = data[type + "queue"], hooks = data[type + "queueHooks"], timers = jQuery.timers, length = queue ? queue.length : 0;
+              var index2, data = dataPriv.get(this), queue = data[type + "queue"], hooks = data[type + "queueHooks"], timers = jQuery.timers, length = queue ? queue.length : 0;
               data.finish = true;
               jQuery.queue(this, type, []);
               if (hooks && hooks.stop) {
                 hooks.stop.call(this, true);
               }
-              for (index = timers.length; index--; ) {
-                if (timers[index].elem === this && timers[index].queue === type) {
-                  timers[index].anim.stop(true);
-                  timers.splice(index, 1);
+              for (index2 = timers.length; index2--; ) {
+                if (timers[index2].elem === this && timers[index2].queue === type) {
+                  timers[index2].anim.stop(true);
+                  timers.splice(index2, 1);
                 }
               }
-              for (index = 0; index < length; index++) {
-                if (queue[index] && queue[index].finish) {
-                  queue[index].finish.call(this);
+              for (index2 = 0; index2 < length; index2++) {
+                if (queue[index2] && queue[index2].finish) {
+                  queue[index2].finish.call(this);
                 }
               }
               delete data.finish;
@@ -4826,15 +4826,15 @@
             },
             select: {
               get: function(elem) {
-                var value, option, i, options6 = elem.options, index = elem.selectedIndex, one = elem.type === "select-one", values = one ? null : [], max5 = one ? index + 1 : options6.length;
-                if (index < 0) {
+                var value, option, i, options6 = elem.options, index2 = elem.selectedIndex, one = elem.type === "select-one", values = one ? null : [], max5 = one ? index2 + 1 : options6.length;
+                if (index2 < 0) {
                   i = max5;
                 } else {
-                  i = one ? index : 0;
+                  i = one ? index2 : 0;
                 }
                 for (; i < max5; i++) {
                   option = options6[i];
-                  if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || !nodeName(option.parentNode, "optgroup"))) {
+                  if ((option.selected || i === index2) && !option.disabled && (!option.parentNode.disabled || !nodeName(option.parentNode, "optgroup"))) {
                     value = jQuery(option).val();
                     if (one) {
                       return value;
@@ -8004,9 +8004,9 @@
         if (!(child && child.id)) {
           continue;
         }
-        const index = Array.prototype.indexOf.call(this.children, child);
-        if (index >= 0) {
-          this.children.splice(index, 1);
+        const index2 = Array.prototype.indexOf.call(this.children, child);
+        if (index2 >= 0) {
+          this.children.splice(index2, 1);
         }
         this.children.push(child);
       }
@@ -8028,9 +8028,9 @@
         if (!object || !this.children.ids[object.id]) {
           continue;
         }
-        const index = this.children.indexOf(object);
-        if (index >= 0) {
-          this.children.splice(index, 1);
+        const index2 = this.children.indexOf(object);
+        if (index2 >= 0) {
+          this.children.splice(index2, 1);
         }
       }
       return this;
@@ -8372,14 +8372,14 @@
   };
   function replaceParent(child, newParent) {
     const parent = child.parent;
-    let index;
+    let index2;
     if (parent === newParent) {
       add2();
       return;
     }
     if (parent && parent.children.ids[child.id]) {
-      index = Array.prototype.indexOf.call(parent.children, child);
-      parent.children.splice(index, 1);
+      index2 = Array.prototype.indexOf.call(parent.children, child);
+      parent.children.splice(index2, 1);
       splice();
     }
     if (newParent) {
@@ -8396,15 +8396,15 @@
     delete child.parent;
     function add2() {
       if (newParent.subtractions.length > 0) {
-        index = Array.prototype.indexOf.call(newParent.subtractions, child);
-        if (index >= 0) {
-          newParent.subtractions.splice(index, 1);
+        index2 = Array.prototype.indexOf.call(newParent.subtractions, child);
+        if (index2 >= 0) {
+          newParent.subtractions.splice(index2, 1);
         }
       }
       if (newParent.additions.length > 0) {
-        index = Array.prototype.indexOf.call(newParent.additions, child);
-        if (index >= 0) {
-          newParent.additions.splice(index, 1);
+        index2 = Array.prototype.indexOf.call(newParent.additions, child);
+        if (index2 >= 0) {
+          newParent.additions.splice(index2, 1);
         }
       }
       child.parent = newParent;
@@ -8412,12 +8412,12 @@
       newParent._flagAdditions = true;
     }
     function splice() {
-      index = Array.prototype.indexOf.call(parent.additions, child);
-      if (index >= 0) {
-        parent.additions.splice(index, 1);
+      index2 = Array.prototype.indexOf.call(parent.additions, child);
+      if (index2 >= 0) {
+        parent.additions.splice(index2, 1);
       }
-      index = Array.prototype.indexOf.call(parent.subtractions, child);
-      if (index < 0) {
+      index2 = Array.prototype.indexOf.call(parent.subtractions, child);
+      if (index2 < 0) {
         parent.subtractions.push(child);
         parent._flagSubtractions = true;
       }
@@ -10094,15 +10094,15 @@
       },
       set: function(image) {
         const tag = Texture.getTag(image);
-        let index;
+        let index2;
         switch (tag) {
           case "canvas":
-            index = "#" + image.id;
+            index2 = "#" + image.id;
             break;
           default:
-            index = image.src;
+            index2 = image.src;
         }
-        if (Texture.ImageRegistry.contains(index)) {
+        if (Texture.ImageRegistry.contains(index2)) {
           this._image = Texture.ImageRegistry.get(image.src);
         } else {
           this._image = image;
@@ -11163,7 +11163,7 @@
       const cols = this._columns;
       const rows = this._rows;
       let width, height, elapsed, amount12, duration2;
-      let index, iw, ih, frames;
+      let index2, iw, ih, frames;
       if (effect) {
         if (this._flagColumns || this._flagRows) {
           this._amount = this._columns * this._rows;
@@ -11198,11 +11198,11 @@
             } else {
               elapsed = Math.min(elapsed, duration2);
             }
-            index = lerp(this._firstFrame, frames, elapsed / duration2);
-            index = Math.floor(index);
-            if (index !== this._index) {
-              this._index = index;
-              if (index >= this._lastFrame - 1 && this._onLastFrame) {
+            index2 = lerp(this._firstFrame, frames, elapsed / duration2);
+            index2 = Math.floor(index2);
+            if (index2 !== this._index) {
+              this._index = index2;
+              if (index2 >= this._lastFrame - 1 && this._onLastFrame) {
                 this._onLastFrame();
               }
             }
@@ -12221,9 +12221,9 @@
     const attributes = node.getAttributeNames();
     for (let i = 0; i < reservedAttributesToRemove.length; i++) {
       const keyword = reservedAttributesToRemove[i];
-      const index = Array.prototype.indexOf.call(attributes, keyword);
-      if (index >= 0) {
-        attributes.splice(index, 1);
+      const index2 = Array.prototype.indexOf.call(attributes, keyword);
+      if (index2 >= 0) {
+        attributes.splice(index2, 1);
       }
     }
     return attributes;
@@ -13240,7 +13240,7 @@
     _update() {
       const effect = this._textures;
       let width, height, elapsed, amount12, duration2, texture;
-      let index, frames;
+      let index2, frames;
       if (effect) {
         if (this._flagTextures) {
           this._amount = effect.length;
@@ -13261,10 +13261,10 @@
           } else {
             elapsed = Math.min(elapsed, duration2);
           }
-          index = lerp(this._firstFrame, frames, elapsed / duration2);
-          index = Math.floor(index);
-          if (index !== this._index) {
-            this._index = index;
+          index2 = lerp(this._firstFrame, frames, elapsed / duration2);
+          index2 = Math.floor(index2);
+          if (index2 !== this._index) {
+            this._index = index2;
             texture = effect[this._index];
             if (texture.loaded) {
               width = texture.image.width;
@@ -13276,7 +13276,7 @@
                 this.height = height;
               }
               this.fill = texture;
-              if (index >= this._lastFrame - 1 && this._onLastFrame) {
+              if (index2 >= this._lastFrame - 1 && this._onLastFrame) {
                 this._onLastFrame();
               }
             }
@@ -18477,8 +18477,8 @@
       setTimeout(reset18, duration * 0.25);
     }
     function update21() {
-      const index = palette_default.keys.length - 1 - i % palette_default.keys.length;
-      const key = palette_default.keys[index];
+      const index2 = palette_default.keys.length - 1 - i % palette_default.keys.length;
+      const key = palette_default.keys[index2];
       shape4.fill = palette_default.colors[key];
     }
     function resize19() {
@@ -18558,9 +18558,9 @@
   }
   function onUpdate3(group8, u) {
     const t = clamp(map(u, 0, 0.25, 0, 1), 0, 1);
-    const index = Math.floor(t * amount3);
+    const index2 = Math.floor(t * amount3);
     for (let i = 0; i < lines.length; i++) {
-      lines[i].visible = i <= index;
+      lines[i].visible = i <= index2;
     }
   }
   function updateLine(line2, i) {
@@ -19153,13 +19153,13 @@
       animate_out8.stop();
     }
     const offset = Math.PI / 2;
-    const index = Math.random() * 4;
+    const index2 = Math.random() * 4;
     let phi = 5;
-    if (index > 3) {
+    if (index2 > 3) {
       phi = 5;
-    } else if (index > 2) {
+    } else if (index2 > 2) {
       phi = 4;
-    } else if (index > 1) {
+    } else if (index2 > 1) {
       phi = 2;
     } else {
       phi = 1;
@@ -19541,10 +19541,10 @@
       const x = radius * Math.cos(theta);
       const y = radius * Math.sin(theta);
       v.set(x, y);
-      const index = i + 1;
-      const center2 = Math.PI * (index / amount10);
+      const index2 = i + 1;
+      const center2 = Math.PI * (index2 / amount10);
       const parallel = range(amount10).map((j) => {
-        const t = Math.min(j / index, 1);
+        const t = Math.min(j / index2, 1);
         const angle = t * (endAngle - startAngle) + startAngle + center2 + drift;
         const p = shape3.vertices[j];
         const x2 = radius * Math.cos(angle);
@@ -19553,7 +19553,7 @@
       });
       sequence.push(parallel);
       parallel[0].onComplete(() => {
-        const parallel2 = sequence[index];
+        const parallel2 = sequence[index2];
         if (parallel2 && parallel2.length > 0) {
           parallel2.forEach((tween2) => tween2.start());
           return;
@@ -19611,7 +19611,7 @@
     group7.translation.copy(center);
   }
   function reset17() {
-    let index, longest = 0;
+    let index2, longest = 0;
     const innerRadius = two.height * 2 / 90;
     const outerRadius = two.height * 4 / 90;
     circles5.forEach((circle2, i) => {
@@ -19632,11 +19632,11 @@
       circle2.tween = new Tween(circle2).to({ scale: 1, linewidth: 0 }, 0.2 * duration).easing(Easing.Sinusoidal.Out).delay(delay).onStart(() => circle2.visible = true).onComplete(() => circle2.visible = false);
       if (longest < delay) {
         longest = delay;
-        index = i;
+        index2 = i;
       }
     });
-    circles5[index].tween.onComplete(() => {
-      circles5[index].visible = false;
+    circles5[index2].tween.onComplete(() => {
+      circles5[index2].visible = false;
       reset17();
     });
   }
@@ -19742,95 +19742,97 @@
         }
         e.preventDefault();
         const code = e.which || data;
-        let index;
+        let index2;
         switch (code) {
           case 81:
-            index = "0,0";
+            index2 = "0,0";
             break;
           case 87:
-            index = "0,1";
+            index2 = "0,1";
             break;
           case 69:
-            index = "0,2";
+            index2 = "0,2";
             break;
           case 82:
-            index = "0,3";
+            index2 = "0,3";
             break;
           case 84:
-            index = "0,4";
+            index2 = "0,4";
             break;
           case 89:
-            index = "0,5";
+            index2 = "0,5";
             break;
           case 85:
-            index = "0,6";
+            index2 = "0,6";
             break;
           case 73:
-            index = "0,7";
+            index2 = "0,7";
             break;
           case 79:
-            index = "0,8";
+            index2 = "0,8";
             break;
           case 80:
-            index = "0,9";
+            index2 = "0,9";
             break;
           case 65:
-            index = "1,0";
+            index2 = "1,0";
             break;
           case 83:
-            index = "1,1";
+            index2 = "1,1";
             break;
           case 68:
-            index = "1,2";
+            index2 = "1,2";
             break;
           case 70:
-            index = "1,3";
+            index2 = "1,3";
             break;
           case 71:
-            index = "1,4";
+            index2 = "1,4";
             break;
           case 72:
-            index = "1,5";
+            index2 = "1,5";
             break;
           case 74:
-            index = "1,6";
+            index2 = "1,6";
             break;
           case 75:
-            index = "1,7";
+            index2 = "1,7";
             break;
           case 76:
-            index = "1,8";
+            index2 = "1,8";
             break;
           case 90:
-            index = "2,0";
+            index2 = "2,0";
             break;
           case 88:
-            index = "2,1";
+            index2 = "2,1";
             break;
           case 67:
-            index = "2,2";
+            index2 = "2,2";
             break;
           case 86:
-            index = "2,3";
+            index2 = "2,3";
             break;
           case 66:
-            index = "2,4";
+            index2 = "2,4";
             break;
           case 78:
-            index = "2,5";
+            index2 = "2,5";
             break;
           case 77:
-            index = "2,6";
-            break;
-          case 32:
-            index = "3,0";
+            index2 = "2,6";
             break;
         }
-        trigger(index);
+        trigger(index2);
         triggered();
       }).bind("keyup", (e) => {
         const code = e.which;
         switch (code) {
+          case 32:
+            index = "2,7";
+            trigger(index);
+            triggered();
+            break;
           case 27:
             if (merchandising) {
               (0, import_jquery2.default)("#close-merchandise").click();
@@ -19871,7 +19873,7 @@
           triggered();
           $hint.fadeIn();
           return;
-        } else if (/merchandise/ig.test(window.location.pathname)) {
+        } else if (/merchandise/gi.test(window.location.pathname)) {
           (0, import_jquery2.default)("#merchandise-button").trigger("click");
           return;
         }
@@ -20034,9 +20036,9 @@
       window.onmidimessage = messageReceived;
       midi.addEventListener("statechange", init);
       init({ target: midi });
-      onMIDISuccess.dispatch = (index) => {
+      onMIDISuccess.dispatch = (index2) => {
         const duration2 = 100;
-        const note = indicesToNotes[index];
+        const note = indicesToNotes[index2];
         const velocity = 100;
         if (!note) {
           return;
@@ -20083,9 +20085,7 @@
           deviceString = `${names.join(", ")}, and ${lastName}`;
           names.push(lastName);
         }
-        $midi.html(
-          `Connected to these MIDI devices:, ${deviceString}`
-        );
+        $midi.html(`Connected to these MIDI devices:, ${deviceString}`);
         show();
       }
       function messageReceived(message) {
@@ -20101,10 +20101,10 @@
         }
       }
       function noteOn(note) {
-        const index = notesToIndices[note];
-        if (index) {
+        const index2 = notesToIndices[note];
+        if (index2) {
           onMIDISuccess.receiving = true;
-          trigger(index);
+          trigger(index2);
           triggered();
           onMIDISuccess.receiving = false;
         }
@@ -20134,7 +20134,7 @@
       buttons[1] = range(9).map(createButton);
       buttons[2] = range(8).map(createButton);
       const touches = [];
-      let e, x, y, l, row, col, index;
+      let e, x, y, l, row, col, index2;
       $container.bind("touchstart", (event) => {
         e = event.originalEvent;
         each(e.touches, startTouchEnter);
@@ -20152,8 +20152,8 @@
       });
       buttons.forEach((group8, i) => {
         group8.forEach((button, j) => {
-          const index2 = `${i},${j}`;
-          buttons.map[index2] = button;
+          const index3 = `${i},${j}`;
+          buttons.map[index3] = button;
         });
       });
       function createButton() {
@@ -20180,27 +20180,32 @@
       function startTouchEnter(touch) {
         x = touch.clientX;
         y = touch.clientY;
-        index = getIndex(x, y, x, y);
+        index2 = getIndex(x, y, x, y);
         touches[touch.identifier] = {
-          id: index,
+          id: index2,
           x,
           y
         };
-        triggerButton(index, buttons.map[index]);
+        triggerButton(index2, buttons.map[index2]);
       }
       function updateTouchEnter(touch) {
         x = touch.clientX;
         y = touch.clientY;
-        index = getIndex(x, y, touches[touch.identifier].x, touches[touch.identifier].y);
-        if (touches[touch.identifier] && touches[touch.identifier].id !== index) {
-          triggerButton(index, buttons.map[index]);
-          touches[touch.identifier].id = index;
+        index2 = getIndex(
+          x,
+          y,
+          touches[touch.identifier].x,
+          touches[touch.identifier].y
+        );
+        if (touches[touch.identifier] && touches[touch.identifier].id !== index2) {
+          triggerButton(index2, buttons.map[index2]);
+          touches[touch.identifier].id = index2;
         }
         touches[touch.identifier].x = x;
         touches[touch.identifier].y = y;
       }
-      function triggerButton(index2, button) {
-        trigger(index2);
+      function triggerButton(index3, button) {
+        trigger(index3);
         triggered();
         if (palette_default.get().isDark) {
           button.fill = "rgba(255, 255, 255, 0.3)";
