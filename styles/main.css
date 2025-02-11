@@ -164,6 +164,7 @@ body {
   user-select: auto;
   pointer-events: all;
 }
+body.kiosk .newsletter-signup,
 body.kiosk .ios-app-store {
   display: none !important;
 }

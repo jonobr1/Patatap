@@ -1,5 +1,5 @@
 @body-family: 'Lucida Grande', verdana, sans-serif;
-@font-family:  'Inconsolata', Menlo, Courier New, Courier, Mono, monospace;
+@font-family: 'Inconsolata', Menlo, Courier New, Courier, Mono, monospace;
 @font-size: 16px;
 @line-height: @font-size * 2;
 @ease-out-circ: cubic-bezier(0, 0.55, 0.45, 1);
@@ -87,7 +87,6 @@ body {
 }
 
 #content {
-
   position: absolute;
   top: 0;
   left: 0;
@@ -101,11 +100,9 @@ body {
   #stage {
     background: rgb(181, 181, 181);
   }
-
 }
 
 #hint {
-
   position: absolute;
   left: 0;
   right: 0;
@@ -178,11 +175,13 @@ body {
     user-select: auto;
     pointer-events: all;
   }
-
 }
 
-body.kiosk .ios-app-store {
-  display: none !important;
+body.kiosk {
+  .newsletter-signup,
+  .ios-app-store {
+    display: none !important;
+  }
 }
 
 #embed {
@@ -208,7 +207,6 @@ body.kiosk .ios-app-store {
 }
 
 #merchandise {
-
   position: fixed;
   left: 0;
   right: 0;
@@ -257,7 +255,6 @@ body.kiosk .ios-app-store {
   // }
 
   .container {
-
     background: white;
     overflow: auto;
     padding: @line-height;
@@ -302,7 +299,6 @@ body.kiosk .ios-app-store {
     }
 
     ul {
-
       @black: rgb(51, 51, 51);
       text-align: center;
       font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -311,14 +307,12 @@ body.kiosk .ios-app-store {
       color: @black;
 
       li {
-
         list-style: none;
         display: inline-block;
         margin-left: (@font-size * 0.5);
         margin-right: (@font-size * 0.5);
 
         &.poster {
-
           @width: 170px;
           @height: 312px;
 
@@ -336,21 +330,19 @@ body.kiosk .ios-app-store {
           }
 
           div.thumbnail {
-
             background-color: white;
             background-size: 200%;
             background-position: 50% 20%;
             background-repeat: no-repeat;
             border-bottom: @border-width solid @border-color;
             height: @width - @border-width * 2;
-
           }
 
           #synesthesia {
             background-image: url(https://m1.behance.net/rendition/modules/102811007/disp/ba88168e188e18adb93119aec9a708c7.jpg);
           }
           #two-polygon {
-           background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg);
+            background-image: url(https://m1.behance.net/rendition/modules/89572825/disp/283766537aa70deff9da67506f7b1508.jpg);
           }
 
           p {
@@ -393,13 +385,9 @@ body.kiosk .ios-app-store {
               margin-left: 15px;
             }
           }
-
         }
-
       }
-
     }
-
   }
 
   .app-cta-container {
@@ -447,11 +435,9 @@ body.kiosk .ios-app-store {
       color: #333;
     }
   }
-
 }
 
 #lobby {
-
   position: fixed;
   top: 50%;
   left: 50%;
@@ -462,7 +448,8 @@ body.kiosk .ios-app-store {
     position: relative;
     width: @d;
     height: @d;
-    background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center center no-repeat;
+    background: rgba(255, 255, 255, 0.9) url(../images/ajax-loader.svg) center
+      center no-repeat;
     background-size: (@d * 0.5) (@d * 0.5);
     margin-left: -(@d * 0.5);
     margin-top: -(@d * 0.5);
@@ -483,7 +470,6 @@ body.kiosk .ios-app-store {
     width: 300px;
     margin-left: -150px;
   }
-
 }
 
 @keyframes rotate {
