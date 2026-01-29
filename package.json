@@ -30,7 +30,7 @@
   "devDependencies": {
     "concurrently": "^6.4.0",
     "esbuild": "^0.25.0",
-    "eslint": "^8.18.0",
+    "eslint": "^9.39.2",
     "less": "^4.1.2",
     "less-watch-compiler": "^1.16.3",
     "mpe": "^1.0.4"
